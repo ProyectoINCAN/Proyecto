@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sihincan_db',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': 'OscProdPost2014',
         'HOST': 'localhost',
         'PORT': 5432,
     }
@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'es-mx'
+LANGUAGE_CODE = 'es-PY'
 
 TIME_ZONE = 'America/Asuncion'
 
