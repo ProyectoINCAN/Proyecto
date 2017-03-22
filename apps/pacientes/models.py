@@ -52,3 +52,99 @@ class NivelEducativo(models.Model):
         verbose_name = "Nivel Educativo"
         verbose_name_plural = "Niveles Educativos"
 
+class Etnia(models.Model):
+    nombre = models.CharField(max_length=30, blank=False)
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "Etnia"
+        verbose_name_plural = "Etnias"
+
+
+class Profesion(models.Model):
+    nombre = models.CharField(max_length=30, blank=False)
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Profesión"
+        verbose_name_plural = "Profesiones"
+
+
+class Pais(models.Model):
+    codigo = models.CharField(max_length=3, blank=False)
+    nombre = models.CharField(max_length=30, blank=False)
+    nombre_iso = models.CharField(max_length=30, blank=False)
+    codigo_alpha3 = models.CharField(max_length=3, blank=False)
+    codigo_numerico = models.IntegerField(blank=False)
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Nacionalidad"
+        verbose_name_plural = "Nacionalidades"
+
+
+class Region(models.Model):
+    nombre = models.CharField(max_length=60, blank=False)
+    pais = Pais()
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Región"
+        verbose_name_plural = "Regiones"
+
+
+class Localidad(models.Model):
+    nombre = models.CharField(max_length=60, blank=False)
+    region = Region()
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Localidad"
+        verbose_name_plural = "Localidades"
+
+
+class Barrio(models.Model):
+    nombre = models.CharField(max_length=100, blank=False)
+    localidad = Localidad()
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Barrio"
+        verbose_name_plural = "Barrios"
+
+
+class SeguroMedico(models.Model):
+    nombre = models.CharField(max_length=60, blank=False)
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Seguro Médico"
+        verbose_name_plural = "Seguros Médicos"

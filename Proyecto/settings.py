@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sihincan_db',
         'USER': 'postgres',
-        'PASSWORD': 'OscProdPost2014',
+        'PASSWORD': '49768812093',
         'HOST': 'localhost',
         'PORT': 5432,
     }
