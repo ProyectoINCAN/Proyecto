@@ -91,13 +91,13 @@ class Pais(models.Model):
 
     class Meta:
         ordering = ["nombre"]
-        verbose_name = "Nacionalidad"
-        verbose_name_plural = "Nacionalidades"
+        verbose_name = "País"
+        verbose_name_plural = "Países"
 
 
 class Region(models.Model):
     nombre = models.CharField(max_length=60, blank=False)
-    pais = Pais()
+    pais = models.ForeignKey(Pais,  models.SET_NULL, blank=True,null=True,)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -111,7 +111,7 @@ class Region(models.Model):
 
 class Localidad(models.Model):
     nombre = models.CharField(max_length=60, blank=False)
-    region = Region()
+    region = models.ForeignKey(Region,  models.SET_NULL, blank=True,null=True,)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -125,7 +125,7 @@ class Localidad(models.Model):
 
 class Barrio(models.Model):
     nombre = models.CharField(max_length=100, blank=False)
-    localidad = Localidad()
+    localidad = models.ForeignKey(Localidad,  models.SET_NULL, blank=True,null=True,)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
