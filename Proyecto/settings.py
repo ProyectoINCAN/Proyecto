@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.pacientes',
-
+    'apps.seguridad',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sihincan_db',
         'USER': 'postgres',
-        'PASSWORD': '49768812093',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': 5432,
     }

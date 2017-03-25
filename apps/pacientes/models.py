@@ -148,3 +148,4 @@ class SeguroMedico(models.Model):
         ordering = ["nombre"]
         verbose_name = "Seguro Médico"
         verbose_name_plural = "Seguros Médicos"
+
