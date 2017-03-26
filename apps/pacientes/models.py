@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from django.utils.timezone import now
+
 
 class TipoDoc(models.Model):
     codigo = models.CharField(max_length=3, blank=False)
@@ -21,6 +23,9 @@ class Sexo(models.Model):
     codigo = models.CharField(max_length=1, blank=False)
     descripcion = models.CharField(max_length=30, blank=False)
     habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.descripcion
 
     class Meta:
         ordering = ["descripcion"]
@@ -174,9 +179,17 @@ class Ocupacion(models.Model):
         verbose_name_plural = "Ocupaciones"
 
 class SituacionLaboral(models.Model):
-    codigo = models.CharField(max_length=3, blank=False)
+    codigo = models.CharField(max_length=2, blank=False)
     descripcion = models.CharField(max_length=50, blank=False)
     habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.descripcion
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "Situación Laboral"
+        verbose_name_plural = "Situaciones Laborales"
 
 class Paciente(models.Model):
     nombres = models.CharField(max_length=100, blank=False)
@@ -190,12 +203,13 @@ class Paciente(models.Model):
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
     nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False)
-    seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False)
-    situacion_laboral = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False)
-    fecha_registrado = models.DateField(auto_now=True, null=False) #en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
+    seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False, verbose_name="Seguro médico")
+    situacion_laboral = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False, verbose_name="Situación laboral")
+    profesion = models.ManyToManyField(Profesion, verbose_name='Profesión')
+    fecha_registrado = models.DateTimeField(default=now(), null=False) #en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
 
     def __str__(self):
-        return self.apellidos + " " + self.nombres
+        return self.apellidos + ", " + self.nombres
 
     class Meta:
         ordering = ["apellidos", "nombres"]
