@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.pacientes',
     'apps.seguridad',
-
+    'apps.internaciones',
     'apps.consultorios',
 
 ]
@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sihincan_db',
         'USER': 'postgres',
-        'PASSWORD': '',
+        'PASSWORD': '49768812093',
         'HOST': 'localhost',
         'PORT': 5432,
     }

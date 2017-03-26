@@ -149,3 +149,26 @@ class SeguroMedico(models.Model):
         verbose_name = "Seguro Médico"
         verbose_name_plural = "Seguros Médicos"
 
+class Area(models.Model):
+    codigo = models.CharField(max_length=2, blank=False)
+    nombre = models.CharField(max_length=60, blank=False)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Área"
+        verbose_name_plural = "Áreas"
+
+class Ocupacion(models.Model):
+    descripcion = models.CharField(max_length=100, blank=False)
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Ocupación"
+        verbose_name_plural = "Ocupaciones"

@@ -41,3 +41,4 @@ class LocalidadAdmin(admin.ModelAdmin):
 class BarrioAdmin(admin.ModelAdmin):
     list_display = ['nombre','localidad', 'habilitado']
     list_per_page = 2
+
