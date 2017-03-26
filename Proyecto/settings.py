@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'apps.seguridad',
     'apps.internaciones',
     'apps.consultorios',
+    'apps.urgencias',
+    'apps.agendamientos',
 
 ]
 
