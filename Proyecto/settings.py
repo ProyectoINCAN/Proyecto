@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.pacientes',
     'apps.seguridad',
+
+    'apps.consultorios',
+
 ]
 
 MIDDLEWARE_CLASSES = [
