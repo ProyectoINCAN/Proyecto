@@ -215,3 +215,37 @@ class Paciente(models.Model):
         ordering = ["apellidos", "nombres"]
         verbose_name = "Paciente"
         verbose_name_plural = "Pacientes"
+
+class Direccion(models.Model):
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
+    descripcion = models.CharField(max_length=100, blank=False)
+    localidad = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False)
+    barrio = models.ForeignKey(Barrio, models.DO_NOTHING, blank=False, null=False)
+    area = models.ForeignKey(Area, models.DO_NOTHING, blank=False, null=False)
+    sector = models.CharField(max_length=100, blank=False)
+    manzana = models.CharField(max_length=60, blank=False)
+    nro_casa = models.IntegerField(blank=False)
+    residencia_ocasional = models.BooleanField(default=True)
+    referencia = models.CharField(max_length=100, blank=False)
+
+    def __str__(self):
+        return self.descripcion
+
+    class Meta:
+        ordering = ["paciente"]
+        verbose_name = "Dirección"
+        verbose_name_plural = "Direcciones"
+
+class MedidaPaciente(models.Model):
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
+    peso = models.IntegerField(blank=False)
+    talla = models.IntegerField(blank=False)
+
+    def __str__(self):
+        return self.peso + ", " + self.talla
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "Medida del Paciente"
+        verbose_name_plural = "Medidas del Paciente"
+

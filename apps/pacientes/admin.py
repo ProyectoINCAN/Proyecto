@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from apps.pacientes.models import TipoDoc, EstadoCivil, SeguroMedico, Barrio, Localidad, Region, Pais, Paciente, Sexo, \
-    Etnia, NivelEducativo, SituacionLaboral, Profesion
+    Etnia, NivelEducativo, SituacionLaboral, Profesion, Area, Ocupacion
 
 
 #registrar usando decorador, para evitar usar el método register
@@ -50,22 +50,22 @@ class ProfesionAdmin(admin.ModelAdmin):
 @admin.register(Pais)
 class PaisAdmin(admin.ModelAdmin):
     list_display = ['codigo','nombre','habilitado']
-    list_per_page = 2
+    list_per_page = 15
 
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
     list_display = ['nombre','pais', 'habilitado']
-    list_per_page = 2
+    list_per_page = 15
 
 @admin.register(Localidad)
 class LocalidadAdmin(admin.ModelAdmin):
     list_display = ['nombre','region', 'habilitado']
-    list_per_page = 2
+    list_per_page = 15
 
 @admin.register(Barrio)
 class BarrioAdmin(admin.ModelAdmin):
     list_display = ['nombre','localidad', 'habilitado']
-    list_per_page = 2
+    list_per_page = 15
 
 @admin.register(Paciente)
 class PacienteAdmin(admin.ModelAdmin):
@@ -74,4 +74,13 @@ class PacienteAdmin(admin.ModelAdmin):
     filter_horizontal = ['profesion']
     exclude = ('fecha_registrado',)
 
+@admin.register(Area)
+class AreaAdmin(admin.ModelAdmin):
+    list_display = ['codigo','nombre']
+    list_per_page = 15
+
+@admin.register(Ocupacion)
+class OcupacionAdmin(admin.ModelAdmin):
+    list_display = ['id', 'descripcion','habilitado']
+    list_per_page = 15
 
