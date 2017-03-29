@@ -32,6 +32,7 @@ class Sexo(models.Model):
         verbose_name = "Sexo"
         verbose_name_plural = "Sexos"
 
+
 class EstadoCivil(models.Model):
     codigo = models.CharField(max_length=2, blank=False)
     nombre = models.CharField(max_length=30, blank=False)
@@ -45,6 +46,7 @@ class EstadoCivil(models.Model):
         verbose_name = "Estado Civil"
         verbose_name_plural = "Estados Civiles"
 
+
 class NivelEducativo(models.Model):
     nombre = models.CharField(max_length=50, blank=False)
     habilitado = models.BooleanField(default=True)
@@ -56,6 +58,7 @@ class NivelEducativo(models.Model):
         ordering = ["nombre"]
         verbose_name = "Nivel Educativo"
         verbose_name_plural = "Niveles Educativos"
+
 
 class Etnia(models.Model):
     nombre = models.CharField(max_length=30, blank=False)
@@ -154,6 +157,7 @@ class SeguroMedico(models.Model):
         verbose_name = "Seguro Médico"
         verbose_name_plural = "Seguros Médicos"
 
+
 class Area(models.Model):
     codigo = models.CharField(max_length=2, blank=False)
     nombre = models.CharField(max_length=60, blank=False)
@@ -165,6 +169,7 @@ class Area(models.Model):
         ordering = ["nombre"]
         verbose_name = "Área"
         verbose_name_plural = "Áreas"
+
 
 class Ocupacion(models.Model):
     descripcion = models.CharField(max_length=100, blank=False)
@@ -178,6 +183,7 @@ class Ocupacion(models.Model):
         verbose_name = "Ocupación"
         verbose_name_plural = "Ocupaciones"
 
+
 class SituacionLaboral(models.Model):
     codigo = models.CharField(max_length=2, blank=False)
     descripcion = models.CharField(max_length=50, blank=False)
@@ -190,6 +196,7 @@ class SituacionLaboral(models.Model):
         ordering = ["id"]
         verbose_name = "Situación Laboral"
         verbose_name_plural = "Situaciones Laborales"
+
 
 class Paciente(models.Model):
     nombres = models.CharField(max_length=100, blank=False)
@@ -206,7 +213,7 @@ class Paciente(models.Model):
     seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False, verbose_name="Seguro médico")
     situacion_laboral = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False, verbose_name="Situación laboral")
     profesion = models.ManyToManyField(Profesion, verbose_name='Profesión')
-    fecha_registrado = models.DateTimeField(default=now(), null=False) #en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
+    fecha_registrado = models.DateTimeField(default=now, null=False) #en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
 
     def __str__(self):
         return self.apellidos + ", " + self.nombres
@@ -215,6 +222,7 @@ class Paciente(models.Model):
         ordering = ["apellidos", "nombres"]
         verbose_name = "Paciente"
         verbose_name_plural = "Pacientes"
+
 
 class Direccion(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
@@ -236,6 +244,7 @@ class Direccion(models.Model):
         verbose_name = "Dirección"
         verbose_name_plural = "Direcciones"
 
+
 class MedidaPaciente(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     peso = models.IntegerField(blank=False)
@@ -248,4 +257,61 @@ class MedidaPaciente(models.Model):
         ordering = ["id"]
         verbose_name = "Medida del Paciente"
         verbose_name_plural = "Medidas del Paciente"
+
+
+class TipoTelefono(models.Model):
+    codigo = models.CharField(max_length=1, blank=False)
+    descripcion = models.CharField(max_length=50, blank=False)
+
+    def __str__(self):
+        return self.descripcion
+
+    class Meta:
+        ordering = ['descripcion']
+        verbose_name = 'Tipo de teléfono'
+        verbose_name_plural = 'Tipos de teléfono'
+
+
+class Telefono(models.Model):
+    numero = models.CharField(max_length=80, blank=False, null=False)
+    tipo = models.ForeignKey(TipoTelefono, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.peso + ", " + self.talla
+
+    class Meta:
+        ordering = ['paciente', 'id']
+        verbose_name = 'Teléfono'
+        verbose_name_plural = 'Teléfonos'
+
+
+class TipoCorreoElectronico(models.Model):
+    codigo = models.CharField(max_length=1, blank=False, verbose_name='código')
+    descripcion = models.CharField(max_length=50, blank=False, verbose_name='descripción')
+
+    def __str__(self):
+        return self.descripcion
+
+    class Meta:
+        ordering = ['descripcion']
+        verbose_name = 'Tipo de correo electrónico'
+        verbose_name_plural = 'Tipos de correo electrónico'
+
+
+class CorreoElectronico(models.Model):
+    direccion = models.CharField(max_length=100, blank=False, null=False, verbose_name='dirección')
+    tipo = models.ForeignKey(TipoCorreoElectronico, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.peso + ", " + self.talla
+
+    class Meta:
+        ordering = ['paciente', 'id']
+        verbose_name = 'Teléfono'
+        verbose_name_plural = 'Teléfonos'
+
 
