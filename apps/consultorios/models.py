@@ -67,6 +67,13 @@ class Departamento(models.Model):
         verbose_name = "Departamento"
         verbose_name_plural = "Departamentos"
 
+
+class Turno(models.Model):
+    codigo = models.CharField(max_length=3, blank=False)
+    nombre = models.CharField(max_length=60, blank=False)
+    habilitado = models.BooleanField(default=True)
+
+
 class HorarioMedico(models.Model):
     DIAS_SEMANA_CHOICES = (
         (1, 'Domingo'),
@@ -82,6 +89,7 @@ class HorarioMedico(models.Model):
     hora_fin = models.TimeField(blank=False, null=False)
     cod_departamento = models.ForeignKey(Departamento, models.DO_NOTHING, blank=False, null=False, verbose_name="Departamento")
     dia_semana = models.CharField(max_length=15, choices=DIAS_SEMANA_CHOICES, blank=False, null=False, verbose_name="Día de la semana")
+    turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False, verbose_name="Turno")
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -91,3 +99,17 @@ class HorarioMedico(models.Model):
         ordering = ["medico"]
         verbose_name = "Horario Médico"
         verbose_name_plural = "Horarios de Médicos"
+
+
+class OrdenEstudio(models.Model):
+    nombre = models.CharField(max_length=50, blank=False)
+    descripcion = models.CharField(default="", max_length=80, blank=False)
+    estado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Orden de Estudio"
+        verbose_name_plural = "Ordenes de Estudios"

@@ -233,8 +233,9 @@ class Direccion(models.Model):
     sector = models.CharField(max_length=100, blank=False)
     manzana = models.CharField(max_length=60, blank=False)
     nro_casa = models.IntegerField(blank=False)
-    residencia_ocasional = models.BooleanField(default=True)
-    referencia = models.CharField(max_length=100, blank=False)
+    residencia_ocasional = models.CharField(max_length=300, blank=False)
+    referencia = models.CharField(max_length=200, blank=False)
+    habilitado = models.BooleanField(default=True)
 
     def __str__(self):
         return self.descripcion

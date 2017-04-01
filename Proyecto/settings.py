@@ -87,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sihincan_db',
         'USER': 'postgres',
-        'PASSWORD': '49768812093',
+        'PASSWORD': 'postgres',
         'HOST': 'localhost',
         'PORT': 5432,
     }
@@ -131,3 +131,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#agregar el nombre de la aplicación/proyecto
+SUIT_CONFIG = {
+'ADMIN_NAME': 'SIHINCAN',  #nombre del proyecto.
+'LIST_PER_PAGE': 2,  #paginación para todas los modelos
+}
