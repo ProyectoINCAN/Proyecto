@@ -19,7 +19,7 @@ class Consultorio(models.Model):
         verbose_name_plural = "Consultorios"
 
 class Especialidad(models.Model):
-    codigo = models.CharField(max_length=3, blank=False)
+    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
     nombre = models.CharField(max_length=60, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -55,7 +55,7 @@ class Medico(models.Model):
         verbose_name_plural = "Médicos"
 
 class Departamento(models.Model):
-    codigo = models.CharField(max_length=3, blank=False)
+    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
     nombre = models.CharField(max_length=60, blank=False)
     habilitado = models.BooleanField(default=True)
 

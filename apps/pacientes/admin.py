@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from apps.pacientes.models import TipoDoc, EstadoCivil, SeguroMedico, Barrio, Localidad, Region, Pais, Paciente, Sexo, \
-    Etnia, NivelEducativo, SituacionLaboral, Profesion, Area, Ocupacion
+    Etnia, NivelEducativo, SituacionLaboral, Profesion, Area, Ocupacion, Direccion, PacienteSeguroMedico
 
 
 #registrar usando decorador, para evitar usar el método register
@@ -83,4 +83,13 @@ class AreaAdmin(admin.ModelAdmin):
 class OcupacionAdmin(admin.ModelAdmin):
     list_display = ['id', 'descripcion','habilitado']
     list_per_page = 15
+
+@admin.register(Direccion)
+class DireccionAdmin(admin.ModelAdmin):
+    list_display = ['id', 'paciente','region']
+
+@admin.register(PacienteSeguroMedico)
+class SeguroMedicoAdmin(admin.ModelAdmin):
+    list_display = ['seguro_medico', 'paciente']
+
 

@@ -198,35 +198,6 @@ class SituacionLaboral(models.Model):
         verbose_name_plural = "Situaciones Laborales"
 
 
-class PacienteOcupacion(models.Model):
-    situacion_laboral_id = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False)
-    ocupacion_id = models.ForeignKey(Ocupacion, models.DO_NOTHING, blank=False, null=False)
-    #renumeracion = models.BooleanField(default=True)
-    estado = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.profesion
-
-    class Meta:
-        ordering = ["situacion_laboral_id"]
-        verbose_name = "Ocupación del Paciente"
-        verbose_name_plural = "Ocupaciones del Paciente"
-
-
-
-class PacienteNivelEducativo(models.Model):
-    nivel_educativo_id = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False)
-    completo = models.BooleanField(default=True)
-    anho_cursado = verbose_name="Año Cursado"
-
-    def __str__(self):
-        return self.nombre
-
-    class Meta:
-        ordering = ["nivel_educativo_id"]
-        verbose_name = "Nivel Educativo"
-        verbose_name_plural = "Niveles Educativos"
-
 
 class Paciente(models.Model):
     nombres = models.CharField(max_length=100, blank=False)
@@ -239,12 +210,15 @@ class Paciente(models.Model):
     nacionalidad = models.ForeignKey(Pais, models.DO_NOTHING, blank=False, null=False)
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
-    nivel_educativo = models.ForeignKey(PacienteNivelEducativo, models.DO_NOTHING, default="", blank=False, null=False)
-    seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False, verbose_name="Seguro médico")
-    situacion_laboral = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False, verbose_name="Situación laboral")
-    profesion = models.ManyToManyField(Profesion, verbose_name='Profesión')
-    ocupacion = models.ForeignKey(PacienteOcupacion, models.DO_NOTHING, default="", blank=False, null=False, verbose_name="Ocupación")
-    fecha_registrado = models.DateTimeField(default=now, null=False) #en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
+    fecha_registrado = models.DateTimeField(default=now, null=False)  # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
+
+
+    #nivel_educativo = models.ForeignKey(PacienteNivelEducativo, models.DO_NOTHING, default="", blank=False, null=False)
+    #seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False, verbose_name="Seguro médico")
+    #situacion_laboral = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False, verbose_name="Situación laboral")
+    #profesion = models.ManyToManyField(Profesion, verbose_name='Profesión')
+    #ocupacion = models.ForeignKey(PacienteOcupacion, models.DO_NOTHING, default="", blank=False, null=False, verbose_name="Ocupación")
+
 
     def __str__(self):
         return self.apellidos + ", " + self.nombres
@@ -257,19 +231,20 @@ class Paciente(models.Model):
 
 class Direccion(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
-    descripcion = models.CharField(max_length=100, blank=False)
+    region = models.ForeignKey(Region,models.SET_NULL, blank=True,null=True,)
     localidad = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False)
     barrio = models.ForeignKey(Barrio, models.DO_NOTHING, blank=False, null=False)
     area = models.ForeignKey(Area, models.DO_NOTHING, blank=False, null=False)
     sector = models.CharField(max_length=100, blank=False)
     manzana = models.CharField(max_length=60, blank=False)
+    direccion = models.CharField(max_length=200, blank=False, default="")
     nro_casa = models.IntegerField(blank=False)
     residencia_ocasional = models.CharField(max_length=300, blank=False)
     referencia = models.CharField(max_length=200, blank=False)
-    habilitado = models.BooleanField(default=True)
+    #habilitado = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.descripcion
+        return self.paciente
 
     class Meta:
         ordering = ["paciente"]
@@ -362,3 +337,62 @@ class Acompañante(models.Model):
         ordering = ["nombres"]
         verbose_name = "Acompañante"
         verbose_name_plural = "Acompañantes"
+
+
+class PacienteProfesion(models.Model):
+    profesion = models.ForeignKey(Profesion, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)  # relacion con el paciente
+
+    def __str__(self):
+        return self.profesion
+
+    class Meta:
+        ordering = ["profesion"]
+        verbose_name = "Profesión de Paciente"
+        verbose_name_plural = "Profesiones de Pacientes"
+
+
+class PacienteNivelEducativo(models.Model):
+    nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(Paciente, models.SET_NULL,blank=True,null=True,) #relacion con el paciente
+    completo = models.BooleanField(default=True)
+    anho_cursado = verbose_name="Año Cursado"
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nivel_educativo_id"]
+        verbose_name = "Paciente Nivel Educativo"
+        verbose_name_plural = "Paciente Niveles Educativos"
+
+
+#paciente situacion laboral
+class PacienteOcupacion(models.Model):
+    paciente = models.ForeignKey(Paciente, models.SET_NULL, blank=True, null=True, )
+    situacion_laboral_id = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False)
+    ocupacion = models.ForeignKey(Ocupacion, models.DO_NOTHING, blank=False, null=False)
+    #renumeracion = models.BooleanField(default=True)
+    estado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.profesion
+
+    class Meta:
+        ordering = ["paciente"]
+        verbose_name = "Paciente Ocupación"
+        verbose_name_plural = "Paciente Ocupación"
+
+
+class PacienteSeguroMedico(models.Model):
+    seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False) #relacion con el paciente
+
+
+    def __str__(self):
+        return self.seguro_medico
+
+    class Meta:
+        ordering = ["seguro_medico"]
+        verbose_name = "Paciente Seguro Médico"
+        verbose_name_plural = "Paciente Seguro Médico"
