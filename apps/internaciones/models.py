@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from apps.consultorios.models import Medico
 from apps.pacientes.models import Paciente
 from apps.seguridad.models import Establecimiento
 
@@ -180,3 +181,39 @@ class Medicamento(models.Model):
         ordering = ["nombre"]
         verbose_name = "Medicamento"
         verbose_name_plural = "Medicamentos"
+
+
+class Internado(models.Model):
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
+    tipo_ingreso = models.CharField(max_length=100, blank=False)
+    puesto = models.CharField(max_length=100, blank=False)
+    motivo = models.CharField(max_length=100, blank=False)
+    medico_solitante = models.ForeignKey(Medico, models.SET_NULL, blank= True, null=True, related_name ="medicosolicitantec")
+    medico_cabecera = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False,related_name ="medicos")
+    forma_ingreso = models.CharField(max_length=150, blank=False)
+    servicio =  models.ForeignKey(Servicio, models.DO_NOTHING, blank=False, null=False)
+    observacion = models.CharField(max_length=300, blank=False)
+
+    def __str__(self):
+        return self.paciente
+
+    class Meta:
+        ordering = ["paciente"]
+        verbose_name = "Internado"
+        verbose_name_plural = "Internados"
+
+
+class InternadoInsumo(models.Model):
+    internado = models.ForeignKey(Internado, models.DO_NOTHING, blank=False, null=False)
+    medicamento = models.ForeignKey(Medicamento, models.DO_NOTHING, blank=False, null=False)
+    cantidad_medicamento = models.IntegerField(blank=False, verbose_name="Cantidad de Medicamento")
+    insumo = models.ForeignKey(Insumo, models.DO_NOTHING, blank=False, null=False)
+    cantidad_insumo = models.IntegerField(blank=False, verbose_name="Cantidad de Insumo")
+
+    def __str__(self):
+        return self.paciente
+
+    class Meta:
+        ordering = ["internado"]
+        verbose_name = "Internado"
+        verbose_name_plural = "Internados"
