@@ -71,7 +71,7 @@ class BarrioAdmin(admin.ModelAdmin):
 class PacienteAdmin(admin.ModelAdmin):
     list_display = ['apellidos','nombres', 'tipo_doc', 'nro_doc']
     list_per_page = 15
-    filter_horizontal = ['profesion']
+    #filter_horizontal = ['profesion']
     exclude = ('fecha_registrado',)
 
 @admin.register(Area)

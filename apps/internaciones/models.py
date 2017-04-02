@@ -143,3 +143,40 @@ class Servicio(models.Model):
         ordering = ["nombre"]
         verbose_name = "Servicio"
         verbose_name_plural = "Servicios"
+
+
+class Insumo(models.Model):
+    nombre = models.CharField(max_length=100, blank=False)
+    nro_lote = models.CharField(max_length=100, blank=False, verbose_name="Número de Lote")
+    cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
+    fabricado = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fabricado")
+    vencimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Vencimiento")
+    tipificacion = models.CharField(max_length=100, blank=False, verbose_name="Tipificación")
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Insumo"
+        verbose_name_plural = "Insumos"
+
+
+class Medicamento(models.Model):
+    nombre = models.CharField(max_length=100, blank=False)
+    forma_farmaceutica = models.CharField(max_length=200, blank=False)
+    nro_lote = models.CharField(max_length=100, blank=False, verbose_name="Número de Lote")
+    cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
+    fabricado = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fabricado")
+    vencimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Vencimiento")
+    tipificacion = models.CharField(max_length=100, blank=False, verbose_name="Tipificación")
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Medicamento"
+        verbose_name_plural = "Medicamentos"
