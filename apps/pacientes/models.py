@@ -5,7 +5,7 @@ from django.utils.timezone import now
 
 
 class TipoDoc(models.Model):
-    codigo = models.CharField(max_length=3, blank=False)
+    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=50, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -20,7 +20,7 @@ class TipoDoc(models.Model):
 
 
 class Sexo(models.Model):
-    codigo = models.CharField(max_length=1, blank=False)
+    codigo = models.CharField(max_length=1, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=30, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -34,7 +34,7 @@ class Sexo(models.Model):
 
 
 class EstadoCivil(models.Model):
-    codigo = models.CharField(max_length=2, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     nombre = models.CharField(max_length=30, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -68,7 +68,7 @@ class Etnia(models.Model):
         return self.nombre
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["nombre"]
         verbose_name = "Etnia"
         verbose_name_plural = "Etnias"
 
@@ -87,7 +87,7 @@ class Profesion(models.Model):
 
 
 class Pais(models.Model):
-    codigo = models.CharField(max_length=3, blank=False)
+    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
     nombre = models.CharField(max_length=30, blank=False)
     nombre_iso = models.CharField(max_length=30, blank=False)
     codigo_alpha3 = models.CharField(max_length=3, blank=False)
@@ -159,7 +159,7 @@ class SeguroMedico(models.Model):
 
 
 class Area(models.Model):
-    codigo = models.CharField(max_length=2, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     nombre = models.CharField(max_length=60, blank=False)
 
     def __str__(self):
@@ -185,7 +185,7 @@ class Ocupacion(models.Model):
 
 
 class SituacionLaboral(models.Model):
-    codigo = models.CharField(max_length=2, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=50, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -193,18 +193,17 @@ class SituacionLaboral(models.Model):
         return self.descripcion
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["codigo"]
         verbose_name = "Situación Laboral"
         verbose_name_plural = "Situaciones Laborales"
-
 
 
 class Paciente(models.Model):
     nombres = models.CharField(max_length=100, blank=False)
     apellidos = models.CharField(max_length=100, blank=False)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
-    sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
+    nro_doc = models.CharField(max_length=15, blank=True, null=False, verbose_name="Número de documento", unique=True)  #si no tiene nrodoc, por defecto debe guardar INICIAL_NOMBRE+INICIAL_APELLIDO+FECHA_NACIMIENTO
+    sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)                                          #Redefinir la función save para setee el dato en esos casos
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
     nacionalidad = models.ForeignKey(Pais, models.DO_NOTHING, blank=False, null=False)
@@ -231,20 +230,20 @@ class Paciente(models.Model):
 
 class Direccion(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
-    region = models.ForeignKey(Region,models.SET_NULL, blank=True,null=True,)
+    descripcion = models.CharField(max_length=100, blank=False)
+    region = models.ForeignKey(Region, models.SET_NULL, blank=True, null=True, )
     localidad = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False)
     barrio = models.ForeignKey(Barrio, models.DO_NOTHING, blank=False, null=False)
     area = models.ForeignKey(Area, models.DO_NOTHING, blank=False, null=False)
     sector = models.CharField(max_length=100, blank=False)
     manzana = models.CharField(max_length=60, blank=False)
-    direccion = models.CharField(max_length=200, blank=False, default="")
     nro_casa = models.IntegerField(blank=False)
     residencia_ocasional = models.CharField(max_length=300, blank=False)
     referencia = models.CharField(max_length=200, blank=False)
-    #habilitado = models.BooleanField(default=True)
+    habilitado = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.paciente
+        return self.descripcion
 
     class Meta:
         ordering = ["paciente"]
@@ -267,7 +266,7 @@ class MedidaPaciente(models.Model):
 
 
 class TipoTelefono(models.Model):
-    codigo = models.CharField(max_length=1, blank=False)
+    codigo = models.CharField(max_length=1, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=50, blank=False)
 
     def __str__(self):
@@ -295,7 +294,7 @@ class Telefono(models.Model):
 
 
 class TipoCorreoElectronico(models.Model):
-    codigo = models.CharField(max_length=1, blank=False, verbose_name='código')
+    codigo = models.CharField(max_length=1, blank=False, verbose_name='código', primary_key=True)
     descripcion = models.CharField(max_length=50, blank=False, verbose_name='descripción')
 
     def __str__(self):
@@ -314,12 +313,42 @@ class CorreoElectronico(models.Model):
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.peso + ", " + self.talla
+        return self.direccion
 
     class Meta:
         ordering = ['paciente', 'id']
         verbose_name = 'Correo Electrónico'
         verbose_name_plural = 'Correos Electrónicos'
+
+# TODO class paciente padres
+# class PacientePadre(models.Model):
+#     nombres = models.CharField(max_length=100, blank=False)
+#     apellidos = models.CharField(max_length=100, blank=False)
+#     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
+#     nro_doc = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
+#     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
+#     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
+#     lugar_nacimiento = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False,
+#                                          verbose_name="Lugar de nacimiento")
+#     nacionalidad = models.ForeignKey(Pais, models.DO_NOTHING, blank=False, null=False)
+#     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
+#     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
+#     nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False)
+#     seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False,
+#                                       verbose_name="Seguro médico")
+#     situacion_laboral = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False,
+#                                           verbose_name="Situación laboral")
+#     profesion = models.ManyToManyField(Profesion, verbose_name='Profesión')
+#     fecha_registrado = models.DateTimeField(default=now,
+#                                             null=False)  # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
+#
+#     def __str__(self):
+#         return self.apellidos + ", " + self.nombre
+#
+#     class Meta:
+#         ordering = ['id']
+#         verbose_name = 'Padre'
+#         verbose_name_plural = 'Padres'
 
 
 class Acompañante(models.Model):

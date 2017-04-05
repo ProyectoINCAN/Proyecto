@@ -6,7 +6,7 @@ from apps.pacientes.models import Localidad, Area
 
 
 class Establecimiento(models.Model):
-    codigo = models.CharField(max_length=2, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     nombre = models.CharField(max_length=60, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -19,7 +19,7 @@ class Establecimiento(models.Model):
         verbose_name_plural = "Establecimientos"
 
 class RegionSanitaria(models.Model):
-    codigo = models.CharField(max_length=2, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     nombre = models.CharField(max_length=60, blank=False)
 
     def __str__(self):

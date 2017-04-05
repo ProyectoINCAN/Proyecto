@@ -7,7 +7,7 @@ from apps.seguridad.models import Establecimiento
 
 
 class TipoReferencia(models.Model):
-    codigo = models.CharField(max_length=2, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=100, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -20,7 +20,7 @@ class TipoReferencia(models.Model):
         verbose_name_plural = "Tipos de Referencias"
 
 class CIE10(models.Model):
-    codigo = models.CharField(max_length=2, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=100, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -33,7 +33,7 @@ class CIE10(models.Model):
         verbose_name_plural = "CIE10"
 
 class CondicionEgreso(models.Model):
-    codigo = models.CharField(max_length=2, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=100, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -46,7 +46,7 @@ class CondicionEgreso(models.Model):
         verbose_name_plural = "Condición Egreso"
 
 class TipoEgreso(models.Model):
-    codigo = models.CharField(max_length=2, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=100, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -91,7 +91,7 @@ class DiagnosticoEgreso(models.Model):
 
 
 class ViaIngreso(models.Model):
-    codigo = models.CharField(max_length=2, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=100, blank=False)
     habilitado = models.BooleanField(default=True)
 
