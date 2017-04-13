@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from django.db.models.deletion import DO_NOTHING
 from django.utils.timezone import now
 
 
@@ -202,8 +203,9 @@ class Paciente(models.Model):
     nombres = models.CharField(max_length=100, blank=False)
     apellidos = models.CharField(max_length=100, blank=False)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = models.CharField(max_length=15, blank=True, null=False, verbose_name="Número de documento", unique=True)  #si no tiene nrodoc, por defecto debe guardar INICIAL_NOMBRE+INICIAL_APELLIDO+FECHA_NACIMIENTO
-    sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)                                          #Redefinir la función save para setee el dato en esos casos
+    nro_doc = models.CharField(max_length=15, blank=True, null=False, verbose_name="Número de documento", unique=True)  #si no tiene nrodoc, por defecto debe guardar INICIAL_APELLIDO+INICIAL_NOMBRE+FECHA_NACIMIENTO
+    nro_doc_alternativo = models.CharField(max_length=15, blank=True, null=False, verbose_name="Número de documento alternativo", unique=True)  #Redefinir la función save para setee el dato en esos casos
+    sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
     nacionalidad = models.ForeignKey(Pais, models.DO_NOTHING, blank=False, null=False)
@@ -211,16 +213,19 @@ class Paciente(models.Model):
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
     fecha_registrado = models.DateTimeField(default=now, null=False)  # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
 
-
     #nivel_educativo = models.ForeignKey(PacienteNivelEducativo, models.DO_NOTHING, default="", blank=False, null=False)
     #seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False, verbose_name="Seguro médico")
     #situacion_laboral = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False, verbose_name="Situación laboral")
     #profesion = models.ManyToManyField(Profesion, verbose_name='Profesión')
     #ocupacion = models.ForeignKey(PacienteOcupacion, models.DO_NOTHING, default="", blank=False, null=False, verbose_name="Ocupación")
 
-
     def __str__(self):
         return self.apellidos + ", " + self.nombres
+
+    # def save(self, force_insert=False, force_update=False, using=None,
+    #          update_fields=None):
+    #     if self.tipo_doc in ('NT', 'NSC'):
+    #         self.nro_doc = set_nrodoc_alternativo(self)
 
     class Meta:
         ordering = ["apellidos", "nombres"]
@@ -320,44 +325,55 @@ class CorreoElectronico(models.Model):
         verbose_name = 'Correo Electrónico'
         verbose_name_plural = 'Correos Electrónicos'
 
-# TODO class paciente padres
-# class PacientePadre(models.Model):
-#     nombres = models.CharField(max_length=100, blank=False)
-#     apellidos = models.CharField(max_length=100, blank=False)
-#     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-#     nro_doc = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
-#     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
-#     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
-#     lugar_nacimiento = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False,
-#                                          verbose_name="Lugar de nacimiento")
-#     nacionalidad = models.ForeignKey(Pais, models.DO_NOTHING, blank=False, null=False)
-#     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
-#     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
-#     nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False)
-#     seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False,
-#                                       verbose_name="Seguro médico")
-#     situacion_laboral = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False,
-#                                           verbose_name="Situación laboral")
-#     profesion = models.ManyToManyField(Profesion, verbose_name='Profesión')
-#     fecha_registrado = models.DateTimeField(default=now,
-#                                             null=False)  # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
-#
-#     def __str__(self):
-#         return self.apellidos + ", " + self.nombre
-#
-#     class Meta:
-#         ordering = ['id']
-#         verbose_name = 'Padre'
-#         verbose_name_plural = 'Padres'
+
+class PacientePadre(models.Model):
+    nombres = models.CharField(max_length=100, blank=False)
+    apellidos = models.CharField(max_length=100, blank=False)
+    tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
+    nro_doc = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
+    sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
+    fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
+    lugar_nacimiento = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False,
+                                         verbose_name="Lugar de nacimiento")
+    nacionalidad = models.ForeignKey(Pais, models.DO_NOTHING, blank=False, null=False)
+    estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
+    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
+    nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False, verbose_name="Escolaridad")
+    ocupacion = models.ForeignKey(Ocupacion, models.DO_NOTHING, blank=True, null=True, verbose_name="Ocupación")
+    asume_sustento = models.BooleanField(default=True, verbose_name="Asume el sustento de la familia")
+    padre = models.BooleanField(default=True) #TODO si es PADRE True, si es madre False # en el admin.py "exclude = ('padre',)" para que no se muestre el campo # validar según el sexo
+    otro = models.TextField(null=True, verbose_name="Otro, especificar")
+    paciente = models.ManyToManyField(Paciente)
+
+    def __str__(self):
+        return self.apellidos + ", " + self.nombres
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Padre/Madre'
+        verbose_name_plural = 'Padres/Madres'
 
 
-class Acompañante(models.Model):
+class Vinculo(models.Model):
+    """"Vínculo establecido con el paciente si es solo acompañante. Ej: Vecino, tío/a, primo/a"""
+    nombre = models.CharField(max_length=100, blank=False)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Vínculo"
+        verbose_name_plural = "Vínculos"
+
+
+class Acompanhante(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     nombres = models.CharField(max_length=100, blank=False)
     apellidos = models.CharField(max_length=100, blank=False)
     nro_doc = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
     telefono = models.ForeignKey(Telefono, models.DO_NOTHING, blank=False, null=False)
-    vinculo = models.CharField(max_length=100, blank=False)
+    vinculo = models.ForeignKey(Vinculo, on_delete=DO_NOTHING, blank=False, null=False)
 
     def __str__(self):
         return self.nombre
@@ -416,7 +432,6 @@ class PacienteOcupacion(models.Model):
 class PacienteSeguroMedico(models.Model):
     seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False)
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False) #relacion con el paciente
-
 
     def __str__(self):
         return self.seguro_medico
@@ -501,7 +516,7 @@ class EliminacionBasura(models.Model):
 
     class Meta:
         ordering = ["nombre"]
-        verbose_name = "Eliminación Basura"
+        verbose_name = "Eliminación de Basura"
         verbose_name_plural = "Eliminación de Basuras"
 
 
