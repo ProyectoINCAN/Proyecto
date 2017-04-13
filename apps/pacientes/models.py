@@ -88,9 +88,9 @@ class Profesion(models.Model):
 
 
 class Pais(models.Model):
-    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
-    nombre = models.CharField(max_length=30, blank=False)
-    nombre_iso = models.CharField(max_length=30, blank=False)
+    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
+    nombre = models.CharField(max_length=100, blank=False)
+    nombre_iso = models.CharField(max_length=60, blank=False)
     codigo_alpha3 = models.CharField(max_length=3, blank=False)
     codigo_numerico = models.IntegerField(blank=False)
     habilitado = models.BooleanField(default=True)
@@ -104,7 +104,7 @@ class Pais(models.Model):
         verbose_name_plural = "Países"
 
 
-class Region(models.Model):
+class Departamento(models.Model):
     nombre = models.CharField(max_length=60, blank=False)
     pais = models.ForeignKey(Pais, models.SET_NULL, blank=True,null=True,)
     habilitado = models.BooleanField(default=True)
@@ -114,13 +114,13 @@ class Region(models.Model):
 
     class Meta:
         ordering = ["nombre"]
-        verbose_name = "Región"
-        verbose_name_plural = "Regiones"
+        verbose_name = "Departamento"
+        verbose_name_plural = "Departamentos"
 
 
-class Localidad(models.Model):
+class Distrito(models.Model):
     nombre = models.CharField(max_length=60, blank=False)
-    region = models.ForeignKey(Region, models.SET_NULL, blank=True,null=True,)
+    departamento = models.ForeignKey(Departamento, models.SET_NULL, blank=True,null=True,)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -128,13 +128,13 @@ class Localidad(models.Model):
 
     class Meta:
         ordering = ["nombre"]
-        verbose_name = "Localidad"
-        verbose_name_plural = "Localidades"
+        verbose_name = "Distrito"
+        verbose_name_plural = "Distritos"
 
 
 class Barrio(models.Model):
     nombre = models.CharField(max_length=100, blank=False)
-    localidad = models.ForeignKey(Localidad, models.SET_NULL, blank=True,null=True,)
+    distrito = models.ForeignKey(Distrito, models.SET_NULL, blank=True,null=True,)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -144,6 +144,19 @@ class Barrio(models.Model):
         ordering = ["nombre"]
         verbose_name = "Barrio"
         verbose_name_plural = "Barrios"
+
+
+class Nacionalidad(models.Model):
+    nacionalidad = models.CharField(max_length=100, blank=False)
+    pais = models.ForeignKey(Pais, models.SET_NULL, blank=True,null=True,)
+
+    def __str__(self):
+        return self.nacionalidad
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "Nacionalidad"
+        verbose_name_plural = "Nacionalidades"
 
 
 class SeguroMedico(models.Model):
@@ -207,17 +220,11 @@ class Paciente(models.Model):
     nro_doc_alternativo = models.CharField(max_length=15, blank=True, null=False, verbose_name="Número de documento alternativo", unique=True)  #Redefinir la función save para setee el dato en esos casos
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
-    lugar_nacimiento = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
+    lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
     nacionalidad = models.ForeignKey(Pais, models.DO_NOTHING, blank=False, null=False)
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
     fecha_registrado = models.DateTimeField(default=now, null=False)  # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
-
-    #nivel_educativo = models.ForeignKey(PacienteNivelEducativo, models.DO_NOTHING, default="", blank=False, null=False)
-    #seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False, verbose_name="Seguro médico")
-    #situacion_laboral = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False, verbose_name="Situación laboral")
-    #profesion = models.ManyToManyField(Profesion, verbose_name='Profesión')
-    #ocupacion = models.ForeignKey(PacienteOcupacion, models.DO_NOTHING, default="", blank=False, null=False, verbose_name="Ocupación")
 
     def __str__(self):
         return self.apellidos + ", " + self.nombres
@@ -236,8 +243,8 @@ class Paciente(models.Model):
 class Direccion(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     descripcion = models.CharField(max_length=100, blank=False)
-    region = models.ForeignKey(Region, models.SET_NULL, blank=True, null=True, )
-    localidad = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False)
+    departamento = models.ForeignKey(Departamento, models.SET_NULL, blank=True, null=True, )
+    distrito = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False)
     barrio = models.ForeignKey(Barrio, models.DO_NOTHING, blank=False, null=False)
     area = models.ForeignKey(Area, models.DO_NOTHING, blank=False, null=False)
     sector = models.CharField(max_length=100, blank=False)

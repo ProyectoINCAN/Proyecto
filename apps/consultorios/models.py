@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils.timezone import now
 
-from apps.pacientes.models import TipoDoc, Sexo, Localidad, Pais, EstadoCivil, Etnia
+from apps.pacientes.models import TipoDoc, Sexo, Pais, EstadoCivil, Etnia, Distrito
+
 
 # Create your models here.
 
@@ -39,7 +40,7 @@ class Medico(models.Model):
     nro_registro_medico = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de Registro Médico", unique=True)
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
-    lugar_nacimiento = models.ForeignKey(Localidad, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
+    lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
     nacionalidad = models.ForeignKey(Pais, models.DO_NOTHING, blank=False, null=False)
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)

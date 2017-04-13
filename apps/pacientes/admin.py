@@ -1,8 +1,9 @@
 from django.contrib import admin
 
 # Register your models here.
-from apps.pacientes.models import TipoDoc, EstadoCivil, SeguroMedico, Barrio, Localidad, Region, Pais, Paciente, Sexo, \
-    Etnia, NivelEducativo, SituacionLaboral, Profesion, Area, Ocupacion, Direccion, PacienteSeguroMedico, PacientePadre
+from apps.pacientes.models import TipoDoc, EstadoCivil, SeguroMedico, Barrio, Pais, Paciente, Sexo, \
+    Etnia, NivelEducativo, SituacionLaboral, Profesion, Area, Ocupacion, Direccion, PacienteSeguroMedico, Distrito, \
+    Departamento, PacientePadre
 
 
 #registrar usando decorador, para evitar usar el método register
@@ -52,19 +53,19 @@ class PaisAdmin(admin.ModelAdmin):
     list_display = ['codigo','nombre','habilitado']
     list_per_page = 15
 
-@admin.register(Region)
-class RegionAdmin(admin.ModelAdmin):
+@admin.register(Departamento)
+class DepartamentoAdmin(admin.ModelAdmin):
     list_display = ['nombre','pais', 'habilitado']
     list_per_page = 15
 
-@admin.register(Localidad)
-class LocalidadAdmin(admin.ModelAdmin):
-    list_display = ['nombre','region', 'habilitado']
+@admin.register(Distrito)
+class DistritoAdmin(admin.ModelAdmin):
+    list_display = ['nombre', 'departamento', 'habilitado']
     list_per_page = 15
 
 @admin.register(Barrio)
 class BarrioAdmin(admin.ModelAdmin):
-    list_display = ['nombre','localidad', 'habilitado']
+    list_display = ['nombre', 'distrito', 'habilitado']
     list_per_page = 15
 
 @admin.register(Paciente)
@@ -86,7 +87,7 @@ class OcupacionAdmin(admin.ModelAdmin):
 
 @admin.register(Direccion)
 class DireccionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'paciente','region']
+    list_display = ['id', 'paciente','distrito']
     list_per_page = 15
 
 @admin.register(PacienteSeguroMedico)
