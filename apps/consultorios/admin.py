@@ -19,6 +19,7 @@ class EspecialidadAdmin(admin.ModelAdmin):
 @admin.register(Medico)
 class MedicoAdmin(admin.ModelAdmin):
     list_display = ['apellidos', 'nombres', 'tipo_doc', 'nro_doc']
+    filter_horizontal = ['especialidad', ]
     list_per_page = 15
 
 
@@ -30,7 +31,7 @@ class DepartamentoAdmin(admin.ModelAdmin):
 
 @admin.register(HorarioMedico)
 class HorarioMedicoAdmin(admin.ModelAdmin):
-    #list_display = ['codigo', 'nombre', 'habilitado']
+    list_display = ['medico', 'dia_semana', 'turno', 'hora_inicio', 'hora_fin', 'habilitado']
     list_per_page = 15
 
 

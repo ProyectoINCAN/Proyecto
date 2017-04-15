@@ -23,8 +23,8 @@ class Agenda(models.Model):
     fecha = models.DateField(auto_now=False, blank=False, null=False) #TODO hacer funcion para que estire la siguiente fecha disponible del médico
     turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False)
     consultorio = models.ForeignKey(Consultorio, models.DO_NOTHING, blank=True, null=True)
-    cantidad = models.IntegerField(default=20) #puede estar parametrizado
-    estado = models.ForeignKey(EstadoAgenda, models.DO_NOTHING, blank=False, null=False) #TODO agregar default Pendiente que traiga de EstadoAgenda
+    cantidad = models.IntegerField(null=False)  # Cantidad máxima definida en HorarioMedico
+    estado = models.ForeignKey(EstadoAgenda, models.DO_NOTHING, blank=False, null=False, default='P')
 
     def __str__(self):
         return self.fecha + ", Turno: " + self.turno
@@ -35,11 +35,35 @@ class Agenda(models.Model):
         verbose_name_plural = 'Agendas'
 
 
+class AgendaDetalleManager(models.Manager):
+    """Manager de la clase AgendaDetalle. Aquí se pueden definir métodos de la clase personalizados
+    que Django no trae por defecto"""
+
+    def orden_llegada(self, agenda):
+        """Devuelve el siguiente orden de llegada de paciente para agendar"""
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                select count(*) cantidad from agendamientos_agenda a
+                join agendamientos_agendadetalle d on a.id = d.agenda_id
+                where a.fecha = ?
+                and medico_id = ?
+                and turno_id = ? """, agenda.fecha, agenda.medico.id, agenda.turno.id)
+            orden = cursor.fetchone()
+            if not orden:
+                orden = 0
+
+            print("maximo orden " + orden)
+
+        return orden+1  # todo controlar que no sea mayor al máximo por médico
+
+
 class AgendaDetalle(models.Model):
     agenda = models.ForeignKey(Agenda, models.DO_NOTHING, blank=False, null=False)
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
-    orden = models.IntegerField() #TODO incremento automático según el orden de llegada
+    orden = models.IntegerField()  # TODO incremento automático según el orden de llegada
     confirmado = models.BooleanField(default=False)
+    objects = AgendaDetalleManager()  # Instanciar el Manager de la clase definido previamente
 
     def __str__(self):
         return self.fecha + ", Turno: " + self.turno

@@ -1,10 +1,9 @@
 from django.db import models
-from django.utils.timezone import now
 
-from apps.pacientes.models import TipoDoc, Sexo, Pais, EstadoCivil, Etnia, Distrito
-
+from apps.pacientes.models import TipoDoc, Sexo, Pais, EstadoCivil, Etnia, Distrito, Nacionalidad
 
 # Create your models here.
+from utils import PacienteUtils
 
 
 class Consultorio(models.Model):
@@ -19,6 +18,7 @@ class Consultorio(models.Model):
         verbose_name = "Consultorio"
         verbose_name_plural = "Consultorios"
 
+
 class Especialidad(models.Model):
     codigo = models.CharField(max_length=3, blank=False, primary_key=True)
     nombre = models.CharField(max_length=60, blank=False)
@@ -32,6 +32,7 @@ class Especialidad(models.Model):
         verbose_name = "Especialidad"
         verbose_name_plural = "Especialidades"
 
+
 class Medico(models.Model):
     nombres = models.CharField(max_length=100, blank=False)
     apellidos = models.CharField(max_length=100, blank=False)
@@ -41,19 +42,25 @@ class Medico(models.Model):
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
-    nacionalidad = models.ForeignKey(Pais, models.DO_NOTHING, blank=False, null=False)
+    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False)
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
     fecha_ingreso = models.DateField(auto_now=True, null=False)
     especialidad = models.ManyToManyField(Especialidad)
 
     def __str__(self):
-        return self.apellidos + " " + self.nombres
+        return self.apellidos + ", " + self.nombres
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.nro_doc = PacienteUtils.limpiar_nro_doc(self.nro_doc)
+        super(Medico, self).save()
 
     class Meta:
         ordering = ["apellidos", "nombres"]
         verbose_name = "Médico"
         verbose_name_plural = "Médicos"
+
 
 class Departamento(models.Model):
     codigo = models.CharField(max_length=3, blank=False, primary_key=True)
@@ -70,31 +77,43 @@ class Departamento(models.Model):
 
 
 class Turno(models.Model):
-    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
+    codigo = models.CharField(max_length=1, blank=False, primary_key=True)
     nombre = models.CharField(max_length=60, blank=False)
-    habilitado = models.BooleanField(default=True)
-
-
-class HorarioMedico(models.Model):
-    DIAS_SEMANA_CHOICES = (
-        (1, 'Domingo'),
-        (2, 'Lunes'),
-        (3, 'Martes'),
-        (4, 'Miércoles'),
-        (5, 'Jueves'),
-        (6, 'Viernes'),
-        (7, 'Sábado'),
-    )
-    medico = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False, verbose_name="Médico")
-    hora_inicio = models.TimeField(blank=False, null=False)
-    hora_fin = models.TimeField(blank=False, null=False)
-    cod_departamento = models.ForeignKey(Departamento, models.DO_NOTHING, blank=False, null=False, verbose_name="Departamento")
-    dia_semana = models.CharField(max_length=15, choices=DIAS_SEMANA_CHOICES, blank=False, null=False, verbose_name="Día de la semana")
-    turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False, verbose_name="Turno")
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nombre
+
+    class Meta:
+        ordering = ["codigo"]
+        verbose_name = "Turno"
+        verbose_name_plural = "Turnos"
+
+
+class DiasSemana(models.Model):
+    nombre = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "Día"
+        verbose_name_plural = "Días"
+
+
+class HorarioMedico(models.Model):
+    medico = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False, verbose_name="Médico")
+    hora_inicio = models.TimeField(blank=False, null=False)
+    hora_fin = models.TimeField(blank=False, null=False)
+    cod_departamento = models.ForeignKey(Departamento, models.DO_NOTHING, blank=False, null=False, verbose_name="Departamento")
+    dia_semana = models.ForeignKey(DiasSemana, models.DO_NOTHING, blank=False, null=False, verbose_name="Día de la semana")
+    turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False, verbose_name="Turno")
+    cantidad = models.IntegerField(default=20)
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.medico.__str__() + '. Día: ' + self.dia_semana.__str__() + '. Turno: ' + self.turno.__str__()
 
     class Meta:
         ordering = ["medico"]
