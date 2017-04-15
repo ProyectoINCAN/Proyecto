@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from apps.internaciones.models import TipoReferencia, CIE10, CondicionEgreso, TipoEgreso, Egreso, DiagnosticoEgreso, \
-    ViaIngreso
+from apps.internaciones.models import TipoReferencia, CIE10, CondicionEgreso, Egreso, DiagnosticoEgreso, \
+    ViaIngreso, TipoEgreso
 
 
 @admin.register(TipoReferencia)
@@ -19,13 +19,13 @@ class CIE10Admin(admin.ModelAdmin):
 
 @admin.register(CondicionEgreso)
 class CondicionEgresoAdmin(admin.ModelAdmin):
-    list_display = ['codigo', 'descripcion', 'habilitado']
+    list_display = ['nombre', 'habilitado']
     list_per_page = 15
 
 
 @admin.register(TipoEgreso)
 class TipoEgresoAdmin(admin.ModelAdmin):
-    list_display = ['codigo', 'descripcion', 'habilitado']
+    list_display = ['nombre', 'habilitado']
     list_per_page = 15
 
 

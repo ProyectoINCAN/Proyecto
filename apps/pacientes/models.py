@@ -203,7 +203,6 @@ class Ocupacion(models.Model):
 class SituacionLaboral(models.Model):
     codigo = models.CharField(max_length=2, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=50, blank=False)
-    remuneracion = models.BooleanField(default=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -431,7 +430,7 @@ class PacienteOcupacion(models.Model):
     paciente = models.ForeignKey(Paciente, models.SET_NULL, blank=True, null=True, )
     situacion_laboral_id = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False)
     ocupacion = models.ForeignKey(Ocupacion, models.DO_NOTHING, blank=False, null=False)
-    #renumeracion = models.BooleanField(default=True)
+    renumeracion = models.BooleanField(default=True)
     estado = models.BooleanField(default=True)
 
     def __str__(self):

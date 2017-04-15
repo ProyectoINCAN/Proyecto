@@ -20,8 +20,8 @@ class TipoReferencia(models.Model):
         verbose_name_plural = "Tipos de Referencias"
 
 class CIE10(models.Model):
-    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
-    descripcion = models.CharField(max_length=100, blank=False)
+    codigo = models.CharField(max_length=7, blank=False, primary_key=True)
+    descripcion = models.CharField(max_length=250, blank=False)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -33,28 +33,26 @@ class CIE10(models.Model):
         verbose_name_plural = "CIE10"
 
 class CondicionEgreso(models.Model):
-    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
-    descripcion = models.CharField(max_length=100, blank=False)
+    nombre = models.CharField(max_length=100, blank=False)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.descripcion
+        return self.nombre
 
     class Meta:
-        ordering = ["codigo"]
+        ordering = ["nombre"]
         verbose_name = "Condición Egreso"
         verbose_name_plural = "Condición Egreso"
 
 class TipoEgreso(models.Model):
-    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
-    descripcion = models.CharField(max_length=100, blank=False)
+    nombre = models.CharField(max_length=100, blank=False)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.descripcion
+        return self.nombre
 
     class Meta:
-        ordering = ["codigo"]
+        ordering = ["nombre"]
         verbose_name = "Tipo de Egreso"
         verbose_name_plural = "Tipo de Egreso"
 
@@ -68,7 +66,7 @@ class Egreso(models.Model):
     nro_certificado_defuncion = models.IntegerField(blank=False, verbose_name="Nº del Certificado de Defunción")
 
     def __str__(self):
-        return self.condicion_egreso
+        return self.nro_certificado_defuncion
 
     class Meta:
         ordering = ["paciente"]
@@ -91,7 +89,7 @@ class DiagnosticoEgreso(models.Model):
 
 
 class ViaIngreso(models.Model):
-    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
+    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=100, blank=False)
     habilitado = models.BooleanField(default=True)
 

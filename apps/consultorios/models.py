@@ -20,7 +20,6 @@ class Consultorio(models.Model):
 
 
 class Especialidad(models.Model):
-    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
     nombre = models.CharField(max_length=60, blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -28,7 +27,7 @@ class Especialidad(models.Model):
         return self.nombre
 
     class Meta:
-        ordering = ["codigo"]
+        ordering = ["nombre"]
         verbose_name = "Especialidad"
         verbose_name_plural = "Especialidades"
 

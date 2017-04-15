@@ -12,7 +12,7 @@ class ConsultorioAdmin(admin.ModelAdmin):
 
 @admin.register(Especialidad)
 class EspecialidadAdmin(admin.ModelAdmin):
-    list_display = ['codigo', 'nombre', 'habilitado']
+    list_display = ['nombre', 'habilitado']
     list_per_page = 15
 
 
