@@ -36,6 +36,7 @@ class ParametroSistema(models.Model):
     distrito = models.ForeignKey(Distrito,  models.SET_NULL, blank=True,null=True,)
     establecimiento = models.ForeignKey(Establecimiento,  models.SET_NULL, blank=True,null=True,)
     area = models.ForeignKey(Area,  models.SET_NULL, blank=True,null=True,)
+    secuencia = models.IntegerField(null=True)  #secuencia numérica para los nros de documento alternativos
 
     def __str__(self):
         return self.nombre
