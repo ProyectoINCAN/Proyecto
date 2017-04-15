@@ -121,7 +121,7 @@ class HorarioMedico(models.Model):
 
 
 class OrdenEstudio(models.Model):
-    nombre = models.CharField(max_length=50, blank=False)
+    nombre = models.CharField(max_length=100, blank=False)
     descripcion = models.CharField(default="", max_length=80, blank=False)
     estado = models.BooleanField(default=True)
 
