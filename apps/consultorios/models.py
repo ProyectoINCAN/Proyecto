@@ -41,9 +41,9 @@ class Medico(models.Model):
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
-    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False)
+    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False, default=1)
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
-    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
+    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
     fecha_ingreso = models.DateField(auto_now=True, null=False)
     especialidad = models.ManyToManyField(Especialidad)
 

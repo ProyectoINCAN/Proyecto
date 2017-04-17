@@ -108,7 +108,7 @@ class Pais(models.Model):
 
 class Departamento(models.Model):
     nombre = models.CharField(max_length=60, blank=False)
-    pais = models.ForeignKey(Pais, models.SET_NULL, blank=True,null=True,)
+    pais = models.ForeignKey(Pais, models.SET_NULL, blank=True,null=True, default='PY')
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -223,9 +223,9 @@ class Paciente(models.Model):
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
-    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False)
+    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False, default= 1)
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
-    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
+    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
     fecha_registrado = models.DateTimeField(default=now, null=False)  # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
 
     def __str__(self):
@@ -348,9 +348,9 @@ class PacientePadre(models.Model):
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False,
                                          verbose_name="Lugar de nacimiento")
-    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False)
+    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False, default=1)
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
-    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False)
+    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
     nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False, verbose_name="Escolaridad")
     ocupacion = models.ForeignKey(Ocupacion, models.DO_NOTHING, blank=True, null=True, verbose_name="Ocupación")
     asume_sustento = models.BooleanField(default=True, verbose_name="Asume el sustento de la familia")
