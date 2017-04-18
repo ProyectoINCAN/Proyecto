@@ -2,9 +2,20 @@
 
 
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar</button>
-</form>
+
+{% include "base/nav_ficha_clinica.html" %}
+
+
+    <form class="form-horizontal" method="post">
+        <legend>Datos Básicos del Pacientes</legend>
+            <div class="form-group">
+                {% csrf_token %}
+                {% include "base/form_snippets.html" %}
+
+            </div>
+            <br><button type="submit">Guardar</button>
+
+    </form>
+
+
 {% endblock %}

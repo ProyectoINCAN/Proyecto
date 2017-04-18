@@ -63,7 +63,7 @@ ROOT_URLCONF = 'Proyecto.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+         'DIRS': [os.path.join(BASE_DIR,'templates')], #para que reconozca a nuestro templates 15/04/17
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,3 +137,8 @@ SUIT_CONFIG = {
 'ADMIN_NAME': 'SIHINCAN',  #nombre del proyecto.
 'LIST_PER_PAGE': 2,  #paginación para todas los modelos
 }
+
+
+#15/04/17
+#configurar para agregar los archivos estaticos.
+STATICFILES_DIR =(os.path.join(BASE_DIR,'static'),)
