@@ -19,6 +19,7 @@ class TipoReferencia(models.Model):
         verbose_name = "Tipo Referencia"
         verbose_name_plural = "Tipos de Referencias"
 
+
 class CIE10(models.Model):
     codigo = models.CharField(max_length=7, blank=False, primary_key=True)
     descripcion = models.CharField(max_length=250, blank=False)
@@ -29,8 +30,9 @@ class CIE10(models.Model):
 
     class Meta:
         ordering = ["codigo"]
-        verbose_name = "CIE10"
-        verbose_name_plural = "CIE10"
+        verbose_name = "CIE-10"
+        verbose_name_plural = "CIE-10"
+
 
 class CondicionEgreso(models.Model):
     nombre = models.CharField(max_length=100, blank=False)
@@ -41,8 +43,9 @@ class CondicionEgreso(models.Model):
 
     class Meta:
         ordering = ["nombre"]
-        verbose_name = "Condición Egreso"
-        verbose_name_plural = "Condición Egreso"
+        verbose_name = "Condición de Egreso"
+        verbose_name_plural = "Condiciones de Egreso"
+
 
 class TipoEgreso(models.Model):
     nombre = models.CharField(max_length=100, blank=False)

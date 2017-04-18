@@ -3,7 +3,7 @@ from django.db import models
 from apps.pacientes.models import TipoDoc, Sexo, Pais, EstadoCivil, Etnia, Distrito, Nacionalidad
 
 # Create your models here.
-from utils import PacienteUtils
+from utils import paciente_utils
 
 
 class Consultorio(models.Model):
@@ -52,7 +52,7 @@ class Medico(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        self.nro_doc = PacienteUtils.limpiar_nro_doc(self.nro_doc)
+        self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)
         super(Medico, self).save()
 
     class Meta:

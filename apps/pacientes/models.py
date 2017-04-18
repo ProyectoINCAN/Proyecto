@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models.deletion import DO_NOTHING
 from django.utils.timezone import now
 
-from utils import PacienteUtils
+from utils import paciente_utils
 
 
 class TipoDoc(models.Model):
@@ -12,7 +12,7 @@ class TipoDoc(models.Model):
     descripcion = models.CharField(max_length=50, blank=False)
     habilitado = models.BooleanField(default=True)
 
-    #método para que retorne el objeto en formato de string
+    # método para que retorne el objeto en formato de string
     def __str__(self):
         return self.descripcion
 
@@ -128,6 +128,11 @@ class Distrito(models.Model):
     def __str__(self):
         return self.nombre
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.nombre = paciente_utils.capitalizar(self.nombre)
+        super(Distrito, self).save()
+
     class Meta:
         ordering = ["nombre"]
         verbose_name = "Distrito"
@@ -142,6 +147,11 @@ class Barrio(models.Model):
     def __str__(self):
         return self.nombre
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.nombre = paciente_utils.capitalizar(self.nombre)
+        super(Barrio, self).save()
+
     class Meta:
         ordering = ["nombre"]
         verbose_name = "Barrio"
@@ -154,6 +164,11 @@ class Nacionalidad(models.Model):
 
     def __str__(self):
         return self.nacionalidad
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.nacionalidad = paciente_utils.capitalizar(self.nacionalidad)
+        super(Nacionalidad, self).save()
 
     class Meta:
         ordering = ["id"]
@@ -234,10 +249,12 @@ class Paciente(models.Model):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         if self.tipo_doc.codigo in ('NT', 'NSC'):
-            self.nro_doc = PacienteUtils.get_nrodoc_alternativo(self)
+            self.nro_doc = paciente_utils.get_nrodoc_alternativo(self)
             self.nro_doc_alternativo = self.nro_doc
 
-        self.nro_doc = PacienteUtils.limpiar_nro_doc(self.nro_doc)
+        self.nombres = paciente_utils.capitalizar(self.nombres)
+        self.apellidos = paciente_utils.capitalizar(self.apellidos)
+        self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)
         super(Paciente, self).save()
 
     class Meta:
@@ -325,7 +342,7 @@ class TipoCorreoElectronico(models.Model):
 
 
 class CorreoElectronico(models.Model):
-    direccion = models.CharField(max_length=100, blank=False, null=False, verbose_name='dirección')
+    direccion = models.EmailField(max_length=254, blank=False, null=False, verbose_name='dirección')
     tipo = models.ForeignKey(TipoCorreoElectronico, models.DO_NOTHING, blank=False, null=False)
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     habilitado = models.BooleanField(default=True)
@@ -343,7 +360,7 @@ class PacientePadre(models.Model):
     nombres = models.CharField(max_length=100, blank=False)
     apellidos = models.CharField(max_length=100, blank=False)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
+    nro_doc = models.CharField(max_length=15, blank=True, null=True, verbose_name="Número de documento")
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False,
@@ -361,6 +378,14 @@ class PacientePadre(models.Model):
     def __str__(self):
         return self.apellidos + ", " + self.nombres
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.nombres = paciente_utils.capitalizar(self.nombres)
+        self.apellidos = paciente_utils.capitalizar(self.apellidos)
+        if self.nro_doc:
+            self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)
+        super(PacientePadre, self).save()
+        
     class Meta:
         ordering = ['id']
         verbose_name = 'Padre/Madre'
@@ -390,6 +415,12 @@ class Acompanhante(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.nombres = paciente_utils.capitalizar(self.nombres)
+        self.apellidos = paciente_utils.capitalizar(self.apellidos)
+        super(Acompanhante, self).save()
 
     class Meta:
         ordering = ["nombres"]
