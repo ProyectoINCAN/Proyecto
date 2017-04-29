@@ -77,6 +77,7 @@ class DistritoAdmin(admin.ModelAdmin):
 @admin.register(Barrio)
 class BarrioAdmin(admin.ModelAdmin):
     list_display = ['nombre', 'distrito', 'habilitado']
+    list_filter = ['nombre', 'distrito', 'habilitado']
     list_per_page = 15
 
 
@@ -124,5 +125,6 @@ class PacientePadreAdmin(admin.ModelAdmin):
     exclude = ('padre',)
     filter_horizontal = ['paciente']
     list_per_page = 15
+
 
 

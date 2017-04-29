@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
-from apps.agendamientos.views import agenda_view
+from apps.agendamientos.views import index, agenda_nuevo
 
 urlpatterns = [
-    url(r'^nuevo$', agenda_view, name='crear_agenda'),
+    url(r'^index$', index, name='index'),
+    url(r'^nuevo', agenda_nuevo, name='nuevo'),
 ]
