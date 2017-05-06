@@ -89,7 +89,8 @@ class NacionalidadAdmin(admin.ModelAdmin):
 
 @admin.register(Paciente)
 class PacienteAdmin(admin.ModelAdmin):
-    list_display = ['nro_doc', 'apellidos', 'nombres', 'fecha_nacimiento']
+    list_display = ['fecha_nacimiento']
+    #modificado para crear los primeros datos en call center.
     list_per_page = 15
     #filter_horizontal = ['profesion']
     exclude = ('fecha_registrado', 'nro_doc_alternativo')

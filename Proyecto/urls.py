@@ -17,8 +17,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^pacientes/', include('apps.pacientes.urls', namespace="pacientes") ),
+    url(r'^', admin.site.urls),
+    url(r'^paciente/', include('apps.pacientes.urls', namespace="paciente") ),
     url(r'^agendamientos/', include('apps.agendamientos.urls', namespace="agendamientos") ),
 ]
 

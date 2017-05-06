@@ -236,20 +236,16 @@ class SituacionLaboral(models.Model):
         verbose_name_plural = "Situaciones Laborales"
 
 
-class Paciente(models.Model):
-    nombres = models.CharField(max_length=100, blank=False, validators=[nombre_validation,charfield_validation])
-
-    apellidos = models.CharField(max_length=100, blank=False)
+class PacienteCallCenter(models.Model):
+    '''modelo paciente de call center'''
+    nombres = models.CharField(max_length=100, blank=False, validators=[charfield_validation])
+    apellidos = models.CharField(max_length=100, blank=False, validators=[charfield_validation])
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = models.CharField(max_length=15, blank=True, null=False, verbose_name="Número de documento", unique=True, validators=[doc_validation])  #si no tiene nrodoc, por defecto debe guardar INICIAL_APELLIDO+INICIAL_NOMBRE+FECHA_NACIMIENTO
-    nro_doc_alternativo = models.CharField(max_length=15, blank=True, null=True, verbose_name="Número de documento alternativo", unique=True)
-    sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
-    fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
-    lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
-    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False, default= 1)
-    estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
-    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
-    fecha_registrado = models.DateTimeField(default=now, null=False)  # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
+    nro_doc = models.CharField(max_length=15, blank=True, null=False, verbose_name="Número de documento", unique=True, validators=[ doc_validation])  # si no tiene nrodoc, por defecto debe guardar INICIAL_APELLIDO+INICIAL_NOMBRE+FECHA_NACIMIENTO
+    nro_doc_alternativo = models.CharField(max_length=15, blank=True, null=True,verbose_name="Número de documento alternativo", unique=True)
+    sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False)
+    distrito = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False)
+
 
     def __str__(self):
         return self.apellidos + ", " + self.nombres
@@ -263,16 +259,27 @@ class Paciente(models.Model):
         self.nombres = paciente_utils.capitalizar(self.nombres)
         self.apellidos = paciente_utils.capitalizar(self.apellidos)
         self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)
-        super(Paciente, self).save()
+        super(PacienteCallCenter, self).save()
 
     class Meta:
         ordering = ["apellidos", "nombres"]
         verbose_name = "Paciente"
         verbose_name_plural = "Pacientes"
 
+class Paciente(models.Model):
+    '''modelo Paciente. Creado en la ficha clinica del paciente-1er parte con los datos basicos'''
+    paciente = models.ManyToManyField (PacienteCallCenter)  # relacion con los primeros datos de callcenter.
+    fecha_nacimiento = models.DateField(auto_now=False, blank=False, verbose_name="Fecha de nacimiento")
+    lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING,verbose_name="Lugar de nacimiento")
+    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False,  default= 1)  #1 es Paraguaya
+    estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False)
+    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
+    fecha_registrado = models.DateTimeField(default=now, null=False)  # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
+
+
 
 class Direccion(models.Model):
-    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(PacienteCallCenter, models.DO_NOTHING, blank=False, null=False)
     descripcion = models.CharField(max_length=100, blank=False)
     departamento = models.ForeignKey(Departamento, models.SET_NULL, blank=True, null=True, )
     distrito = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False)

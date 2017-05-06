@@ -4,120 +4,26 @@
 {% block content %}
 
 {% include "base/nav_ficha_clinica.html" %}
-<div class="alert alert-dismissible alert-info">
-         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>SIHINCAN!</strong>Completar <a href="#" class="alert-link">los datos básicos del paciente</a>,y luego cargar los otros datos.
-</div>
+{# <div class="alert alert-dismissible alert-info"> #}
+        {# <button type="button" class="close" data-dismiss="alert">&times;</button> #}
+       {# <strong>SIHINCAN!</strong>Completar <a href="#" class="alert-link">los datos básicos del paciente</a>,y luego cargar los otros datos. #}
+{# </div> #}
 
 <form class="form-horizontal col-sm-10" method="post">
 
-	{% csrf_token %}
+
     <legend><b><p align="center">I PARTE: Datos Básicos del Pacientes</p></b></legend>
     <div class ="row">
-
-	        <div class="form-group">
-
-                    {{ form.nombres.errors }}
-
-		        <label for="{{ form.nombres.name }} " >{{ form.nombres.label }}</label>
-
-			        {{ form.nombres }}
-
-
-             </div>
-
-	        <div class="form-group">
-
-                    {{ form.apellidos.errors }}
-
-		        <label for="{{ form.apellidos.name }} ">{{ form.apellidos.label }}</label>
-
-			        {{ form.apellidos }}
-
-	        </div>
-            <div class="form-group">
-
-                    {{ form.tipo_doc.errors }}
-
-		        <label for="{{ form.tipo_doc.name }} " >{{ form.tipo_doc.label }}</label>
-
-			        {{ form.tipo_doc }}
-
-	        </div>
-            <div class="form-group">
-
-                    {{ form.nro_doc.errors }}
-
-		        <label for="{{ form.nro_doc.name }} " >{{ form.nro_doc.label }}</label>
-
-			        {{ form.nro_doc }}
-
-	        </div>
-            <div class="form-group">
-
-                    {{ form.sexo.errors }}
-
-		        <label for="{{ form.sexo.name }} " >{{ form.sexo.label }}</label>
-
-			        {{ form.sexo }}
-
-	        </div>
-            <div class="form-group">
-
-                    {{ form.fecha_nacimiento.errors }}
-
-		        <label for="{{ form.fecha_nacimiento.name }} " >{{ form.fecha_nacimiento.label }}</label>
-
-			        {{ form.fecha_nacimiento }}
-
-	        </div>
-
-            <div class="form-group">
-
-                    {{ form.lugar_nacimiento.errors }}
-
-		        <label for="{{ form.lugar_nacimiento.name }} " >{{ form.lugar_nacimiento.label }}</label>
-
-			        {{ form.lugar_nacimiento }}
-
-	        </div>
-            <div class="form-group">
-
-                    {{ form.nacionalidad.errors }}
-
-		        <label for="{{ form.nacionalidad.name }} " >{{ form.nacionalidad.label }}</label>
-
-			        {{ form.nacionalidad }}
-
-	        </div>
-            <div class="form-group">
-
-                    {{ form.estado_civil.errors }}
-
-		        <label for="{{ form.estado_civil.name }} " >{{ form.estado_civil.label }}</label>
-
-			        {{ form.estado_civil }}
-
-
-	        </div>
-            <div class="form-group">
-
-                    {{ form.etnia.errors }}
-
-		        <label for="{{ form.etnia.name }} " >{{ form.etnia.label }}</label>
-
-			        {{ form.etnia }}
-
-	        </div>
-
+		 {% csrf_token %}
+         {% include "base/form_snippets.html" %}
 
     </div>
 
      <div class="form-group" align="center">
             <div class="col-lg-10 col-lg-offset-2">
-                 <button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-align-justify"></span>Siguiente</button>
-                <a href="{% url 'paciente:index' %}" class="btn btn-info" role="button" > Cancelar </a>
-                <a href="{% url 'paciente:index' %}" class="btn btn-info" role="button"> Finalizar</a>
+                 <button class="btn btn-info" type="submit" ><span class="glyphicon glyphicon-align-justify"></span>Siguiente</button>
+                 <a href="{% url 'paciente:index' %}" class="btn btn-info" role="button" > Cancelar </a>
+                 <a href="{% url 'paciente:index' %}" class="btn btn-info" role="button"> Finalizar</a>
             </div>
 
      </div>
