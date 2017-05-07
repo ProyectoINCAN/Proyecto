@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from apps.consultorios.models import Medico, Turno, Consultorio
-from apps.pacientes.models import Paciente
+from apps.pacientes.models import Paciente, PacienteCallCenter
 
 
 class EstadoAgenda(models.Model):
@@ -30,7 +30,7 @@ class Agenda(models.Model):
         return self.fecha + ", Turno: " + self.turno
 
     class Meta:
-        ordering = ['fecha', 'turno']
+        ordering = ['fecha', 'id']
         verbose_name = 'Agenda'
         verbose_name_plural = 'Agendas'
 
@@ -60,8 +60,9 @@ class AgendaDetalleManager(models.Manager):
 
 class AgendaDetalle(models.Model):
     agenda = models.ForeignKey(Agenda, models.DO_NOTHING, blank=False, null=False)
-    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(PacienteCallCenter, models.DO_NOTHING, blank=False, null=False)
     orden = models.IntegerField()  # TODO incremento automático según el orden de llegada
+    observacion = models.CharField(max_length=50, blank=True, null=True);
     confirmado = models.BooleanField(default=False)
     objects = AgendaDetalleManager()  # Instanciar el Manager de la clase definido previamente
 
@@ -69,7 +70,7 @@ class AgendaDetalle(models.Model):
         return self.fecha + ", Turno: " + self.turno
 
     class Meta:
-        ordering = ['agenda', 'orden']
+        ordering = ['orden']
         verbose_name = 'Detalle de Agenda'
         verbose_name_plural = 'Detalles de Agenda'
 

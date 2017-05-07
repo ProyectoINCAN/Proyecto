@@ -25,7 +25,7 @@ def paciente_crear(request):
 
             paciente = form.save()
             messages.success(request,'Datos Básicos grabados correctamente.!!')
-            return redirect ('paciente:paciente_direccion', paciente.id)
+            return redirect ('pacientes:paciente_direccion', paciente.id)
     else:
         form = PacienteForm()
     return  render (request, 'pacientes/paciente_form.html',{'form':form})
@@ -45,7 +45,7 @@ class PacienteCreate(CreateView):
     #luego indico el template
     template_name = 'pacientes/paciente_form.html'
     #redirijimos
-    success_url = reverse_lazy('paciente:paciente_direccion','3' )
+    success_url = reverse_lazy('pacientes:paciente_direccion','3' )
 
 
 
@@ -56,7 +56,7 @@ class PacienteUpdate(UpdateView):
 
     template_name = 'pacientes/paciente_form.html'
     print("llego hasta update de paciente")
-    success_url = reverse_lazy('paciente:index')
+    success_url = reverse_lazy('pacientes:index')
 
 
 def paciente_delete(request, id_paciente):
@@ -72,10 +72,10 @@ def paciente_delete(request, id_paciente):
         if request.method == 'POST':
             pacienteDireccion.delete()
             paciente.delete()
-            return redirect('paciente:index')   #vuelve a la lista de pacientes
+            return redirect('pacientes:index')   #vuelve a la lista de pacientes
     else:
         paciente.delete()
-        return redirect('paciente:index')  # vuelve a la lista de pacientes
+        return redirect('pacientes:index')  # vuelve a la lista de pacientes
     return render(request,'pacientes/paciente_delete.html',{'paciente':paciente})
     #se redirecciona a la vista de confirmación de eliminación del paciente y se envia el contexto de dicho paciente.
 
@@ -83,10 +83,10 @@ def paciente_delete(request, id_paciente):
 class PacienteDelete(DeleteView):
     '''clase de eliminacion de paciente'''
     model = Paciente
-
+    print("llego hasta aca")
     template_name = 'pacientes/paciente_delete.html'
     print("llego hasta eliminacion de paciente")
-    success_url = reverse_lazy('paciente:index')
+    success_url = reverse_lazy('pacientes:index')
 
 
 
@@ -103,7 +103,7 @@ def paciente_direccion(request, paciente_id):
             direccion.paciente_id = paciente_id
             direccion.save()
             messages.success(request, 'Direcciones del Paciente grabados correctamente.!!')
-            return  redirect('paciente:paciente_nivel_educativo', paciente_id)
+            return  redirect('pacientes:paciente_nivel_educativo', paciente_id)
     return render (request,'pacientes/paciente_direccion.html', {'form': form})
 
 def paciente_nivel_educativo(request, paciente_id):
@@ -119,7 +119,7 @@ def paciente_nivel_educativo(request, paciente_id):
             nivelEducativo.paciente_id = paciente_id
             nivelEducativo.save()
             messages.success(request, 'Nivel Educativo grabado correctamente.!!')
-            return  redirect('paciente:nuevo_paciente')
+            return  redirect('pacientes:nuevo_paciente')
     return render (request,'pacientes/paciente_nivelEducativo.html', {'form': form})
 
 

@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^hola$', index, name='hola'),
 
     #usar la vista basada en funcion paciente_crear
-    url(r'^nueva_persona$', pacienteViews.PacienteCreate.as_view(),name='nueva_persona'),
+    # url(r'^nueva_persona$', pacienteViews.PacienteCreate.as_view(),name='nueva_persona'),
     url(r'^nuevo_paciente$', paciente_crear ,name='nuevo_paciente'),
     url(r'^pacientedit/(?P<pk>\d+)$', pacienteViews.PacienteUpdate.as_view(),name='paciente_edit'),
 

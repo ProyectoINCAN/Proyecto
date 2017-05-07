@@ -11,14 +11,16 @@
             <div class="form-group">
                 {% csrf_token %}
                 {% include "base/form_snippets.html" %}
+
             </div>
             <div class="form-group" align="left">
                 <p>
                     <div class="col-lg-10 col-lg-offset-2">
-                         <button class="btn btn-primary btn-lg">Guardar</button>
+                         <button class="btn btn-primary btn-lg"><i class="fa fa-save"></i> Guardar</button>
+                         <a href="listar" class="btn btn-default btn-lg" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
                     </div>
                 </p>
-        </div>
+            </div>
 
     </form>
 

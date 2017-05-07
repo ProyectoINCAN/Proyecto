@@ -279,7 +279,7 @@ class Paciente(models.Model):
 
 
 class Direccion(models.Model):
-    paciente = models.ForeignKey(PacienteCallCenter, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     descripcion = models.CharField(max_length=100, blank=False)
     departamento = models.ForeignKey(Departamento, models.SET_NULL, blank=True, null=True, )
     distrito = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False)

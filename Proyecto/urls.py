@@ -16,9 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from apps.agendamientos.views import prueba
+
 urlpatterns = [
     url(r'^', admin.site.urls),
-    url(r'^paciente/', include('apps.pacientes.urls', namespace="paciente") ),
+    url(r'^pacientes/', include('apps.pacientes.urls', namespace="pacientes") ),
     url(r'^agendamientos/', include('apps.agendamientos.urls', namespace="agendamientos") ),
+    url(r'^prueba/', prueba) ,
 ]
 
