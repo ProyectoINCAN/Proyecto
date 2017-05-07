@@ -44,21 +44,18 @@ class AgendaDetalleForm(forms.ModelForm):
         model = AgendaDetalle
 
         fields = [
-            'agenda',
             'paciente',
             'orden',
             'confirmado',
         ]
 
         labels = {
-            'agenda': 'Agenda',
             'paciente': 'Paciente',
             'orden': 'Orden',
             'confirmado': 'Confirmado',
         }
 
         widgets = {
-            'agenda': forms.TextInput(attrs={'class': 'form-control'}),
             'paciente': forms.TextInput(attrs={'class': 'form-control'}),
             'orden': forms.NumberInput(attrs={'class': 'form-control'}),
             'confirmado':forms.CheckboxInput(attrs={'class': 'form-control'}),

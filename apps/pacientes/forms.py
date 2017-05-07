@@ -1,7 +1,7 @@
 from django import forms
 from django.db import models as django_models
 from django.utils.translation import ugettext_lazy as _
-from apps.pacientes.models import PacienteCallCenter,Paciente, Direccion, PacienteNivelEducativo
+from apps.pacientes.models import PacienteCallCenter,Paciente, Direccion, PacienteNivelEducativo, Telefono
 
 from django.contrib.admin import widgets
 from django.contrib.admin.options import FORMFIELD_FOR_DBFIELD_DEFAULTS
@@ -78,6 +78,28 @@ class PacienteForm(forms.ModelForm):
         #validacion para la creacion de un nuevo paciente
 
 
+class TelefonoForm(forms.ModelForm):
+
+    class Meta:
+        model = Telefono
+
+        fields = [
+            'numero',
+            'tipo',
+
+        ]
+
+        labels = {
+            'numero': 'Número',
+            'tipo': 'Tipo',
+
+        }
+
+        # widgets = {
+        #     'numero': forms.TextInput(attrs={'class': 'form-control'}),
+        #     'orden': forms.NumberInput(attrs={'class': 'form-control'}),
+        #     'confirmado':forms.CheckboxInput(attrs={'class': 'form-control'}),
+        # }
 
 
 
@@ -128,3 +150,5 @@ class NivelEducativoForm(forms.ModelForm):
             'nivel_educativo': 'Nivel Educativo ',
             'completo': 'Culminó '
         }
+
+

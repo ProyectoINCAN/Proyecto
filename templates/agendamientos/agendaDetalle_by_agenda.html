@@ -1,0 +1,56 @@
+{%extends 'base/base.html' %}
+{% load static%}
+
+{%block content %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+		<b>Lista</b>
+		<div class="btn-group pull-right">
+            <a href="{% url 'agendamientos:agenda_detalle_crear' %}" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-condensed table-bordered" >
+            <!--<table class="table table-bordered">-->
+            <thead>
+                <tr>
+                    <td>Nº</td>
+                    <td>Ficha</td>
+                    <td>Nombre y Apellido</td>
+                    <td>Edad</td>
+                    <td>Ciudad</td>
+                    <td>Tel&eacute;fono</td>
+                    <td>Observación</td>
+                    <td>Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+        <!--{% if object_list %}-->
+        <!--{% for agenda_detalle in object_list %}-->
+            <tr>
+                <td>{{agenda_detalle.id}}</td>
+                <td>{{agenda_detalle.paciente.nro_doc}}</td>
+                <td>{{agenda_detalle.paciente}}</td>
+                <td></td>
+                <td>{{agenda_detalle.paciente.distrito.nombre}}</td>
+                <td>{{agenda_detalle.paciente.telefono.numero}}</td>
+                <td>{{agenda_detalle.confirmado}}</td>
+                <td>
+                    <a class="btn btn-primary" href="{% url 'agendamientos:agenda_detalle_editar' agenda_detalle.id%}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    <a class="btn btn-danger" href="{% url 'agendamientos:agenda_detalle_eliminar' agenda_detalle.id%}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+
+            </tr>
+        <!--{% endfor %}-->
+
+        <!--{% else %}-->
+        <!--<h1>No hay registros de agendamientos</h1>-->
+
+        <!--{% endif %}-->
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock%}

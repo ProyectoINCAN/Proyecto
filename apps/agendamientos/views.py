@@ -12,10 +12,7 @@ from apps.agendamientos.models import Agenda, AgendaDetalle
 
 from apps.agendamientos.forms import AgendaForm, AgendaDetalleForm
 
-
-# def index(request):
-#     return HttpResponse("Index")
-
+agendaCodigo = 0
 def index(request):
     # form = AgendaForm()
     return render(request, 'agendamientos/index.html')
@@ -83,10 +80,29 @@ class AgendaDetalleList(ListView):
 
 class AgendaDetalleCreate(CreateView):
     model = AgendaDetalle()
+    print("hola")
     form_class = AgendaDetalleForm
     template_name = 'agendamientos/agenda_detalle_form.html'
     success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
 
+
+def agendaDetalleCrear(request):
+    if request.method == 'POST':
+        form = AgendaDetalleForm(request.POST)
+        print('oguahe koape')
+        global agendaCodigo
+        print("codigo de agenda ",agendaCodigo)
+        if form.is_valid():#consulta si el formulario es valido
+            agendaDetalle = form.save(commit=False)
+            agendaDetalle.agenda_id = agendaCodigo
+            agendaDetalle.save()  #guarda
+            messages.success(request, 'Datos guardados')
+            return redirect ('agendamientos:agenda_detalle', agendaCodigo)
+                # redirect ('agendamientos:index')
+    else:
+        print("metodo noes POST")
+        form = AgendaDetalleForm()
+    return render(request, 'agendamientos/agenda_detalle_form.html', {'form': form})
 
 class AgendaDetalleUpdate(UpdateView):
     model = AgendaDetalle
@@ -128,9 +144,16 @@ class AgendaAgendaDetalleList(ListView):
     # template_name = 'books/books_by_publisher.html'
     template_name = 'agendamientos/agendaDetalle_by_agenda.html'
 
+
     def get_queryset(self):
+        print("Jose")
+        global agendaCodigo
         self.agenda = get_object_or_404(Agenda, id=self.args[0])
+
+        agendaCodigo = self.agenda.id
+        print("fdsagfjh",agendaCodigo)
         return AgendaDetalle.objects.filter(agenda=self.agenda)
+
 
 # class AgendaDetalleCreate(CreateView):
 #     model = AgendaDetalle

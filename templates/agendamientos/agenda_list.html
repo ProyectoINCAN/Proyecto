@@ -1,0 +1,70 @@
+{%extends 'base/base.html' %}
+{% load static%}
+
+{%block content %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<b>Lista</b>
+		<div class="btn-group pull-right">
+			<a href="{% url 'agendamientos:nuevo' %}" id="create" class="btn btn-default btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>Id</td>
+                    <td>Fecha</td>
+                    <td>M&eacute;dico</td>
+                    <td>Consultorio</td>
+                    <td>Turno</td>
+                    <td>Estado</td>
+                    <td>Cantidad</td>
+                    <td>Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% if object_list %}
+                {% for agenda in object_list %}
+                <tr>
+                    <td>{{agenda.id}}</td>
+                    <td>{{agenda.fecha}}</td>
+                    <td>{{agenda.medico.nombres}} {{agenda.medico.apellidos}}</td>
+                    <td>{{agenda.consultorio}}</td>
+                    <td>{{agenda.turno.nombre}}</td>
+                    <td>{{agenda.estado.nombre}}</td>
+                    <td>{{agenda.cantidad}}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'agendamientos:agenda_editar' agenda.id%}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        <a class="btn btn-danger" href="{% url 'agendamientos:agenda_eliminar' agenda.id%}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        <a class="btn btn-primary" href="{% url 'agendamientos:agenda_detalle' agenda.id%}"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                {% else %}
+                <h1>No hay registros de agendas</h1>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+<div class="pagination">
+    <ul class="pager">
+        <li>
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number}}">Anterior</a>
+            {% endif%}
+        </li>
+        <li>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number}}">Siguiente</a>
+            {% endif%}
+        </li>
+    </ul>
+</div>
+</div>
+
+{% endblock%}

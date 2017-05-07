@@ -1,11 +1,12 @@
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect, render_to_response
 from django.core.urlresolvers import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
-from apps.pacientes.forms import PacienteForm, DireccionForm, NivelEducativoForm
-from apps.pacientes.models import Paciente, Direccion, PacienteCallCenter
+from apps.pacientes.forms import PacienteForm, DireccionForm, NivelEducativoForm, TelefonoForm
+from apps.pacientes.models import Paciente, Direccion, PacienteCallCenter, Telefono
 
 from django.contrib import  messages
 
@@ -119,7 +120,7 @@ def paciente_nivel_educativo(request, paciente_id):
             nivelEducativo.paciente_id = paciente_id
             nivelEducativo.save()
             messages.success(request, 'Nivel Educativo grabado correctamente.!!')
-            return  redirect('pacientes:nuevo_paciente')
+            return  redirect('paciente:nuevo_paciente')
     return render (request,'pacientes/paciente_nivelEducativo.html', {'form': form})
 
 
@@ -198,4 +199,33 @@ def consulta(request):
     return render(request,'pacientes/index.html',{'pacientes': pacientes })
 
 
+class PacienteCallCenterCreate(CreateView):
+    model = Telefono
+    template_name = 'pacientes/paciente_callCenter_form.html'
+    form_class = TelefonoForm
+    second_form_class = PacienteForm
+    # success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteCallCenterCreate, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class(self.request.GET)
+        if 'form2' not in context:
+            context['form2'] = self.second_form_class(self.request.GET)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST) #AgendaDetalleForm
+        form2 = self.second_form_class(request.POST) #AgendaForm
+        print("llego")
+        print(str(form.is_valid()) + " " + str(form2.is_valid()))
+        if form.is_valid() and form2.is_valid():
+            print("llego2")
+            telefono = form.save(commit=False)
+            telefono.paciente = form2.save()
+            telefono.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form, form2=form2))
 

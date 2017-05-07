@@ -5,7 +5,7 @@
     {% csrf_token %}
     <h3>̣¿Desea eliminar el registro de {{ object.nombres }}  {{ object.apellidos }}? </h3>
     <button class="btn btn-danger"  type="submit">Eliminar</button>
-    <a href="{% url 'paciente:index' %}" class="btn btn-info" role="button" > Cancelar </a>
+    <a href="{% url 'pacientes:index' %}" class="btn btn-info" role="button" > Cancelar </a>
 
 </form>
 

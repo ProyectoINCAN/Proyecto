@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+
+
+    <form class="form-horizontal" method="post">
+        <legend>Agendamientos Detalles</legend>
+            <div class="form-group">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class ="field_container">
+                        {{ field.errors }}
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.id_for_label == 'id_paciente' %}
+                			<a href="{% url 'pacientes:nuevo_paciente' %}" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
+
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="control-group form-row field-paciente"></div>
+            <div class="form-group" align="left">
+                <p>
+                    <div class="col-lg-10 col-lg-offset-2">
+                         <button class="btn btn-primary btn-lg">Guardar</button>
+                         <a href="listar" class="btn btn-default btn-lg" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
+                    </div>
+                </p>
+        </div>
+
+    </form>
+
+
+{% endblock %}

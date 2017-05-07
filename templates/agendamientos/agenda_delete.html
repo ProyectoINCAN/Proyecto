@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+
+
+    <form method="post">
+        {% csrf_token %}
+        <h3>Desea eliminar el registro de la agenda {{ agenda.id}}?</h3>
+        <button class="btn btn-danger" type="submit">Sí, eliminar</button>
+        <a class="btn btn-default" href="{% url 'agendamientos:agenda_listar' %}">Cancelar</a>
+    </form>
+{% endblock %}

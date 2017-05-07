@@ -331,7 +331,7 @@ class TipoTelefono(models.Model):
 class Telefono(models.Model):
     numero = models.CharField(max_length=80, blank=False, null=False)
     tipo = models.ForeignKey(TipoTelefono, models.DO_NOTHING, blank=False, null=False)
-    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(PacienteCallCenter, models.DO_NOTHING, blank=False, null=False)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
