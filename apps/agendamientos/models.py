@@ -1,8 +1,8 @@
 from django.db import models
 
 # Create your models here.
-from apps.consultorios.models import Medico, Turno, Consultorio
-from apps.pacientes.models import Paciente, PacienteCallCenter
+from apps.consultorios.models import Medico, Turno, Especialidad
+from apps.pacientes.models import Paciente
 
 
 class EstadoAgenda(models.Model):
@@ -22,7 +22,7 @@ class Agenda(models.Model):
     medico = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False)
     fecha = models.DateField(auto_now=False, blank=False, null=False) #TODO hacer funcion para que estire la siguiente fecha disponible del médico
     turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False)
-    consultorio = models.ForeignKey(Consultorio, models.DO_NOTHING, blank=True, null=True)
+    especialidad = models.ForeignKey(Especialidad, models.DO_NOTHING, blank=True, null=True)
     cantidad = models.IntegerField(null=False)  # Cantidad máxima definida en HorarioMedico
     estado = models.ForeignKey(EstadoAgenda, models.DO_NOTHING, blank=False, null=False, default='P')
 
@@ -60,7 +60,7 @@ class AgendaDetalleManager(models.Manager):
 
 class AgendaDetalle(models.Model):
     agenda = models.ForeignKey(Agenda, models.DO_NOTHING, blank=False, null=False)
-    paciente = models.ForeignKey(PacienteCallCenter, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     orden = models.IntegerField()  # TODO incremento automático según el orden de llegada
     observacion = models.CharField(max_length=50, blank=True, null=True);
     confirmado = models.BooleanField(default=False)

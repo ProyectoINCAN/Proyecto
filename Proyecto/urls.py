@@ -20,8 +20,11 @@ from apps.agendamientos.views import prueba
 
 urlpatterns = [
     url(r'^', admin.site.urls),
-    url(r'^pacientes/', include('apps.pacientes.urls', namespace="pacientes") ),
-    url(r'^agendamientos/', include('apps.agendamientos.urls', namespace="agendamientos") ),
-    url(r'^prueba/', prueba) ,
+    url(r'^pacientes/', include('apps.pacientes.urls', namespace="pacientes")),
+    url(r'^agendamientos/', include('apps.agendamientos.urls', namespace="agendamientos")),
+    url(r'^consultorios/', include('apps.consultorios.urls', namespace="consultorios")),
+    url(r'^prueba/', prueba),
+    url(r'^select2/', include('django_select2.urls')),
+
 ]
 

@@ -5,7 +5,7 @@
 
  <div class ="busqueda">
 
-     <form class="navbar-search pull-left" action="/paciente/index/" method="get">
+     <form class="navbar-search pull-left" action="/pacientes/index/" method="get">
          {% csrf_token %}
          <label for="cedula">Search: </label>
          <input type="text" class="search-query" name="cedula" placeholder="Ingrese un número de documento" value="{{ query|escape }}">
@@ -88,7 +88,7 @@
     </div><!-- /container -->
 
      <div class ="btn-group" >
-             <a href="{% url 'paciente:nuevo_paciente' %}" class="btn btn-info" title="Crear un nuevo Paciente" role="button" >Crear Paciente<i class="icon-user"></i> </a>
+             <a href="{% url 'pacientes:nuevo_paciente' %}" class="btn btn-info" title="Crear un nuevo Paciente" role="button" >Crear Paciente<i class="icon-user"></i> </a>
      </div><br><br>
 
     </div>

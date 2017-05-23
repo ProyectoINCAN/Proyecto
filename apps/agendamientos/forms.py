@@ -2,6 +2,10 @@ from django import forms
 
 
 from apps.agendamientos.models import Agenda, AgendaDetalle
+#from django_select2 import forms as select2form
+from django_select2 import forms as select2form
+
+
 
 #clase AgendaForm para el formulario de agendamiento de pacientes.
 class AgendaForm(forms.ModelForm):
@@ -10,32 +14,32 @@ class AgendaForm(forms.ModelForm):
         model = Agenda
 
         fields = [
-            'medico',
+            'especialidad',
             'fecha',
-            'consultorio',
+            'medico',
             'turno',
             'cantidad',
             'estado',
-
         ]
 
         labels = {
-            'medico': 'Médico',
+            'especialidad':'Especialidad',
             'fecha': 'Fecha',
-            'consultorio':'Consultorio',
+            'medico': 'Médico',
             'turno':'Turno',
             'cantidad': 'Cantidad',
             'estado': 'Estado',
         }
 
         widgets = {
+            'especialidad': select2form.Select2Widget(attrs={'class': 'form-control'}),
             'medico': forms.Select(attrs ={'class':'form-control'}),
-            'fecha': forms.DateInput(attrs={'class':'form-control'} ),
-            'consultorio': forms.Select(attrs ={'class':'form-control'}),
-            'turno': forms.Select(attrs ={'class':'form-control'}),
+            'fecha': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'turno': select2form.Select2Widget(attrs={'class': 'form-control'}),
             'cantidad': forms.TextInput(attrs ={'class': 'form-control'}),
             'estado': forms.Select(attrs ={'class':'form-control'}),
         }
+
 
 
 class AgendaDetalleForm(forms.ModelForm):

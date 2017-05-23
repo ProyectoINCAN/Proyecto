@@ -83,13 +83,13 @@ class BarrioAdmin(admin.ModelAdmin):
 
 @admin.register(Nacionalidad)
 class NacionalidadAdmin(admin.ModelAdmin):
-    list_display = ['nacionalidad',]
+    list_display = ['nacionalidad']
     list_per_page = 15
 
 
 @admin.register(Paciente)
 class PacienteAdmin(admin.ModelAdmin):
-    list_display = ['fecha_nacimiento']
+    list_display = ['nro_doc', 'apellidos', 'nombres', 'fecha_nacimiento']
     #modificado para crear los primeros datos en call center.
     list_per_page = 15
     #filter_horizontal = ['profesion']

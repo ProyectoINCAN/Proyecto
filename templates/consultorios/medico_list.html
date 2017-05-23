@@ -1,0 +1,46 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<h1>Listado de médicos</h1>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Médico</td>
+			<td>Documento de identidad</td>
+			<td>Nro. Registro</td>
+			<td>Especialidades</td>
+			<td>Acciones</td>
+		</tr>
+	</thead>
+	<tbody>
+		<div class="btn-group pull-right">
+			<a href="{% url 'consultorios:medico_nuevo' %}" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
+			<p>
+		</div>
+
+		{% if object_list %}
+		{% for obj in object_list %}
+		<tr>
+			<td>{{ obj.nombres }} {{ obj.apellidos }}</td>
+			<td>{{ obj.tipo_doc.codigo }} - {{ obj.nro_doc }}</td>
+			<td>{{ obj.nro_registro_medico }}</td>
+			<td>{{ obj.especialidad }}</td>
+			<td>
+				<a class="btn btn-primary" href="#">Editar</a>
+			</td>
+		</tr>
+		{% endfor %}
+		{% else %}
+		<h1>No existen datos.</h1>
+		<div class="btn-group pull-right">
+			<a href="{% url 'consultorios:medico_nuevo' %}" id="create2" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
+			<p>
+		</div>
+		{% endif %}
+	</tbody>
+
+</table>
+
+{% endblock %}

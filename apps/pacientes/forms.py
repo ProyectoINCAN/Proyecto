@@ -1,7 +1,7 @@
 from django import forms
 from django.db import models as django_models
 from django.utils.translation import ugettext_lazy as _
-from apps.pacientes.models import PacienteCallCenter,Paciente, Direccion, PacienteNivelEducativo, Telefono
+from apps.pacientes.models import Paciente, Direccion, PacienteNivelEducativo, Telefono
 
 from django.contrib.admin import widgets
 from django.contrib.admin.options import FORMFIELD_FOR_DBFIELD_DEFAULTS
@@ -30,7 +30,7 @@ class PacienteForm(forms.ModelForm):
     """
 
     class Meta:
-        model = PacienteCallCenter
+        model = Paciente
 
 
         exclude = ['nro_doc_alternativo',]
@@ -42,7 +42,6 @@ class PacienteForm(forms.ModelForm):
             'tipo_doc',
             'nro_doc',
             'sexo',
-            'distrito',
 
         ]
 

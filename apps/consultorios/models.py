@@ -1,6 +1,9 @@
+from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.deletion import DO_NOTHING
+from django.utils.timezone import now
 
-from apps.pacientes.models import TipoDoc, Sexo, Pais, EstadoCivil, Etnia, Distrito, Nacionalidad
+from apps.pacientes.models import TipoDoc, Sexo, Pais, EstadoCivil, Etnia, Distrito, Nacionalidad, Paciente
 
 # Create your models here.
 from utils import paciente_utils
@@ -46,6 +49,8 @@ class Medico(models.Model):
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
     fecha_ingreso = models.DateField(auto_now=True, null=False)
     especialidad = models.ManyToManyField(Especialidad)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=False, default=1)  #todo quitar el default cuando se elimine la base de datos
+
 
     def __str__(self):
         return self.apellidos + ", " + self.nombres

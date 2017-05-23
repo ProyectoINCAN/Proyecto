@@ -31,19 +31,25 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'suit',
+    # 'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #apps terceros
+    'font_awesome', #pip install django-font-awesome
+    'django_select2',  # pip install django-select2
+    #mis apps
     'apps.pacientes',
     'apps.seguridad',
     'apps.internaciones',
     'apps.consultorios',
     'apps.urgencias',
     'apps.agendamientos',
+
+
 
 ]
 
@@ -59,6 +65,7 @@ MIDDLEWARE_CLASSES = [
 ]
 
 ROOT_URLCONF = 'Proyecto.urls'
+
 
 TEMPLATES = [
     {
@@ -87,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sihincan_db',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': '49768812093',
         'HOST': 'localhost',
         'PORT': 5432,
     }
@@ -133,12 +140,39 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 #agregar el nombre de la aplicación/proyecto
-SUIT_CONFIG = {
-'ADMIN_NAME': 'SIHINCAN',  #nombre del proyecto.
-'LIST_PER_PAGE': 2,  #paginación para todas los modelos
-}
+# SUIT_CONFIG = {
+# 'ADMIN_NAME': 'SIHINCAN',  #nombre del proyecto.
+# 'HEADER_DATE_FORMAT':'l, j F Y',
+# 'LIST_PER_PAGE': 2,  #paginación para todas los modelos
+# }
 
 
 #15/04/17
 #configurar para agregar los archivos estaticos.
-STATICFILES_DIR =(os.path.join(BASE_DIR,'static'),)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, '../static')
+
+
+STATIC_URL = '/static/'
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    'select2': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
+
+SELECT2_CACHE_BACKEND = 'select2'
+SELECT2_CSS = 'css/select2.css'
+SELECT2_JS = 'js/select2.min.js'

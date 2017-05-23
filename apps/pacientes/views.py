@@ -6,7 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from apps.pacientes.forms import PacienteForm, DireccionForm, NivelEducativoForm, TelefonoForm
-from apps.pacientes.models import Paciente, Direccion, PacienteCallCenter, Telefono
+from apps.pacientes.models import Paciente, Direccion, Paciente, Telefono
 
 from django.contrib import  messages
 
@@ -52,7 +52,7 @@ class PacienteCreate(CreateView):
 
 class PacienteUpdate(UpdateView):
     '''actualizacion de los primeros datos de paciente en call center'''
-    model = PacienteCallCenter
+    model = Paciente
     form_class = PacienteForm
 
     template_name = 'pacientes/paciente_form.html'
@@ -65,7 +65,7 @@ def paciente_delete(request, id_paciente):
     Dado que ya se registro la direccion del paciente, se realiza un delete multiple
     id_paciente = codigo del paciente'''
 
-    paciente = PacienteCallCenter.objects.get(id=id_paciente)  #obtenemos el objeto del paciente que queremos eliminar
+    paciente = Paciente.objects.get(id=id_paciente)  #obtenemos el objeto del paciente que queremos eliminar
     #pacienteDireccion = Direccion.objects.get(paciente_id = id_paciente)
     pacienteDireccion = None
     print("paciente delete")
@@ -172,18 +172,16 @@ def search(request):
 
 class PacienteView(TemplateView):
 	template_name = 'pacientes/index.html'
-	model = PacienteCallCenter
+	model = Paciente
 	def get_context_data(self, **kwargs):
 		context = super(PacienteView, self).get_context_data(**kwargs)
-		context['pacientes'] = PacienteCallCenter.objects.filter()
+		context['pacientes'] = Paciente.objects.filter()
 		return context
-
-
 
 
 def consulta(request):
     query = request.GET.get('cedula','')
-    pacientes = PacienteCallCenter.objects.filter(nro_doc__icontains = query)
+    pacientes = Paciente.objects.filter(nro_doc__icontains = query)
     dic = {'pacientes': pacientes }
     paginator = Paginator(pacientes, 5 )
 
@@ -204,7 +202,7 @@ class PacienteCallCenterCreate(CreateView):
     template_name = 'pacientes/paciente_callCenter_form.html'
     form_class = TelefonoForm
     second_form_class = PacienteForm
-    # success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
+    success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
 
     def get_context_data(self, **kwargs):
         context = super(PacienteCallCenterCreate, self).get_context_data(**kwargs)

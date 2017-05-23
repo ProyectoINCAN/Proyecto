@@ -1,0 +1,146 @@
+from django import forms
+from django.contrib.auth.models import User
+
+from apps.consultorios.models import Medico, Especialidad
+# from lib.chosen import forms as chosenforms
+from django_select2 import forms as select2form
+
+
+class MedicoModelForm(forms.ModelForm):
+    class Meta:
+        model = Medico
+        fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_medico', 'sexo', 'fecha_nacimiento',
+                  'lugar_nacimiento', 'nacionalidad', 'estado_civil', 'etnia',  # 'fecha_ingreso',
+                  'especialidad']
+        labels = {
+            'nombres': 'Nombres',
+            'apellidos': 'Apellidos',
+            'tipo_doc': 'Tipo de documento',
+            'nro_doc': 'Número de documento',
+            'nro_registro_medico': 'Nro. Registro Médico',
+            'sexo': 'Sexo',
+            'fecha_nacimiento': 'Fecha de nacimiento',
+            'lugar_nacimiento': 'Lugar de nacimiento',
+            'nacionalidad': 'Nacionalidad',
+            'estado_civil': 'Estado Civil',
+            'etnia': 'Etnia',
+            # 'fecha_ingreso': 'Fecha de ingreso',
+            'especialidad': 'Especialidad'
+        }
+        widgets = {
+            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'tipo_doc': forms.Select(attrs={'class': 'form-control'}),
+            'tipo_doc': select2form.Select2Widget(attrs={'class': 'form-control'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
+            'nro_registro_medico': forms.TextInput(attrs={'class': 'form-control'}),
+            'sexo': forms.Select(attrs={'class': 'form-control'}),
+            # 'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'dd/mm/aaaa'}),
+            'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control'}),
+            # 'nacionalidad': chosenforms.ChosenChoiceField(overlay='Seleccione un elemento...',  choices=(('New', 'new'), ('Used', 'used'))),
+            'nacionalidad': forms.Select(attrs={'class': 'form-control'}),
+            'estado_civil': forms.Select(attrs={'class': 'form-control'}),
+            'etnia': forms.Select(attrs={'class': 'form-control'}),
+            # 'fecha_ingreso': forms.DateInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            # 'especialidad': forms.SelectMultiple(attrs={'class': 'form-control'})
+            'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control'}, choices=Especialidad.objects.all())
+            # 'especialidad': chosenforms.ChosenModelMultipleChoiceField(overlay='Seleccione un elemento...', queryset=Especialidad.objects.all())
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(self.__class__, self).__init__(*args, **kwargs)
+        # self.fields['fecha_ingreso'].required = False
+
+
+class UserModelForm(forms.ModelForm):
+    error_messages = {
+        'password_mismatch': "Las contraseñas no coinciden.",
+    }
+    password1 = forms.CharField(label="Contraseña",
+                                widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'password'}),)
+    password2 = forms.CharField(label="Confirmación de contraseña",
+                                widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'password'}),
+                                help_text="Vuelva a ingresar la contraseña para confirmar.")
+
+    class Meta:
+        model = User
+        fields = ("username",)
+
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'password1': forms.TextInput(attrs={'class': 'form-control', 'type': 'password'}),
+            # 'password2': forms.TextInput(attrs={'class': 'form-control', 'type': 'password'}),
+        }
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(
+                self.error_messages['password_mismatch'],
+                code='password_mismatch',
+            )
+        return password2
+
+    def save(self, commit=True):
+        user = super(UserModelForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
+
+
+    # class Meta:
+    #     model = User
+    #     fields = ['username', 'password']
+    #     labels = {
+    #         'username': 'Nombre de usuario',
+    #         'password': 'Contraseña',
+    #     }
+    #     widgets = {
+    #         'username': forms.CharField(attrs={'class': 'form-control'}),
+    #         'password': forms.PasswordInput(),
+    #     }
+
+class Medico2ModelForm(forms.ModelForm):
+    class Meta:
+        model = Medico
+        fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_medico', 'sexo', 'fecha_nacimiento',
+                  'lugar_nacimiento', 'nacionalidad', 'estado_civil', 'etnia',  # 'fecha_ingreso',
+                  'especialidad']
+        labels = {
+            'nombres': 'Nombres',
+            'apellidos': 'Apellidos',
+            'tipo_doc': 'Tipo de documento',
+            'nro_doc': 'Número de documento',
+            'nro_registro_medico': 'Nro. Registro Médico',
+            'sexo': 'Sexo',
+            'fecha_nacimiento': 'Fecha de nacimiento',
+            'lugar_nacimiento': 'Lugar de nacimiento',
+            'nacionalidad': 'Nacionalidad',
+            'estado_civil': 'Estado Civil',
+            'etnia': 'Etnia',
+            # 'fecha_ingreso': 'Fecha de ingreso',
+            'especialidad': 'Especialidad'
+        }
+        widgets = {
+            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'tipo_doc': forms.Select(attrs={'class': 'form-control'}),
+            'tipo_doc': select2form.Select2Widget(attrs={'class': 'form-control'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
+            'nro_registro_medico': forms.TextInput(attrs={'class': 'form-control'}),
+            'sexo': forms.Select(attrs={'class': 'form-control'}),
+            # 'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'dd/mm/aaaa'}),
+            'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control'}),
+            # 'nacionalidad': chosenforms.ChosenChoiceField(overlay='Seleccione un elemento...',  choices=(('New', 'new'), ('Used', 'used'))),
+            'nacionalidad': forms.Select(attrs={'class': 'form-control'}),
+            'estado_civil': forms.Select(attrs={'class': 'form-control'}),
+            'etnia': forms.Select(attrs={'class': 'form-control'}),
+            # 'fecha_ingreso': forms.DateInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            # 'especialidad': forms.SelectMultiple(attrs={'class': 'form-control'})
+            'especialidad':  select2form.Select2MultipleWidget(choices=Especialidad.objects.all())
+            # 'especialidad': chosenforms.ChosenModelMultipleChoiceField(overlay='Seleccione un elemento...', queryset=Especialidad.objects.all())
+        }

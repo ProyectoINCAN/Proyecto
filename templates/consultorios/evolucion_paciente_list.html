@@ -1,0 +1,48 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<h1>Evolución del paciente</h1>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Fecha</td>
+			<td>Hora</td>
+			<td>Observaciones</td>
+			<td>Firma</td>
+			<td>Acciones</td>
+		</tr>
+	</thead>
+	<tbody>
+
+		<div class="btn-group pull-right">
+			<a href="{% url 'consultorios:evolucion_paciente' %}" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
+			<p>
+		</div>
+
+		{% if object_list %}
+		{% for evolucion in object_list %}
+		<tr>
+			<td>{{ evolucion.fecha }}</td>
+			<td>{{ evolucion.hora }}</td>
+			<td>{{ evolucion.observaciones }}</td>
+			<td>{{ evolucion.medico.nombres }} {{ evolucion.medico.apellidos }}</td>
+			<td>
+				<a class="btn btn-primary" href="#">Editar</a>
+				<a class="btn btn-danger" href="#">Eliminar</a>
+			</td>
+		</tr>
+		{% endfor %}
+		{% else %}
+		<h1>No existen datos.</h1>
+		<div class="btn-group pull-right">
+			<a href="{% url 'consultorios:evolucion_paciente' %}" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
+			<p>
+		</div>
+		{% endif %}
+	</tbody>
+	
+</table>
+
+{% endblock %}

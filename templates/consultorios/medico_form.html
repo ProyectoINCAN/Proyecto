@@ -1,0 +1,36 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<h1>Registrar nuevo médico</h1>
+<br>
+<form class="form-horizontal" method="post">
+    <!--<legend>Registrar nuevo médico</legend>-->
+        <div class="form-group">
+            {% csrf_token %}
+
+            {{ form.media }}
+            {{ form.as_p }}
+            {{ form2.as_p }}
+
+
+            <!--{% for field in form %}-->
+                <!--<div class ="field_container">-->
+                    <!--{{ field.errors }}-->
+                    <!--{{ field.label_tag }}-->
+                    <!--{{ field }}-->
+
+                <!--</div>-->
+            <!--{% endfor %}-->
+
+        </div>
+        <div class="form-group" align="left">
+            <p>
+                <div class="col-lg-10 col-lg-offset-2">
+                     <button class="btn btn-primary">Guardar</button>
+                </div>
+            </p>
+    </div>
+</form>
+
+{% endblock %}
