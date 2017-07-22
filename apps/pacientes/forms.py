@@ -5,16 +5,7 @@ from apps.pacientes.models import Paciente, Direccion, PacienteNivelEducativo, T
 
 from django.contrib.admin import widgets
 from django.contrib.admin.options import FORMFIELD_FOR_DBFIELD_DEFAULTS
-import suit.widgets
 
-FORMFIELD_FOR_DBFIELD_DEFAULTS.update({
-    django_models.DateTimeField: {
-        'form_class': forms.SplitDateTimeField,
-        'widget': suit.widgets.SuitSplitDateTimeWidget
-    },
-    django_models.DateField: {'widget': suit.widgets.SuitDateWidget},
-    django_models.TimeField: {'widget': suit.widgets.SuitTimeWidget},
-})
 #clase PacienteForm para el formulario de agendamiento de pacientes.
 #15/04/17
 class PacienteForm(forms.ModelForm):
