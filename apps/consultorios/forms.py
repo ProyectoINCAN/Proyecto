@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from apps.consultorios.models import Medico, Especialidad
+from apps.consultorios.models import Medico, Especialidad, EvolucionPaciente
 # from lib.chosen import forms as chosenforms
 from django_select2 import forms as select2form
 
@@ -103,44 +103,62 @@ class UserModelForm(forms.ModelForm):
     #         'password': forms.PasswordInput(),
     #     }
 
-class Medico2ModelForm(forms.ModelForm):
+
+class EvolucionPacienteModelForm(forms.ModelForm):
     class Meta:
-        model = Medico
-        fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_medico', 'sexo', 'fecha_nacimiento',
-                  'lugar_nacimiento', 'nacionalidad', 'estado_civil', 'etnia',  # 'fecha_ingreso',
-                  'especialidad']
+        model = EvolucionPaciente
+        fields = ['fecha', 'hora', 'observaciones', 'medico',]
         labels = {
-            'nombres': 'Nombres',
-            'apellidos': 'Apellidos',
-            'tipo_doc': 'Tipo de documento',
-            'nro_doc': 'Número de documento',
-            'nro_registro_medico': 'Nro. Registro Médico',
-            'sexo': 'Sexo',
-            'fecha_nacimiento': 'Fecha de nacimiento',
-            'lugar_nacimiento': 'Lugar de nacimiento',
-            'nacionalidad': 'Nacionalidad',
-            'estado_civil': 'Estado Civil',
-            'etnia': 'Etnia',
-            # 'fecha_ingreso': 'Fecha de ingreso',
-            'especialidad': 'Especialidad'
+            'fecha': 'Fecha',
+            'hora': 'Hora',
+            'observaciones': 'Observaciones',
+            'medico': 'Médico'
         }
         widgets = {
-            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
-            'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
-            # 'tipo_doc': forms.Select(attrs={'class': 'form-control'}),
-            'tipo_doc': select2form.Select2Widget(attrs={'class': 'form-control'}),
-            'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
-            'nro_registro_medico': forms.TextInput(attrs={'class': 'form-control'}),
-            'sexo': forms.Select(attrs={'class': 'form-control'}),
-            # 'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'dd/mm/aaaa'}),
-            'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control'}),
-            # 'nacionalidad': chosenforms.ChosenChoiceField(overlay='Seleccione un elemento...',  choices=(('New', 'new'), ('Used', 'used'))),
-            'nacionalidad': forms.Select(attrs={'class': 'form-control'}),
-            'estado_civil': forms.Select(attrs={'class': 'form-control'}),
-            'etnia': forms.Select(attrs={'class': 'form-control'}),
-            # 'fecha_ingreso': forms.DateInput(attrs={'class': 'form-control', 'disabled': 'True'}),
-            # 'especialidad': forms.SelectMultiple(attrs={'class': 'form-control'})
-            'especialidad':  select2form.Select2MultipleWidget(choices=Especialidad.objects.all())
-            # 'especialidad': chosenforms.ChosenModelMultipleChoiceField(overlay='Seleccione un elemento...', queryset=Especialidad.objects.all())
+            'fecha': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'hora': forms.TimeInput(attrs={'class': 'form-control'}),
+            'observaciones': forms.Textarea(attrs={'class': 'form-control'}),
+            'medico': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+# class Medico2ModelForm(forms.ModelForm):
+#     class Meta:
+#         model = Medico
+#         fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_medico', 'sexo', 'fecha_nacimiento',
+#                   'lugar_nacimiento', 'nacionalidad', 'estado_civil', 'etnia',  # 'fecha_ingreso',
+#                   'especialidad']
+#         labels = {
+#             'nombres': 'Nombres',
+#             'apellidos': 'Apellidos',
+#             'tipo_doc': 'Tipo de documento',
+#             'nro_doc': 'Número de documento',
+#             'nro_registro_medico': 'Nro. Registro Médico',
+#             'sexo': 'Sexo',
+#             'fecha_nacimiento': 'Fecha de nacimiento',
+#             'lugar_nacimiento': 'Lugar de nacimiento',
+#             'nacionalidad': 'Nacionalidad',
+#             'estado_civil': 'Estado Civil',
+#             'etnia': 'Etnia',
+#             # 'fecha_ingreso': 'Fecha de ingreso',
+#             'especialidad': 'Especialidad'
+#         }
+#         widgets = {
+#             'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+#             'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
+#             # 'tipo_doc': forms.Select(attrs={'class': 'form-control'}),
+#             'tipo_doc': select2form.Select2Widget(attrs={'class': 'form-control'}),
+#             'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
+#             'nro_registro_medico': forms.TextInput(attrs={'class': 'form-control'}),
+#             'sexo': forms.Select(attrs={'class': 'form-control'}),
+#             # 'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'dd/mm/aaaa'}),
+#             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+#             'lugar_nacimiento': forms.Select(attrs={'class': 'form-control'}),
+#             # 'nacionalidad': chosenforms.ChosenChoiceField(overlay='Seleccione un elemento...',  choices=(('New', 'new'), ('Used', 'used'))),
+#             'nacionalidad': forms.Select(attrs={'class': 'form-control'}),
+#             'estado_civil': forms.Select(attrs={'class': 'form-control'}),
+#             'etnia': forms.Select(attrs={'class': 'form-control'}),
+#             # 'fecha_ingreso': forms.DateInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+#             # 'especialidad': forms.SelectMultiple(attrs={'class': 'form-control'})
+#             'especialidad':  select2form.Select2MultipleWidget(choices=Especialidad.objects.all())
+#             # 'especialidad': chosenforms.ChosenModelMultipleChoiceField(overlay='Seleccione un elemento...', queryset=Especialidad.objects.all())
+#         }

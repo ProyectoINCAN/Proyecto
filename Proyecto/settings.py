@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.core.urlresolvers import reverse_lazy
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -70,7 +72,7 @@ ROOT_URLCONF = 'Proyecto.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-         'DIRS': [os.path.join(BASE_DIR,'templates')], #para que reconozca a nuestro templates 15/04/17
+        'DIRS': [os.path.join(BASE_DIR,'templates')], #para que reconozca a nuestro templates 15/04/17
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,7 +96,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sihincan_db',
         'USER': 'postgres',
-        'PASSWORD': '49768812093',
+        'PASSWORD': 'OscProdPost2014',
         'HOST': 'localhost',
         'PORT': 5432,
     }
@@ -176,3 +178,5 @@ CACHES = {
 SELECT2_CACHE_BACKEND = 'select2'
 SELECT2_CSS = 'css/select2.css'
 SELECT2_JS = 'js/select2.min.js'
+
+LOGIN_REDIRECT_URL = reverse_lazy('consultorios:medico_listar')  # TODO cambiar por otro url para inicio

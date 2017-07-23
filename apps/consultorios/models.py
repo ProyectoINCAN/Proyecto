@@ -22,9 +22,24 @@ class Consultorio(models.Model):
         verbose_name_plural = "Consultorios"
 
 
+# class EspecialidadManager(models.Manager):
+#     def especialidad_by_medico(self, medico):
+#         from django.db import connection
+#         with connection.cursor() as cursor:
+#             cursor.execute("""
+#                 select string_agg(e.nombre, ', ') as especialidades
+#                 from consultorios_medico m
+#                 join consultorios_medico_especialidad me on m.id = me.medico_id
+#                 join consultorios_especialidad e on me.especialidad_id = e.id
+#                 where m.id = ? """, medico)
+#         especialidades_by_medico = cursor.fetchone()
+#         return especialidades_by_medico
+
+
 class Especialidad(models.Model):
     nombre = models.CharField(max_length=60, blank=False)
     habilitado = models.BooleanField(default=True)
+    # objects = EspecialidadManager()
 
     def __str__(self):
         return self.nombre
@@ -51,7 +66,6 @@ class Medico(models.Model):
     especialidad = models.ManyToManyField(Especialidad)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=False, default=1)  #todo quitar el default cuando se elimine la base de datos
 
-
     def __str__(self):
         return self.apellidos + ", " + self.nombres
 
@@ -59,6 +73,16 @@ class Medico(models.Model):
              update_fields=None):
         self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)
         super(Medico, self).save()
+
+    def get_especialidades(self, id):
+        especialidades = ", ".join(self.objects.raw("""
+                                     select string_agg(e.nombre, ', ') as especialidades
+                                     from consultorios_medico m
+                                     join consultorios_medico_especialidad me on m.id = me.medico_id
+                                     join consultorios_especialidad e on me.especialidad_id = e.id
+                                     where m.id = %d
+                                 """, id))
+        return especialidades
 
     class Meta:
         ordering = ["apellidos", "nombres"]
@@ -137,3 +161,16 @@ class OrdenEstudio(models.Model):
         ordering = ["nombre"]
         verbose_name = "Orden de Estudio"
         verbose_name_plural = "Ordenes de Estudios"
+
+
+class EvolucionPaciente(models.Model):
+    fecha = models.DateField(default=now, null=False)
+    hora = models.TimeField(default=now, null=False)
+    observaciones = models.TextField(blank=False)
+    medico = models.ForeignKey(Medico, on_delete=DO_NOTHING, verbose_name="Firma")
+    paciente = models.ForeignKey(Paciente, on_delete=DO_NOTHING)
+
+    class Meta:
+        ordering = ['fecha', 'hora']
+        verbose_name = 'Evolución del paciente'
+        verbose_name_plural = 'Evoluciones del paciente'

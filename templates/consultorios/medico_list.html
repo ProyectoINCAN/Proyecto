@@ -1,4 +1,4 @@
-{% extends "base/base.html" %}
+{% extends 'base/base.html' %}
 
 {% block content %}
 
@@ -7,11 +7,12 @@
 <table class="table table-bordered">
 	<thead>
 		<tr>
+			<td>ID</td>
 			<td>Médico</td>
 			<td>Documento de identidad</td>
 			<td>Nro. Registro</td>
-			<td>Especialidades</td>
-			<td>Acciones</td>
+			<!--<td>Especialidades</td>-->
+			<!--<td>Acciones</td>-->
 		</tr>
 	</thead>
 	<tbody>
@@ -23,13 +24,19 @@
 		{% if object_list %}
 		{% for obj in object_list %}
 		<tr>
-			<td>{{ obj.nombres }} {{ obj.apellidos }}</td>
+			<td>
+				<a href="/consultorios/medico/{{obj.id}}/editar">{{ obj.id }}</a>
+			</td>
+			<td>{{ obj.apellidos }}, {{ obj.nombres }}</td>
 			<td>{{ obj.tipo_doc.codigo }} - {{ obj.nro_doc }}</td>
 			<td>{{ obj.nro_registro_medico }}</td>
-			<td>{{ obj.especialidad }}</td>
-			<td>
-				<a class="btn btn-primary" href="#">Editar</a>
-			</td>
+			<!--<td>{{ obj.especialidad }}</td>-->
+			<!--<td>{{ Medico.objects.especialidad }}</td>-->
+			<!--<td>
+				{% for esp in obj.get_especialidades %}
+					{{ esp }}
+				{% endfor %}
+			</td>-->
 		</tr>
 		{% endfor %}
 		{% else %}
