@@ -1,4 +1,4 @@
-{%extends 'base/base.html' %}
+{%extends 'base/base2.html' %}
 {% load static%}
 
 {%block content %}
@@ -30,18 +30,15 @@
                 {% if object_list %}
                 {% for agenda in object_list %}
                 <tr>
-                    <td>{{agenda.id}}</td>
+                    <td>
+				        <a href="/agendamientos/agendas/{{agenda.id}}/editar">{{agenda.id}}</a>
+			        </td>
                     <td>{{agenda.fecha}}</td>
                     <td>{{agenda.medico.nombres}} {{agenda.medico.apellidos}}</td>
                     <td>{{agenda.consultorio}}</td>
                     <td>{{agenda.turno.nombre}}</td>
                     <td>{{agenda.estado.nombre}}</td>
                     <td>{{agenda.cantidad}}</td>
-                    <td>
-                        <a class="btn btn-primary" href="{% url 'agendamientos:agenda_editar' agenda.id%}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                        <a class="btn btn-danger" href="{% url 'agendamientos:agenda_eliminar' agenda.id%}"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                        <a class="btn btn-primary" href="{% url 'agendamientos:agenda_detalle' agenda.id%}"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
-                    </td>
                 </tr>
                 {% endfor %}
 

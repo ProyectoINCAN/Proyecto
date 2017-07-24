@@ -45,18 +45,26 @@ class AgendaList(ListView):
     template_name = '/agendamientos/agenda_list.html'
     paginate_by = 15
 
+#
+# def agenda_edit(request, agenda_id):
+#     agenda = Agenda.objects.get(id=agenda_id)
+#     if request.method == 'GET':
+#         form = AgendaForm(instance=agenda)
+#         print("entro")
+#     else:
+#         form = AgendaForm(request.POST, instance=agenda)
+#         if form.is_valid():
+#             form.save()
+#             print("entro")
+#         return redirect('agendamientos:agenda_listar')
+#     return render(request, 'agendamientos/agenda_form.html', {'form':form})
 
-def agenda_edit(request, id_agenda):
-    agenda = Agenda.objects.get(id=id_agenda)
-    if request.method == 'GET':
-        form = AgendaForm(instance=agenda)
-    else:
-        form = AgendaForm(request.POST, instance=agenda)
-        if form.is_valid():
-            form.save()
-        return redirect('agendamientos:agenda_listar')
-    return render(request, 'agendamientos/agenda_form.html', {'form':form})
-
+class AgendaUpdate(UpdateView):
+    model = Agenda
+    print("entro")
+    form_class = AgendaForm
+    template_name = 'agendamientos/agenda_form.html'
+    success_url = reverse_lazy('agendamientos:agenda_listar')
 
 def agenda_delete(request, id_agenda):
     agenda = Agenda.objects.get(id=id_agenda)
@@ -75,7 +83,7 @@ def prueba(request):
 
 class AgendaDetalleList(ListView):
     model = AgendaDetalle
-    template_name = 'agendamientos/agenda_detalle_list.html'
+    template_name = 'agendamientos/agenda_detail.html'
 
 
 class AgendaDetalleCreate(CreateView):
@@ -86,7 +94,7 @@ class AgendaDetalleCreate(CreateView):
     success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
 
 
-def agendaDetalleCrear(request):
+def agendaDetalleCreate(request):
     if request.method == 'POST':
         form = AgendaDetalleForm(request.POST)
         print('oguahe koape')

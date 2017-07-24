@@ -1,0 +1,102 @@
+{%extends 'base/base2.html' %}
+{% load static%}
+
+{% block extra_js%} <script src="{% static 'js/jquery.form.js' %}"></script> {% endblock %}
+
+{%block content %}
+<form class="form-horizontal" id="form">
+<div class="row">
+        <h2>Agenda</h2>
+<div class="col-lg-8 col-sm-12">
+        {% csrf_token %}
+        {{form.media}}
+        {% for field in object_list %}
+        <div class="form-group">
+			<label class="control-label col-lg-2 col-sm-4">Fecha</label>
+			<div class="col-lg-3 col-sm-4">
+				<input type="text" class="form-control text-center" id="fecha" name ="fecha" value="{{field.agenda.fecha}}" required="required"  disabled="disabled" data-inputmask="'alias': 'date'" placeholder="dd/mm/yyyy">
+			</div>
+		</div>
+
+        <div class="form-group">
+			<label class="control-label col-lg-2 col-sm-4">Médico</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control text-left" id="medico" name ="medico" value="{{field.agenda.medico}}"  disabled="disabled">
+			</div>
+		</div>
+
+        <div class="form-group">
+			<label class="control-label col-lg-2 col-sm-4">Turno</label>
+			<div class="col-lg-2 col-sm-4">
+				<input type="text" class="form-control text-left" id="turno" name ="turno" value="{{field.agenda.turno}}"  disabled="disabled">
+			</div>
+		</div>
+        {% endfor %}
+</div>
+</div>
+
+</div>
+    </div>
+
+</div>
+</form>
+
+
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+		<b>Detalles</b>
+		<div class="btn-group pull-right">
+			<a href="{% url 'agendamientos:agenda_detalle_crear' %}" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
+		</div>
+		<div class="clearfix"></div>
+
+	</div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-condensed table-bordered" >
+            <!--<table class="table table-bordered">-->
+            <thead>
+                <tr>
+                    <td>Nº</td>
+                    <td>Ficha</td>
+                    <td>Nombre y Apellido</td>
+                    <td>Edad</td>
+                    <td>Ciudad</td>
+                    <td>Tel&eacute;fono</td>
+                    <td>Observación</td>
+                </tr>
+            </thead>
+            <tbody>
+        {% if object_list %}
+        {% for agenda_detalle in object_list %}
+            <tr>
+                <td>
+				    <a href="/agendamientos/agendaDetalle/{{agenda_detalle.id}}/editar">{{ agenda_detalle.id }}</a>
+			    </td>
+                <td>{{agenda_detalle.paciente.nro_doc}}</td>
+                <td>{{agenda_detalle.paciente.fecha_nacimiento}}</td>
+                <td>{{agenda_detalle.paciente.distrito}}</td>
+                <td> <a class="fa fa-pencil" data-toggle="modal" href="{% url 'agendamientos:agenda_detalle_editar' agenda_detalle.id %}" data-target="#modal" title="Editar Agenda Detalle" data-tooltip></a> | </td>
+                <td>{{agenda_detalle.agenda.fecha}} </td>
+				<td>{{agenda_detalle.agenda.medico}} </td>
+                <td>{{agenda_detalle.confirmado}}</td>
+                <td>
+                    <a class="btn btn-primary" href="{% url 'agendamientos:agenda_detalle_editar' agenda_detalle.id%}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    <a class="btn btn-danger" href="{% url 'agendamientos:agenda_detalle_eliminar' agenda_detalle.id%}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+
+            </tr>
+        {% endfor %}
+
+        {% else %}
+        <h1>No hay registros de agendamientos</h1>
+
+        {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock%}
