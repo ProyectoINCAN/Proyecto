@@ -6,14 +6,10 @@ from apps.agendamientos.views import index, agenda_nuevo, agenda_delete, AgendaD
 
 urlpatterns = [
     url(r'^index$', index, name='index'),
-    # url(r'^nuevo$', agenda_nuevo, name='nuevo'),
-    url(r'^agendas/nuevo/$', agenda_nuevo, name='nuevo'),
-    # url(r'^listar', AgendaList.as_view(), name='agenda_listar'),
-    url(r'^agendas/', AgendaList.as_view(), name='agenda_listar'),
-    # url(r'^editar/(?P<id_agenda>\d+)/$', agenda_edit, name='agenda_editar'),
-    url(r'^agendas/(?P<pk>[0-9]+)/editar$', AgendaUpdate.as_view, name='agenda_editar'),
-    # url(r'^eliminar/(?P<id_agenda>\d+)/$', agenda_delete, name='agenda_eliminar'),
-    url(r'^agendas/(?P<pk>[0-9]+)/eliminar$', agenda_delete, name='agenda_eliminar'),
+    url(r'^agenda/nuevo$', agenda_nuevo, name='nuevo'),
+    url(r'^agendas', AgendaList.as_view(), name='agenda_listar'),
+    url(r'^agenda/(?P<pk>[0-9]+)/editar$', AgendaUpdate.as_view(), name='agenda_editar'),
+    url(r'^agenda/(?P<pk>[0-9]+)/eliminar$', agenda_delete, name='agenda_eliminar'),
     #agenda_detalle
     # url(r'^agendaDetalle/listar$', AgendaDetalleList.as_view(), name='agenda_detalle_listar'),
     url(r'^agendaDetalle/$', AgendaDetalleList.as_view(), name='agenda_detalle_listar'),

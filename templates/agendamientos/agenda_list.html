@@ -1,67 +1,74 @@
-{%extends 'base/base.html' %}
+{%extends 'base/base2.html' %}
 {% load static%}
 
 {%block content %}
-
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <b>Lista</b>
-        <div class="btn-group pull-right">
-            <a href="{% url 'agendamientos:nuevo' %}" id="create" class="btn btn-default btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
+        <div class="panel-heading">
+            Lista de Agendas
+            <div class="btn-group pull-right">
+                <a href="{% url 'agendamientos:agenda_listar' %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
+            </div>
+            <p></p>
         </div>
-    <div class="clearfix"></div>
-    </div>
-
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <td>Id</td>
-                    <td>Fecha</td>
-                    <td>M&eacute;dico</td>
-                    <td>Consultorio</td>
-                    <td>Turno</td>
-                    <td>Estado</td>
-                    <td>Cantidad</td>
-                    <td>Acciones</td>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="panel-body">
+            <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length"></div></div><div class="col-sm-6"><div id="dataTables-example_filter" class="dataTables_filter"></div></div></div><div class="row"><div class="col-sm-12"><table width="100%" class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
+                <thead>
+                    <tr role="row">
+                        <th aria-label>Id</th>
+                        <td aria-label>Fecha</td>
+                        <th aria-label>M&eacute;dico</th>
+                        <th aria-label>Especialidad</th>
+                        <th aria-label>Turno</th>
+                        <th aria-label>Estado</th>
+                        <th aria-label>Cantidad</th>
+                        <th aria-label>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
                 {% if object_list %}
                 {% for agenda in object_list %}
-                <tr>
-                    <td>
-				        <a href="/agendamientos/{{ agenda.id }}/agendas/editar">{{ agenda.id }}</a>
-			        </td>
-                    <td>{{agenda.fecha}}</td>
-                    <td>{{agenda.medico.nombres}} {{agenda.medico.apellidos}}</td>
-                    <td>{{agenda.especialidad}}</td>
-                    <td>{{agenda.turno.nombre}}</td>
-                    <td>{{agenda.estado.nombre}}</td>
-                    <td>{{agenda.cantidad}}</td>
-                </tr>
+                    <tr>
+                        <td>
+                            <a href="/agendamientos/agenda/{{agenda.id}}/editar">{{agenda.id}}</a>
+                        </td>
+                        <td>{{agenda.fecha}}</td>
+                        <td>{{agenda.medico.nombres}} {{agenda.medico.apellidos}}</td>
+                        <td>{{agenda.especialidad}}</td>
+                        <td>{{agenda.turno.nombre}}</td>
+                        <td>{{agenda.estado.nombre}}</td>
+                        <td>{{agenda.cantidad}}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{% url 'agendamientos:agenda_detalle' agenda.id%}"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
                 {% endfor %}
 
                 {% else %}
                 <h1>No hay registros de agendas</h1>
                 {% endif %}
-            </tbody>
-        </table>
-    </div>
-    <div class="pagination">
-        <ul class="pager">
-            <li>
-                {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number}}">Anterior</a>
-                {% endif%}
-            </li>
-            <li>
-                {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number}}">Siguiente</a>
-                {% endif%}
-            </li>
-        </ul>
-    </div>
-</div>
+                </tbody>
+            </table>
+            </div>
+            </div>
+                    </div>
 
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+<div class="pagination">
+    <ul class="pager">
+        <li>
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number}}">Anterior</a>
+            {% endif%}
+        </li>
+        <li>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number}}">Siguiente</a>
+            {% endif%}
+        </li>
+    </ul>
+</div>
+</div>
 {% endblock%}
