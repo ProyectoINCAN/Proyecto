@@ -7,8 +7,8 @@ from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 
-from apps.consultorios.forms import MedicoModelForm, UserModelForm, EvolucionPacienteModelForm
-from apps.consultorios.models import Medico, Especialidad, EvolucionPaciente
+from apps.consultorios.forms import MedicoModelForm, UserModelForm, EvolucionPacienteModelForm, HorarioMedicoModelForm
+from apps.consultorios.models import Medico, Especialidad, EvolucionPaciente, HorarioMedico
 from apps.pacientes.models import Paciente
 
 
@@ -83,36 +83,6 @@ def prueba(request):
     return render(request, 'consultorios/prueba.html')
 
 
-# class Medico2Create(CreateView):
-#     model = Medico
-#     # template_name = 'consultorios/medico2_form.html'
-#     template_name = 'consultorios/medico2_form.html'
-#     form_class = Medico2ModelForm
-#     success_url = reverse_lazy('consultorios:medico_listar')
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(MedicoCreate, self).get_context_data(**kwargs)
-#         if 'form' not in context:
-#             context['form'] = self.form_class(self.request.GET)
-#         if 'form2' not in context:
-#             context['form2'] = self.second_form_class(self.request.GET)
-#         return context
-#
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object
-#         form = self.form_class(request.POST)
-#         form2 = self.second_form_class(request.POST)
-#         if form.is_valid() and form2.is_valid():
-#             medico = form.save(commit=False)
-#             user = form2.save(commit=True)
-#             medico.usuario = user
-#             print("usuario = " + medico.usuario.username + " contraseña = " + medico.usuario.password + " id = " + str(medico.usuario.id))
-#             medico.save()
-#             return HttpResponseRedirect(self.get_success_url())
-#         else:
-#             return self.render_to_response(self.get_context_data(form=form, form2=form2))
-
-
 class MedicoUpdate(UpdateView):
     model = Medico
     second_model = User
@@ -149,6 +119,41 @@ class MedicoUpdate(UpdateView):
             return HttpResponseRedirect(self.get_success_url())
 
 
+class HorarioMedicoList(ListView):
+    model = HorarioMedico
+    template_name = 'consultorios/horario_medico_list.html'
+
+
+class HorarioMedicoCreate(CreateView):
+    model = HorarioMedico
+    template_name = 'consultorios/horario_medico_form.html'
+    form_class = HorarioMedicoModelForm
+    success_url = reverse_lazy('consultorios:horario_medico_listar')
+
+    def get_context_data(self, **kwargs):
+        context = super(HorarioMedicoCreate, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class(self.request.GET)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+
+class HorarioMedicoUpdate(UpdateView):
+    model = HorarioMedico
+    template_name = 'consultorios/horario_medico_form.html'
+    form_class = HorarioMedicoModelForm
+    success_url = reverse_lazy('consultorios:horario_medico_listar')
+
+
 class EvolucionPacienteList(ListView):
     model = EvolucionPaciente
     template_name = 'consultorios/evolucion_paciente_list.html'
@@ -178,8 +183,11 @@ class EvolucionPacienteCreate(CreateView):
         else:
             return self.render_to_response(self.get_context_data(form=form))
 
+
 class EvolucionPacienteUpdate(UpdateView):
     model = EvolucionPaciente
     template_name = 'consultorios/evolucion_paciente_form.html'
     form_class = EvolucionPacienteModelForm
     success_url = reverse_lazy('consultorios:evolucion_paciente_listar')
+
+

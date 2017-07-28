@@ -1,0 +1,51 @@
+{% extends "base/base2.html" %}
+
+{% block content %}
+
+<h1>Horarios de médicos</h1>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Médico</td>
+			<td>Día</td>
+			<td>Turno</td>
+			<td>Hora inicio</td>
+			<td>Hora fin</td>
+			<td>Cantidad</td>
+		</tr>
+	</thead>
+	<tbody>
+
+		<div class="btn-group pull-right">
+			<a href="{% url 'consultorios:horario_medico_nuevo' %}" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
+			<p>
+		</div>
+
+		{% if object_list %}
+		{% for data in object_list %}
+		<tr>
+			<td>
+				<a href="/consultorios/horario_medico/{{ data.id }}/editar">{{ data.medico }}</a>
+			</td>
+			<td>{{ data.dia_semana }}</td>
+			<td>{{ data.turno.nombre }}</td>
+			<td>{{ data.hora_inicio }}</td>
+			<td>{{ data.hora_fin }}</td>
+			<td>{{ data.cantidad }}</td>
+
+
+		</tr>
+		{% endfor %}
+		{% else %}
+		<h1>No existen datos.</h1>
+		<div class="btn-group pull-right">
+			<a href="{% url 'consultorios:horario_medico_nuevo' %}" id="create2" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
+			<p>
+		</div>
+		{% endif %}
+	</tbody>
+	
+</table>
+
+{% endblock %}

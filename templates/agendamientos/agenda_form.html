@@ -1,27 +1,29 @@
-{% extends 'base/base2.html' %}
+{% extends 'base/base.html' %}
 
 {% block content %}
     <form class="form-horizontal" id="form" method="post">
         <h3>Servicios de Call Center - Agenda</h3>
         <P></P>
-        {% csrf_token %}
-        {{form.media}}
-        {% for field in form %}
         <div class="form-group">
-            <label class="control-label col-lg-3 col-sm-4">{{ field.label_tag }}</label>
-            <div class="col-lg-6 col-sm-8">
-                {{ block.super }}
-                {{ field}}
-            </div>
-	    </div>
-        {% endfor %}
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class ="field_container">
+                        {{ field.errors }}
+                        {{ field.label_tag }}
+                        {{ field }}
 
 
-        <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9 col-sm-offset-4 col-sm-8">
-             <button class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
-             <a href="listar" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
+                    </div>
+                {% endfor %}
+
             </div>
+            <div class="form-group" align="left">
+                <p>
+                    <div class="col-lg-10 col-lg-offset-2">
+                         <button class="btn btn-primary btn-lg">Guardar</button>
+                    </div>
+                </p>
         </div>
     </form>
 

@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/metisMenu.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.timepicker.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
 
     <title>{% block title %}Title{% endblock %}</title>
@@ -370,12 +372,51 @@
     </div>
 
     <script src = "{% static 'js/jquery.min.js' %}"></script>
+    <script src = "{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src = "{% static 'js/jquery.timepicker.min.js' %}"></script>
     <script src = "{% static 'js/bootstrap.min.js' %}"></script>
     <script src = "{% static 'js/metisMenu.min.js' %}"></script>
     <script src = "{% static 'js/sb-admin-2.js' %}"></script>
+
     {% block extrajs %}
 
     {% endblock %}
+
+    <script>
+	 $.datepicker.regional['es'] = {
+	 closeText: 'Cerrar',
+	 prevText: '< Ant',
+	 nextText: 'Sig >',
+	 currentText: 'Hoy',
+	 monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+	 monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+	 dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+	 dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+	 dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+	 weekHeader: 'Sm',
+	 dateFormat: 'dd/mm/yy',
+	 firstDay: 1,
+	 isRTL: false,
+	 showMonthAfterYear: false,
+	 yearSuffix: ''
+	 };
+	 $.datepicker.setDefaults($.datepicker.regional['es']);
+	 $(function () {
+	 $( ".datepicker" ).datepicker({dateFormat: 'dd/mm/yy'}).val()
+	});
+	</script>
+    <script>
+    $('.timepicker').timepicker({
+        timeFormat: 'HH:mm',
+        interval: 60,
+        minTime: '0',
+        maxTime: '11:59pm',
+        startTime: '0:00',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
+    });
+	</script>
 
 </body>
 </html>
