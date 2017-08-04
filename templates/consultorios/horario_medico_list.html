@@ -1,51 +1,70 @@
-{% extends "base/base2.html" %}
+{%extends 'base/base2.html' %}
+{% load static%}
 
-{% block content %}
+{%block content %}
+<div class="panel panel-default">
+        <div class="panel-heading">
+            Horarios de médicos
+            <div class="btn-group pull-right">
+                <a href="{% url 'consultorios:horario_medico_nuevo' %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
+            </div>
+            <p></p>
+        </div>
+        <div class="panel-body">
+            <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length"></div></div><div class="col-sm-6"><div id="dataTables-example_filter" class="dataTables_filter"></div></div></div><div class="row"><div class="col-sm-12"><table width="100%" class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
+                <thead>
+                    <tr role="row">
+                        <th aria-label>Médico</th>
+                        <th aria-label>Día</th>
+                        <th aria-label>Turno</th>
+                        <th aria-label>Hora inicio</th>
+                        <th aria-label>Hora fin</th>
+                        <th aria-label>Cantidad</th>
 
-<h1>Horarios de médicos</h1>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if object_list %}
+                {% for data in object_list %}
+                    <tr>
+                        <td>
+                            <a href="/consultorios/horario_medico/{{ data.id }}/editar">{{ data.medico }}</a>
+                        </td>
+                        <td>{{ data.dia_semana }}</td>
+                        <td>{{ data.turno.nombre }}</td>
+                        <td>{{ data.hora_inicio }}</td>
+                        <td>{{ data.hora_fin }}</td>
+                        <td>{{ data.cantidad }}</td>
+                    </tr>
+                {% endfor %}
 
-<table class="table table-bordered">
-	<thead>
-		<tr>
-			<td>Médico</td>
-			<td>Día</td>
-			<td>Turno</td>
-			<td>Hora inicio</td>
-			<td>Hora fin</td>
-			<td>Cantidad</td>
-		</tr>
-	</thead>
-	<tbody>
+                {% else %}
+                <h1>No hay registros de agendas</h1>
+                {% endif %}
+                </tbody>
+            </table>
+            </div>
+            </div>
+                    </div>
 
-		<div class="btn-group pull-right">
-			<a href="{% url 'consultorios:horario_medico_nuevo' %}" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
-			<p>
-		</div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
 
-		{% if object_list %}
-		{% for data in object_list %}
-		<tr>
-			<td>
-				<a href="/consultorios/horario_medico/{{ data.id }}/editar">{{ data.medico }}</a>
-			</td>
-			<td>{{ data.dia_semana }}</td>
-			<td>{{ data.turno.nombre }}</td>
-			<td>{{ data.hora_inicio }}</td>
-			<td>{{ data.hora_fin }}</td>
-			<td>{{ data.cantidad }}</td>
+<div class="pagination">
+    <ul class="pager">
+        <li>
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number}}">Anterior</a>
+            {% endif%}
+        </li>
+        <li>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number}}">Siguiente</a>
+            {% endif%}
+        </li>
+    </ul>
+</div>
+</div>
+{% endblock%}
 
-
-		</tr>
-		{% endfor %}
-		{% else %}
-		<h1>No existen datos.</h1>
-		<div class="btn-group pull-right">
-			<a href="{% url 'consultorios:horario_medico_nuevo' %}" id="create2" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
-			<p>
-		</div>
-		{% endif %}
-	</tbody>
-	
-</table>
-
-{% endblock %}

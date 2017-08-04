@@ -137,7 +137,7 @@ class HorarioMedicoModelForm(forms.ModelForm):
             'dia_semana': select2form.Select2Widget(attrs={'class': 'form-control'}),
             'turno': select2form.Select2Widget(attrs={'class': 'form-control'}),
             'cantidad': forms.TextInput(attrs={'class': 'form-control'}),
-            #'habilitado': forms.BooleanField(required=True),
+            'habilitado': forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
 
 
