@@ -96,7 +96,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sihincan_db',
         'USER': 'postgres',
-        'PASSWORD': 'OscProdPost2014',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': 5432,
     }
@@ -160,7 +160,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, '../static')
 
 STATIC_URL = '/static/'
 
-
+# INSTALAR MEMCACHED
+# pip install python3-memcached
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
