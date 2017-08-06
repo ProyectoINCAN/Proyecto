@@ -17,7 +17,8 @@
     <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/jquery.timepicker.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
-    <link href="/static/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+    <!--<link href="/static/css/select2.min.css" rel="stylesheet" />-->
 
     <!--<script src="/static/js/datepicker-es.js"></script>-->
 
@@ -382,8 +383,8 @@
     <script src = "{% static 'js/bootstrap.min.js' %}"></script>
     <script src = "{% static 'js/metisMenu.min.js' %}"></script>
     <script src = "{% static 'js/sb-admin-2.js' %}"></script>
-    <!--<script src = "{% static 'js/select2.min.js' %"></script>-->
-    <script src="/static/js/select2.min.js"></script>
+    <script src = "{% static 'js/select2.min.js' %}"></script>
+    <!--<script src="/static/js/select2.min.js"></script>-->
     {% block extrajs %}
 
     {% endblock %}
@@ -423,6 +424,9 @@
         scrollbar: true
     });
 	</script>
+    <script>
+        $('.selectsearch').select2({ placeholder:"Seleccione una opción", allowClear: true});
+    </script>
 
 </body>
 </html>
