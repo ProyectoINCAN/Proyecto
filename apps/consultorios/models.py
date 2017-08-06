@@ -64,7 +64,7 @@ class Medico(models.Model):
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
     fecha_ingreso = models.DateField(auto_now=True, null=False)
     especialidad = models.ManyToManyField(Especialidad)
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=False, default=1)  #todo quitar el default cuando se elimine la base de datos
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=False)  #todo quitar el default cuando se elimine la base de datos
 
     def __str__(self):
         return self.apellidos + ", " + self.nombres

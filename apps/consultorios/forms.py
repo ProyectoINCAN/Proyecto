@@ -29,16 +29,17 @@ class MedicoModelForm(forms.ModelForm):
         widgets = {
             'nombres': forms.TextInput(attrs={'class': 'form-control'}),
             'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
-            'tipo_doc': select2form.Select2Widget(attrs={'class': 'form-control'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
             'nro_registro_medico': forms.TextInput(attrs={'class': 'form-control'}),
-            'sexo': forms.Select(attrs={'class': 'form-control'}),
+            'sexo': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control'}),
-            'nacionalidad': forms.Select(attrs={'class': 'form-control'}),
-            'estado_civil': forms.Select(attrs={'class': 'form-control'}),
-            'etnia': forms.Select(attrs={'class': 'form-control'}),
-            'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control'}, choices=Especialidad.objects.all())
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'etnia': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple'},
+                                                               choices=Especialidad.objects.all())
         }
 
     def __init__(self, *args, **kwargs):
@@ -130,12 +131,12 @@ class HorarioMedicoModelForm(forms.ModelForm):
             'habilitado': 'Habilitado'
         }
         widgets = {
-            'medico': select2form.Select2Widget(attrs={'class': 'form-control'}),
+            'medico': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'hora_inicio': forms.TimeInput(attrs={'class': 'form-control timepicker text-center'}),
             'hora_fin': forms.TimeInput(attrs={'class': 'form-control timepicker text-center'}),
-            'cod_departamento': select2form.Select2Widget(attrs={'class': 'form-control'}),
-            'dia_semana': select2form.Select2Widget(attrs={'class': 'form-control'}),
-            'turno': select2form.Select2Widget(attrs={'class': 'form-control'}),
+            'cod_departamento': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'dia_semana': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'turno': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'cantidad': forms.TextInput(attrs={'class': 'form-control'}),
             'habilitado': forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
