@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'base/base2.html' %}
 
 
 {% block content %}
@@ -8,27 +8,113 @@
         {# <button type="button" class="close" data-dismiss="alert">&times;</button> #}
        {# <strong>SIHINCAN!</strong>Completar <a href="#" class="alert-link">los datos básicos del paciente</a>,y luego cargar los otros datos. #}
 {# </div> #}
-
+<br><br>
 <form class="form-horizontal col-sm-10" method="post">
 
 
-    <legend><b><p align="center">I PARTE: Datos Básicos del Pacientes</p></b></legend>
+    {#   <legend><b><p align="center">I PARTE: Datos Básicos del Pacientes</p></b></legend> #}
     <div class ="row">
-		 {% csrf_token %}
-         {{ form2.as_p }}
-         {{ form.as_p }}
 
+        <form method="POST">
+            {% csrf_token %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 align="center">Datos Básico del Paciente</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+
+                            <label for="{{ form2.nombres.name }}"> {{ form2.nombres.label }}</label>
+                            {{ form2.nombres }}
+                        </div>
+                     </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form2.apellidos.name }}"> {{ form2.apellidos.label }}</label>
+                            {{ form2.apellidos }}
+                        </div>
+                     </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form2.tipo_doc.name }}"> {{ form2.tipo_doc.label }}</label>
+                            {{ form2.tipo_doc }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form2.nro_doc.name }}"> {{ form2.nro_doc.label }}</label>
+                            {{ form2.nro_doc }}
+                        </div>
+                     </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form2.sexo.name }}"> {{ form2.sexo.label }}</label>
+                            {{ form2.sexo }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form.tipo.name }}"> {{ form.tipo.label }}</label>
+                            {{ form.tipo }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form.numero.name }}"> {{ form.numero.label }}</label>
+                            {{ form.numero }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form2.fecha_nacimiento.name }}"> {{ form2.fecha_nacimiento.label }}</label>
+                            {{ form2.fecha_nacimiento }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form2.lugar_nacimiento.name }}"> {{ form2.lugar_nacimiento.label }}</label>
+                            {{ form2.lugar_nacimiento }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form2.nacionalidad.name }}"> {{ form2.nacionalidad.label }}</label>
+                            {{ form2.nacionalidad }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form2.estado_civil.name }}"> {{ form2.estado_civil.label }}</label>
+                            {{ form2.estado_civil }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <label for="{{ form2.etnia.name }}"> {{ form2.etnia.label }}</label>
+                            {{ form2.etnia }}
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+
+            <div class="col-md-8 col-md-offset-2">
+                <button class="btn btn-outline btn-primary" type="submit">Guardar</button>
+            </div>
+
+        </form>
 
     </div>
 
-     <div class="form-group" align="center">
-            <div class="col-lg-10 col-lg-offset-2">
-                 <button class="btn btn-info" type="submit" ><span class="glyphicon glyphicon-align-justify"></span>Siguiente</button>
-                 <a href="{% url 'pacientes:index' %}" class="btn btn-info" role="button" > Cancelar </a>
-                 <a href="{% url 'pacientes:index' %}" class="btn btn-info" role="button"> Finalizar</a>
-            </div>
+     {#  <div class="form-group" align="center"> #}
+            {#  <div class="col-lg-10 col-lg-offset-2"> #}
+                 {#  <button class="btn btn-info" type="submit" ><span class="glyphicon glyphicon-align-justify"></span>Siguiente</button>#}
+                 {#<a href="{% url 'pacientes:index' %}" class="btn btn-info" role="button" > Cancelar </a>#}
+                {# <a href="{% url 'pacientes:index' %}" class="btn btn-info" role="button"> Finalizar</a>#}
+            {#  </div> #}
 
-     </div>
+     {#</div> #}
 
 </form>
 

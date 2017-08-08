@@ -49,17 +49,6 @@ class PacienteCreate(CreateView):
     success_url = reverse_lazy('pacientes:paciente_direccion','3' )
 
 
-
-class PacienteUpdate(UpdateView):
-    '''actualizacion de los primeros datos de paciente en call center'''
-    model = Paciente
-    form_class = PacienteForm
-
-    template_name = 'pacientes/paciente_form.html'
-    print("llego hasta update de paciente")
-    success_url = reverse_lazy('pacientes:index')
-
-
 def paciente_delete(request, id_paciente):
     '''implementacion del metodo para eliminar el registro de un paciente
     Dado que ya se registro la direccion del paciente, se realiza un delete multiple
@@ -88,7 +77,6 @@ class PacienteDelete(DeleteView):
     template_name = 'pacientes/paciente_delete.html'
     print("llego hasta eliminacion de paciente")
     success_url = reverse_lazy('pacientes:index')
-
 
 
 def paciente_direccion(request, paciente_id):
@@ -147,10 +135,6 @@ class PacienteBuscar(TemplateView):
             result = []
         return render_to_response("pacientes/index.html", {"result":result, "query":query})
 
-
-
-
-
          #   buscar = request.POST['cedula']
         #print(buscar)
         #paciente = Paciente.objects.filter(nro_doc__icontains = request.POST['cedula'])
@@ -197,15 +181,17 @@ def consulta(request):
     return render(request,'pacientes/index.html',{'pacientes': pacientes })
 
 
-class PacienteCallCenterCreate(CreateView):
+class PacienteCreate(CreateView):
     model = Telefono
+
     template_name = 'pacientes/paciente_callCenter_form.html'
     form_class = TelefonoForm
     second_form_class = PacienteForm
     success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
 
+    # agregamos los form al contexto
     def get_context_data(self, **kwargs):
-        context = super(PacienteCallCenterCreate, self).get_context_data(**kwargs)
+        context = super(PacienteCreate, self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:
@@ -214,16 +200,59 @@ class PacienteCallCenterCreate(CreateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        form = self.form_class(request.POST) #AgendaDetalleForm
-        form2 = self.second_form_class(request.POST) #AgendaForm
-        print("llego")
+        form = self.form_class(request.POST)  # TelefonoForm
+        form2 = self.second_form_class(request.POST)  # PersonaForm
+
         print(str(form.is_valid()) + " " + str(form2.is_valid()))
         if form.is_valid() and form2.is_valid():
-            print("llego2")
             telefono = form.save(commit=False)
             telefono.paciente = form2.save()
             telefono.save()
             return HttpResponseRedirect(self.get_success_url())
+
+
+
         else:
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
+
+
+class PacienteUpdate(UpdateView):
+    model = Telefono
+    second_model = Paciente
+    template_name = 'pacientes/paciente_callCenter_form.html'
+    form_class = TelefonoForm
+    second_form_class = PacienteForm
+
+    success_url = reverse_lazy('pacientes:index')
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteUpdate, self).get_context_data(**kwargs)
+        pk = self.kwargs.get('pk',0)
+        telefono = self.model.objects.get(id=pk)
+        paciente = self.second_model.objects.get(id=telefono.paciente_id)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'form2' not in context:
+            context['form2'] = self.second_form_class(instance=paciente)
+        context['id'] = pk
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        id_telefono = kwargs['pk']
+        telefono = self.model.objects.get(id = id_telefono)
+        paciente =  self.second_model.objects.get(id = telefono.paciente_id)
+        form = self.form_class(request.POST, instance = telefono)
+        form2 = self.second_form_class(request.POST, instance = paciente)
+        if form.is_valid() and form2.is_valid():
+            form.save()
+            form2.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+
+
+
+
+
 

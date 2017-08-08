@@ -237,7 +237,7 @@ class SituacionLaboral(models.Model):
 
 
 class Paciente(models.Model):
-    nombres = models.CharField(max_length=100, blank=False, validators=[nombre_validation,charfield_validation])
+    nombres = models.CharField(max_length=100, blank=False, null= True)
     apellidos = models.CharField(max_length=100, blank=False)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
     nro_doc = models.CharField(max_length=15, blank=True, null=False, verbose_name="Número de documento", unique=True, validators=[doc_validation])  #si no tiene nrodoc, por defecto debe guardar INICIAL_APELLIDO+INICIAL_NOMBRE+FECHA_NACIMIENTO
@@ -251,7 +251,7 @@ class Paciente(models.Model):
     fecha_registrado = models.DateTimeField(default=now, null=False)  # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
 
     def __str__(self):
-        return self.apellidos + ", " + self.nombres
+        return '{} {}'.format(self.nombres, self.apellidos)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):

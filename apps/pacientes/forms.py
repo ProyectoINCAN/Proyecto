@@ -33,19 +33,28 @@ class PacienteForm(forms.ModelForm):
             'tipo_doc',
             'nro_doc',
             'sexo',
+            'fecha_nacimiento',
+            'lugar_nacimiento',
+            'nacionalidad',
+            'estado_civil',
+            'etnia'
 
         ]
 
 
 
         labels = {
-            'nombres':'Nombres',
-            'apellidos':'Apellidos',
-            'tipo_doc':'Tipo de Documento',
-            'nro_doc': 'Número de Documento',
+            'nombres':'Nombres:',
+            'apellidos':'Apellidos:',
+            'tipo_doc':'Tipo de Documento:',
+            'nro_doc': 'Número de Documento:',
             'nro_doc_alternativo':'Documento Alternativo',
             'sexo':'Sexo',
-
+            'fecha_nacimiento': 'Fecha de Nacimiento',
+            'lugar_nacimiento':'Lugar de Nacimiento',
+            'nacionalidad': 'Nacionalidad',
+            'estado_civil': 'Estado Civil',
+            'etnia': 'Etnia',
              }
 
         #help_texts = {
@@ -53,16 +62,17 @@ class PacienteForm(forms.ModelForm):
         #}
 
         widgets = {
-         #   'nombres': forms.TextInput(attrs ={'class': 'form-control'}),
-          #  'apellidos': forms.TextInput(attrs ={'class': 'form-control'}),
-           # 'nro_doc': forms.TextInput(attrs ={'class': 'form-control'}),
+            'nombres': forms.TextInput(attrs ={'class': 'form-control'}),
+            'apellidos': forms.TextInput(attrs ={'class': 'form-control'}),
+            'tipo_doc': forms.Select(attrs={'class':'form-control'}),
+             'nro_doc': forms.TextInput(attrs ={'class': 'form-control'}),
             #'nro_doc_alternativo': forms.TextInput(attrs ={'class': 'form-control'}),
-            #'sexo': forms.TextInput(attrs={'class':'form-control'}),
-            #'fecha_nacimiento': suit.widgets.SuitDateWidget,
-            #'lugar_nacimiento': forms.TextInput(attrs ={'class': 'form-control'}),
-            #'nacionalidad': forms.TextInput(attrs ={'class': 'form-control'}),
-            #'estado_civil': forms.TextInput(attrs ={'class': 'form-control'}),
-            #'etnia': forms.TextInput(attrs ={'class': 'form-control'}),
+             'sexo': forms.Select(attrs={'class': 'form-control'}),
+            'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control'}),
+            'nacionalidad': forms.Select(attrs={'class': 'form-control'}),
+            'estado_civil': forms.Select(attrs={'class': 'form-control'}),
+             'etnia': forms.Select(attrs={'class': 'form-control'}),
         }
 
         #validacion para la creacion de un nuevo paciente
@@ -74,22 +84,24 @@ class TelefonoForm(forms.ModelForm):
         model = Telefono
 
         fields = [
-            'numero',
             'tipo',
+            'numero',
 
         ]
 
         labels = {
+
+            'tipo': 'Tipo de Telefono',
             'numero': 'Número',
-            'tipo': 'Tipo',
 
         }
 
-        # widgets = {
-        #     'numero': forms.TextInput(attrs={'class': 'form-control'}),
-        #     'orden': forms.NumberInput(attrs={'class': 'form-control'}),
-        #     'confirmado':forms.CheckboxInput(attrs={'class': 'form-control'}),
-        # }
+        widgets = {
+            'numero': forms.TextInput(attrs={'class': 'form-control'}),
+            'orden': forms.NumberInput(attrs={'class': 'form-control'}),
+            'tipo': forms.Select(attrs={'class': 'form-control'}),
+            'confirmado':forms.CheckboxInput(attrs={'class': 'form-control'}),
+        }
 
 
 
