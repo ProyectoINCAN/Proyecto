@@ -36,6 +36,7 @@ def paciente_crear(request):
 
 
 
+
 #vista basada en clase Paciente
 class PacienteCreate(CreateView):
     '''crear un nuevo paciente con sus datos básicos'''
