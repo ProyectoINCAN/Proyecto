@@ -1,0 +1,27 @@
+{% extends "base2.html" %}
+
+{% block content %}
+    <h2>Editor {{ agenda.id }}</h2>
+
+    <ol>
+      {% for detalles in page_obj %}
+        <li>{{ detalles.orden }}</li>
+      {% endfor %}
+    </ol>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Pagina {{ page_obj.number }} de {{ paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">siguiente</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}
