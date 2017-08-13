@@ -29,20 +29,6 @@ class MedicoList(ListView):
     #                                 where m.id = %d
     #                             """, medico.id)
 
-    # borrar esto
-    # def get_context_data(self, **kwargs):
-    #     context = super(MedicoList, self).get_context_data(**kwargs)
-    #     pk = self.kwargs.get('pk', 3)
-    #     print("pk medico "+str(pk))
-    #     medico = self.model.objects.get(id=pk)
-    #     context['especialidad'] = Especialidad.objects.raw("""
-    #                                 select string_agg(e.nombre, ', ') as especialidades
-    #                                 from consultorios_medico m
-    #                                 join consultorios_medico_especialidad me on m.id = me.medico_id
-    #                                 join consultorios_especialidad e on me.especialidad_id = e.id
-    #                                 where m.id = %d
-    #                             """, medico.id)
-
 
 class MedicoCreate(CreateView):
     model = Medico

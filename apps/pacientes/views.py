@@ -177,7 +177,7 @@ def autocomplete_nombres(request):
                         '''
                         SELECT *
                         FROM pacientes_paciente
-                        WHERE CONCAT (UPPER(nombres), ' ', UPPER(apellidos)) like UPPER('%''' + name_paciente + '''%')
+                        WHERE CONCAT (UPPER(nombres), ' ', UPPER(apellidos),' ', UPPER(nro_doc)) like UPPER('%''' + name_paciente + '''%')
                                     '''
                     )
 
