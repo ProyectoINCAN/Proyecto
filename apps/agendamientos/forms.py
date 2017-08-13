@@ -32,12 +32,12 @@ class AgendaForm(forms.ModelForm):
         }
 
         widgets = {
-            'especialidad': select2form.Select2Widget(attrs={'class': 'form-control'}),
-            'medico': forms.Select(attrs ={'class':'form-control'}),
+            'especialidad': forms.Select(attrs ={'class':'form-control selectsearch'}),
+            'medico': forms.Select(attrs ={'class':'form-control selectsearch'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'turno': select2form.Select2Widget(attrs={'class': 'form-control'}),
+            'turno': forms.Select(attrs ={'class':'form-control selectsearch'}),
             'cantidad': forms.TextInput(attrs ={'class': 'form-control'}),
-            'estado': forms.Select(attrs ={'class':'form-control'}),
+            'estado': forms.Select(attrs ={'class':'form-control selectsearch'}),
         }
 
 
@@ -46,22 +46,25 @@ class AgendaDetalleForm(forms.ModelForm):
 
     class Meta:
         model = AgendaDetalle
-
+        # exclude = ('agenda',)
         fields = [
+            # 'agenda',
             'paciente',
-            'orden',
+            # 'orden',
             'confirmado',
         ]
 
         labels = {
+            # 'agenda': 'Agenda',
             'paciente': 'Paciente',
-            'orden': 'Orden',
+            # 'orden': 'Orden',
             'confirmado': 'Confirmado',
         }
 
         widgets = {
-            'paciente': forms.TextInput(attrs={'class': 'form-control'}),
-            'orden': forms.NumberInput(attrs={'class': 'form-control'}),
+
+            'paciente': forms.Select(attrs ={'class':'form-control selectsearch'}),
+            # 'orden': forms.NumberInput(attrs={'class': 'form-control'}),
             'confirmado':forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
 

@@ -239,7 +239,7 @@ class PacienteCreate(CreateView):
     template_name = 'pacientes/paciente_callCenter_form.html'
     form_class = TelefonoForm
     second_form_class = PacienteForm
-    success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
+    success_url = reverse_lazy('pacientes:index')
 
     # agregamos los form al contexto
     def get_context_data(self, **kwargs):
@@ -272,6 +272,7 @@ class PacienteUpdate(UpdateView):
     second_model = Paciente
     template_name = 'pacientes/paciente_callCenter_form.html'
     form_class = TelefonoForm
+
     second_form_class = PacienteForm
 
     success_url = reverse_lazy('pacientes:index')
@@ -279,6 +280,7 @@ class PacienteUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(PacienteUpdate, self).get_context_data(**kwargs)
         pk = self.kwargs.get('pk',0)
+        print(pk)
         telefono = self.model.objects.get(id=pk)
         paciente = self.second_model.objects.get(id=telefono.paciente_id)
         if 'form' not in context:

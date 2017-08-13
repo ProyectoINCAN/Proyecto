@@ -1,6 +1,9 @@
 from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
 
+from apps.consultorios.views import MedicoUpdate
 from apps.pacientes.views import index,PacienteCreate, paciente_crear, PacienteUpdate, PacienteCreate
+
 
 from apps.pacientes import views as pacienteViews
 
@@ -12,7 +15,8 @@ urlpatterns = [
     #url(r'^nuevo_paciente2$', paciente_crear ,name='nuevo_paciente'),
     url(r'^nuevo_paciente$', PacienteCreate.as_view(),name='nuevo_paciente'),
     #url(r'^paciente_call_center$', PacienteCallCenterCreate.as_view(),name='nuevo_paciente'),
-    url(r'^pacientedit/(?P<pk>\d+)$', pacienteViews.PacienteUpdate.as_view(),name='paciente_edit'),
+    url(r'^paciente_editar/(?P<pk>[0-9]+)$', PacienteUpdate.as_view(),name='paciente_edit'),
+    url(r'^(?P<pk>[0-9]+)/editar$', login_required(MedicoUpdate.as_view()), name='medico_editar'),
 
 
     #dos url para eliminar, estamos usando el de la funcion y no el de la clase

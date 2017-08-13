@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+
+<!--{% include "base/nav_ficha_clinica.html" %}-->
+
+
+    <form method="post">
+        {% csrf_token %}
+        <h3>Está seguro de que desea cancelar la agenda y pasar a la siguiente fecha?</h3>
+        <button class="btn btn-danger" type="submit">Sí</button>
+        <!--<a class="btn btn-default" href="{% url 'agendamientos:agenda_detalle' %}">No</a>-->
+    </form>
+{% endblock %}
