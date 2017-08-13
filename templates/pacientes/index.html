@@ -9,8 +9,9 @@
             $("#limpiar").click(function () {
                  $("#id_paciente").val('');
                  $("#paciente_label").val('');
-            });
 
+            });
+            $().toastmessage('showSuccessToast', "Hello there! Message is shown.");
             var id_paciente;
             $("#paciente_label").autocomplete({
                 source: "/pacientes/autocomplete_nombres/",
@@ -19,6 +20,7 @@
                     id_paciente = ui.item.id;
                     $("#id_paciente").val(id_paciente);
                     $("#paciente_label").val(ui.item.label);
+
                 }
 
             });
