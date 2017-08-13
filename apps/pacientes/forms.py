@@ -3,6 +3,8 @@ from django.db import models as django_models
 from django.utils.translation import ugettext_lazy as _
 from apps.pacientes.models import Paciente, Direccion, PacienteNivelEducativo, Telefono
 
+from django_select2 import forms as select2form
+
 from django.contrib.admin import widgets
 from django.contrib.admin.options import FORMFIELD_FOR_DBFIELD_DEFAULTS
 
@@ -64,15 +66,15 @@ class PacienteForm(forms.ModelForm):
         widgets = {
             'nombres': forms.TextInput(attrs ={'class': 'form-control'}),
             'apellidos': forms.TextInput(attrs ={'class': 'form-control'}),
-            'tipo_doc': forms.Select(attrs={'class':'form-control'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch'}),
              'nro_doc': forms.TextInput(attrs ={'class': 'form-control'}),
             #'nro_doc_alternativo': forms.TextInput(attrs ={'class': 'form-control'}),
-             'sexo': forms.Select(attrs={'class': 'form-control'}),
+             'sexo': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control'}),
-            'nacionalidad': forms.Select(attrs={'class': 'form-control'}),
-            'estado_civil': forms.Select(attrs={'class': 'form-control'}),
-             'etnia': forms.Select(attrs={'class': 'form-control'}),
+            'lugar_nacimiento':  forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nacionalidad':  forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'estado_civil':  forms.Select(attrs={'class': 'form-control selectsearch'}),
+             'etnia':  forms.Select(attrs={'class': 'form-control selectsearch'}),
         }
 
         #validacion para la creacion de un nuevo paciente
@@ -99,7 +101,7 @@ class TelefonoForm(forms.ModelForm):
         widgets = {
             'numero': forms.TextInput(attrs={'class': 'form-control'}),
             'orden': forms.NumberInput(attrs={'class': 'form-control'}),
-            'tipo': forms.Select(attrs={'class': 'form-control'}),
+            'tipo': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'confirmado':forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
 

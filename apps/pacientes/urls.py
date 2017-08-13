@@ -24,6 +24,7 @@ urlpatterns = [
 
 
     url(r'^buscar/$', pacienteViews.PacienteBuscar.as_view(), name='buscar'),
+    url(r'^autocomplete_nombres/$', pacienteViews.autocomplete_nombres, name='autocomplete_nombres'),
 
 
 

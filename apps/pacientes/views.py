@@ -1,4 +1,4 @@
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 from django.core.urlresolvers import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -7,8 +7,10 @@ from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from apps.pacientes.forms import PacienteForm, DireccionForm, NivelEducativoForm, TelefonoForm
 from apps.pacientes.models import Paciente, Direccion, Paciente, Telefono
-
+from apps.principal.common_functions import filtros_establecidos
 from django.contrib import  messages
+from django.db import connection
+import json
 
 # Create your views here.
 
@@ -162,14 +164,64 @@ class PacienteView(TemplateView):
 		context['pacientes'] = Paciente.objects.filter()
 		return context
 
+def autocomplete_nombres(request):
+    if request.method == 'GET':
+        if request.is_ajax():
+            if request.is_ajax():
+                try:
+                    name_paciente = request.GET['term']
+                    print("term ->" + name_paciente);
+
+                    query = (
+                        '''
+                        SELECT *
+                        FROM pacientes_paciente
+                        WHERE CONCAT (UPPER(nombres), ' ', UPPER(apellidos)) like UPPER('%''' + name_paciente + '''%')
+                                    '''
+                    )
+
+                    cursor = connection.cursor()
+                    cursor.execute(query)
+                    results = cursor.fetchall()
+                    lista_pacientes = []
+                    for r in results:
+                        vendedor = {}
+                        vendedor['id']= r[0]
+                        vendedor['label']= r[3]+"-"+r[1]+" "+r[2]
+                        vendedor['value'] = r[1]+" "+r[2]
+                        lista_pacientes.append(vendedor)
+                    data = json.dumps(lista_pacientes)
+                except Exception:
+                    print("error de consulta");
+            else:
+                data = 'fail'
+            mimetype = 'application/json'
+            return HttpResponse(data,mimetype)
+        else:
+            print("debo redirigir al login")
+
+
+
 
 def consulta(request):
     query = request.GET.get('cedula','')
-    pacientes = Paciente.objects.filter(nro_doc__icontains = query)
+    query2 = request.GET.get('paciente','')
+
+    filtros = filtros_establecidos(request,'index_paciente')
+
+    #significa que se ingreso el nombre del paciente
+    if filtros == 1 :
+        pacientes = Paciente.objects.filter(id = request.GET.get('paciente'))
+    elif filtros == 2:
+        #en el caso que en que se haya ingresado el numero de cedula solamente
+        pacientes = Paciente.objects.filter(nro_doc__icontains = request.GET.get('cedula'))
+    else:
+        pacientes = Paciente.objects.all()
+
     dic = {'pacientes': pacientes }
     paginator = Paginator(pacientes, 5 )
 
-    page =request.GET.get('page')
+    page =request.GET.get('page','1')
     print(page)
     try:
         pacientes = paginator.page(page)
@@ -209,7 +261,6 @@ class PacienteCreate(CreateView):
             telefono.paciente = form2.save()
             telefono.save()
             return HttpResponseRedirect(self.get_success_url())
-
 
 
         else:

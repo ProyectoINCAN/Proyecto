@@ -1,27 +1,77 @@
 {% extends 'base/base2.html' %}
 
 
+{% block extrajs %}
+
+    <script type="text/javascript">
+        $(function() {
+
+            $("#limpiar").click(function () {
+                 $("#id_paciente").val('');
+                 $("#paciente_label").val('');
+            });
+
+            var id_paciente;
+            $("#paciente_label").autocomplete({
+                source: "/pacientes/autocomplete_nombres/",
+                minLength : 1,
+                select: function (event, ui) {
+                    id_paciente = ui.item.id;
+                    $("#id_paciente").val(id_paciente);
+                    $("#paciente_label").val(ui.item.label);
+                }
+
+            });
+
+        });
+
+</script>
+
+{% endblock %}
+
+
 {% block content %}
 <br>
-<div class ="busqueda">
-     <form class="navbar-search pull-left" action="/pacientes/index/" method="GET">
+
+<div class ="row">
+<div class="col-sm-7">
+     <form  class="form-horizontal" action="/pacientes/index/" method="GET">
          {% csrf_token %}
 
              <div class ="panel panel-default">
                  <div class="panel-heading">Búsqueda</div>
                  <div class ="panel-body">
-                    <label for="cedula">Nro Documento: </label>
-                    <input type="text" class="search-query" name="cedula" value="{{ query|escape }}">
+                     <div class="panel-group" id="accordion">
+                         <div class="form-group">
+                                <label for="cedula"class="control-label col-sm-3">Nro Doc: </label>
+                                 <div class="col-sm-8">
+                                    <input type="text"  class="form-control" name="cedula" value="{{ query|escape }}">
+                                 </div>
+
+
+                         </div>
+                         <div class="row">
+                             <label for="nombre"  class="control-label col-sm-3">Paciente: </label>
+                             <div class="col-sm-8">
+                                 <input name="paciente_nombre"class="form-control" id="paciente_label" type="text" value="" placeholder="Ingrese nombre"/>
+                                 <input name="paciente" id="id_paciente" value="" type="hidden"/>
+                             </div>
+                             <div class="col-sm-1">
+                                     <button type="button" id="limpiar" title="Limpiar" class="btn btn-default btn-circle"><i class="fa fa-times"></i></button>
+                             </div>
+                         </div>
+                     </div>
                  </div>
 
                  <div class ="panel-footer">
                      <button class="btn btn-outline btn-primary" type="submit"><i class="fa fa-search-plus"></i>Buscar</button>
                  </div>
              </div>
+
      </form>
+</div>
  </div>
-    <br><br><br><br><br><br><br><br><br>
- <div class="form-group">
+ <div class="row">
      {% block paciente %}
         <div class="panel panel-default">
             <div class="panel-heading">

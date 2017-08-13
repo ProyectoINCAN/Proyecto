@@ -8,96 +8,121 @@
         {# <button type="button" class="close" data-dismiss="alert">&times;</button> #}
        {# <strong>SIHINCAN!</strong>Completar <a href="#" class="alert-link">los datos básicos del paciente</a>,y luego cargar los otros datos. #}
 {# </div> #}
-<br><br>
-<form class="form-horizontal col-sm-10" method="post">
-
-
+<div class="row">
+	<div class="col-lg-12">
+        <h1 class="page-header">Datos Básicos del Paciente</h1>
+    </div>
+</div>
+<div class ="row">
+<form class="form-horizontal col-sm-10" method="POST">
     {#   <legend><b><p align="center">I PARTE: Datos Básicos del Pacientes</p></b></legend> #}
-    <div class ="row">
+
 
         <form method="POST">
             {% csrf_token %}
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 align="center">Datos Básico del Paciente</h4>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-
-                            <label for="{{ form2.nombres.name }}"> {{ form2.nombres.label }}</label>
-                            {{ form2.nombres }}
+                    <div class="form-group">
+                        <div class="col-md-10 ">
+                            <label for="{{ form2.nombres.name }}" class="col-sm-2 control-label"> {{ form2.nombres.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form2.nombres }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="{{ form2.apellidos.name }}" class="col-sm-2 control-label" > {{ form2.apellidos.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form2.apellidos }}
+                            </div>
                         </div>
                      </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form2.apellidos.name }}"> {{ form2.apellidos.label }}</label>
-                            {{ form2.apellidos }}
-                        </div>
-                     </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form2.tipo_doc.name }}"> {{ form2.tipo_doc.label }}</label>
-                            {{ form2.tipo_doc }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form2.nro_doc.name }}"> {{ form2.nro_doc.label }}</label>
-                            {{ form2.nro_doc }}
-                        </div>
-                     </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form2.sexo.name }}"> {{ form2.sexo.label }}</label>
-                            {{ form2.sexo }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form.tipo.name }}"> {{ form.tipo.label }}</label>
-                            {{ form.tipo }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form.numero.name }}"> {{ form.numero.label }}</label>
-                            {{ form.numero }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form2.fecha_nacimiento.name }}"> {{ form2.fecha_nacimiento.label }}</label>
-                            {{ form2.fecha_nacimiento }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form2.lugar_nacimiento.name }}"> {{ form2.lugar_nacimiento.label }}</label>
-                            {{ form2.lugar_nacimiento }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form2.nacionalidad.name }}"> {{ form2.nacionalidad.label }}</label>
-                            {{ form2.nacionalidad }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form2.estado_civil.name }}"> {{ form2.estado_civil.label }}</label>
-                            {{ form2.estado_civil }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <label for="{{ form2.etnia.name }}"> {{ form2.etnia.label }}</label>
-                            {{ form2.etnia }}
+                    <br>
+                    <div class="form-group">
+                        <div class="col-md-10 ">
+                            <label for="{{ form2.tipo_doc.name }}" class="col-sm-2 control-label"> {{ form2.tipo_doc.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form2.tipo_doc }}
+                            </div>
                         </div>
                     </div>
                     <br>
-                </div>
-            </div>
+                    <div class="form-group">
+                        <div class="col-md-10 ">
+                            {{ form2.nro_doc.errors }}
+                            <label for="{{ form2.nro_doc.name }}" class="col-sm-2 control-label"> {{ form2.nro_doc.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form2.nro_doc }}
+                            </div>
+                        </div>
+                     </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="{{ form2.sexo.name }}"class="col-sm-2 control-label"> {{ form2.sexo.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form2.sexo }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="{{ form.tipo.name }}" class="col-sm-2 control-label"> {{ form.tipo.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form.tipo }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            {{ form.numero.errors }}
+                            <label for="{{ form.numero.name }}" class="col-sm-2 control-label"> {{ form.numero.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form.numero }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="{{ form2.fecha_nacimiento.name }}" class="col-sm-2 control-label"> {{ form2.fecha_nacimiento.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form2.fecha_nacimiento }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="{{ form2.lugar_nacimiento.name }}" class="col-sm-2 control-label"> {{ form2.lugar_nacimiento.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form2.lugar_nacimiento }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="{{ form2.nacionalidad.name }}" class="col-sm-2 control-label"> {{ form2.nacionalidad.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form2.nacionalidad }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="{{ form2.estado_civil.name }}" class="col-sm-2 control-label"> {{ form2.estado_civil.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form2.estado_civil }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="{{ form2.etnia.name }}" class="col-sm-2 control-label"> {{ form2.etnia.label }}</label>
+                            <div class="col-sm-10">
+                                {{ form2.etnia }}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+
 
             <div class="col-md-8 col-md-offset-2">
                 <button class="btn btn-outline btn-primary" type="submit">Guardar</button>
@@ -105,7 +130,7 @@
 
         </form>
 
-    </div>
+
 
      {#  <div class="form-group" align="center"> #}
             {#  <div class="col-lg-10 col-lg-offset-2"> #}
@@ -117,5 +142,6 @@
      {#</div> #}
 
 </form>
+</div>
 
 {% endblock %}
