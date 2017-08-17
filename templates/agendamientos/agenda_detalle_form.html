@@ -21,12 +21,14 @@
 		</div>
 	</div>
 	{% endfor %}
+	{{form.media}}
 	<div class="form-group" align="left">
 		<div class="col-lg-10 col-lg-offset-2">
 			 <button class="btn btn-primary">Guardar</button>
-
+            <a href="/agendamientos/agenda/{{agenda}}" id="cancelar" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i> Cancelar</a>
 		</div>
 	</div>
+
 </form>
 </div>
 {% endblock %}

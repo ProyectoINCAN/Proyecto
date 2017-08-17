@@ -116,8 +116,10 @@ def agenda_detalle_crear(request, agenda_id):
             return redirect('agendamientos:agenda_detalle', agenda_id)
         # return redirect('pacientes:paciente_nivel_educativo', paciente_id)
         else:
+            print("no es post")
             form = AgendaDetalleForm()
-            return render(request, 'agendamientos/agenda_detalle_form.html', {'form':form})
+            contexto = {'agenda': agenda, 'form':form}
+            return redirect('agendamientos:agenda_detalle', contexto)
                 # redirect('agendamientos:agenda_detalle_crear')
         # return render(request, 'agendamientos/agenda_detalle_by_agenda.html', {'form':form})
 
@@ -176,7 +178,6 @@ def agendaDetalleDelete(request, agenda_detalle_id):
 
 
 class AgendaDetalleDetail(DetailView):
-
     model = AgendaDetalle
 
     def get_context_data(self, **kwargs):
@@ -186,19 +187,6 @@ class AgendaDetalleDetail(DetailView):
         context['agenda_list'] = AgendaDetalle.objects.all()
         return context
 
-
-# class AgendaAgendaDetalleList(ListView):
-#     template_name = 'agendamientos/agenda_detalle_by_agenda.html'
-#
-#     def get_queryset(self):
-#         print("Jose")
-#         global agendaCodigo
-#         self.agenda = get_object_or_404(Agenda, id=self.args[0])
-#
-#         agendaCodigo = self.agenda.id
-#         print("fdsagfjh",agendaCodigo)
-#         return AgendaDetalle.objects.filter(agenda=self.agenda)
-#
 
 def agenda_detalle_list(request, agenda_id):
     agenda = Agenda.objects.get(pk=agenda_id)
@@ -210,20 +198,11 @@ def agenda_detalle_list(request, agenda_id):
     if request.method=='GET':
         form = AgendaForm(instance=agenda)
     else:
-        # estado = EstadoAgenda.objects.get(pk='C')
-        # agenda.estado = agenda.estado
-        #
         form = AgendaForm(request.POST, instance=agenda)
         if form.is_valid():
             form.save()
     contexto = {'agenda': agenda, 'agenda_detalle': agenda_detalle, 'form':form}
     return render(request, 'agendamientos/agenda_detalle_by_agenda.html', contexto)
-
-
-# agenda = Agenda.objects.all().order_by('id')
-#     contexto = {'agendas':agenda}
-#     return render(request, 'agendamientos/agenda_list.html', contexto)
-
 
 class AgendaDetalle_CreateView(CreateView):
     model = AgendaDetalle
@@ -238,27 +217,12 @@ class AgendaDetalle_CreateView(CreateView):
         form_class.instance.user_id = self.request.user.id
         return super(AgendaDetalle_CreateView, self).form_valid(form_class)
 
-
-model = Agenda
-template_name = '/agendamientos/agenda_list.html'
-paginate_by = 15
-
-
 def agenda_especialidad(request):
     if request.method == 'GET':
         agenda = get_agenda_medico_especialidad()
-
-        # form = AgendaForm(request.POST)
-        # print('oguahe koape')
-        # if form.is_valid():  # consulta si el formulario es valido
-        #     form.save()  # guarda
-        #     messages.success(request, 'Datos guardados')
-        #     return redirect('agendamientos:agenda_listar')
-            # redirect ('agendamientos:index')
     else:
         print("metodo noes POST")
         form = AgendaForm()
-
     return render(request, 'agendamientos/agenda_especialidad_list.html', {'object_list': agenda})
 
 
@@ -268,44 +232,5 @@ def agenda_cancelar(request, id_agenda):
         # agenda.delete()
         return redirect('agendamientos:agenda_detalle')
     return render(request, 'agendamientos/agenda_especialidad_list.html', {'agenda':agenda})
-
-
-
-
-# class ejemploview(TemplateView):
-#     def get_context_data(self, **kwargs):
-#         agenda = Agenda.objects.get(id=kwargs['agenda_id'])
-
-
-# class AgendaDetalleCreate(CreateView):
-#     model = AgendaDetalle
-#     template_name = 'agendamientos/agenda_detalle_form.html'
-#     form_class = AgendaDetalleForm
-#     second_form_class = AgendaForm
-#     success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
-#     print("prueba")
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(AgendaDetalleCreate, self).get_context_data(**kwargs)
-#         if 'form' not in context:
-#             context['form'] = self.form_class(self.request.GET)
-#         if 'form2' not in context:
-#             context['form2'] = self.second_form_class(self.request.GET)
-#         return context
-#
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object
-#         form = self.form_class(request.POST) #AgendaDetalleForm
-#         form2 = self.second_form_class(request.POST) #AgendaForm
-#         print("llego")
-#         print(str(form.is_valid()) + " " + str(form2.is_valid()))
-#         if form.is_valid() and form2.is_valid():
-#             print("llego2")
-#             agenda_detalle = form.save(commit=False)
-#             agenda_detalle.agenda = form2.save()
-#             agenda_detalle.save()
-#             return HttpResponseRedirect(self.get_success_url())
-#         else:
-#             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
 
