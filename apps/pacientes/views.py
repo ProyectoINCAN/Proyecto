@@ -14,42 +14,8 @@ import json
 
 # Create your views here.
 
-def index(request):
-    #return HttpResponse("Llego al index")
-    return render(request, 'pacientes/index_paciente.html')
-
-#vistas basada en funciones
-def paciente_crear(request):
-    if request.method == 'POST':
-        form = PacienteForm(request.POST) #llama a mi form de Paciente de Call Center
-        print('oguahe koape1')
-        if form.is_valid():#consulta si el formulario es valido
-            print('oguahe koape')
-
-            paciente = form.save()
-            messages.success(request,'Datos Básicos grabados correctamente.!!')
-            return redirect ('pacientes:paciente_direccion', paciente.id)
-    else:
-        form = PacienteForm()
-    return  render (request, 'pacientes/paciente_form.html',{'form':form})
 
 
-
-
-
-#vista basada en clase Paciente
-class PacienteCreate(CreateView):
-    '''crear un nuevo paciente con sus datos básicos'''
-    model = Paciente  # indico el modelo
-
-    #indico el formulario a utilizar
-    form_class = PacienteForm
-
-    print("llego hasta creacion de paciente")
-    #luego indico el template
-    template_name = 'pacientes/paciente_form.html'
-    #redirijimos
-    success_url = reverse_lazy('pacientes:paciente_direccion','3' )
 
 
 def paciente_delete(request, id_paciente):
@@ -87,16 +53,50 @@ def paciente_direccion(request, paciente_id):
        paciente_id = codigo del paciente
     '''
     if request.method == 'GET':
-        form = DireccionForm()
+        direccion = Direccion.objects.all()
+        contexto = {
+            'direcciones': direccion,
+            'id_paciente': paciente_id
+        }
+
     else:
         form = DireccionForm(request.POST, paciente_id)
         if form.is_valid():
             direccion = form.save(commit=False)
             direccion.paciente_id = paciente_id
             direccion.save()
-            messages.success(request, 'Direcciones del Paciente grabados correctamente.!!')
-            return  redirect('pacientes:paciente_nivel_educativo', paciente_id)
-    return render (request,'pacientes/paciente_direccion.html', {'form': form})
+        direccion = Direccion.objects.all()
+        contexto = {
+            'direcciones': direccion,
+            'id_paciente': paciente_id
+        }
+    return render (request,'pacientes/paciente_direccion.html', contexto )
+
+def crear_direccion(request, paciente_id):
+    '''
+    metodo para crear una nueva direccion
+    :param request:
+    :param paciente_id: codigo de pacientes
+    :return:
+    '''
+    if request.method == 'GET':
+        direccion = DireccionForm()
+        contexto = {
+            'form': direccion,
+            'id_paciente': paciente_id
+        }
+
+    else:
+        form = DireccionForm(request.POST, paciente_id)
+        if form.is_valid():
+            direccion = form.save(commit=False)
+            direccion.paciente_id = paciente_id
+            direccion.save()
+            return redirect('pacientes:paciente_direccion', paciente_id)
+
+
+    return render(request, 'pacientes/direccion.html', contexto)
+
 
 def paciente_nivel_educativo(request, paciente_id):
     '''permite guardar el registro de nivel educativo del paciente
@@ -205,17 +205,11 @@ def autocomplete_nombres(request):
 
 
 def consulta(request):
-    query = request.GET.get('cedula','')
-    query2 = request.GET.get('paciente','')
-
     filtros = filtros_establecidos(request,'index_paciente')
 
     #significa que se ingreso el nombre del paciente
     if filtros == 1 :
         pacientes = Paciente.objects.filter(id = request.GET.get('paciente'))
-    elif filtros == 2:
-        #en el caso que en que se haya ingresado el numero de cedula solamente
-        pacientes = Paciente.objects.filter(nro_doc__icontains = request.GET.get('cedula'))
     else:
         pacientes = Paciente.objects.all()
 
@@ -236,7 +230,6 @@ def consulta(request):
 
 class PacienteCreate(CreateView):
     model = Telefono
-
     template_name = 'pacientes/paciente_callCenter_form.html'
     form_class = TelefonoForm
     second_form_class = PacienteForm
@@ -269,31 +262,55 @@ class PacienteCreate(CreateView):
 
 
 class PacienteUpdate(UpdateView):
-    model = Telefono
     second_model = Paciente
-    template_name = 'pacientes/paciente_callCenter_form.html'
+    model = Telefono
+    template_name = 'pacientes/paciente_form.html'
     form_class = TelefonoForm
-
     second_form_class = PacienteForm
-
     success_url = reverse_lazy('pacientes:index')
 
     def get_context_data(self, **kwargs):
         context = super(PacienteUpdate, self).get_context_data(**kwargs)
-        pk = self.kwargs.get('pk',0)
-        print(pk)
-        telefono = self.model.objects.get(id=pk)
+        pk_paciente = self.kwargs.get('pk',0)
+        query = (
+            '''
+            SELECT MAX(id)
+            FROM pacientes_telefono
+            WHERE paciente_id =''' + pk_paciente + '''
+                                            '''
+        )
+        cursor = connection.cursor()
+        cursor.execute(query)
+        results = cursor.fetchall()
+        for r in results:
+            codigo_telefono = r[0]
+        print(codigo_telefono)
+        telefono = self.model.objects.get(id=codigo_telefono)
         paciente = self.second_model.objects.get(id=telefono.paciente_id)
         if 'form' not in context:
-            context['form'] = self.form_class()
+            context['form'] = self.form_class(instance=telefono)
         if 'form2' not in context:
             context['form2'] = self.second_form_class(instance=paciente)
-        context['id'] = pk
+            context['form'] = self.form_class(instance=telefono)
+        context['id'] = codigo_telefono
+        context['id_paciente'] = pk_paciente
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        id_telefono = kwargs['pk']
+        id_paciente = kwargs['pk']
+        query = (
+            '''
+            SELECT MAX(id)
+            FROM pacientes_telefono
+            WHERE paciente_id =''' + id_paciente + '''
+                                                    '''
+        )
+        cursor = connection.cursor()
+        cursor.execute(query)
+        results = cursor.fetchall()
+        for r in results:
+            id_telefono = r[0]
         telefono = self.model.objects.get(id = id_telefono)
         paciente =  self.second_model.objects.get(id = telefono.paciente_id)
         form = self.form_class(request.POST, instance = telefono)

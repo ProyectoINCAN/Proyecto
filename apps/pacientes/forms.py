@@ -48,7 +48,7 @@ class PacienteForm(forms.ModelForm):
         labels = {
             'nombres':'Nombres:',
             'apellidos':'Apellidos:',
-            'tipo_doc':'Tipo de Documento:',
+            'tipo_doc':'Tipo Doc:',
             'nro_doc': 'Número de Documento:',
             'nro_doc_alternativo':'Documento Alternativo',
             'sexo':'Sexo',
@@ -134,10 +134,24 @@ class DireccionForm(forms.ModelForm):
             'distrito': 'Distrito',
             'barrio': 'Barrio',
             'Sector': 'Sector',
+            'area': 'Area',
             'manzana': 'Manzana',
-            'nro_casa': 'nro_casa',
+            'nro_casa': 'Nro casa',
             'residencia_ocasional': 'Residencia Ocasional',
             'referencia': 'Referencia',
+        }
+        widgets = {
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+            'departamento': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'distrito': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'barrio': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'area': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'departamento': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'sector': forms.TextInput(attrs={'class': 'form-control'}),
+            'nro_casa': forms.TextInput(attrs={'class': 'form-control'}),
+            'manzana': forms.TextInput(attrs={'class': 'form-control'}),
+            'residencia_ocasional': forms.TextInput(attrs={'class': 'form-control'}),
+            'referencia': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 class NivelEducativoForm(forms.ModelForm):

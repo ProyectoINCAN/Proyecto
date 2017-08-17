@@ -44,29 +44,21 @@
                  <div class="panel-heading">Búsqueda</div>
                  <div class ="panel-body">
                      <div class="panel-group" id="accordion">
-                         <div class="form-group">
-                                <label for="cedula"class="control-label col-sm-3">Nro Doc: </label>
-                                 <div class="col-sm-8">
-                                    <input type="text"  class="form-control" name="cedula" value="{{ query|escape }}">
-                                 </div>
-
-
-                         </div>
                          <div class="row">
                              <label for="nombre"  class="control-label col-sm-3">Paciente: </label>
                              <div class="col-sm-8">
-                                 <input name="paciente_nombre"class="form-control" id="paciente_label" type="text" value="" placeholder="Ingrese nombre"/>
+                                 <input name="paciente_nombre"class="form-control" id="paciente_label" type="text" value="" placeholder="Ingrese número de Documento o Nombre"/>
                                  <input name="paciente" id="id_paciente" value="" type="hidden"/>
                              </div>
                              <div class="col-sm-1">
-                                     <button type="button" id="limpiar" title="Limpiar" class="btn btn-default btn-circle"><i class="fa fa-times"></i></button>
+                                     <button type="button" id="limpiar" title="Limpiar" class="btn btn-default btn-circle"><i class="fa fa-eraser"></i></button>
                              </div>
                          </div>
                      </div>
                  </div>
 
                  <div class ="panel-footer">
-                     <button class="btn btn-outline btn-primary" type="submit"><i class="fa fa-search-plus"></i>Buscar</button>
+                     <button class="btn btn-primary" type="submit"><i class="fa fa-search-plus"></i>Buscar</button>
                  </div>
              </div>
 
@@ -91,32 +83,26 @@
                                 <th width="30">Sexo</th>
 
                                 <th width="70">Distrito</th>
-                                <th width="30">Acción</th>
+
                               </tr>
                         </thead>
                         <tbody>
                         {% for pacientes in pacientes %}
 
                         <tr>
-                            <td>{{ pacientes.nro_doc }}</td>
+                            <td>
+                                <a href="{% url 'pacientes:paciente_editar' pacientes.id %}">{{ pacientes.nro_doc }}</a>
+                            </td>
                             <td>{{ pacientes.nombres }}</td>
                             <td>{{ pacientes.apellidos }} </td>
                             <td>{{ pacientes.sexo }} </td>
 
-
                             <td>{{ pacientes.lugar_nacimiento }} </td>
-
-
-                            <td align="center">
-                                <a href="{% url 'pacientes:paciente_edit' pacientes.id %}" title="Editar"><i class="fa fa-pencil"></i> </a>
-
-
-                            </td>
                         </tr>
                         {% endfor %}
 
                         </tbody>
-                    </table>
+                </table>
                 <div class="pagination" align="right">
                     <span class="step-links">
                             {% if pacientes.has_previous %}
@@ -139,7 +125,7 @@
      <br>
 
      <div class ="btn-group" >
-             <a href="{% url 'pacientes:nuevo_paciente' %}" class="btn btn-outline btn-primary" title="Crear un nuevo Paciente" role="button" >Crear Paciente<i class="fa fa-user"></i> </a>
+             <a href="{% url 'pacientes:nuevo_paciente' %}" class="btn btn-primary" title="Crear un nuevo Paciente" role="button" >Crear Paciente <i class="fa fa-user"></i> </a>
      </div><br><br>
 
 

@@ -124,9 +124,11 @@
 
 
 
-            <div class="col-md-8 col-md-offset-2">
-                <button class="btn btn-outline btn-primary" type="submit">Guardar</button>
-            </div>
+
+            <div class="col-lg-10 col-lg-offset-2">
+			    <button class="btn btn-primary" type="submit">Guardar</button>
+			    <a href="{% url 'pacientes:index' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
+		    </div>
 
         </form>
 

@@ -1,6 +1,11 @@
-<ul class="nav nav-tabs">
-  <li class=""><a href="{%  url 'agendamientos:nuevo' %}" data-toggle="tab" aria-expanded="false">Datos Básicos</a></li>
-  <li class="active"><a href="{% url 'pacientes:index' %}" data-toggle="tab" aria-expanded="true">Direcciones</a></li>
-  <li class="active"><a>Nivel Educativo</a></li>
 
-</ul>
+        <ul class="nav nav-pills">
+                                <li class="active"><a href="#" data-toggle="tab">Home</a>
+                                </li>
+                                <li><a href="{% url 'pacientes:nuevo_paciente' %}" data-toggle="tab">Profile</a>
+                                </li>
+                                <li><a href="#" data-toggle="tab">Messages</a>
+                                </li>
+                                <li><a href="#" data-toggle="tab">Settings</a>
+                                </li>
+        </ul>
