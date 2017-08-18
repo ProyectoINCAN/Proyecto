@@ -25,9 +25,9 @@ def agenda_nuevo(request):
         form = AgendaForm(request.POST)
         print('oguahe koape')
         if form.is_valid():#consulta si el formulario es valido
-            form.save()  #guarda
+            data = form.save()  #guarda
             messages.success(request, 'Datos guardados')
-            return redirect ('agendamientos:agenda_listar')
+            return redirect('agendamientos:agenda_detalle', data.id)
                 # redirect ('agendamientos:index')
     else:
         print("metodo noes POST")
@@ -118,8 +118,8 @@ def agenda_detalle_crear(request, agenda_id):
         else:
             print("no es post")
             form = AgendaDetalleForm()
-            contexto = {'agenda': agenda, 'form':form}
-            return redirect('agendamientos:agenda_detalle', contexto)
+            contexto = {'agenda': agenda.id, 'form': form}
+            return render(request, 'agendamientos/agenda_detalle_form.html', contexto)
                 # redirect('agendamientos:agenda_detalle_crear')
         # return render(request, 'agendamientos/agenda_detalle_by_agenda.html', {'form':form})
 
@@ -217,20 +217,22 @@ class AgendaDetalle_CreateView(CreateView):
         form_class.instance.user_id = self.request.user.id
         return super(AgendaDetalle_CreateView, self).form_valid(form_class)
 
+
 def agenda_especialidad(request):
     if request.method == 'GET':
         agenda = get_agenda_medico_especialidad()
     else:
-        print("metodo noes POST")
+        print("metodo noes POST") # borrar
         form = AgendaForm()
     return render(request, 'agendamientos/agenda_especialidad_list.html', {'object_list': agenda})
 
 
-def agenda_cancelar(request, id_agenda):
-    agenda = Agenda.objects.get(id=id_agenda)
+def agenda_cancelar(request, agenda_id):
+    agenda = Agenda.objects.get(id=agenda_id)
     if request.method == 'POST':
         # agenda.delete()
-        return redirect('agendamientos:agenda_detalle')
-    return render(request, 'agendamientos/agenda_especialidad_list.html', {'agenda':agenda})
+        print("metodo no es post. redirige a agenda_detalle") # borrar
+        return redirect('agendamientos:agenda_detalle', agenda.id)
+    return render(request, 'agendamientos/agenda_especialidad_list.html', {'agenda': agenda})
 
 

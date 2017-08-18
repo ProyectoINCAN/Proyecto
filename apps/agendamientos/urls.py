@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
 
 from apps.agendamientos.views import index, agenda_nuevo, agenda_delete, AgendaDetalleList, \
      AgendaList, AgendaDetalleUpdate, AgendaDetalleDelete, \
@@ -7,7 +8,7 @@ from apps.agendamientos.views import index, agenda_nuevo, agenda_delete, AgendaD
 
 urlpatterns = [
     url(r'^index$', index, name='index'),
-    url(r'^agenda/nuevo$', agenda_nuevo, name='agenda_nuevo'),
+    url(r'^agenda/nuevo$', login_required(agenda_nuevo), name='agenda_nuevo'),
     # url(r'^agendas', AgendaList.as_view(), name='agenda_listar'),
     # url(r'^agenda/(?P<pk>[0-9]+)/editar$', AgendaUpdate.as_view(), name='agenda_editar'),
     #agenda_detalle
@@ -24,15 +25,15 @@ urlpatterns = [
 
     # url(r'^agenda/([\w-]+)$', AgendaAgendaDetalleList.as_view(), name='agenda_detalle'),
     # url(r'^agenda/(?P<agenda_id>\d+)/nuevo$', AgendaDetalleCreate.as_view(), name='agenda_detalle_crear'),
-    url(r'^agenda/(?P<agenda_id>\d+)$', agenda_detalle_list, name='agenda_detalle'),
-    url(r'^agenda/(?P<agenda_id>\d+)/nuevo$', agenda_detalle_crear, name='agenda_detalle_crear'),
-    url(r'^agenda/(?P<agenda_id>\d+)/(?P<agenda_detalle_id>\d+)/editar$', agenda_detalle_edit, name='agenda_editar'),
+    url(r'^agenda/(?P<agenda_id>\d+)$', login_required(agenda_detalle_list), name='agenda_detalle'),
+    url(r'^agenda/(?P<agenda_id>\d+)/nuevo$', login_required(agenda_detalle_crear), name='agenda_detalle_crear'),
+    url(r'^agenda/(?P<agenda_id>\d+)/(?P<agenda_detalle_id>\d+)/editar$', login_required(agenda_detalle_edit), name='agenda_editar'),
     # url(r'^agenda/(?P<agenda_id>\d+)/nuevo$', agenda_detalle_crear, name='agenda_detalle_crear'),
-    url(r'^agenda/(?P<agenda_id>\d+)/cancelar$', agenda_cancelar, name='agenda_cancelar'),
+    url(r'^agenda/(?P<agenda_id>\d+)/cancelar$', login_required(agenda_cancelar), name='agenda_cancelar'),
     # url(r'^agenda/([\w-]+)/(?P<pk>\d+)/$', AgendaDetalleUpdate.as_view(), name='agenda_detalle_editar'),
     #agenda especialidad
     # url(r'^agendaEspecialidad/([\w-]+)/$', agenda_especialidad, name='agenda_especialidad'),
-    url(r'^agendas/$', agenda_especialidad, name='agenda_especialidad_medico'),
+    url(r'^agendas/$', login_required(agenda_especialidad), name='agenda_especialidad_medico'),
 
 
 ]

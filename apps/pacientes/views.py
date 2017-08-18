@@ -272,6 +272,7 @@ class PacienteUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(PacienteUpdate, self).get_context_data(**kwargs)
         pk_paciente = self.kwargs.get('pk',0)
+        print(pk_paciente)
         query = (
             '''
             SELECT MAX(id)
@@ -279,6 +280,7 @@ class PacienteUpdate(UpdateView):
             WHERE paciente_id =''' + pk_paciente + '''
                                             '''
         )
+        print(query)
         cursor = connection.cursor()
         cursor.execute(query)
         results = cursor.fetchall()
