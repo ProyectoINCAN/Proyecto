@@ -7,6 +7,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 
+from apps.agendamientos.functions import cancelar_agenda
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 
 # Create your views here.
@@ -231,7 +232,8 @@ def agenda_cancelar(request, agenda_id):
     agenda = Agenda.objects.get(id=agenda_id)
     if request.method == 'POST':
         # agenda.delete()
-        print("metodo no es post. redirige a agenda_detalle") # borrar
+        print("view.py metodo es post. cancela agenda") # borrar
+        cancelar_agenda(agenda.id, )
         return redirect('agendamientos:agenda_detalle', agenda.id)
     return render(request, 'agendamientos/agenda_especialidad_list.html', {'agenda': agenda})
 

@@ -40,3 +40,26 @@ def get_agenda_detalle_orden(agenda_id):
     cursor.execute(query, agenda_id)
     orden = cursor.fetchone()[0]
     return orden
+
+
+def get_max_fecha_disponible(agenda):
+    """
+    Obtiene la máxima fecha disponible de agendamiento para un médico
+    :param agenda:
+    :return:
+    """
+    filters = (agenda.medico.id, agenda.especialidad.id, agenda.turno.codigo, 'P',)
+    query = """
+    select max(fecha) as fecha from agendamientos_agenda
+    where medico_id = %s and especialidad_id = %s and turno_id = %s and estado_id = %s
+    """
+    cursor = connection.cursor()
+    cursor.execute(query, filters)
+    result = cursor.fetchone()
+    return result[0]
+
+
+# pruebas
+# tmp_agenda = Agenda.objects.get(pk=1)
+# r = get_max_fecha_disponible(tmp_agenda)
+# print("result = ", r)
