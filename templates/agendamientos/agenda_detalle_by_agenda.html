@@ -4,27 +4,36 @@
 {% block extrajs %}
 <script>
     $(document).ready(function() {
-        $(document).ready(function() {
+        $('#cancelar').click(function() {
         console.log("llega al js");
-    	confirmar:function(){
+    	//function confirmar(){
     		BootstrapDialog.show({
-            message: 'Hi Apple!',
+    		title: 'Información',
+            message: 'Seleccione tipo de cancelación',
             buttons: [{
-                label: 'Button 1',
-                title: 'Mouse over Button 1'
-            }, {
-                label: 'Button 2',
-                // no title as it is optional
+                label: 'Siguiente fecha',
                 cssClass: 'btn-primary',
+                icon: 'fa fa-step-forward',
+                //title: 'Mouse over Button 1'
+                message: $('<a href="{% url 'agendamientos:agenda_cancelar' agenda.id %}"></a>'),
                 data: {
                     js: 'btn-confirm',
-                    'user-id': '3'
+                    'tipo': '1'
                 },
-                action: function(){
-                    alert('Hi Orange!');
-                }
             }, {
-                icon: 'glyphicon glyphicon-ban-circle',
+                label: 'Última fecha',
+                // no title as it is optional
+                cssClass: 'btn-primary',
+                icon: 'fa fa-fast-forward',
+                data: {
+                    js: 'btn-confirm',
+                    'tipo': '2'
+                },
+                //action: function(){
+                //    alert('Hi Orange!');
+                //}
+            }, /*{
+                icon: 'fa fa-ban',
                 label: 'Button 3',
                 title: 'Mouse over Button 3',
                 cssClass: 'btn-warning'
@@ -33,11 +42,13 @@
                 action: function(dialogItself){
                     dialogItself.close();
                 }
-            }]
+            }*/]
         });
-    	}
+    	//}
     }
-    }
+    );
+
+    });
 </script>
 {% endblock %}
 
@@ -69,8 +80,9 @@
 			</div>
 		</div>
         <div class="form-group" align="center">
+            <!--<a href="{% url 'agendamientos:agenda_cancelar' agenda.id %}" id="cancelar" class="btn btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>-->
             <!--<a href="#" id="cancelar" class="btn btn-danger" onclick="confirmar();"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>-->
-            <input id="cancelar" class="btn btn-danger" onclick="confirmar();"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</input>
+            <a id="cancelar" type="button" class="btn btn-danger" > <i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>
             <a href="{% url 'agendamientos:agenda_especialidad_medico' %}" id="salir" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i> Salir</a>
         </div>
 
