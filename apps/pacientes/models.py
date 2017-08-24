@@ -214,7 +214,7 @@ class Ocupacion(models.Model):
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.nombre
+        return self.descripcion
 
     class Meta:
         ordering = ["descripcion"]
@@ -481,7 +481,9 @@ class PacienteOcupacion(models.Model):
 
 class PacienteSeguroMedico(models.Model):
     seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False)
+
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False) #relacion con el paciente
+    detalle = models.CharField(max_length=150, blank=True, null=True)
 
     def __str__(self):
         return self.seguro_medico

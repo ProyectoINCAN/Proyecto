@@ -1,0 +1,48 @@
+{% extends "base/base2.html" %}
+
+{% block extrajs %}
+     <script>
+
+        function mostrar_ocupacion(){
+            document.getElementById('otro_seguro').style.display = 'block';
+
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-lg-12">
+        <h4 class="page-header">Seleccione una situación laboral</h4>
+    </div>
+</div>
+<div class="row">
+<form class="form-horizontal col-sm-10" method="post">
+	{% csrf_token %}
+
+	<div class="form-group">
+		<div class="radio" >
+          <label><input type="radio" name="optradio" onclick="mostrar_ocupacion()">Trabaja</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" name="optradio">No trabaja</label>
+        </div>
+        <div class="radio disabled">
+          <label><input type="radio" name="optradio" disabled>No aplica</label>
+        </div>
+        <div id="otro_seguro" class="col-sm-10" style="display:none;">
+            <label>Ocupación:</label>
+            <input type='text' name='nombre_seguro' placeholder="Ingrese otro seguro medico">
+        </div>
+	</div>
+
+	<div class="form-group" align="left">
+		<div class="col-lg-10 col-lg-offset-2">
+			 <button class="btn btn-primary">Guardar</button>
+			 <a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
+		</div>
+	</div>
+</form>
+</div>
+{% endblock %}

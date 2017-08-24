@@ -1,7 +1,7 @@
 from django import forms
 from django.db import models as django_models
 from django.utils.translation import ugettext_lazy as _
-from apps.pacientes.models import Paciente, Direccion, PacienteNivelEducativo, Telefono
+from apps.pacientes.models import *
 
 from django_select2 import forms as select2form
 
@@ -105,11 +105,6 @@ class TelefonoForm(forms.ModelForm):
             'confirmado':forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
 
-
-
-
-
-
 class DireccionForm(forms.ModelForm):
 
     class Meta:
@@ -154,6 +149,21 @@ class DireccionForm(forms.ModelForm):
             'referencia': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+class SeguroMedicoForm(forms.ModelForm):
+
+    class Meta:
+        model =  PacienteSeguroMedico
+
+        fields = [
+            'seguro_medico'
+        ]
+        labels = {
+            'seguro_medico': 'Seguro Médico'
+        }
+        widgets = {
+            'seguro_medico': forms.Select(attrs={'class': 'form-control selectsearch'}),
+        }
+
 class NivelEducativoForm(forms.ModelForm):
 
     class Meta:
@@ -170,3 +180,46 @@ class NivelEducativoForm(forms.ModelForm):
         }
 
 
+class SituacionLaboralForm(forms.ModelForm):
+
+    class Meta:
+        model = SituacionLaboral
+
+        fields = [
+            'descripcion'
+        ]
+
+        labels = {
+            'descripcion': 'Descripcion'
+        }
+
+        widgets = {
+            'descripcion': forms.Select(attrs={'class': 'form-control selectsearch'}),
+        }
+
+class OcupacionForm(forms.ModelForm):
+
+    class Meta:
+        model = Ocupacion
+
+        fields = ['descripcion']
+        labels= { 'descripcion': 'Ocupación',}
+
+        widgets = {
+            'descripcion': forms.Select(attrs={'class': 'form-control selectsearch'}),
+        }
+
+class PacienteOcupacionForm(forms.ModelForm):
+
+    class Meta:
+        model = PacienteOcupacion
+
+        fields = [
+            'ocupacion'
+        ]
+        labels = {
+            'ocupacion': 'Ocupación'
+        }
+        widgets = {
+            'ocupación': forms.Select(attrs={'class': 'form-control selectsearch'}),
+        }

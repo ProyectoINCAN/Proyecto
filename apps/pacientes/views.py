@@ -5,17 +5,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
-from apps.pacientes.forms import PacienteForm, DireccionForm, NivelEducativoForm, TelefonoForm
-from apps.pacientes.models import Paciente, Direccion, Paciente, Telefono
+from apps.pacientes.forms import *
+from apps.pacientes.models import *
 from apps.principal.common_functions import filtros_establecidos
 from django.contrib import  messages
 from django.db import connection
 import json
-
-# Create your views here.
-
-
-
 
 
 def paciente_delete(request, id_paciente):
@@ -42,9 +37,9 @@ def paciente_delete(request, id_paciente):
 class PacienteDelete(DeleteView):
     '''clase de eliminacion de paciente'''
     model = Paciente
-    print("llego hasta aca")
+
     template_name = 'pacientes/paciente_delete.html'
-    print("llego hasta eliminacion de paciente")
+
     success_url = reverse_lazy('pacientes:index')
 
 
@@ -97,6 +92,60 @@ def crear_direccion(request, paciente_id):
 
     return render(request, 'pacientes/direccion.html', contexto)
 
+def paciente_seguro_medico(request, paciente_id):
+    '''
+    metodo que permite obtener el seguro medico del paciente.
+    :param request
+    :param paciente_id: codigo de paciente
+    :return:
+    '''
+    if request.method == 'GET':
+        seguro = PacienteSeguroMedico.objects.all()
+        contexto = {
+            'seguros': seguro,
+            'id_paciente': paciente_id
+        }
+
+    return render(request,'pacientes/paciente_seguro_medico.html',contexto)
+
+def paciente_seguro_medico_crear(request, paciente_id):
+    '''
+    metodo para cargar el formulario de seguro medico del paciente
+    '''
+    if request.method == 'GET':
+        seguro = SeguroMedicoForm()
+        contexto = {
+            'form': seguro,
+            'id_paciente': paciente_id
+        }
+    else:
+        form = SeguroMedicoForm(request.POST, paciente_id)
+        data = request.POST
+        #obtenemos el nombre del otro seguro
+        otro_seguro = data['nombre_seguro']
+        if form.is_valid():
+            seguro_paciente = form.save(commit=False)
+            seguro_paciente.paciente_id = paciente_id
+            seguro_paciente.detalle = otro_seguro
+            seguro_paciente.save()
+            return redirect('pacientes:paciente_seguro_medico', paciente_id)
+    return render(request,'pacientes/paciente_seguro_medico_crear.html', contexto)
+
+def paciente_situacion_laboral(request, paciente_id):
+    '''
+    permite obtener la sit
+    :param request:
+    :param paciente_id:
+    :return:
+    '''
+    if request.method == 'GET':
+        cantidad = PacienteOcupacion.objects.filter(paciente=paciente_id).count()
+        situacion_laboral = SituacionLaboralForm()
+        ocupaciones = PacienteOcupacionForm()
+        contexto = {
+            'id_paciente': paciente_id
+        }
+    return render(request,'pacientes/paciente_situacion_laboral.html',contexto)
 
 def paciente_nivel_educativo(request, paciente_id):
     '''permite guardar el registro de nivel educativo del paciente
