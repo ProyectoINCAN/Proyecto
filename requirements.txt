@@ -1,0 +1,12 @@
+appdirs==1.4.3
+Django==1.9.6
+django-appconf==1.0.2
+django-font-awesome==4.6.1
+Django-Select2==5.11.1
+django-suit==0.2.24
+docutils==0.13.1
+packaging==16.8
+psycopg2==2.7.1
+pyparsing==2.2.0
+six==1.10.0
+suit==2.0.2
