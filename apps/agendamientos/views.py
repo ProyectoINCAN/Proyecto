@@ -186,6 +186,7 @@ class AgendaDetalleDetail(DetailView):
 
 
 def agenda_detalle_list(request, agenda_id):
+    print("llega a agenda_detalle. agenda_id: ", agenda_id, "request: ", request)
     agenda = Agenda.objects.get(pk=agenda_id)
     agenda_detalle = AgendaDetalle.objects.filter(agenda=agenda_id)
     # print("detalle "+ str(agenda_detalle))
@@ -232,5 +233,5 @@ def agenda_cancelar(request, agenda_id):
     if request.method == 'POST':
         agenda = cancelar_agenda(agenda.id, tipo)
         print("id agenda = ", agenda.id)  # borrar
-        # return redirect('agendamientos:agenda_detalle', agenda.id)
-    return render(request, 'agendamientos/agenda_especialidad_list.html', {'agenda': agenda})
+        return redirect('agendamientos:agenda_detalle', agenda.id)
+    # return render(request, 'agendamientos/agenda_especialidad_list.html', {'agenda': agenda})

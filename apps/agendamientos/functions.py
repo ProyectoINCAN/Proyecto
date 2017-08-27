@@ -20,9 +20,12 @@ def cancelar_agenda(agenda_id, tipo):
         # pasa el agendamiento a la máxima fecha disponible
         agenda = Agenda.objects.get(pk=agenda_id)
         agenda.estado = EstadoAgenda(codigo="C")  # agenda en estado cancelado
-        nueva_fecha = get_max_fecha_disponible(agenda)
+        # nueva_fecha = get_max_fecha_disponible(agenda)
+        nueva_fecha = get_fecha_agendamiento_siguiente(agenda)
+        print("nueva fecha:", nueva_fecha)
         nueva_agenda = Agenda(medico=agenda.medico, fecha=nueva_fecha, turno=agenda.turno,
-                              especialidad=agenda.especialidad, cantidad=agenda.cantidad, estado="P")
+                              especialidad=agenda.especialidad, cantidad=agenda.cantidad,
+                              estado=EstadoAgenda.objects.get(codigo="P"))
         agenda.save()
         nueva_agenda.save()
         agenda_retornada = nueva_agenda
@@ -38,7 +41,7 @@ def cancelar_agenda(agenda_id, tipo):
 
         for a in agendas:
             print("agenda.id", a.id, "fecha anterior = ", a.fecha)
-            nueva_fecha = get_fecha_agendamiento_siguiente(a.fecha, a.medico)
+            nueva_fecha = get_fecha_agendamiento_siguiente(a)
             print("   nueva fecha = ", nueva_fecha)
             a.fecha = nueva_fecha
             a.save()
@@ -46,8 +49,8 @@ def cancelar_agenda(agenda_id, tipo):
         agenda.estado = EstadoAgenda(codigo="C")
         agenda.save()
         agenda_retornada = Agenda.objects.raw("""select * from agendamientos_agenda where medico_id = %s and
-                                                 especialidad_id = %s and turno_id = %s and fecha > %s and estado_id = %s
-                                                 order by fecha limit 1""", filters)
+                                                 especialidad_id = %s and turno_id = %s and fecha > %s
+                                                 and estado_id = %s order by fecha limit 1""", filters)
     print("agenda retornada = ", agenda_retornada)
     return agenda_retornada
 

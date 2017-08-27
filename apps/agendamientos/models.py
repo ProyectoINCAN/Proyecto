@@ -27,7 +27,7 @@ class Agenda(models.Model):
     estado = models.ForeignKey(EstadoAgenda, models.DO_NOTHING, blank=False, null=False, default='P')
 
     def __str__(self):
-        return self.fecha + ", Turno: " + self.turno
+        return self.fecha.isoformat() + ", Turno: " + self.turno.nombre
 
     class Meta:
         ordering = ['fecha', 'id']
