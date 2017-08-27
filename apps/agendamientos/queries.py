@@ -18,7 +18,7 @@ def get_agenda_medico_especialidad():
         where agenda.estado_id = 'P'
         group by agenda.cantidad, agenda.estado_id, agenda.turno_id, turno.nombre,
         medico.id, medico.nombres, medico.apellidos, especialidad.id, especialidad.nombre
-        order by especialidad.nombre
+        order by fecha, medico.apellidos, medico.nombres, especialidad.nombre
         '''
     cursor = connection.cursor()
     cursor.execute(query)

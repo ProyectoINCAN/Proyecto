@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from apps.agendamientos.views import index, agenda_nuevo, agenda_delete, AgendaDetalleList, \
      AgendaList, AgendaDetalleUpdate, AgendaDetalleDelete, \
-    agendaDetalleDelete, AgendaUpdate, AgendaDetalleCreate, agenda_especialidad, agenda_detalle_list, agenda_cancelar, \
+    agenda_detalle_delete, AgendaUpdate, AgendaDetalleCreate, agenda_especialidad, agenda_detalle_list, agenda_cancelar, \
     agenda_detalle_crear, agenda_detalle_edit
 
 urlpatterns = [
@@ -20,7 +20,7 @@ urlpatterns = [
 
     # url(r'^agendaDetalle/nuevo$', agendaDetalleCreate.a, name='agenda_detalle_crear'),
 
-    url(r'^agendaDetalle/eliminar/(?P<agenda_detalle_id>\d+)/$', agendaDetalleDelete, name='agenda_detalle_eliminar'),
+    url(r'^agendaDetalle/eliminar/(?P<agenda_detalle_id>\d+)/$', agenda_detalle_delete, name='agenda_detalle_eliminar'),
     #prueba
 
     # url(r'^agenda/([\w-]+)$', AgendaAgendaDetalleList.as_view(), name='agenda_detalle'),

@@ -16,9 +16,10 @@ def get_fecha_agendamiento_siguiente(fecha_anterior, medico):
     for horario in horario_medico:
         dias_consultorio.append(horario.dia_semana.id)
     print(dias_consultorio)
-    year, month, day = (int(x) for x in fecha_anterior.split('-'))
-    fecha_anterior = date(year, month, day)
-    dia_semana = date(year, month, day).weekday() + 1  # weekday empieza desde lunes, index 0
+    # year, month, day = (int(x) for x in fecha_anterior.split('-'))
+    # fecha_anterior = date(year, month, day)
+    dia_semana = fecha_anterior.weekday() + 1  # weekday empieza desde lunes, index 0
+    print("dia_semana: ",dia_semana,"weekday: ",fecha_anterior.weekday())
     if dia_semana != 6:
         dia_semana += 1
     else:

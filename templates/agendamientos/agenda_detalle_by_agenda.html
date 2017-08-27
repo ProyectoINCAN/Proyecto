@@ -3,56 +3,89 @@
 
 {% block extrajs %}
 <script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
+
     $(document).ready(function() {
         $('#cancelar').click(function() {
         console.log("llega al js");
-    	//function confirmar(){
-    		BootstrapDialog.show({
-    		title: 'Información',
+            BootstrapDialog.show({
+            title: 'Información',
             message: 'Seleccione tipo de cancelación',
+            draggable: true,
             buttons: [{
                 label: 'Siguiente fecha',
                 cssClass: 'btn-primary',
                 icon: 'fa fa-step-forward',
-                //title: 'Mouse over Button 1'
-                message: $('<a href="{% url 'agendamientos:agenda_cancelar' agenda.id %}"></a>'),
-                data: {
-                    js: 'btn-confirm',
-                    'tipo': '1'
-                },
+                action: function(dialog){
+                    dialog.close();
+                    var csrftoken = getCookie('csrftoken');
+                    console.log("token", csrftoken);
+                    $.ajax({
+                         type:"POST",
+                         url:"{% url 'agendamientos:agenda_cancelar' agenda.id %}",
+                         data: {
+                                'tipo': 2, // from form
+                                'csrfmiddlewaretoken': csrftoken
+                                },
+                         success: function(){
+                            console.log("llega al success");
+                            $(document).html("<h2>Form Submitted!</h2>")
+                         }
+                    });
+                    return false;
+                }
             }, {
                 label: 'Última fecha',
                 // no title as it is optional
                 cssClass: 'btn-primary',
                 icon: 'fa fa-fast-forward',
-                data: {
-                    js: 'btn-confirm',
-                    'tipo': '2'
-                },
-                //action: function(){
-                //    alert('Hi Orange!');
-                //}
-            }, /*{
-                icon: 'fa fa-ban',
-                label: 'Button 3',
-                title: 'Mouse over Button 3',
-                cssClass: 'btn-warning'
-            }, {
-                label: 'Close',
-                action: function(dialogItself){
-                    dialogItself.close();
+                action: function(dialog){
+                    dialog.close();
+                    var csrftoken = getCookie('csrftoken');
+                    console.log("token", csrftoken);
+                    $.ajax({
+                         type:"POST",
+                         url:"{% url 'agendamientos:agenda_cancelar' agenda.id %}",
+                         data: {
+                                //csrftoken = csrftoken,
+                                'tipo': 1, // from form
+                                'csrfmiddlewaretoken': csrftoken
+                                },
+                         success: function(){
+                            console.log("llega al success");
+                            $(document).html("<h2>Form Submitted!</h2>")
+                         }
+                    });
+                    return false;
                 }
-            }*/]
+            }, ]
         });
-    	//}
+
     }
     );
 
     });
+
 </script>
 {% endblock %}
 
 {%block content %}
+
+
 <form method="POST" class="form-horizontal" id="form">
 <div class="row">
         <h2>Agenda</h2>
