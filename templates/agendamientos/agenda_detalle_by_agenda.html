@@ -65,9 +65,14 @@ function getCookie(name) {
                                 'tipo': 1, // from form
                                 'csrfmiddlewaretoken': csrftoken
                                 },
-                         success: function(){
+                         success: function(data){
                             console.log("llega al success");
-                            $(document).html("<h2>Form Submitted!</h2>")
+                            //$(document).html("<h2>Form Submitted!</h2>")
+                            //window.location="{% url 'agendamientos:agenda_especialidad_medico' %}";
+                            console.log("data", data );
+                            console.log("data", $.parseJSON(data)[0].pk );
+                            //window.location="{% url 'agendamientos:agenda_detalle' agenda.id %}";
+                            window.location="/agendamientos/agenda/"+$.parseJSON(data)[0].pk;
                          }
                     });
                     return false;

@@ -1,5 +1,7 @@
 from django.contrib import messages
+from django.core import serializers
 from django.core.urlresolvers import reverse_lazy
+from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -233,5 +235,8 @@ def agenda_cancelar(request, agenda_id):
     if request.method == 'POST':
         agenda = cancelar_agenda(agenda.id, tipo)
         print("id agenda = ", agenda.id)  # borrar
-        return redirect('agendamientos:agenda_detalle', agenda.id)
+        # return redirect('agendamientos:agenda_detalle', agenda.id)
+        # return agenda
+        # return HttpResponse(response, content_type='application/json')
+        return JsonResponse(serializers.serialize("json", [agenda]), safe=False)
     # return render(request, 'agendamientos/agenda_especialidad_list.html', {'agenda': agenda})
