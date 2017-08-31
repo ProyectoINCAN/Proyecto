@@ -36,8 +36,9 @@ def get_agenda_detalle_orden(agenda_id):
         join agendamientos_agendadetalle detalle on agenda.id = detalle.agenda_id
         where agenda.id = %s
         '''
+    filters = [agenda_id]
     cursor = connection.cursor()
-    cursor.execute(query, agenda_id)
+    cursor.execute(query, filters)
     orden = cursor.fetchone()[0]
     return orden
 

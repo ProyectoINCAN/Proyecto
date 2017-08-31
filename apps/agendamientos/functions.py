@@ -1,8 +1,15 @@
 
 
-from apps.agendamientos.models import Agenda, EstadoAgenda
-from apps.agendamientos.queries import get_max_fecha_disponible
+from apps.agendamientos.models import Agenda, EstadoAgenda, AgendaDetalle
 from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
+
+
+def set_detalle_a_agenda(agenda, agenda_detalles):
+    for detalle in agenda_detalles:
+        nuevo_detalle = AgendaDetalle(agenda=agenda, paciente=detalle.paciente, orden=detalle.orden,
+                                      observacion=detalle.observacion, confirmado=detalle.confirmado)
+        print("detalle procesado: ", detalle, " nuevo_detalle.agenda.id:", nuevo_detalle.agenda.id, "agenda.id:",agenda.id)
+        nuevo_detalle.save()
 
 
 def cancelar_agenda(agenda_id, tipo):
@@ -14,7 +21,7 @@ def cancelar_agenda(agenda_id, tipo):
     :return:
     """
 
-    agenda_retornada = None
+    # agenda_retornada = None
     if int(tipo) == 1:
         print("entra en tipo 1. tipo: ", tipo)  # borrar
         # pasa el agendamiento a la máxima fecha disponible
@@ -28,6 +35,10 @@ def cancelar_agenda(agenda_id, tipo):
                               estado=EstadoAgenda.objects.get(codigo="P"))
         agenda.save()
         nueva_agenda.save()
+        # relaciona con los detalles
+        agenda_detalles = AgendaDetalle.objects.filter(agenda=agenda)
+        print("agenda_detalles:", agenda_detalles)  # borrar
+        set_detalle_a_agenda(nueva_agenda, agenda_detalles)
         agenda_retornada = nueva_agenda
 
     else:
@@ -55,12 +66,11 @@ def cancelar_agenda(agenda_id, tipo):
     return agenda_retornada
 
 
-def crear_agenda(agenda, fecha_nueva):
-    """
-    Crea una agenda nueva a partir de una agenda vieja que se pasa
-    como parámetro y la nueva fecha que tendrá la nueva agenda
-    :param agenda: la agenda vieja
-    :param fecha_nueva: la nueva fecha que tendrá la agenda a crear
-    :return: agenda_nueva: agenda nueva creada con la nueva fecha
-    """
-
+# def crear_agenda(agenda, fecha_nueva):
+#     """
+#     Crea una agenda nueva a partir de una agenda vieja que se pasa
+#     como parámetro y la nueva fecha que tendrá la nueva agenda
+#     :param agenda: la agenda vieja
+#     :param fecha_nueva: la nueva fecha que tendrá la agenda a crear
+#     :return: agenda_nueva: agenda nueva creada con la nueva fecha
+#     """

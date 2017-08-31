@@ -67,7 +67,7 @@ class AgendaDetalle(models.Model):
     objects = AgendaDetalleManager()  # Instanciar el Manager de la clase definido previamente
 
     def __str__(self):
-        return self.agenda + ", Turno: " + self.orden
+        return str(self.agenda) + ", Turno: " + str(self.orden)
 
     class Meta:
         ordering = ['orden']

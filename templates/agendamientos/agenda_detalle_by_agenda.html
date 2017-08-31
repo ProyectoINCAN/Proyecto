@@ -23,10 +23,12 @@ function getCookie(name) {
         $('#cancelar').click(function() {
         console.log("llega al js");
             BootstrapDialog.show({
-            title: 'Información',
-            message: 'Seleccione tipo de cancelación',
+            //title: 'Tipo de Cancelación de agenda',
+            title: 'Cancelación de agenda',
+            //message: 'Seleccione tipo de cancelación',
+            message: '¿Seguro que desea cancelar la agenda?',
             draggable: true,
-            buttons: [{
+            buttons: [/*{
                 label: 'Siguiente fecha',
                 cssClass: 'btn-primary',
                 icon: 'fa fa-step-forward',
@@ -38,18 +40,21 @@ function getCookie(name) {
                          type:"POST",
                          url:"{% url 'agendamientos:agenda_cancelar' agenda.id %}",
                          data: {
-                                'tipo': 2, // from form
+                                'tipo': 2,
                                 'csrfmiddlewaretoken': csrftoken
                                 },
-                         success: function(){
+                         success: function(data){
                             console.log("llega al success");
-                            $(document).html("<h2>Form Submitted!</h2>")
+                            console.log("data", data );
+                            console.log("data", $.parseJSON(data)[0].pk );
+                            window.location="/agendamientos/agenda/"+$.parseJSON(data)[0].pk;
                          }
                     });
                     return false;
                 }
-            }, {
-                label: 'Última fecha',
+            },*/ {
+                //label: 'Última fecha',
+                label: 'Cancelar',
                 // no title as it is optional
                 cssClass: 'btn-primary',
                 icon: 'fa fa-fast-forward',
@@ -61,17 +66,13 @@ function getCookie(name) {
                          type:"POST",
                          url:"{% url 'agendamientos:agenda_cancelar' agenda.id %}",
                          data: {
-                                //csrftoken = csrftoken,
-                                'tipo': 1, // from form
+                                'tipo': 1,
                                 'csrfmiddlewaretoken': csrftoken
                                 },
                          success: function(data){
                             console.log("llega al success");
-                            //$(document).html("<h2>Form Submitted!</h2>")
-                            //window.location="{% url 'agendamientos:agenda_especialidad_medico' %}";
                             console.log("data", data );
                             console.log("data", $.parseJSON(data)[0].pk );
-                            //window.location="{% url 'agendamientos:agenda_detalle' agenda.id %}";
                             window.location="/agendamientos/agenda/"+$.parseJSON(data)[0].pk;
                          }
                     });
