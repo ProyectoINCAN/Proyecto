@@ -6,8 +6,8 @@
 
 
 {% block content %}
-    <br>
-<div class="col-lg-10">
+<br>
+<div class="col-sm-12">
 <div class="panel panel-default">
     <div class="panel-heading">FICHA CLINICA</div>
     <div class="panel-body">
@@ -17,16 +17,16 @@
                         <li>{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a>{% endblock %}</li>
                         <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Seguro Médico</a></li>
                         <li><a href="{% url 'pacientes:paciente_situacion_laboral' id_paciente %}">Situacion Laboral</a></li>
+                        <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+                        <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
+                        <li><a href="{% url 'pacientes:paciente_nivel_educatvo' id_paciente %}">Nivel Educativo</a></li>
             </ul>
 
         </nav>
-<div class ="row">
-<form class="form-horizontal col-sm-10" id="formulario" method="POST">
-    {#   <legend><b><p align="center">I PARTE: Datos Básicos del Pacientes</p></b></legend> #}
-
-
+        <div class ="row">
+        <form class="form-horizontal col-sm-10" id="formulario" method="POST">
             {% csrf_token %}
-
+                <div class="row">
                     <div class="form-group">
                         <div class="col-md-10 ">
                             <label for="{{ form2.nombres.name }}" class="col-sm-2 control-label"> {{ form2.nombres.label }}</label>
@@ -132,7 +132,7 @@
                     </div>
                     <br>
 
-
+                </div>
 
 
                 <div class="col-lg-10 col-lg-offset-2" id="acciones">

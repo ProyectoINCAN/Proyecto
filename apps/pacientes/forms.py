@@ -8,13 +8,8 @@ from django_select2 import forms as select2form
 from django.contrib.admin import widgets
 from django.contrib.admin.options import FORMFIELD_FOR_DBFIELD_DEFAULTS
 
-#clase PacienteForm para el formulario de agendamiento de pacientes.
-#15/04/17
+
 class PacienteForm(forms.ModelForm):
-    #nombres =forms.CharField(max_length=100, required=True)
-    #apellidos = forms.CharField(max_length=100, required=True)
-
-
     """
      05/05/17
      cambios de paciente form
@@ -24,10 +19,7 @@ class PacienteForm(forms.ModelForm):
 
     class Meta:
         model = Paciente
-
-
-        exclude = ['nro_doc_alternativo',]
-
+        exclude = ['nro_doc_alternativo']
 
         fields = [
             'nombres',
@@ -43,11 +35,9 @@ class PacienteForm(forms.ModelForm):
 
         ]
 
-
-
         labels = {
             'nombres':'Nombres:',
-            'apellidos':'Apellidos:',
+            'apellidos': 'Apellidos:',
             'tipo_doc':'Tipo Doc:',
             'nro_doc': 'Número de Documento:',
             'nro_doc_alternativo':'Documento Alternativo',
@@ -59,16 +49,11 @@ class PacienteForm(forms.ModelForm):
             'etnia': 'Etnia',
              }
 
-        #help_texts = {
-         #   'fecha_nacimiento': _('La fecha debe estar en formato DD/MM/YYYY.'),
-        #}
-
         widgets = {
             'nombres': forms.TextInput(attrs ={'class': 'form-control'}),
             'apellidos': forms.TextInput(attrs ={'class': 'form-control'}),
             'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch'}),
              'nro_doc': forms.TextInput(attrs ={'class': 'form-control'}),
-            #'nro_doc_alternativo': forms.TextInput(attrs ={'class': 'form-control'}),
              'sexo': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
             'lugar_nacimiento':  forms.Select(attrs={'class': 'form-control selectsearch'}),
@@ -104,6 +89,7 @@ class TelefonoForm(forms.ModelForm):
             'tipo': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'confirmado':forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
+
 
 class DireccionForm(forms.ModelForm):
 
@@ -164,6 +150,7 @@ class SeguroMedicoForm(forms.ModelForm):
             'seguro_medico': forms.Select(attrs={'class': 'form-control selectsearch'}),
         }
 
+
 class NivelEducativoForm(forms.ModelForm):
 
     class Meta:
@@ -197,6 +184,7 @@ class SituacionLaboralForm(forms.ModelForm):
             'descripcion': forms.Select(attrs={'class': 'form-control selectsearch'}),
         }
 
+
 class OcupacionForm(forms.ModelForm):
 
     class Meta:
@@ -209,17 +197,78 @@ class OcupacionForm(forms.ModelForm):
             'descripcion': forms.Select(attrs={'class': 'form-control selectsearch'}),
         }
 
+
 class PacienteOcupacionForm(forms.ModelForm):
 
     class Meta:
         model = PacienteOcupacion
 
         fields = [
-            'ocupacion'
+            'ocupacion',
+            'situacion_laboral_id',
+            'profesion'
         ]
         labels = {
-            'ocupacion': 'Ocupación'
+            'ocupacion': 'Ocupación',
+            'situacion_laboral_id': 'Situación Laboral',
+            'profesion': 'Profesion',
         }
         widgets = {
-            'ocupación': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'situacion_laboral_id': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'profesion': forms.Select(attrs={'class': 'form-control selectsearch'}),
+        }
+
+
+class PacientePadreForm(forms.ModelForm):
+
+    class Meta:
+        model = PacientePadre
+        exclude = ['paciente', 'padre']
+
+        labels = {
+            'nombres': 'Nombres:',
+            'apellidos': 'Apellidos:',
+            'tipo_doc': 'Tipo Doc:',
+            'nro_doc': 'Número de Documento:',
+            'sexo': 'Sexo',
+            'fecha_nacimiento': 'Fecha de Nacimiento',
+            'lugar_nacimiento': 'Lugar de Nacimiento',
+            'nacionalidad': 'Nacionalidad',
+            'estado_civil': 'Estado Civil',
+            'etnia': 'Etnia',
+        }
+
+        widgets = {
+            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
+            'sexo': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'fecha_nacimiento': forms.DateInput(
+                attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'etnia': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nivel_educativo': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'otro': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class PacienteNivelEducativoForm(forms.ModelForm):
+    class Meta:
+        model = PacienteNivelEducativo
+
+        exclude = ['paciente', 'anho_cursado']
+
+        labels = {
+            'nivel_educativo':  'Nivel Educativo',
+            'completo': 'Termino',
+        }
+
+        widgets = {
+            'nivel_educativo': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'completo': forms.Select(attrs={'class': 'form-control selectsearch'})
         }

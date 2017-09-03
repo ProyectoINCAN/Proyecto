@@ -1,41 +1,34 @@
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, render_to_response
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from apps.pacientes.forms import *
 from apps.pacientes.models import *
 from apps.principal.common_functions import filtros_establecidos
-from django.contrib import  messages
+
+
+from django.views.generic.edit import FormView
 from django.db import connection
+from django.contrib import messages
 import json
 
 
 def paciente_delete(request, id_paciente):
-    '''implementacion del metodo para eliminar el registro de un paciente
-    Dado que ya se registro la direccion del paciente, se realiza un delete multiple
-    id_paciente = codigo del paciente'''
-
-    paciente = Paciente.objects.get(id=id_paciente)  #obtenemos el objeto del paciente que queremos eliminar
-    #pacienteDireccion = Direccion.objects.get(paciente_id = id_paciente)
-    pacienteDireccion = None
-    print("paciente delete")
-    if pacienteDireccion :
+    paciente = Paciente.objects.get(id=id_paciente)
+    paciente_direccion = None
+    if paciente_direccion:
         if request.method == 'POST':
-            pacienteDireccion.delete()
+            paciente_direccion.delete()
             paciente.delete()
-            return redirect('pacientes:index')   #vuelve a la lista de pacientes
     else:
         paciente.delete()
-        return redirect('pacientes:index')  # vuelve a la lista de pacientes
-    return render(request,'pacientes/paciente_delete.html',{'paciente':paciente})
-    #se redirecciona a la vista de confirmación de eliminación del paciente y se envia el contexto de dicho paciente.
+        return redirect('pacientes:index')
+    return render(request, 'pacientes/paciente_delete.html', {'paciente': paciente})
 
 
 class PacienteDelete(DeleteView):
-    '''clase de eliminacion de paciente'''
     model = Paciente
 
     template_name = 'pacientes/paciente_delete.html'
@@ -48,7 +41,7 @@ def paciente_direccion(request, paciente_id):
        paciente_id = codigo del paciente
     '''
     if request.method == 'GET':
-        direccion = Direccion.objects.all()
+        direccion = Direccion.objects.filter(paciente=paciente_id)
         contexto = {
             'direcciones': direccion,
             'id_paciente': paciente_id
@@ -60,20 +53,21 @@ def paciente_direccion(request, paciente_id):
             direccion = form.save(commit=False)
             direccion.paciente_id = paciente_id
             direccion.save()
-        direccion = Direccion.objects.all()
+        direccion = Direccion.objects.filter(paciente=paciente_id)
         contexto = {
             'direcciones': direccion,
             'id_paciente': paciente_id
         }
-    return render (request,'pacientes/paciente_direccion.html', contexto )
+    return render(request, 'pacientes/paciente_direccion.html', contexto)
+
 
 def crear_direccion(request, paciente_id):
-    '''
+    """
     metodo para crear una nueva direccion
     :param request:
     :param paciente_id: codigo de pacientes
     :return:
-    '''
+    """
     if request.method == 'GET':
         direccion = DireccionForm()
         contexto = {
@@ -88,30 +82,32 @@ def crear_direccion(request, paciente_id):
             direccion.paciente_id = paciente_id
             direccion.save()
             return redirect('pacientes:paciente_direccion', paciente_id)
-
-
     return render(request, 'pacientes/direccion.html', contexto)
 
+
 def paciente_seguro_medico(request, paciente_id):
-    '''
+    """
     metodo que permite obtener el seguro medico del paciente.
     :param request
     :param paciente_id: codigo de paciente
     :return:
-    '''
+    """
     if request.method == 'GET':
-        seguro = PacienteSeguroMedico.objects.all()
+        seguro = PacienteSeguroMedico.objects.filter(paciente=paciente_id)
         contexto = {
             'seguros': seguro,
             'id_paciente': paciente_id
         }
+    return render(request, 'pacientes/paciente_seguro_medico.html', contexto)
 
-    return render(request,'pacientes/paciente_seguro_medico.html',contexto)
 
 def paciente_seguro_medico_crear(request, paciente_id):
-    '''
+    """
     metodo para cargar el formulario de seguro medico del paciente
-    '''
+    :param request:
+    :param paciente_id:
+    :return:
+    """
     if request.method == 'GET':
         seguro = SeguroMedicoForm()
         contexto = {
@@ -121,7 +117,6 @@ def paciente_seguro_medico_crear(request, paciente_id):
     else:
         form = SeguroMedicoForm(request.POST, paciente_id)
         data = request.POST
-        #obtenemos el nombre del otro seguro
         otro_seguro = data['nombre_seguro']
         if form.is_valid():
             seguro_paciente = form.save(commit=False)
@@ -129,40 +124,167 @@ def paciente_seguro_medico_crear(request, paciente_id):
             seguro_paciente.detalle = otro_seguro
             seguro_paciente.save()
             return redirect('pacientes:paciente_seguro_medico', paciente_id)
-    return render(request,'pacientes/paciente_seguro_medico_crear.html', contexto)
+    return render(request, 'pacientes/paciente_seguro_medico_crear.html', contexto)
+
 
 def paciente_situacion_laboral(request, paciente_id):
-    '''
+    """
     permite obtener la sit
     :param request:
     :param paciente_id:
     :return:
-    '''
-    if request.method == 'GET':
-        cantidad = PacienteOcupacion.objects.filter(paciente=paciente_id).count()
-        situacion_laboral = SituacionLaboralForm()
-        ocupaciones = PacienteOcupacionForm()
-        contexto = {
-            'id_paciente': paciente_id
-        }
-    return render(request,'pacientes/paciente_situacion_laboral.html',contexto)
+    """
+    if request.method == 'POST':
+        form = PacienteOcupacionForm(request.POST, paciente_id)
+        if form.is_valid():
+            paciente_ocupacion = form.save(commit=False)
+            paciente_ocupacion.ocupacion_id = request.POST['ocupacion']
+            paciente_ocupacion.profesion_id = request.POST['profesion']
+            paciente_ocupacion.paciente_id = paciente_id
+            paciente_ocupacion.save()
+            messages.success(request, "Situación Laboral guardado correctamente!!")
+            return redirect('pacientes:padre_crear', paciente_id)
+
+    else:
+        paciente_ocupacion = PacienteOcupacion.objects.filter(paciente=paciente_id)
+        if paciente_ocupacion.count() > 0:
+            context = {
+                'form': paciente_ocupacion,
+                'id_paciente': paciente_id
+            }
+            return render(request, 'pacientes/paciente_situacion_laboral_listar.html', context)
+        else:
+            form = PacienteOcupacionForm()
+    contexto = {
+        'form': form,
+        'id_paciente': paciente_id
+    }
+    return render(request, 'pacientes/paciente_situacion_laboral_crear.html', contexto)
+
+
+def paciente_padre_crear(request, paciente_id):
+    """
+    permite insertar los datos del padre/madre del paciente
+    :param request:
+    :param paciente_id:
+    :return:
+    """
+
+    if request.method == 'POST':
+        form = PacientePadreForm(request.POST, paciente_id)
+        if form.is_valid():
+            padre_paciente = form.save(commit=False)
+            padre_paciente.save()
+            new_paciente = Paciente.objects.get(id=paciente_id)
+            padre_paciente.paciente.add(new_paciente)
+            messages.success(request, "Datos del Padre guardado correctamente!!")
+            return redirect('pacientes:nuevo_paciente')
+    else:
+        paciente_padre = PacientePadre.objects.filter(paciente=paciente_id).filter(padre='on')
+        if paciente_padre.exists():
+            context = {
+                'form': paciente_padre,
+                'id_paciente': paciente_id
+            }
+            return render(request, 'pacientes/paciente_padre_list.html', context)
+        else:
+            form = PacientePadreForm()
+
+    contexto = {
+        'form': form,
+        'id_paciente': paciente_id
+    }
+    return render(request, 'pacientes/paciente_padre_crear.html', contexto)
+
+
+def paciente_madre_crear(request, paciente_id):
+    """
+    permite insertar los datos de la madre del paciente
+    :param request:
+    :param paciente_id:
+    :return:
+    """
+    if request.method == 'POST':
+        form = PacientePadreForm(request.POST, paciente_id)
+        if form.is_valid():
+            padre_paciente = form.save(commit=False)
+            padre_paciente.padre = False
+            padre_paciente.save()
+            new_paciente = Paciente.objects.get(id=paciente_id)
+            padre_paciente.paciente.add(new_paciente)
+            messages.success(request, "Datos de la Madre guardado correctamente!!")
+            return redirect('pacientes:nuevo_paciente')
+    else:
+        paciente_padre = PacientePadre.objects.filter(paciente=paciente_id).filter(padre=False)
+        if paciente_padre.exists():
+            context = {
+                'form': paciente_padre,
+                'id_paciente': paciente_id
+            }
+            return render(request, 'pacientes/paciente_padre_list.html', context)
+        else:
+            form = PacientePadreForm()
+
+    contexto = {
+        'form': form,
+        'id_paciente': paciente_id
+    }
+    return render(request, 'pacientes/paciente_padre_crear.html', contexto)
+
 
 def paciente_nivel_educativo(request, paciente_id):
-    '''permite guardar el registro de nivel educativo del paciente
-       recibe como parametro
-       paciente_id: codigo del paciente'''
-    if request.method == 'GET':
-        form = NivelEducativoForm()
-    else:
-        form = NivelEducativoForm(request.POST, paciente_id)
+    if request.method == 'POST':
+        form = PacienteNivelEducativoForm(request.POST, paciente_id)
         if form.is_valid():
-            nivelEducativo = form.save(commit=False)
-            nivelEducativo.paciente_id = paciente_id
-            nivelEducativo.save()
-            messages.success(request, 'Nivel Educativo grabado correctamente.!!')
-            return  redirect('paciente:nuevo_paciente')
-    return render (request,'pacientes/paciente_nivelEducativo.html', {'form': form})
+            nivel_educativo = form.save(commit=False)
+            culmino = request.POST['completo']
+            if culmino == "False":
+                nivel_educativo.anho_cursado = request.POST['anho_cursado']
 
+            nivel_educativo.paciente_id = paciente_id
+            nivel_educativo.save()
+            return redirect('pacientes:nuevo_paciente')
+    else:
+        paciente = PacienteNivelEducativo.objects.filter(paciente=paciente_id)
+        if paciente.exists():
+            contexto = {
+                'form': paciente,
+                'id_paciente': paciente_id
+            }
+            return render(request, 'pacientes/paciente_nivel_educativo_listar.html', contexto)
+        else:
+            form = PacienteNivelEducativoForm()
+        context = {
+            'form': form,
+            'id_paciente': paciente_id
+        }
+        return render(request, 'pacientes/paciente_nivel_educativo.html', context)
+
+
+class PacientePadreCreateView(FormView):
+    model = PacientePadre
+    form_class = PacientePadreForm
+    template_name = "pacientes/paciente_padre_crear.html"
+
+    def get_success_url(self):
+        return reverse('nuevo_paciente')
+
+    def get_context_data(self, **kwargs):
+        context = super(PacientePadreCreateView, self).get_context_data(**kwargs)
+        context['cliente'] = Paciente.objects.get(pk=self.kwargs['paciente_id'])
+        context['id_paciente'] = self.kwargs['paciente_id']
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super(PacientePadreCreateView, self).get_form_kwargs()
+        return kwargs
+
+    def form_valid(self, form):
+        paciente = Paciente.objects.get(pk=self.kwargs['paciente_id'])
+
+        padre_paciente = form.save(commit=False)
+        padre_paciente.paciente_id = paciente.id
+        padre_paciente.save()
 
 
 class PacienteIndex(TemplateView):
@@ -175,10 +297,9 @@ class PacienteBuscar(TemplateView):
 
     template_name = 'pacientes/busqueda.html'
 
+    def post(self, request, *args,**kwargs):
 
-    def post(self,request, *args,**kwargs):
-
-        query = request.GET['cedula','']
+        query = request.GET['cedula', '']
 
         if query:
             paciente = Paciente.objects.filter(nro_doc__icontains = query)
@@ -195,24 +316,14 @@ class PacienteBuscar(TemplateView):
         #return render(request,'pacientes/busqueda.html')
 
 
-def search(request):
-    query = request.GET.get('cedula', '')
-
-    if query:
-        paciente = Paciente.objects.filter(nro_doc__icontains=query)
-        print(paciente)
-    else:
-        paciente = []
-    return render_to_response("pacientes/index.html", {"result": paciente, "query": query})
-
-
 class PacienteView(TemplateView):
-	template_name = 'pacientes/index.html'
-	model = Paciente
-	def get_context_data(self, **kwargs):
-		context = super(PacienteView, self).get_context_data(**kwargs)
-		context['pacientes'] = Paciente.objects.filter()
-		return context
+    template_name = 'pacientes/index.html'
+    model = Paciente
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteView, self).get_context_data(**kwargs)
+        return context
+
 
 def autocomplete_nombres(request):
     if request.method == 'GET':
@@ -236,8 +347,8 @@ def autocomplete_nombres(request):
                     lista_pacientes = []
                     for r in results:
                         vendedor = {}
-                        vendedor['id']= r[0]
-                        vendedor['label']= r[3]+"-"+r[1]+" "+r[2]
+                        vendedor['id'] = r[0]
+                        vendedor['label'] = r[3]+"-"+r[1]+" "+r[2]
                         vendedor['value'] = r[1]+" "+r[2]
                         lista_pacientes.append(vendedor)
                     data = json.dumps(lista_pacientes)
@@ -251,9 +362,8 @@ def autocomplete_nombres(request):
             print("debo redirigir al login")
 
 
-
-
 def consulta(request):
+
     filtros = filtros_establecidos(request,'index_paciente')
 
     #significa que se ingreso el nombre del paciente
@@ -320,8 +430,7 @@ class PacienteUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(PacienteUpdate, self).get_context_data(**kwargs)
-        pk_paciente = self.kwargs.get('pk',0)
-        print(pk_paciente)
+        pk_paciente = self.kwargs.get('pk', 0)
         query = (
             '''
             SELECT MAX(id)
@@ -329,7 +438,6 @@ class PacienteUpdate(UpdateView):
             WHERE paciente_id =''' + pk_paciente + '''
                                             '''
         )
-        print(query)
         cursor = connection.cursor()
         cursor.execute(query)
         results = cursor.fetchall()
@@ -363,18 +471,11 @@ class PacienteUpdate(UpdateView):
         for r in results:
             id_telefono = r[0]
         telefono = self.model.objects.get(id = id_telefono)
-        paciente =  self.second_model.objects.get(id = telefono.paciente_id)
-        form = self.form_class(request.POST, instance = telefono)
-        form2 = self.second_form_class(request.POST, instance = paciente)
+        paciente = self.second_model.objects.get(id=telefono.paciente_id)
+        form = self.form_class(request.POST, instance=telefono)
+        form2 = self.second_form_class(request.POST, instance=paciente)
         if form.is_valid() and form2.is_valid():
             form.save()
             form2.save()
         return HttpResponseRedirect(self.get_success_url())
-
-
-
-
-
-
-
 

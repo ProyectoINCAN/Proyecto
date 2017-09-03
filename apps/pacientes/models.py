@@ -240,15 +240,25 @@ class Paciente(models.Model):
     nombres = models.CharField(max_length=100, blank=False, null= True)
     apellidos = models.CharField(max_length=100, blank=False)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = models.CharField(max_length=15, blank=True, null=False, verbose_name="Número de documento", unique=True, validators=[doc_validation])  #si no tiene nrodoc, por defecto debe guardar INICIAL_APELLIDO+INICIAL_NOMBRE+FECHA_NACIMIENTO
-    nro_doc_alternativo = models.CharField(max_length=15, blank=True, null=True, verbose_name="Número de documento alternativo", unique=True)
+    nro_doc = models.CharField(max_length=15, blank=True, null=False,
+                               verbose_name="Número de documento",
+                               unique=True,
+                               validators=[doc_validation])
+    #si no tiene nrodoc, por defecto debe guardar INICIAL_APELLIDO+INICIAL_NOMBRE+FECHA_NACIMIENTO
+    nro_doc_alternativo = models.CharField(max_length=15, blank=True,
+                                           null=True, verbose_name="Número de documento alternativo", unique=True)
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
-    lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
+    lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False,
+                                         verbose_name="Lugar de nacimiento")
     nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False, default= 1)
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
-    fecha_registrado = models.DateTimeField(default=now, null=False)  # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
+    fecha_registrado = models.DateTimeField(default=now, null=False)
+    # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
+
+    def get_full_name(self):
+        return "{} {}".format(self.nombres, self.apellidos)
 
     def __str__(self):
         return '{} {}'.format(self.nombres, self.apellidos)
@@ -268,6 +278,7 @@ class Paciente(models.Model):
         ordering = ["apellidos", "nombres"]
         verbose_name = "Paciente"
         verbose_name_plural = "Pacientes"
+
 
 class Direccion(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
@@ -325,9 +336,6 @@ class Telefono(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     habilitado = models.BooleanField(default=True)
 
-    def __str__(self):
-        return self.peso + ", " + self.talla
-
     class Meta:
         ordering = ['paciente', 'id']
         verbose_name = 'Teléfono'
@@ -374,12 +382,18 @@ class PacientePadre(models.Model):
     nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False, default=1)
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
-    nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False, verbose_name="Escolaridad")
+    nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False,
+                                        verbose_name="Escolaridad")
     ocupacion = models.ForeignKey(Ocupacion, models.DO_NOTHING, blank=True, null=True, verbose_name="Ocupación")
     asume_sustento = models.BooleanField(default=True, verbose_name="Asume el sustento de la familia")
-    padre = models.BooleanField(default=True) #TODO si es PADRE True, si es madre False # en el admin.py "exclude = ('padre',)" para que no se muestre el campo # validar según el sexo
+    padre = models.BooleanField(default=True, verbose_name="Padre")
+    #TODO si es PADRE True, si es madre False # en el admin.py "exclude = ('padre',)" para que no se muestre el campo
+    #  validar según el sexo
     otro = models.TextField(null=True, verbose_name="Otro, especificar")
     paciente = models.ManyToManyField(Paciente)
+
+    def get_full_name(self):
+        return "{} {}".format(self.nombres, self.apellidos)
 
     def __str__(self):
         return self.apellidos + ", " + self.nombres
@@ -450,8 +464,12 @@ class PacienteProfesion(models.Model):
 class PacienteNivelEducativo(models.Model):
     nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False)
     paciente = models.ForeignKey(Paciente, models.SET_NULL,blank=True,null=True,) #relacion con el paciente
-    completo = models.BooleanField(default=True)
-    anho_cursado = verbose_name="Año Cursado"
+    COMPLETO_CHOICES = (
+        (True, 'SI'),
+        (False, 'NO')
+    )
+    completo = models.BooleanField(choices=COMPLETO_CHOICES, verbose_name="Completo")
+    anho_cursado = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -462,12 +480,12 @@ class PacienteNivelEducativo(models.Model):
         verbose_name_plural = "Paciente Niveles Educativos"
 
 
-#paciente situacion laboral
 class PacienteOcupacion(models.Model):
-    paciente = models.ForeignKey(Paciente, models.SET_NULL, blank=True, null=True, )
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True, )
     situacion_laboral_id = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False)
-    ocupacion = models.ForeignKey(Ocupacion, models.DO_NOTHING, blank=False, null=False)
-    renumeracion = models.BooleanField(default=True)
+    ocupacion = models.ForeignKey(Ocupacion, models.DO_NOTHING, blank=True, null=True)
+    profesion = models.ForeignKey(Profesion, on_delete=models.CASCADE, blank=True, null=True)
+    #renumeracion = models.BooleanField(default=True)
     estado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -483,7 +501,7 @@ class PacienteSeguroMedico(models.Model):
     seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False)
 
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False) #relacion con el paciente
-    detalle = models.CharField(max_length=150, blank=True, null=True)
+    detalle = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.seguro_medico

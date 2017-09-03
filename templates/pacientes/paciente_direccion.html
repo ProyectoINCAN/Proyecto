@@ -7,7 +7,7 @@
 
 {% block content %}
     <br>
-<div class="col-lg-10">
+<div class="col-lg-12">
 <div class="panel panel-default">
     <div class="panel-heading">FICHA CLINICA</div>
     <div class="panel-body">
@@ -17,6 +17,9 @@
                         <li>{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a>{% endblock %}</li>
                         <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Seguro Médico</a></li>
                         <li><a href="{% url 'pacientes:paciente_situacion_laboral' id_paciente %}">Situacion Laboral</a></li>
+                        <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+                        <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos del Padre</a></li>
+                        <li><a href="{% url 'pacientes:paciente_nivel_educatvo' id_paciente %}">Nivel Educativo</a></li>
             </ul>
 
         </nav>
@@ -24,7 +27,9 @@
             <div class="panel-heading">
                 Direcciones
                 <div class="btn-group pull-right">
-                    <a onclick="return abrir_modal('{% url 'pacientes:crear_direccion' id_paciente %}','Dirección / Nuevo')" class="btn btn-primary">
+                    <a onclick="return abrir_modal
+                            ('{% url 'pacientes:crear_direccion' id_paciente %}',
+                            'Dirección / Nuevo')" class="btn btn-primary">
 
                         <i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
                 </div><p></p>

@@ -1,0 +1,53 @@
+{% extends "base/base2.html" %}
+
+{% block content %}
+    <br>
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+         FICHA CLINICA
+        </div>
+        <div class="panel-body">
+            <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+                <ul class="nav nav-pills">
+                    <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
+                    <li>{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a>{% endblock %}</li>
+                    <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Seguro Médico</a></li>
+                    <li><a href="{% url 'pacientes:paciente_situacion_laboral' id_paciente %}">Situacion Laboral</a></li>
+                    <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+                    <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
+                    <li><a href="{% url 'pacientes:paciente_nivel_educatvo' id_paciente %}">Nivel Educativo</a></li>
+                </ul>
+            </nav>
+
+                <div class="col-sm-10">
+                    <h4 class="page-header">Completar los datos de la Madre</h4>
+                </div>
+
+            {% include 'base/messages.html' %}
+            <div class="row">
+                <form class="form-horizontal col-sm-10" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="form-group">
+                        <DIV STYLE="color:red">
+                            {{ field.errors }}</DIV>
+                        <label for="{{ field.name }}" class="col-sm-2 control-label">{{ field.label }}</label>
+                        <div class="col-sm-10">
+                            {{ field }}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <div class="form-group" align="left">
+                        <div class="col-lg-10 col-lg-offset-2">
+                            <button class="btn btn-primary">Guardar</button>
+                            <a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
