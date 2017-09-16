@@ -7,10 +7,11 @@ from apps.pacientes.models import TipoDoc, Sexo, Pais, EstadoCivil, Etnia, Distr
 
 # Create your models here.
 from utils import paciente_utils
+from utils.upperField import UpperCharField, UpperTextField
 
 
 class Consultorio(models.Model):
-    descripcion = models.CharField(max_length=100, blank=False)
+    descripcion = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -37,7 +38,7 @@ class Consultorio(models.Model):
 
 
 class Especialidad(models.Model):
-    nombre = models.CharField(max_length=60, blank=False)
+    nombre = UpperCharField(max_length=60, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
     # objects = EspecialidadManager()
 
@@ -51,11 +52,11 @@ class Especialidad(models.Model):
 
 
 class Medico(models.Model):
-    nombres = models.CharField(max_length=100, blank=False)
-    apellidos = models.CharField(max_length=100, blank=False)
+    nombres = UpperCharField(max_length=100, blank=False, uppercase=True)
+    apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
-    nro_registro_medico = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de Registro Médico", unique=True)
+    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True, uppercase=True)
+    nro_registro_medico = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de Registro Médico", unique=True, uppercase=True)
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False, verbose_name="Lugar de nacimiento")
@@ -91,8 +92,8 @@ class Medico(models.Model):
 
 
 class Departamento(models.Model):
-    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
-    nombre = models.CharField(max_length=60, blank=False)
+    codigo = UpperCharField(max_length=3, blank=False, primary_key=True, uppercase=True)
+    nombre = UpperCharField(max_length=60, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -105,8 +106,8 @@ class Departamento(models.Model):
 
 
 class Turno(models.Model):
-    codigo = models.CharField(max_length=1, blank=False, primary_key=True)
-    nombre = models.CharField(max_length=60, blank=False)
+    codigo = UpperCharField(max_length=1, blank=False, primary_key=True, uppercase=True)
+    nombre = UpperCharField(max_length=60, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -119,7 +120,7 @@ class Turno(models.Model):
 
 
 class DiasSemana(models.Model):
-    nombre = models.CharField(max_length=10)
+    nombre = UpperCharField(max_length=10, uppercase=True)
 
     def __str__(self):
         return self.nombre
@@ -150,8 +151,8 @@ class HorarioMedico(models.Model):
 
 
 class OrdenEstudio(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
-    descripcion = models.CharField(default="", max_length=80, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
+    descripcion = UpperCharField(default="", max_length=80, blank=False, uppercase=True)
     estado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -166,7 +167,7 @@ class OrdenEstudio(models.Model):
 class EvolucionPaciente(models.Model):
     fecha = models.DateField(default=now, null=False)
     hora = models.TimeField(default=now, null=False)
-    observaciones = models.TextField(blank=False)
+    observaciones = UpperTextField(blank=False, uppercase=True)
     medico = models.ForeignKey(Medico, on_delete=DO_NOTHING, verbose_name="Firma")
     paciente = models.ForeignKey(Paciente, on_delete=DO_NOTHING)
 

@@ -4,11 +4,12 @@ from django.db import models
 from apps.consultorios.models import Medico
 from apps.pacientes.models import Paciente
 from apps.seguridad.models import Establecimiento
+from utils.upperField import UpperCharField
 
 
 class TipoReferencia(models.Model):
-    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
-    descripcion = models.CharField(max_length=100, blank=False)
+    codigo = UpperCharField(max_length=2, blank=False, primary_key=True, uppercase=True)
+    descripcion = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -21,8 +22,8 @@ class TipoReferencia(models.Model):
 
 
 class CIE10(models.Model):
-    codigo = models.CharField(max_length=7, blank=False, primary_key=True)
-    descripcion = models.CharField(max_length=250, blank=False)
+    codigo = UpperCharField(max_length=7, blank=False, primary_key=True, uppercase=True)
+    descripcion = UpperCharField(max_length=250, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -35,7 +36,7 @@ class CIE10(models.Model):
 
 
 class CondicionEgreso(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -48,7 +49,7 @@ class CondicionEgreso(models.Model):
 
 
 class TipoEgreso(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -92,8 +93,8 @@ class DiagnosticoEgreso(models.Model):
 
 
 class ViaIngreso(models.Model):
-    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
-    descripcion = models.CharField(max_length=100, blank=False)
+    codigo = UpperCharField(max_length=3, blank=False, primary_key=True, uppercase=True)
+    descripcion = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -135,7 +136,7 @@ class ReferenciaIngreso(models.Model):
 
 
 class Servicio(models.Model):
-    nombre = models.CharField(max_length=60, blank=False)
+    nombre = UpperCharField(max_length=60, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -148,12 +149,12 @@ class Servicio(models.Model):
 
 
 class Insumo(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
-    nro_lote = models.CharField(max_length=100, blank=False, verbose_name="Número de Lote")
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
+    nro_lote = UpperCharField(max_length=100, blank=False, verbose_name="Número de Lote", uppercase=True)
     cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
     fabricado = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fabricado")
     vencimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Vencimiento")
-    tipificacion = models.CharField(max_length=100, blank=False, verbose_name="Tipificación")
+    tipificacion = UpperCharField(max_length=100, blank=False, verbose_name="Tipificación", uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -166,13 +167,13 @@ class Insumo(models.Model):
 
 
 class Medicamento(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
-    forma_farmaceutica = models.CharField(max_length=200, blank=False)
-    nro_lote = models.CharField(max_length=100, blank=False, verbose_name="Número de Lote")
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
+    forma_farmaceutica = UpperCharField(max_length=200, blank=False, uppercase=True)
+    nro_lote = UpperCharField(max_length=100, blank=False, verbose_name="Número de Lote", uppercase=True)
     cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
     fabricado = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fabricado")
     vencimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Vencimiento")
-    tipificacion = models.CharField(max_length=100, blank=False, verbose_name="Tipificación")
+    tipificacion = UpperCharField(max_length=100, blank=False, verbose_name="Tipificación", uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -186,14 +187,14 @@ class Medicamento(models.Model):
 
 class Internado(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
-    tipo_ingreso = models.CharField(max_length=100, blank=False)
-    puesto = models.CharField(max_length=100, blank=False)
-    motivo = models.CharField(max_length=100, blank=False)
+    tipo_ingreso = UpperCharField(max_length=100, blank=False, uppercase=True)
+    puesto = UpperCharField(max_length=100, blank=False, uppercase=True)
+    motivo = UpperCharField(max_length=100, blank=False, uppercase=True)
     medico_solitante = models.ForeignKey(Medico, models.SET_NULL, blank= True, null=True, related_name ="medicosolicitantec")
     medico_cabecera = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False,related_name ="medicos")
-    forma_ingreso = models.CharField(max_length=150, blank=False)
+    forma_ingreso = UpperCharField(max_length=150, blank=False, uppercase=True)
     servicio =  models.ForeignKey(Servicio, models.DO_NOTHING, blank=False, null=False)
-    observacion = models.CharField(max_length=300, blank=False)
+    observacion = UpperCharField(max_length=300, blank=False, uppercase=True)
 
     def __str__(self):
         return self.paciente

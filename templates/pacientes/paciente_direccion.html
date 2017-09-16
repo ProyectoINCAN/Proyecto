@@ -5,6 +5,26 @@
     $(document).ready(function () {
             $('.btnModal').click(function () {
 
+<script>
+   $( document ).ready(function() {
+   $('#create').click(function(){
+      $('#modalDireccion').modal('show');
+   })
+   <!--$('#grabarPassword').click(function(){-->
+      <!--var pass = $('#id_password').val();-->
+      <!--var pass_conf = $('#password_mod_conf').val();-->
+      <!--console.log("contraseñas", pass, pass_conf);-->
+      <!--if (pass != pass_conf) {-->
+         <!--console.log("las contraseñas no coinciden");-->
+         <!--alert("las contraseñas no coinciden");-->
+         <!--return;-->
+      <!--} else-->
+         <!--$('#modalPassword').modal('hide');-->
+   <!--})-->
+})
+
+</script>
+
                 var codigo_direccion = $(this).data('id');
                 console.log(codigo_direccion)
                 $("#direccion_id").val(codigo_direccion)
@@ -88,28 +108,90 @@
         </div>
     </div>
     <div id="popup_pacientes"></div>
-    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"><b>Paciente / Dirección</b></h4>
-          </div>
-          <div class="modal-body">
-            <p>Desea eliminar los datos de la dirección seleccionada1 ?<span id="modal_name"></span></p>
-          </div>
-          <div class="modal-footer">
-            <form method="post" id="formEliminar">
-              {% csrf_token %}
-              <input type="hidden" value="" name="direccion_id" id="direccion_id">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Eliminar</button>
-            </form>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
 </div>
+</div>
+
+<div id="modalDireccion" class="modal" data-keyboard="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+					<form role="form" action="{% url 'pacientes:crear_direccion' id_paciente %}" method="post">
+
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">Direcciones</h4>
+      </div>
+      <div class="modal-body">
+			{% csrf_token %}
+		<div class="form-horizontal" id="form_direccion" >
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">{{form.departamento.label}}</label>
+				<div class="col-sm-8">
+					{{ form.departamento }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-3">{{form.distrito.label}}</label>
+				<div class="col-sm-8">
+					{{ form.distrito }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">{{form.barrio.label}}</label>
+				<div class="col-sm-8">
+					{{ form.barrio }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">{{form.area.label}}</label>
+				<div class="col-sm-3">
+					{{ form.area }}
+				</div>
+
+				<label class="control-label col-sm-2">{{form.sector.label}}</label>
+				<div class="col-sm-3">
+					{{ form.sector }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">{{form.manzana.label}}</label>
+				<div class="col-sm-3">
+					{{ form.manzana }}
+				</div>
+
+				<label class="control-label col-sm-2">{{form.nro_casa.label}}</label>
+				<div class="col-sm-3">
+					{{ form.nro_casa }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">Residencia Ocasional</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" id="direccion_residencia" >
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">Referencia</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" id="direccion_referencia" >
+				</div>
+			</div>
+
+		</div>
+		  </div>
+      <div class="modal-footer">
+      		<button type="submit" id="grabarDireccion" class="btn btn-primary"><i class="icon-save fa fa-fw fa-save"></i> Grabar</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-remove fa fa-fw fa-times"></i> Cancelar</button>
+      </div>
+		</form>
+    </div>
+
+  </div>
 </div>
 
 {% endblock %}

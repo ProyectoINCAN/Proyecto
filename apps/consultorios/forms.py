@@ -38,8 +38,9 @@ class MedicoModelForm(forms.ModelForm):
             'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'etnia': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple'},
-                                                               choices=Especialidad.objects.all())
+            'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple'})
+                                                               # ,
+                                                               # choices=Especialidad.objects.all())
         }
 
     def __init__(self, *args, **kwargs):

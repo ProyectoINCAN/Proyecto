@@ -3,11 +3,12 @@ from django.db import models
 # Create your models here.
 from apps.consultorios.models import Medico, Turno, Especialidad
 from apps.pacientes.models import Paciente
+from utils.upperField import UpperCharField
 
 
 class EstadoAgenda(models.Model):
-    codigo = models.CharField(max_length=1, blank=False, primary_key=True)
-    nombre = models.CharField(max_length=50, blank=False)
+    codigo = UpperCharField(max_length=1, blank=False, primary_key=True, uppercase=True)
+    nombre = UpperCharField(max_length=50, blank=False, uppercase=True)
 
     def __str__(self):
         return self.nombre
@@ -62,7 +63,7 @@ class AgendaDetalle(models.Model):
     agenda = models.ForeignKey(Agenda, models.DO_NOTHING, blank=False, null=False)
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     orden = models.IntegerField()  # TODO incremento automático según el orden de llegada
-    observacion = models.CharField(max_length=50, blank=True, null=True);
+    observacion = UpperCharField(max_length=50, blank=True, null=True, uppercase=True);
     confirmado = models.BooleanField(default=False)
     objects = AgendaDetalleManager()  # Instanciar el Manager de la clase definido previamente
 

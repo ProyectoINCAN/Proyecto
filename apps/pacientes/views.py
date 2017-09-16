@@ -101,15 +101,18 @@ def paciente_direccion(request, paciente_id):
        paciente_id = codigo del paciente
     """
     if request.method == 'GET':
-        direccion = Direccion.objects.filter(paciente=paciente_id)
+        direcciones = Direccion.objects.filter(paciente=paciente_id)
+        direccion = DireccionForm()
         contexto = {
-            'direcciones': direccion,
-            'id_paciente': paciente_id
+            'direcciones': direcciones,
+            'id_paciente': paciente_id,
+            'form': direccion
         }
 
     else:
         form = DireccionForm(request.POST, paciente_id)
         if form.is_valid():
+
             direccion = form.save(commit=False)
             direccion.paciente_id = paciente_id
             direccion.save()

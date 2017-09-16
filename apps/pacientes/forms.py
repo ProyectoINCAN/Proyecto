@@ -1,9 +1,12 @@
+import django_select2
 from django import forms
 from django.db import models as django_models
+from django.forms.widgets import TextInput
 from django.utils.translation import ugettext_lazy as _
+from django_select2.forms import Select2Widget
+
 from apps.pacientes.models import *
 
-from django_select2 import forms as select2form
 
 from django.contrib.admin import widgets
 from django.contrib.admin.options import FORMFIELD_FOR_DBFIELD_DEFAULTS
@@ -36,30 +39,38 @@ class PacienteForm(forms.ModelForm):
         ]
 
         labels = {
+            'nombres':'Nombres',
+            'apellidos':'Apellidos',
+            'tipo_doc':'Tipo Documento',
+            'nro_doc': 'Nro. de Documento',
             'nombres':'Nombres:',
             'apellidos': 'Apellidos:',
-            'tipo_doc':'Tipo Doc:',
-            'nro_doc': 'Número de Documento:',
+            'tipo_doc':'Tipo Documento:',
+            'nro_doc': 'Nro de Documento:',
             'nro_doc_alternativo':'Documento Alternativo',
             'sexo':'Sexo',
-            'fecha_nacimiento': 'Fecha de Nacimiento',
-            'lugar_nacimiento':'Lugar de Nacimiento',
+            'fecha_nacimiento': 'Fecha de Nac.',
+            'lugar_nacimiento':'Lugar de Nac.',
             'nacionalidad': 'Nacionalidad',
             'estado_civil': 'Estado Civil',
             'etnia': 'Etnia',
              }
 
         widgets = {
-            'nombres': forms.TextInput(attrs ={'class': 'form-control'}),
-            'apellidos': forms.TextInput(attrs ={'class': 'form-control'}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch'}),
-             'nro_doc': forms.TextInput(attrs ={'class': 'form-control'}),
-             'sexo': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nombres': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'apellidos': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;'}),
+             'nro_doc': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+             'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            # 'nro_doc': forms.TextInput(attrs ={'class': 'form-control', }),
+            'sexo': forms.Select(attrs={'class': 'form-control  selectsearch', 'style':'width: 100%'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'lugar_nacimiento':  forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'nacionalidad':  forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'estado_civil':  forms.Select(attrs={'class': 'form-control selectsearch'}),
-             'etnia':  forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'lugar_nacimiento':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'nacionalidad':  forms.Select(attrs={'class':'form-control selectsearch', 'style':'width: 100%'}),
+            'estado_civil':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'etnia':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+
         }
 
         #validacion para la creacion de un nuevo paciente
@@ -86,7 +97,7 @@ class TelefonoForm(forms.ModelForm):
         widgets = {
             'numero': forms.TextInput(attrs={'class': 'form-control'}),
             'orden': forms.NumberInput(attrs={'class': 'form-control'}),
-            'tipo': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'tipo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             'confirmado':forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
 
@@ -97,40 +108,39 @@ class DireccionForm(forms.ModelForm):
         model = Direccion
 
         fields = [
-            'descripcion',
             'departamento',
             'distrito',
             'barrio',
             'area',
             'sector',
             'manzana',
+            'descripcion',
             'nro_casa',
             'residencia_ocasional',
             'referencia',
         ]
 
         labels = {
-            'descripcion': 'Descripcion',
             'departamento': 'Departamento',
             'distrito': 'Distrito',
             'barrio': 'Barrio',
-            'Sector': 'Sector',
             'area': 'Area',
+            'Sector': 'Sector',
             'manzana': 'Manzana',
-            'nro_casa': 'Nro casa',
+            'descripcion': 'Dirección',
+            'nro_casa': 'Número',
             'residencia_ocasional': 'Residencia Ocasional',
             'referencia': 'Referencia',
         }
         widgets = {
-            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
-            'departamento': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'distrito': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'barrio': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'area': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'departamento': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'departamento': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'distrito': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'barrio': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'area': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'sector': forms.TextInput(attrs={'class': 'form-control'}),
-            'nro_casa': forms.TextInput(attrs={'class': 'form-control'}),
             'manzana': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+            'nro_casa': forms.TextInput(attrs={'class': 'form-control'}),
             'residencia_ocasional': forms.TextInput(attrs={'class': 'form-control'}),
             'referencia': forms.TextInput(attrs={'class': 'form-control'}),
         }
@@ -229,7 +239,7 @@ class PacientePadreForm(forms.ModelForm):
         labels = {
             'nombres': 'Nombres:',
             'apellidos': 'Apellidos:',
-            'tipo_doc': 'Tipo Doc:',
+            'tipo_doc': 'Tipo Documento:',
             'nro_doc': 'Número de Documento:',
             'sexo': 'Sexo',
             'fecha_nacimiento': 'Fecha de Nacimiento',

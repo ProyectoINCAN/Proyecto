@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #apps terceros
     'font_awesome', #pip install django-font-awesome
-    'django_select2',  # pip install django-select2
     #mis apps
     'apps.pacientes',
     'apps.seguridad',
@@ -171,22 +170,22 @@ STATIC_URL = '/static/'
 
 # INSTALAR MEMCACHED
 # pip install python3-memcached
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    'select2': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
-    }
-}
-
-SELECT2_CACHE_BACKEND = 'select2'
-SELECT2_CSS = 'css/select2.css'
-SELECT2_JS = 'js/select2.min.js'
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     },
+#     # 'select2': {
+#     #     'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#     #     'LOCATION': '127.0.0.1:11211',
+#     # }
+# }
+#
+# SELECT2_CACHE_BACKEND = 'select2'
+# SELECT2_CSS = 'css/select2.css'
+# SELECT2_JS = 'js/select2.min.js'
 
 LOGIN_REDIRECT_URL = reverse_lazy('consultorios:medico_listar')  # TODO cambiar por otro url para inicio

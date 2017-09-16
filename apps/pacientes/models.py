@@ -4,14 +4,15 @@ from django.db import models
 from django.db.models.deletion import DO_NOTHING
 from django.utils.timezone import now
 
-from utils import paciente_utils
+from utils import paciente_utils, upperField
+from utils.upperField import UpperCharField
 
 from .validators import nombre_validation, charfield_validation, doc_validation
 
 
 class TipoDoc(models.Model):
-    codigo = models.CharField(max_length=3, blank=False, primary_key=True)
-    descripcion = models.CharField(max_length=50, blank=False)
+    codigo = UpperCharField(max_length=3, blank=False, primary_key=True,uppercase=True)
+    descripcion = UpperCharField(max_length=50, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     # método para que retorne el objeto en formato de string
@@ -25,8 +26,8 @@ class TipoDoc(models.Model):
 
 
 class Sexo(models.Model):
-    codigo = models.CharField(max_length=1, blank=False, primary_key=True)
-    descripcion = models.CharField(max_length=30, blank=False)
+    codigo = UpperCharField(max_length=1, blank=False, primary_key=True, uppercase=True)
+    descripcion = UpperCharField(max_length=30, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -39,8 +40,8 @@ class Sexo(models.Model):
 
 
 class EstadoCivil(models.Model):
-    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
-    nombre = models.CharField(max_length=30, blank=False)
+    codigo = UpperCharField(max_length=2, blank=False, primary_key=True, uppercase=True)
+    nombre = UpperCharField(max_length=30, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -53,7 +54,7 @@ class EstadoCivil(models.Model):
 
 
 class NivelEducativo(models.Model):
-    nombre = models.CharField(max_length=50, blank=False)
+    nombre = UpperCharField(max_length=50, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -66,16 +67,16 @@ class NivelEducativo(models.Model):
 
 
 class Etnia(models.Model):
-    nombre = models.CharField(max_length=30, blank=False)
+    nombre = UpperCharField(max_length=30, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nombre
 
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-        self.nombre = paciente_utils.capitalizar(self.nombre)
-        super(Etnia, self).save()
+    # def save(self, force_insert=False, force_update=False, using=None,
+    #          update_fields=None):
+    #     self.nombre = paciente_utils.capitalizar(self.nombre)
+    #     super(Etnia, self).save()
 
     class Meta:
         ordering = ["nombre"]
@@ -84,7 +85,7 @@ class Etnia(models.Model):
 
 
 class Profesion(models.Model):
-    nombre = models.CharField(max_length=30, blank=False)
+    nombre = UpperCharField(max_length=30, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -97,10 +98,10 @@ class Profesion(models.Model):
 
 
 class Pais(models.Model):
-    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
-    nombre = models.CharField(max_length=100, blank=False)
-    nombre_iso = models.CharField(max_length=60, blank=False)
-    codigo_alpha3 = models.CharField(max_length=3, blank=False)
+    codigo = UpperCharField(max_length=2, blank=False, primary_key=True, uppercase=True)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
+    nombre_iso = UpperCharField(max_length=60, blank=False, uppercase=True)
+    codigo_alpha3 = UpperCharField(max_length=3, blank=False, uppercase=True)
     codigo_numerico = models.IntegerField(blank=False)
     habilitado = models.BooleanField(default=True)
 
@@ -114,7 +115,7 @@ class Pais(models.Model):
 
 
 class Departamento(models.Model):
-    nombre = models.CharField(max_length=60, blank=False)
+    nombre = UpperCharField(max_length=60, blank=False, uppercase=True)
     pais = models.ForeignKey(Pais, models.SET_NULL, blank=True,null=True, default='PY')
     habilitado = models.BooleanField(default=True)
 
@@ -128,17 +129,17 @@ class Departamento(models.Model):
 
 
 class Distrito(models.Model):
-    nombre = models.CharField(max_length=60, blank=False)
+    nombre = UpperCharField(max_length=60, blank=False, uppercase=True)
     departamento = models.ForeignKey(Departamento, models.SET_NULL, blank=True,null=True,)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nombre
 
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-        self.nombre = paciente_utils.capitalizar(self.nombre)
-        super(Distrito, self).save()
+    # def save(self, force_insert=False, force_update=False, using=None,
+    #          update_fields=None):
+    #     self.nombre = paciente_utils.capitalizar(self.nombre)
+    #     super(Distrito, self).save()
 
     class Meta:
         ordering = ["nombre"]
@@ -147,17 +148,17 @@ class Distrito(models.Model):
 
 
 class Barrio(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
-    distrito = models.ForeignKey(Distrito, models.SET_NULL, blank=True,null=True,)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
+    distrito = models.ForeignKey(Distrito, models.SET_NULL, blank=True,null=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nombre
 
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-        self.nombre = paciente_utils.capitalizar(self.nombre)
-        super(Barrio, self).save()
+    # def save(self, force_insert=False, force_update=False, using=None,
+    #          update_fields=None):
+    #     self.nombre = paciente_utils.capitalizar(self.nombre)
+    #     super(Barrio, self).save()
 
     class Meta:
         ordering = ["nombre"]
@@ -166,16 +167,16 @@ class Barrio(models.Model):
 
 
 class Nacionalidad(models.Model):
-    nacionalidad = models.CharField(max_length=100, blank=False)
+    nacionalidad = UpperCharField(max_length=100, blank=False, uppercase=True)
     pais = models.ForeignKey(Pais, models.SET_NULL, blank=True,null=True,)
 
     def __str__(self):
         return self.nacionalidad
 
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-        self.nacionalidad = paciente_utils.capitalizar(self.nacionalidad)
-        super(Nacionalidad, self).save()
+    # def save(self, force_insert=False, force_update=False, using=None,
+    #          update_fields=None):
+    #     self.nacionalidad = paciente_utils.capitalizar(self.nacionalidad)
+    #     super(Nacionalidad, self).save()
 
     class Meta:
         ordering = ["id"]
@@ -184,7 +185,7 @@ class Nacionalidad(models.Model):
 
 
 class SeguroMedico(models.Model):
-    nombre = models.CharField(max_length=60, blank=False)
+    nombre = UpperCharField(max_length=60, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -197,7 +198,7 @@ class SeguroMedico(models.Model):
 
 
 class Area(models.Model):
-    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
+    codigo = UpperCharField(max_length=2, blank=False, primary_key=True, uppercase=True)
     nombre = models.CharField(max_length=60, blank=False)
 
     def __str__(self):
@@ -210,7 +211,7 @@ class Area(models.Model):
 
 
 class Ocupacion(models.Model):
-    descripcion = models.CharField(max_length=100, blank=False)
+    descripcion = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -223,8 +224,8 @@ class Ocupacion(models.Model):
 
 
 class SituacionLaboral(models.Model):
-    codigo = models.CharField(max_length=2, blank=False, primary_key=True)
-    descripcion = models.CharField(max_length=50, blank=False)
+    codigo = UpperCharField(max_length=2, blank=False, primary_key=True, uppercase=True)
+    descripcion = UpperCharField(max_length=50, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -237,13 +238,13 @@ class SituacionLaboral(models.Model):
 
 
 class Paciente(models.Model):
-    nombres = models.CharField(max_length=100, blank=False, null= True)
-    apellidos = models.CharField(max_length=100, blank=False)
+    nombres = UpperCharField(max_length=100, blank=False, null= True, uppercase=True)
+    apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = models.CharField(max_length=15, blank=True, null=False,
+    nro_doc = UpperCharField(max_length=15, blank=True, null=False,
                                verbose_name="Número de documento",
                                unique=True,
-                               validators=[doc_validation])
+                               validators=[doc_validation], uppercase=True)
     #si no tiene nrodoc, por defecto debe guardar INICIAL_APELLIDO+INICIAL_NOMBRE+FECHA_NACIMIENTO
     nro_doc_alternativo = models.CharField(max_length=15, blank=True,
                                            null=True, verbose_name="Número de documento alternativo", unique=True)
@@ -269,11 +270,12 @@ class Paciente(models.Model):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         if self.tipo_doc.codigo in ('NT', 'NSC'):
+            print('entro', self.tipo_doc.codigo)
             self.nro_doc = paciente_utils.get_nrodoc_alternativo(self)
-            self.nro_doc_alternativo = self.nro_doc
-
-        self.nombres = paciente_utils.capitalizar(self.nombres)
-        self.apellidos = paciente_utils.capitalizar(self.apellidos)
+            self.nro_doc_alternativo = self.nro_doc.upper()
+        #
+        # self.nombres = paciente_utils.capitalizar(self.nombres)
+        # self.apellidos = paciente_utils.capitalizar(self.apellidos)
         self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)
         super(Paciente, self).save()
 
@@ -285,16 +287,16 @@ class Paciente(models.Model):
 
 class Direccion(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
-    descripcion = models.CharField(max_length=100, blank=False)
+    descripcion = UpperCharField(max_length=100, blank=False, uppercase=True)
     departamento = models.ForeignKey(Departamento, models.SET_NULL, blank=True, null=True, )
     distrito = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False)
     barrio = models.ForeignKey(Barrio, models.DO_NOTHING, blank=False, null=False)
     area = models.ForeignKey(Area, models.DO_NOTHING, blank=False, null=False)
-    sector = models.CharField(max_length=100, blank=False)
-    manzana = models.CharField(max_length=60, blank=False)
+    sector = UpperCharField(max_length=100, blank=False, uppercase=True)
+    manzana = UpperCharField(max_length=60, blank=False, uppercase=True)
     nro_casa = models.IntegerField(blank=False)
-    residencia_ocasional = models.CharField(max_length=300, blank=False)
-    referencia = models.CharField(max_length=200, blank=False)
+    residencia_ocasional = UpperCharField(max_length=300, blank=False, uppercase=True)
+    referencia = UpperCharField(max_length=200, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -321,8 +323,8 @@ class MedidaPaciente(models.Model):
 
 
 class TipoTelefono(models.Model):
-    codigo = models.CharField(max_length=1, blank=False, primary_key=True)
-    descripcion = models.CharField(max_length=50, blank=False)
+    codigo = UpperCharField(max_length=1, blank=False, primary_key=True, uppercase=True)
+    descripcion = UpperCharField(max_length=50, blank=False, uppercase=True)
 
     def __str__(self):
         return self.descripcion
@@ -334,7 +336,7 @@ class TipoTelefono(models.Model):
 
 
 class Telefono(models.Model):
-    numero = models.CharField(max_length=80, blank=False, null=False)
+    numero = UpperCharField(max_length=80, blank=False, null=False, uppercase=True)
     tipo = models.ForeignKey(TipoTelefono, models.DO_NOTHING, blank=False, null=False)
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     habilitado = models.BooleanField(default=True)
@@ -346,8 +348,8 @@ class Telefono(models.Model):
 
 
 class TipoCorreoElectronico(models.Model):
-    codigo = models.CharField(max_length=1, blank=False, verbose_name='código', primary_key=True)
-    descripcion = models.CharField(max_length=50, blank=False, verbose_name='descripción')
+    codigo = UpperCharField(max_length=1, blank=False, verbose_name='código', primary_key=True, uppercase=True)
+    descripcion = UpperCharField(max_length=50, blank=False, verbose_name='descripción', uppercase=True)
 
     def __str__(self):
         return self.descripcion
@@ -374,10 +376,10 @@ class CorreoElectronico(models.Model):
 
 
 class PacientePadre(models.Model):
-    nombres = models.CharField(max_length=100, blank=False)
-    apellidos = models.CharField(max_length=100, blank=False)
+    nombres = UpperCharField(max_length=100, blank=False, uppercase=True)
+    apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = models.CharField(max_length=15, blank=True, null=True, verbose_name="Número de documento")
+    nro_doc = UpperCharField(max_length=15, blank=True, null=True, verbose_name="Número de documento", uppercase=True)
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False,
@@ -403,8 +405,8 @@ class PacientePadre(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        self.nombres = paciente_utils.capitalizar(self.nombres)
-        self.apellidos = paciente_utils.capitalizar(self.apellidos)
+        # self.nombres = paciente_utils.capitalizar(self.nombres)
+        # self.apellidos = paciente_utils.capitalizar(self.apellidos)
         if self.nro_doc:
             self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)
         super(PacientePadre, self).save()
@@ -417,7 +419,7 @@ class PacientePadre(models.Model):
 
 class Vinculo(models.Model):
     """"Vínculo establecido con el paciente si es solo acompañante. Ej: Vecino, tío/a, primo/a"""
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
 
     def __str__(self):
         return self.nombre
@@ -430,20 +432,20 @@ class Vinculo(models.Model):
 
 class Acompanhante(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
-    nombres = models.CharField(max_length=100, blank=False)
-    apellidos = models.CharField(max_length=100, blank=False)
-    nro_doc = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
+    nombres = UpperCharField(max_length=100, blank=False, uppercase=True)
+    apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
+    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
     telefono = models.ForeignKey(Telefono, models.DO_NOTHING, blank=False, null=False)
     vinculo = models.ForeignKey(Vinculo, on_delete=DO_NOTHING, blank=False, null=False)
 
     def __str__(self):
         return self.nombre
     
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-        self.nombres = paciente_utils.capitalizar(self.nombres)
-        self.apellidos = paciente_utils.capitalizar(self.apellidos)
-        super(Acompanhante, self).save()
+    # def save(self, force_insert=False, force_update=False, using=None,
+    #          update_fields=None):
+    #     self.nombres = paciente_utils.capitalizar(self.nombres)
+    #     self.apellidos = paciente_utils.capitalizar(self.apellidos)
+    #     super(Acompanhante, self).save()
 
     class Meta:
         ordering = ["nombres"]
@@ -504,7 +506,7 @@ class PacienteSeguroMedico(models.Model):
     seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False)
 
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False) #relacion con el paciente
-    detalle = models.CharField(max_length=100, blank=True, null=True)
+    detalle = UpperCharField(max_length=100, blank=True, null=True, uppercase=True)
 
     def __str__(self):
         return self.seguro_medico
@@ -516,7 +518,7 @@ class PacienteSeguroMedico(models.Model):
 
 
 class Pared(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -529,7 +531,7 @@ class Pared(models.Model):
 
 
 class Techo(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -542,7 +544,7 @@ class Techo(models.Model):
 
 
 class Piso(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -555,7 +557,7 @@ class Piso(models.Model):
 
 
 class Dependencia(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -568,7 +570,7 @@ class Dependencia(models.Model):
 
 
 class Agua(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -581,7 +583,7 @@ class Agua(models.Model):
 
 
 class EliminacionBasura(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -594,7 +596,7 @@ class EliminacionBasura(models.Model):
 
 
 class Desague(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -607,7 +609,7 @@ class Desague(models.Model):
 
 
 class ServicioBasico(models.Model):
-    nombre = models.CharField(max_length=100, blank=False)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
