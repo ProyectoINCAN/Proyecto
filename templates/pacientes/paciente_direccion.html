@@ -1,15 +1,16 @@
 {% extends 'base/base2.html' %}
 {% load static %}
 {% block extrajs %}
+    <script src = "{% static 'apps/pacientes/js/direcciones.js' %}"></script>
 
-<script>
-   $( document ).ready(function() {
-       $('#create').click(function(){
-          $('#modalDireccion').modal('show');
-       })
-   })
+<!--<script>-->
+   <!--$( document ).ready(function() {-->
+       <!--$('#create').click(function(){-->
+          <!--$('#modalDireccion').modal('show');-->
+       <!--})-->
+   <!--})-->
 
-</script>
+<!--</script>-->
   <script>
     $(document).ready(function () {
             $('.btnModal').click(function () {
