@@ -35,5 +35,4 @@ urlpatterns = [
     # url(r'^agendaEspecialidad/([\w-]+)/$', agenda_especialidad, name='agenda_especialidad'),
     url(r'^agendas/$', login_required(agenda_especialidad), name='agenda_especialidad_medico'),
 
-
 ]

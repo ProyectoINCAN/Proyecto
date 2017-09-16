@@ -6,8 +6,14 @@
 
 
 {% block content %}
-<br>
-<div class="col-sm-12">
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">Ficha Clinica</h1>
+ </div>
+  <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
+    <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+    <li class="active">Datos Básicos del Paciente</li>
+  </ol><br>
+<div class="wrapper-md">
 <div class="panel panel-default">
     <div class="panel-heading">FICHA CLINICA</div>
     <div class="panel-body">

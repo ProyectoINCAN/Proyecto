@@ -12,7 +12,6 @@ urlpatterns = [
     url(r'^index/$', pacienteViews.consulta, name='index'),
 
     url(r'^nuevo_paciente$', login_required(PacienteCreate.as_view()), name='nuevo_paciente'),
-    #url(r'^paciente_call_center$', PacienteCallCenterCreate.as_view(),name='nuevo_paciente'),
     url(r'^paciente/(?P<pk>[0-9]+)/editar$', login_required(PacienteUpdate.as_view()), name='paciente_editar'),
 
 
@@ -22,8 +21,10 @@ urlpatterns = [
         login_required(pacienteViews.paciente_delete), name='paciente_delete'),
 
     #abre la vista de direcciones del paciente
-    url(r'^paciente_direccion/(?P<paciente_id>\d+)$',
-        login_required(pacienteViews.paciente_direccion), name='paciente_direccion'),
+    url(r'^paciente/(?P<paciente_id>\d+)/direcciones/$',
+        login_required(pacienteViews.PacienteDireccionView.as_view()), name='paciente_direccion'),
+    url(r'^paciente/direccion/(?P<direccion_id>\d+)/eliminar$',
+        login_required(pacienteViews.PacienteDireccionDeleteView.as_view()), name='paciente_direccion_eliminar'),
     #abre la url para agregar una nueva direccion
     url(r'^direccion/nuevo/(?P<paciente_id>\d+)$', login_required(pacienteViews.crear_direccion), name='crear_direccion'),
     url(r'^paciente/(?P<paciente_id>\d+)/paciente_nivel_educativo$',
@@ -31,7 +32,7 @@ urlpatterns = [
 
     #seguro medico del paciente
     url(r'^paciente/seguro_medico/crear/(?P<paciente_id>\d+)$',
-        pacienteViews.paciente_seguro_medico, name='paciente_seguro_medico'),
+        pacienteViews.PacienteOtrosDatosView.as_view(), name='paciente_seguro_medico'),
     url(r'^paciente/(?P<paciente_id>\d+)/seguro_medico/nuevo$',
         pacienteViews.paciente_seguro_medico_crear, name='paciente_seguro_medico_crear'),
 

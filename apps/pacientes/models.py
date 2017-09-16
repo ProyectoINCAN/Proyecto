@@ -260,6 +260,9 @@ class Paciente(models.Model):
     def get_full_name(self):
         return "{} {}".format(self.nombres, self.apellidos)
 
+    def get_name_nro_doc(self):
+        return "{} {} Nro: {}".format(self.nombres, self.apellidos, self.nro_doc)
+
     def __str__(self):
         return '{} {}'.format(self.nombres, self.apellidos)
 

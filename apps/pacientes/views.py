@@ -1,13 +1,15 @@
-from django.http.response import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect, render_to_response
+from django.http.response import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
+from django.views.generic.list import ListView
 from apps.pacientes.forms import *
 from apps.pacientes.models import *
 from apps.principal.common_functions import filtros_establecidos
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from django.views.generic.edit import FormView
 from django.db import connection
@@ -28,6 +30,33 @@ def paciente_delete(request, id_paciente):
     return render(request, 'pacientes/paciente_delete.html', {'paciente': paciente})
 
 
+class PacienteOtrosDatosView(ListView):
+    model = SeguroMedico
+    template_name = "pacientes/paciente_seguro_medico.html"
+    context_object_name = "seguro"
+
+    def get_success_url(self):
+        return reverse('pacientes:paciente_direccion', kwargs=self.kwargs)
+
+    def get_datos_laborales(self):
+        return PacienteOcupacion.objects.filter(paciente=self.kwargs['paciente_id'])
+
+    def get_nivel_educativo(self):
+        return PacienteNivelEducativo.objects.filter(paciente=self.kwargs['paciente_id'])
+
+    def get_paciente(self):
+        return Paciente.objects.get(pk=self.kwargs['paciente_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteOtrosDatosView, self).get_context_data(**kwargs)
+        context.update({'ocupaciones': self.get_datos_laborales(),
+                        'nivel_educativo': self.get_nivel_educativo(),
+                        'paciente': self.get_paciente(),
+                        'id_paciente': self.kwargs['paciente_id']
+        })
+        return context
+
+
 class PacienteDelete(DeleteView):
     model = Paciente
 
@@ -36,10 +65,41 @@ class PacienteDelete(DeleteView):
     success_url = reverse_lazy('pacientes:index')
 
 
+class PacienteDireccionView(FormView):
+    model = Direccion
+    template_name = "pacientes/paciente_direccion.html"
+    pk_url_kwarg = "paciente_id"
+    form_class = DireccionForm
+
+    def get_success_url(self):
+        return reverse('pacientes:paciente_direccion', kwargs=self.kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(PacienteDireccionView, self).get_form_kwargs()
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteDireccionView, self).get_context_data(**kwargs)
+        direcciones = Direccion.objects.filter(paciente=self.kwargs['paciente_id'])
+        paciente = Paciente.objects.get(pk=self.kwargs['paciente_id'])
+        context.update({
+            'direcciones': direcciones,
+            'id_paciente': self.kwargs['paciente_id'],
+            'paciente': paciente
+        })
+        return context
+
+    def post(self, request, *args, **kwargs):
+        direccion = request.POST['direccion_id']
+        direction = Direccion.objects.get(pk=direccion)
+        direction.delete()
+        return redirect(self.get_success_url())
+
+
 def paciente_direccion(request, paciente_id):
-    '''permite guardar los datos de direccion de un paciente.
+    """permite guardar los datos de direccion de un paciente.
        paciente_id = codigo del paciente
-    '''
+    """
     if request.method == 'GET':
         direccion = Direccion.objects.filter(paciente=paciente_id)
         contexto = {
@@ -384,7 +444,7 @@ def consulta(request):
     except EmptyPage:
         pacientes = paginator.page(paginator.num_pages)
 
-    return render(request,'pacientes/index.html',{'pacientes': pacientes })
+    return render(request, 'pacientes/index.html',{'pacientes': pacientes })
 
 
 class PacienteCreate(CreateView):
@@ -479,3 +539,19 @@ class PacienteUpdate(UpdateView):
             form2.save()
         return HttpResponseRedirect(self.get_success_url())
 
+
+class PacienteDireccionDeleteView(View):
+    """
+    permite eliminar los datos de la direccion del paciente
+    """
+    login_url = '/'
+    local_id = None
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        direccion = get_object_or_404(Direccion, pk=kwargs.get('direccion_id'))
+        direccion.delete()
+        return JsonResponse({'success': True})

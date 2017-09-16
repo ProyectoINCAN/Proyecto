@@ -1,42 +1,33 @@
 {% extends 'base/base2.html' %}
+{% load static %}
 
+{% block extrahead %}
+  <link rel="stylesheet" href="{% static 'apps/pacientes/css/index.css' %}">
+{% endblock %}
 
 {% block extrajs %}
-
-    <script type="text/javascript">
-        $(function() {
-
-            $("#limpiar").click(function () {
-                 $("#id_paciente").val('');
-                 $("#paciente_label").val('');
-
-            });
-            $().toastmessage('showSuccessToast', "Hello there! Message is shown.");
-            var id_paciente;
-            $("#paciente_label").autocomplete({
-                source: "/pacientes/autocomplete_nombres/",
-                minLength : 1,
-                select: function (event, ui) {
-                    id_paciente = ui.item.id;
-                    $("#id_paciente").val(id_paciente);
-                    $("#paciente_label").val(ui.item.label);
-
-                }
-
-            });
-
-        });
-
-</script>
+    <script src = "{% static 'apps/pacientes/js/index.js' %}"></script>
 
 {% endblock %}
 
-
 {% block content %}
-<br>
+ <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-12 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">SIHINCAN</h1>
+          <small class="text-muted">Bienvenido a tu web servicios de Call Center</small>
+        </div>
+      </div>
+ </div>
+    {% block breadcrumb %}
+      <ol class="breadcrumb" style="background-color: #f6f8f8">
+        <li>Listado de Pacientes</li>
+      </ol>
+    {% endblock %}
 
-<div class ="row">
-<div class="col-sm-7">
+
+<div class ="row" style="display:none;">
+  <div class="col-sm-7">
      <form  class="form-horizontal" action="/pacientes/index/" method="GET">
          {% csrf_token %}
 
@@ -47,7 +38,7 @@
                          <div class="row">
                              <label for="nombre"  class="control-label col-sm-3">Paciente: </label>
                              <div class="col-sm-8">
-                                 <input name="paciente_nombre"class="form-control" id="paciente_label" type="text" value="" placeholder="Ingrese número de Documento o Nombre"/>
+                                 <input name="paciente_nombre"class="form-control paciente_label" id="paciente_label" type="text" value="" placeholder="Ingrese número de Documento o Nombre"/>
                                  <input name="paciente" id="id_paciente" value="" type="hidden"/>
                              </div>
                              <div class="col-sm-1">
@@ -64,71 +55,69 @@
 
      </form>
 </div>
- </div>
- <div class="row">
-     {% block paciente %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title" align="left">Pacientes</h3>
-            </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-md-12 col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Listado de Pacientes
+      </div>
+      <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover table-responsive"
+                id="dataTables-example" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+                  <th>Nro Documento</th>
+                  <th>Nombres</th>
+                  <th>Apellidos</th>
+                  <th>Sexo</th>
+                  <th>Fecha Nacimiento</th>
+                  <th>Lugar Nacimiento</th>
+                  <th>Nacionalidad</th>
+                  <th>Estado Civil</th>
 
-            <div class="panel-body">
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+                  <th>Nro Documento</th>
+                  <th>Nombres</th>
+                  <th>Apellidos</th>
+                  <th>Sexo</th>
+                  <th>Fecha Nacimiento</th>
+                  <th>Lugar Nacimiento</th>
+                  <th>Nacionalidad</th>
+                  <th>Estado Civil</th>
+            </tr>
+          </tfoot>
+          <tbody>
 
-                        <thead>
-                              <tr>
-                                <th width="60">Número de Documento</th>
-                                <th width="80">Nombre</th>
-                                <th width="80">Apellidos</th>
-                                <th width="30">Sexo</th>
+            {% for paciente in pacientes %}
+              <tr>
+                <td>
+                  <a href="{% url 'pacientes:paciente_editar' paciente.id %}">{{ paciente.nro_doc }}</a>
+                </td>
+                <td>{{ paciente.nombres }}</td>
+                <td>{{ paciente.apellidos }} </td>
+                <td>{{ paciente.sexo }} </td>
+                <td>{{ paciente.fecha_nacimiento }}</td>
+                <td>{{ paciente.lugar_nacimiento }}</td>
+                <td>{{ paciente.nacionalidad }}</td>
+                <td>{{ paciente.estado_civil }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
 
-                                <th width="70">Distrito</th>
-
-                              </tr>
-                        </thead>
-                        <tbody>
-                        {% for pacientes in pacientes %}
-
-                        <tr>
-                            <td>
-                                <a href="{% url 'pacientes:paciente_editar' pacientes.id %}">{{ pacientes.nro_doc }}</a>
-                            </td>
-                            <td>{{ pacientes.nombres }}</td>
-                            <td>{{ pacientes.apellidos }} </td>
-                            <td>{{ pacientes.sexo }} </td>
-
-                            <td>{{ pacientes.lugar_nacimiento }} </td>
-                        </tr>
-                        {% endfor %}
-
-                        </tbody>
-                </table>
-                <div class="pagination" align="right">
-                    <span class="step-links">
-                            {% if pacientes.has_previous %}
-                            <a class="btn btn-info" href="?page={{ pacientes.previous_page_number }}"><spam class="icon-chevron-left"></spam>PREVIO</a>
-
-                            {% endif %}
-                            <span class="current">
-                                Páginas {{ pacientes.number }} de {{ pacientes.paginator.num_pages }}.
-                            </span>
-
-                            {% if pacientes.has_next %}
-                                <a class="btn btn-info" href="?page={{ pacientes.next_page_number }}">SIGUIENTE<spam class="icon-chevron-right"></spam></a>
-                            {% endif %}
-                        </span>
-                </div>
-
-            </div>
-        </div>
- </div>
-     <br>
-
-     <div class ="btn-group" >
+        </table>
+      </div>
+      </div>
+  </div>
+</div>
+<div class ="btn-group" >
              <a href="{% url 'pacientes:nuevo_paciente' %}" class="btn btn-primary" title="Crear un nuevo Paciente" role="button" >Crear Paciente <i class="fa fa-user"></i> </a>
-     </div><br><br>
+</div><br><br>
 
 
-    {% endblock paciente %}
+
 
 {% endblock %}
