@@ -91,7 +91,9 @@ class PacienteDireccionView(FormView):
 
     def post(self, request, *args, **kwargs):
         direccion = request.POST['direccion_id']
+        # print('direccion', direccion.)
         direction = Direccion.objects.get(pk=direccion)
+        print('direccion', direction)
         direction.delete()
         return redirect(self.get_success_url())
 
@@ -140,9 +142,14 @@ def crear_direccion(request, paciente_id):
 
     else:
         form = DireccionForm(request.POST, paciente_id)
+
+        print('prueba', form.is_valid())
+        # direccion = form.save(commit=False)
+        # print('prueba', direccion)
         if form.is_valid():
             direccion = form.save(commit=False)
             direccion.paciente_id = paciente_id
+            print('direccion', direccion)
             direccion.save()
             return redirect('pacientes:paciente_direccion', paciente_id)
     return render(request, 'pacientes/direccion.html', contexto)

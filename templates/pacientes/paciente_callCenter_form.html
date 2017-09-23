@@ -1,6 +1,12 @@
 {% extends 'base/base2.html' %}
+{% load static %}
+{% block extrajs %}
+    <script src = "{% static 'apps/pacientes/js/pacientes.js' %}"></script>
+{% endblock %}
+
 
 {% block content %}
+
 
 <style type="text/css">
 <!--
@@ -44,59 +50,59 @@ label { position: absolute; text-align:right; width:130px; }
         </div>
 
         <div class="form-group">
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.nombres.label}}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{form2.nombres}}
-         </div>
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.apellidos.label}}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{ form2.apellidos }}
-         </div>
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.nombres.label}}</label>
+             <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{form2.nombres}}
+             </div>
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.apellidos.label}}</label>
+             <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{ form2.apellidos }}
+             </div>
         </div>
 
         <div class="form-group">
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.fecha_nacimiento.label}}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{form2.fecha_nacimiento}}
-         </div>
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.sexo.label}}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{ form2.sexo }}
-         </div>
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.fecha_nacimiento.label}}</label>
+             <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{form2.fecha_nacimiento}}
+             </div>
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.sexo.label}}</label>
+             <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{ form2.sexo }}
+             </div>
          </div>
 
          <div class="form-group">
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.nacionalidad.label}}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{form2.nacionalidad}}
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.nacionalidad.label}}</label>
+             <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{form2.nacionalidad}}
+             </div>
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.lugar_nacimiento.label}}</label>
+             <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{ form2.lugar_nacimiento }}
+             </div>
          </div>
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.lugar_nacimiento.label}}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{ form2.lugar_nacimiento }}
-         </div>
-        </div>
 
         <div class="form-group">
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.estado_civil.label}}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{form2.estado_civil}}
-         </div>
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.etnia.label}}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{ form2.etnia }}
-         </div>
-        </div>
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.estado_civil.label}}</label>
+             <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{form2.estado_civil}}
+             </div>
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.etnia.label}}</label>
+             <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{ form2.etnia }}
+             </div>
+            </div>
 
-        <div class="form-group">
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.tipo.label }}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{form.tipo}}
+            <div class="form-group">
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.tipo.label }}</label>
+             <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{form.tipo}}
+             </div>
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.numero.label}}</label>
+             <div class="col-lg-4 col-md-3 col-sm-4">
+                {{form.numero}}
+             </div>
          </div>
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.numero.label}}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-            {{form.numero}}
-         </div>
-        </div>
 
     <div class="form-group">
 	 <div class="col-sm-offset-4 col-sm-8">

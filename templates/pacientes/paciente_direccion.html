@@ -118,6 +118,13 @@
 			{% csrf_token %}
 		<div class="form-horizontal" id="form_direccion" >
 
+            <div class="form-group">
+				<label class="control-label col-sm-3">{{form.descripcion.label}}</label>
+				<div class="col-sm-8">
+                    {{form.descripcion}}
+				</div>
+			</div>
+
 			<div class="form-group">
 				<label class="control-label col-sm-3">{{form.departamento.label}}</label>
 				<div class="col-sm-8">
@@ -127,6 +134,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-3">{{form.distrito.label}}</label>
 				<div class="col-sm-8">
+					<!--<select class="form-control" id="id_distrito"></select>-->
 					{{ form.distrito }}
 				</div>
 			</div>

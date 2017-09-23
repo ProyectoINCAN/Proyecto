@@ -31,8 +31,8 @@ class PacienteForm(forms.ModelForm):
             'nro_doc',
             'sexo',
             'fecha_nacimiento',
-            'lugar_nacimiento',
             'nacionalidad',
+            'lugar_nacimiento',
             'estado_civil',
             'etnia'
 
@@ -108,6 +108,7 @@ class DireccionForm(forms.ModelForm):
         model = Direccion
 
         fields = [
+            'descripcion',
             'departamento',
             'distrito',
             'barrio',
@@ -121,6 +122,7 @@ class DireccionForm(forms.ModelForm):
         ]
 
         labels = {
+            'descripcion':'Dirección',
             'departamento': 'Departamento',
             'distrito': 'Distrito',
             'barrio': 'Barrio',
