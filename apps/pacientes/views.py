@@ -10,11 +10,12 @@ from apps.pacientes.models import *
 from apps.principal.common_functions import filtros_establecidos
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-
+from django.db.models.deletion import ProtectedError
 from django.views.generic.edit import FormView
 from django.db import connection
 from django.contrib import messages
 import json
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def paciente_delete(request, id_paciente):
@@ -31,9 +32,13 @@ def paciente_delete(request, id_paciente):
 
 
 class PacienteOtrosDatosView(ListView):
-    model = SeguroMedico
-    template_name = "pacientes/paciente_seguro_medico.html"
-    context_object_name = "seguro"
+    """
+    permite ver seguro médico, situación laboral y nivel educactivo del
+    paciente seleccionado.
+    """
+    model = PacienteSeguroMedico
+    template_name = "pacientes/seguro_medico/paciente_seguro_medico.html"
+    context_object_name = "seguros"
 
     def get_success_url(self):
         return reverse('pacientes:paciente_direccion', kwargs=self.kwargs)
@@ -49,10 +54,12 @@ class PacienteOtrosDatosView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PacienteOtrosDatosView, self).get_context_data(**kwargs)
+        seguro = PacienteSeguroMedicoForm()
         context.update({'ocupaciones': self.get_datos_laborales(),
                         'nivel_educativo': self.get_nivel_educativo(),
                         'paciente': self.get_paciente(),
-                        'id_paciente': self.kwargs['paciente_id']
+                        'id_paciente': self.kwargs['paciente_id'],
+                        'form': seguro
         })
         return context
 
@@ -155,83 +162,6 @@ def crear_direccion(request, paciente_id):
     return render(request, 'pacientes/direccion.html', contexto)
 
 
-def paciente_seguro_medico(request, paciente_id):
-    """
-    metodo que permite obtener el seguro medico del paciente.
-    :param request
-    :param paciente_id: codigo de paciente
-    :return:
-    """
-    if request.method == 'GET':
-        seguro = PacienteSeguroMedico.objects.filter(paciente=paciente_id)
-        contexto = {
-            'seguros': seguro,
-            'id_paciente': paciente_id
-        }
-    return render(request, 'pacientes/paciente_seguro_medico.html', contexto)
-
-
-def paciente_seguro_medico_crear(request, paciente_id):
-    """
-    metodo para cargar el formulario de seguro medico del paciente
-    :param request:
-    :param paciente_id:
-    :return:
-    """
-    if request.method == 'GET':
-        seguro = SeguroMedicoForm()
-        contexto = {
-            'form': seguro,
-            'id_paciente': paciente_id
-        }
-    else:
-        form = SeguroMedicoForm(request.POST, paciente_id)
-        data = request.POST
-        otro_seguro = data['nombre_seguro']
-        if form.is_valid():
-            seguro_paciente = form.save(commit=False)
-            seguro_paciente.paciente_id = paciente_id
-            seguro_paciente.detalle = otro_seguro
-            seguro_paciente.save()
-            return redirect('pacientes:paciente_seguro_medico', paciente_id)
-    return render(request, 'pacientes/paciente_seguro_medico_crear.html', contexto)
-
-
-def paciente_situacion_laboral(request, paciente_id):
-    """
-    permite obtener la sit
-    :param request:
-    :param paciente_id:
-    :return:
-    """
-    if request.method == 'POST':
-        form = PacienteOcupacionForm(request.POST, paciente_id)
-        if form.is_valid():
-            paciente_ocupacion = form.save(commit=False)
-            paciente_ocupacion.ocupacion_id = request.POST['ocupacion']
-            paciente_ocupacion.profesion_id = request.POST['profesion']
-            paciente_ocupacion.paciente_id = paciente_id
-            paciente_ocupacion.save()
-            messages.success(request, "Situación Laboral guardado correctamente!!")
-            return redirect('pacientes:padre_crear', paciente_id)
-
-    else:
-        paciente_ocupacion = PacienteOcupacion.objects.filter(paciente=paciente_id)
-        if paciente_ocupacion.count() > 0:
-            context = {
-                'form': paciente_ocupacion,
-                'id_paciente': paciente_id
-            }
-            return render(request, 'pacientes/paciente_situacion_laboral_listar.html', context)
-        else:
-            form = PacienteOcupacionForm()
-    contexto = {
-        'form': form,
-        'id_paciente': paciente_id
-    }
-    return render(request, 'pacientes/paciente_situacion_laboral_crear.html', contexto)
-
-
 def paciente_padre_crear(request, paciente_id):
     """
     permite insertar los datos del padre/madre del paciente
@@ -300,35 +230,6 @@ def paciente_madre_crear(request, paciente_id):
         'id_paciente': paciente_id
     }
     return render(request, 'pacientes/paciente_padre_crear.html', contexto)
-
-
-def paciente_nivel_educativo(request, paciente_id):
-    if request.method == 'POST':
-        form = PacienteNivelEducativoForm(request.POST, paciente_id)
-        if form.is_valid():
-            nivel_educativo = form.save(commit=False)
-            culmino = request.POST['completo']
-            if culmino == "False":
-                nivel_educativo.anho_cursado = request.POST['anho_cursado']
-
-            nivel_educativo.paciente_id = paciente_id
-            nivel_educativo.save()
-            return redirect('pacientes:nuevo_paciente')
-    else:
-        paciente = PacienteNivelEducativo.objects.filter(paciente=paciente_id)
-        if paciente.exists():
-            contexto = {
-                'form': paciente,
-                'id_paciente': paciente_id
-            }
-            return render(request, 'pacientes/paciente_nivel_educativo_listar.html', contexto)
-        else:
-            form = PacienteNivelEducativoForm()
-        context = {
-            'form': form,
-            'id_paciente': paciente_id
-        }
-        return render(request, 'pacientes/paciente_nivel_educativo.html', context)
 
 
 class PacientePadreCreateView(FormView):
@@ -442,10 +343,10 @@ def consulta(request):
     else:
         pacientes = Paciente.objects.all()
 
-    dic = {'pacientes': pacientes }
-    paginator = Paginator(pacientes, 5 )
+    dic = {'pacientes': pacientes}
+    paginator = Paginator(pacientes, 5)
 
-    page =request.GET.get('page','1')
+    page =request.GET.get('page', '1')
     print(page)
     try:
         pacientes = paginator.page(page)
@@ -454,7 +355,7 @@ def consulta(request):
     except EmptyPage:
         pacientes = paginator.page(paginator.num_pages)
 
-    return render(request, 'pacientes/index.html',{'pacientes': pacientes })
+    return render(request, 'pacientes/index.html', {'pacientes': pacientes })
 
 
 class PacienteCreate(CreateView):
@@ -564,4 +465,226 @@ class PacienteDireccionDeleteView(View):
     def post(self, request, *args, **kwargs):
         direccion = get_object_or_404(Direccion, pk=kwargs.get('direccion_id'))
         direccion.delete()
+        return JsonResponse({'success': True})
+
+
+def distrito(request):
+    if request.method == 'GET':
+        departamento = request.GET.get('departamento', None)
+        print('entro en distrito')
+        data = {
+            'distrito': Distrito.objects.filter(departamento=departamento)
+        }
+        return JsonResponse(data)
+
+
+class PacienteOtrosDatosView(ListView):
+    """
+    permite ver seguro médico, situación laboral y nivel educactivo del
+    paciente seleccionado.
+    """
+    model = PacienteSeguroMedico
+    template_name = "pacientes/seguro_medico/paciente_seguro_medico.html"
+    context_object_name = "seguros"
+
+    def get_queryset(self):
+        return PacienteSeguroMedico.objects.filter(paciente=self.kwargs['paciente_id'])
+
+    def get_success_url(self):
+        return reverse('pacientes:paciente_direccion', kwargs=self.kwargs)
+
+    def get_datos_laborales(self):
+        return PacienteOcupacion.objects.filter(paciente=self.kwargs['paciente_id'])
+
+    def get_nivel_educativo(self):
+        return PacienteNivelEducativo.objects.filter(paciente=self.kwargs['paciente_id'])
+
+    def get_paciente(self):
+        return Paciente.objects.get(pk=self.kwargs['paciente_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteOtrosDatosView, self).get_context_data(**kwargs)
+        seguro = PacienteSeguroMedicoForm()
+        context.update({'ocupaciones': self.get_datos_laborales(),
+                        'nivel_educativo': self.get_nivel_educativo(),
+                        'paciente': self.get_paciente(),
+                        'id_paciente': self.kwargs['paciente_id'],
+                        'form': seguro
+        })
+        return context
+
+
+class PacienteSeguroMedicoCreate(LoginRequiredMixin, CreateView):
+    template_name = 'pacientes/seguro_medico/paciente_seguro_medico_crear.html'
+    model = PacienteSeguroMedico
+    form_class = PacienteSeguroMedicoForm
+
+    def get_success_url(self):
+        return reverse('pacientes:paciente_seguro_medico', kwargs=self.kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteSeguroMedicoCreate, self).get_context_data(**kwargs)
+        paciente = Paciente.objects.get(pk=self.kwargs['paciente_id'])
+        context.update({
+            'paciente': paciente
+        })
+        return context
+
+    def form_valid(self, form):
+        detalle = form.data['detalle']
+        seguro_medico = form.save(commit=False)
+        seguro_medico.paciente_id = self.kwargs['paciente_id']
+        seguro_medico.detalle = detalle
+        seguro_medico.save()
+        return JsonResponse({'success': True})
+
+
+class PacienteSeguroMedicoDelete(LoginRequiredMixin, DeleteView):
+    """
+    permite eliminar los registros del seguro médico del paciente
+    """
+    model = PacienteSeguroMedico
+    template_name = "pacientes/seguro_medico/paciente_seguro_medico_eliminar.html"
+    pk_url_kwarg = 'seguro_id'
+    context_object_name = 'seguro'
+
+    def post(self, request, *args, **kwargs):
+        paciente = Paciente.objects.get(pacienteseguromedico=kwargs['seguro_id'])
+
+        paciente_seguro = PacienteSeguroMedico.objects.get(pk=kwargs['seguro_id'])
+        paciente_seguro.delete()
+
+        return HttpResponseRedirect(reverse('pacientes:paciente_seguro_medico',
+                                            kwargs={'paciente_id': paciente.id}))
+
+
+class PacienteSeguroMedicoUpdate(LoginRequiredMixin, UpdateView):
+    model = PacienteSeguroMedico
+    form_class = PacienteSeguroMedicoForm
+    template_name = 'pacientes/seguro_medico/paciente_seguro_medico_edit.html'
+    pk_url_kwarg = 'seguro_id'
+
+    def form_valid(self, form):
+        form.save()
+
+        return JsonResponse({'success': True})
+
+
+class PacienteSituacionLaboralCreate(LoginRequiredMixin, CreateView):
+    template_name = 'pacientes/situacion_laboral/paciente_situacion_laboral.html'
+    model = PacienteOcupacion
+    form_class = PacienteOcupacionForm
+
+    def get_success_url(self):
+        return reverse('pacientes:paciente_seguro_medico', kwargs=self.kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteSituacionLaboralCreate, self).get_context_data(**kwargs)
+        paciente = Paciente.objects.get(pk=self.kwargs['paciente_id'])
+        context.update({
+            'paciente': paciente
+        })
+        return context
+
+    def form_valid(self, form):
+        ocupacion = form.save(commit=False)
+        ocupacion.paciente_id = self.kwargs['paciente_id']
+        ocupacion.save()
+        return JsonResponse({'success': True})
+
+
+class PacienteSituacionLaboralDelete(LoginRequiredMixin, DeleteView):
+    """
+    permite eliminar los registros de las ocupaciones del paciente
+    """
+    model = PacienteOcupacion
+    template_name = "pacientes/situacion_laboral/paciente_situacion_laboral_eliminar.html"
+    pk_url_kwarg = 'ocupacion_id'
+    context_object_name = 'ocupacion'
+
+    def post(self, request, *args, **kwargs):
+        """
+        primero obtenemos el paciente de dicha ocupacion a eliminar y luego eliminamos el registro
+        de la ocupacion seleccionada del paciente a eliminar
+        :param request:
+        :param args:
+        :param kwargs: codigo de ocupacion
+        :return:
+        """
+        paciente = Paciente.objects.get(pacienteocupacion=kwargs['ocupacion_id'])
+        paciente_ocupacion = PacienteOcupacion.objects.get(pk=kwargs['ocupacion_id'])
+        paciente_ocupacion.delete()
+
+        return HttpResponseRedirect(reverse('pacientes:paciente_seguro_medico',
+                                            kwargs={'paciente_id': paciente.id}))
+
+
+class PacienteSituacionLaboralUpdate(LoginRequiredMixin, UpdateView):
+    model = PacienteOcupacion
+    form_class = PacienteOcupacionForm
+    template_name = 'pacientes/situacion_laboral/paciente_situacion_laboral_editar.html'
+    pk_url_kwarg = 'ocupacion_id'
+
+    def form_valid(self, form):
+        form.save()
+        return JsonResponse({'success': True})
+
+
+class PacienteNivelEducativoCreate(LoginRequiredMixin, CreateView):
+    template_name = 'pacientes/nivel_educativo/paciente_nivel_educativo.html'
+    model = PacienteNivelEducativo
+    form_class = PacienteNivelEducativoForm
+
+    def get_success_url(self):
+        return reverse('pacientes:paciente_seguro_medico', kwargs=self.kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteNivelEducativoCreate, self).get_context_data(**kwargs)
+        paciente = Paciente.objects.get(pk=self.kwargs['paciente_id'])
+        context.update({
+            'paciente': paciente
+        })
+        return context
+
+    def form_valid(self, form):
+        educacion = form.save(commit=False)
+        educacion.paciente_id = self.kwargs['paciente_id']
+        educacion.save()
+        return JsonResponse({'success': True})
+
+
+class PacienteNivelEducativoDelete(LoginRequiredMixin, DeleteView):
+    """
+    permite eliminar los registros de los registros del nivel educativo seleccionado
+    del paciente
+    """
+    model = PacienteNivelEducativo
+    template_name = "pacientes/nivel_educativo/paciente_nivel_educativo_eliminar.html"
+    pk_url_kwarg = 'educacion_id'
+    context_object_name = 'educacion'
+
+    def post(self, request, *args, **kwargs):
+        paciente = Paciente.objects.get(pacienteniveleducativo=kwargs['educacion_id'])
+        paciente_educacion = PacienteNivelEducativo.objects.get(pk=kwargs['educacion_id'])
+        paciente_educacion.delete()
+
+        return HttpResponseRedirect(reverse('pacientes:paciente_seguro_medico',
+                                            kwargs={'paciente_id': paciente.id}))
+
+
+class PacienteNivelEducativoUpdate(LoginRequiredMixin, UpdateView):
+    model = PacienteNivelEducativo
+    form_class = PacienteNivelEducativoForm
+    template_name = 'pacientes/nivel_educativo/paciente_nivel_educativo_editar.html'
+    pk_url_kwarg = 'educacion_id'
+
+    def form_valid(self, form):
+        if form.data['completo'] == 'True':
+            educacion = PacienteNivelEducativo.objects.get(pk=self.kwargs['educacion_id'])
+            educacion.nivel_educativo_id = form.data['nivel_educativo']
+            educacion.completo = form.data['completo']
+            educacion.anho_cursado = 0
+            educacion.save()
+        else:
+            form.save()
         return JsonResponse({'success': True})

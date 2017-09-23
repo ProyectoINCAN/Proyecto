@@ -41,10 +41,8 @@
                         <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
                         <li>{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a>{% endblock %}</li>
                         <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Seguro Médico</a></li>
-                        <li><a href="{% url 'pacientes:paciente_situacion_laboral' id_paciente %}">Situacion Laboral</a></li>
                         <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
                         <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos del Padre</a></li>
-                        <li><a href="{% url 'pacientes:paciente_nivel_educatvo' id_paciente %}">Nivel Educativo</a></li>
             </ul>
 
         </nav>
@@ -61,6 +59,7 @@
                 <div class="btn-group pull-right">
                 <a href="javascript:void(0)" id="create"
                 class="btn btn-default btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i>  Nuevo</a>
+
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -101,10 +100,8 @@
 
         </div>
     </div>
-    <div id="popup_pacientes"></div>
 </div>
 </div>
-
 <div id="modalDireccion" class="modal" data-keyboard="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -117,6 +114,12 @@
       <div class="modal-body">
 			{% csrf_token %}
 		<div class="form-horizontal" id="form_direccion" >
+      <div class="form-group">
+				<label class="control-label col-sm-3">{{form.descripcion.label}}</label>
+				<div class="col-sm-8">
+					{{ form.descripcion }}
+				</div>
+			</div>
 
             <div class="form-group">
 				<label class="control-label col-sm-3">{{form.descripcion.label}}</label>
@@ -173,14 +176,14 @@
 			<div class="form-group">
 				<label class="control-label col-sm-3">Residencia Ocasional</label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" id="direccion_residencia" >
+					{{ form.residencia_ocasional }}
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-3">Referencia</label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" id="direccion_referencia" >
+					{{ form.referencia }}
 				</div>
 			</div>
 
@@ -195,5 +198,26 @@
 
   </div>
 </div>
-
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><b>Paciente / Dirección</b></h4>
+          </div>
+          <div class="modal-body">
+            <p>Desea eliminar los datos de la dirección seleccionada1 ?<span id="modal_name"></span></p>
+          </div>
+          <div class="modal-footer">
+            <form method="post" id="formEliminar">
+              {% csrf_token %}
+              <input type="hidden" value="" name="direccion_id" id="direccion_id">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Eliminar</button>
+            </form>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 {% endblock %}

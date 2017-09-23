@@ -147,19 +147,23 @@ class DireccionForm(forms.ModelForm):
             'referencia': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-class SeguroMedicoForm(forms.ModelForm):
+
+class PacienteSeguroMedicoForm(forms.ModelForm):
 
     class Meta:
-        model =  PacienteSeguroMedico
+        model = PacienteSeguroMedico
 
         fields = [
-            'seguro_medico'
+            'seguro_medico',
+            'detalle'
         ]
         labels = {
-            'seguro_medico': 'Seguro Médico'
+            'seguro_medico': 'Seguro Médico',
+            'detalle': 'Otro Seguro'
         }
         widgets = {
             'seguro_medico': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'detalle': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 
@@ -216,9 +220,10 @@ class PacienteOcupacionForm(forms.ModelForm):
         model = PacienteOcupacion
 
         fields = [
-            'ocupacion',
+
             'situacion_laboral_id',
-            'profesion'
+            'profesion',
+            'ocupacion'
         ]
         labels = {
             'ocupacion': 'Ocupación',
@@ -230,6 +235,7 @@ class PacienteOcupacionForm(forms.ModelForm):
             'situacion_laboral_id': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'profesion': forms.Select(attrs={'class': 'form-control selectsearch'}),
         }
+
 
 
 class PacientePadreForm(forms.ModelForm):
@@ -273,14 +279,27 @@ class PacienteNivelEducativoForm(forms.ModelForm):
     class Meta:
         model = PacienteNivelEducativo
 
-        exclude = ['paciente', 'anho_cursado']
+        exclude = ['paciente', 'completo' 'anho_cursado']
 
         labels = {
             'nivel_educativo':  'Nivel Educativo',
-            'completo': 'Termino',
+            'completo': 'Ha cúlminado',
+            'anho_cursado': 'Año Cursado'   ,
         }
 
         widgets = {
             'nivel_educativo': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'completo': forms.Select(attrs={'class': 'form-control selectsearch'})
+            'completo': forms.Select(attrs={'class': 'form-control selectsearch'}),
+
         }
+
+    def clean(self):
+        completo = self.cleaned_data.get('completo')
+        cursado = self.cleaned_data.get('anho_cursado')
+        if completo == "":
+            self.add_error('completo', 'Debe seleccionar si cúlmino el nivel educactivo')
+        else:
+            if not cursado or cursado < 0:
+                self.add_error('anho_cursado', 'Debe ingresar el año cursado')
+
+

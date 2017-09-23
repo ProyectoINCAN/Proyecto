@@ -473,7 +473,7 @@ class PacienteNivelEducativo(models.Model):
         (True, 'SI'),
         (False, 'NO')
     )
-    completo = models.BooleanField(choices=COMPLETO_CHOICES, verbose_name="Completo")
+    completo = models.BooleanField(choices=COMPLETO_CHOICES, verbose_name="Completo", blank=False, null=False)
     anho_cursado = models.IntegerField(blank=True, null=True)
 
     def __str__(self):

@@ -1,20 +1,18 @@
 
 var modal;
 
-function abrir_modal(url, titulo)
+function abrir_modal(url)
 {
-    modal = $('#popup_pacientes').dialog(
-    {
-        title: titulo,
-        modal: true,
-        width: 650,
-        height: 500,
-        resizable: false
-    }).dialog('open').load(url)
+     $('#popup').load(url, function()
+     {
+            $(this).modal('show');
+     });
+        return false;
 }
 
 function cerrar_modal()
 {
-    modal.dialog("close");
+    $('#popup').modal('hide');
+        return false;
 }
 
