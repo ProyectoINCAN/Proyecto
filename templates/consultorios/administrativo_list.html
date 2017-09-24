@@ -5,9 +5,9 @@
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        Listado de médicos
+        Listado de funcionarios administrativos
         <div class="btn-group pull-right">
-            <a href="{% url 'consultorios:medico_nuevo' %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
+            <a href="{% url 'consultorios:administrativo_nuevo' %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
         </div>
         <p></p>
     </div>
@@ -27,7 +27,7 @@
             {% for data in object_list %}
                 <tr>
                     <td>
-                        <a href="/consultorios/medico/{{ data.id }}/editar">{{ data.apellidos }}, {{ data.nombres }}</a>
+                        <a href="/consultorios/administrativo/{{ data.id }}/editar">{{ data.apellidos }}, {{ data.nombres }}</a>
                     </td>
                     <td>{{ data.tipo_doc.codigo }} - {{ data.nro_doc }}</td>
                     <td>{{ data.nro_registro_profesional }}</td>

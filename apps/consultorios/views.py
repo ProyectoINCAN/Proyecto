@@ -10,8 +10,8 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
-    EnfermeroForm
-from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero
+    EnfermeroForm, AdministrativoForm
+from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo
 from apps.pacientes.models import Paciente
 
 
@@ -53,15 +53,15 @@ def medico_create(request):
 
 @transaction.atomic
 def medico_update(request, pk):
-    medico = Medico.objects.get(id=pk)
+    objeto = Medico.objects.get(id=pk)
     if request.method == 'POST':
-        form = MedicoForm(request.POST, instance=medico)
+        form = MedicoForm(request.POST, instance=objeto)
         if form.is_valid():
             form.save()
             messages.success(request, "Datos actualizados correctamente.")
             return redirect("consultorios:medico_listar")
     else:
-        form = MedicoForm(instance=medico)
+        form = MedicoForm(instance=objeto)
     contexto = {'form': form}
     return render(request, 'consultorios/medico_form.html', contexto)
 
@@ -90,17 +90,54 @@ def enfermero_create(request):
 
 @transaction.atomic
 def enfermero_update(request, pk):
-    enfermero = Enfermero.objects.get(id=pk)
+    objeto = Enfermero.objects.get(id=pk)
     if request.method == 'POST':
-        form = EnfermeroForm(request.POST, instance=enfermero)
+        form = EnfermeroForm(request.POST, instance=objeto)
         if form.is_valid():
             form.save()
             messages.success(request, "Datos actualizados correctamente.")
             return redirect("consultorios:enfermero_listar")
     else:
-        form = EnfermeroForm(instance=enfermero)
+        form = EnfermeroForm(instance=objeto)
     contexto = {'form': form}
     return render(request, 'consultorios/enfermero_form.html', contexto)
+
+
+class AdministrativoList(ListView):
+    model = Administrativo
+    template_name = 'consultorios/administrativo_list.html'
+
+
+@transaction.atomic
+def administrativo_create(request):
+    if request.method == 'POST':
+        form = AdministrativoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Datos guardados correctamente.")
+            return redirect('consultorios:administrativo_listar')
+        else:
+            messages.error(request, "Ha ocurrido un error. Datos no guardados.")
+            return redirect('consultorios:administrativo_listar')
+    else:
+        form = AdministrativoForm()
+    contexto = {'form': form}
+    return render(request, 'consultorios/administrativo_form.html', contexto)
+
+
+@transaction.atomic
+def administrativo_update(request, pk):
+    objeto = Administrativo.objects.get(id=pk)
+    if request.method == 'POST':
+        form = AdministrativoForm(request.POST, instance=objeto)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Datos actualizados correctamente.")
+            return redirect("consultorios:administrativo_listar")
+    else:
+        form = AdministrativoForm(instance=objeto)
+    contexto = {'form': form}
+    return render(request, 'consultorios/administrativo_form.html', contexto)
 
 
 def cambio_password(request):
@@ -130,7 +167,6 @@ class MedicoCreate(CreateView):
             medico = form.save(commit=False)
             user = form2.save(commit=True)
             medico.usuario = user
-            print("usuario = " + medico.usuario.username + " contraseña = " + medico.usuario.password + " id = " + str(medico.usuario.id))
             medico.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
@@ -148,7 +184,6 @@ class UserCreate(CreateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             usuario = form.save(commit=False)
-            print("usuario = " + usuario.username + " contraseña = " + usuario.password + " id = " + str(usuario.id))
             usuario.save()
             return HttpResponseRedirect(self.get_success_url())
         else:

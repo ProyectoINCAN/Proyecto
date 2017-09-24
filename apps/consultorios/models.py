@@ -55,8 +55,10 @@ class Medico(models.Model):
     nombres = UpperCharField(max_length=100, blank=False, uppercase=True)
     apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True, uppercase=True)
-    nro_registro_medico = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de Registro Médico", unique=True, uppercase=True)
+    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True,
+                             uppercase=True)
+    nro_registro_profesional = UpperCharField(max_length=15, blank=False, null=False,  uppercase=True,
+                                              verbose_name="Número de Registro Profesional", unique=True)
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False,
@@ -66,7 +68,7 @@ class Medico(models.Model):
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
     fecha_ingreso = models.DateField(auto_now=True, null=False)
     especialidad = models.ManyToManyField(Especialidad)
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)  # todo quitar el default cuando se elimine la base de datos
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.apellidos + ", " + self.nombres
@@ -93,11 +95,14 @@ class Medico(models.Model):
 
 
 class Enfermero(models.Model):
-    nombres = models.CharField(max_length=100, blank=False)
-    apellidos = models.CharField(max_length=100, blank=False)
+    nombres = UpperCharField(max_length=100, blank=False, uppercase=True)
+    apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento",
                                  default="CI")
-    nro_doc = models.CharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
+    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True,
+                             uppercase=True)
+    nro_registro_profesional = UpperCharField(max_length=15, blank=False, null=False, uppercase=True, unique=True,
+                                              verbose_name="Número de Registro Profesional")
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False,
@@ -118,6 +123,37 @@ class Enfermero(models.Model):
         ordering = ["apellidos", "nombres"]
         verbose_name = "Enfermero"
         verbose_name_plural = "Enfermeros"
+
+
+class Administrativo(models.Model):
+    nombres = UpperCharField(max_length=100, blank=False, uppercase=True)
+    apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
+    tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento",
+                                 default="CI")
+    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True,
+                             uppercase=True)
+    nro_registro_profesional = UpperCharField(max_length=15, blank=False, null=False, uppercase=True, default="N/A",
+                                              verbose_name="Número de Registro Profesional")
+    sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
+    fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
+    lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False,
+                                         verbose_name="Lugar de nacimiento")
+    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False, default=1)
+    fecha_ingreso = models.DateField(auto_now=True, null=False)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.apellidos + ", " + self.nombres
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)
+        super(Administrativo, self).save()
+
+    class Meta:
+        ordering = ["apellidos", "nombres"]
+        verbose_name = "Administrativo"
+        verbose_name_plural = "Administrativos"
 
 
 class Departamento(models.Model):

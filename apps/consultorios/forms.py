@@ -1,14 +1,14 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero
+from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo
 from django_select2 import forms as select2form
 
 
 class MedicoForm(forms.ModelForm):
     class Meta:
         model = Medico
-        fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_medico', 'sexo', 'fecha_nacimiento',
+        fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_profesional', 'sexo', 'fecha_nacimiento',
                   'lugar_nacimiento', 'nacionalidad', 'estado_civil', 'etnia',  # 'fecha_ingreso',
                   'especialidad']
         labels = {
@@ -16,7 +16,7 @@ class MedicoForm(forms.ModelForm):
             'apellidos': 'Apellidos',
             'tipo_doc': 'Tipo de documento',
             'nro_doc': 'Número de documento',
-            'nro_registro_medico': 'Nro. Registro Médico',
+            'nro_registro_profesional': 'Nro. Registro Profesional',
             'sexo': 'Sexo',
             'fecha_nacimiento': 'Fecha de nacimiento',
             'lugar_nacimiento': 'Lugar de nacimiento',
@@ -30,7 +30,7 @@ class MedicoForm(forms.ModelForm):
             'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
             'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
-            'nro_registro_medico': forms.TextInput(attrs={'class': 'form-control'}),
+            'nro_registro_profesional': forms.TextInput(attrs={'class': 'form-control'}),
             'sexo': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker',
                                                        'placeholder': 'dd/mm/aaaa'}),
@@ -45,6 +45,36 @@ class MedicoForm(forms.ModelForm):
 class EnfermeroForm(forms.ModelForm):
     class Meta:
         model = Enfermero
+        fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_profesional', 'sexo', 'fecha_nacimiento', 'lugar_nacimiento',
+                  'nacionalidad']
+        labels = {
+            'nombres': 'Nombres',
+            'apellidos': 'Apellidos',
+            'tipo_doc': 'Tipo de documento',
+            'nro_doc': 'Número de documento',
+            'nro_registro_profesional': 'Nro. Registro Profesional',
+            'sexo': 'Sexo',
+            'fecha_nacimiento': 'Fecha de nacimiento',
+            'lugar_nacimiento': 'Lugar de nacimiento',
+            'nacionalidad': 'Nacionalidad',
+        }
+        widgets = {
+            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
+            'nro_registro_profesional': forms.TextInput(attrs={'class': 'form-control'}),
+            'sexo': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker',
+                                                       'placeholder': 'dd/mm/aaaa'}),
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch'}),
+        }
+
+
+class AdministrativoForm(forms.ModelForm):
+    class Meta:
+        model = Administrativo
         fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'sexo', 'fecha_nacimiento', 'lugar_nacimiento',
                   'nacionalidad']
         labels = {

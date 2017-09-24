@@ -18,7 +18,7 @@
                 <tr role="row">
                     <th aria-label>Apellidos, Nombres</th>
                     <th aria-label>Documento de identidad</th>
-                    <th aria-label>Sexo</th>
+                    <th aria-label>Nro. Registro Profesional</th>
 
                 </tr>
             </thead>
@@ -30,7 +30,7 @@
                         <a href="/consultorios/enfermero/{{ data.id }}/editar">{{ data.apellidos }}, {{ data.nombres }}</a>
                     </td>
                     <td>{{ data.tipo_doc.codigo }} - {{ data.nro_doc }}</td>
-                    <td>{{ data.sexo }}</td>
+                    <td>{{ data.nro_registro_profesional }}</td>
 
                 </tr>
             {% endfor %}
