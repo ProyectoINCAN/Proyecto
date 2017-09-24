@@ -50,3 +50,5 @@ def ver_permisos(usuario_id, permiso_buscado):
         print("El usuario no posee permiso")
         permission = False
     return permission
+
+
