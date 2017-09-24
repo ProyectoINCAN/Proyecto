@@ -29,30 +29,29 @@ class PacienteForm(forms.ModelForm):
             'apellidos',
             'tipo_doc',
             'nro_doc',
-            'sexo',
+            #'sexo',
             'fecha_nacimiento',
-            'nacionalidad',
-            'lugar_nacimiento',
-            'estado_civil',
-            'etnia'
+            #'nacionalidad',
+            #'lugar_nacimiento',
+            'distrito',
+            #'estado_civil',
+            #'etnia'
 
         ]
 
         labels = {
-            'nombres':'Nombres',
-            'apellidos':'Apellidos',
-            'tipo_doc':'Tipo Documento',
-            'nro_doc': 'Nro. de Documento',
+
             'nombres':'Nombres:',
             'apellidos': 'Apellidos:',
             'tipo_doc':'Tipo Documento:',
             'nro_doc': 'Nro de Documento:',
             'nro_doc_alternativo':'Documento Alternativo',
-            'sexo':'Sexo',
+            #'sexo': 'Sexo',
             'fecha_nacimiento': 'Fecha de Nac.',
-            'lugar_nacimiento':'Lugar de Nac.',
-            'nacionalidad': 'Nacionalidad',
-            'estado_civil': 'Estado Civil',
+            #'lugar_nacimiento': 'Lugar de Nac.',
+            'distrito': 'Lugar de Residencia',
+            #'nacionalidad': 'Nacionalidad',
+            #'estado_civil': 'Estado Civil',
             'etnia': 'Etnia',
              }
 
@@ -64,16 +63,19 @@ class PacienteForm(forms.ModelForm):
              'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;'}),
             'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             # 'nro_doc': forms.TextInput(attrs ={'class': 'form-control', }),
-            'sexo': forms.Select(attrs={'class': 'form-control  selectsearch', 'style':'width: 100%'}),
+            #'sexo': forms.Select(attrs={'class': 'form-control  selectsearch', 'style':'width: 100%'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'lugar_nacimiento':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            #'lugar_nacimiento':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'distrito': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             'nacionalidad':  forms.Select(attrs={'class':'form-control selectsearch', 'style':'width: 100%'}),
-            'estado_civil':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'etnia':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            #'estado_civil':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            #'etnia':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+
 
         }
 
-        #validacion para la creacion de un nuevo paciente
+    def clean(self):
+        pass
 
 
 class TelefonoForm(forms.ModelForm):
@@ -284,7 +286,7 @@ class PacienteNivelEducativoForm(forms.ModelForm):
         labels = {
             'nivel_educativo':  'Nivel Educativo',
             'completo': 'Ha cúlminado',
-            'anho_cursado': 'Año Cursado'   ,
+            'anho_cursado': 'Año Cursado',
         }
 
         widgets = {

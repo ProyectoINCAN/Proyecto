@@ -273,7 +273,7 @@ class PacienteBuscar(TemplateView):
         query = request.GET['cedula', '']
 
         if query:
-            paciente = Paciente.objects.filter(nro_doc__icontains = query)
+            paciente = Paciente.objects.filter(nro_doc__icontains=query)
             print(paciente)
         else:
             result = []

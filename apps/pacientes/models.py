@@ -248,13 +248,14 @@ class Paciente(models.Model):
     #si no tiene nrodoc, por defecto debe guardar INICIAL_APELLIDO+INICIAL_NOMBRE+FECHA_NACIMIENTO
     nro_doc_alternativo = models.CharField(max_length=15, blank=True,
                                            null=True, verbose_name="Número de documento alternativo", unique=True)
-    sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
+    sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=True, null=True)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
-    lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False,
-                                         verbose_name="Lugar de nacimiento")
-    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False, default= 1)
-    estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=False, null=False)
-    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
+    lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=True, null=True,
+                                         verbose_name="Lugar de nacimiento", related_name="lugar_nacimiento")
+    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=True, null=True, default= 1)
+    distrito = models.ForeignKey(Distrito, models.DO_NOTHING, blank=True, null=True, related_name="ciudad_paciente")
+    estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=True, null=True)
+    etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=True, null=True, default=1)
     fecha_registrado = models.DateTimeField(default=now, null=False)
     # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
 
