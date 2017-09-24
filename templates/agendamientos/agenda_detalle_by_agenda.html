@@ -151,14 +151,14 @@
         {% for detalle in agenda_detalle %}
             <tr>
                 <td>
-                    <a href="/agendamientos/agenda/{{detalle.agenda.id}}/{{detalle.id}}/editar">{{ detalle.orden }}</a>
+                    <a href="/agendamientos/agenda/{{detalle.agenda.id}}/{{detalle.id}}/editar">{{ detalle.0}}</a>
                 </td>
-                <td>{{detalle.paciente.nro_doc}}</td>
-                <td>{{detalle.paciente}}</td>
-                <td></td>
-                <td>{{detalle.paciente.distrito.nombre}}</td>
-                <td>{{detalle.paciente.telefono.numero}}</td>
-                <td>{{detalle.confirmado}}</td>
+                <td>{{detalle.1}}</td>
+                <td>{{detalle.2}} {{detalle.3}}</td>
+                <td>{{detalle.4}}</td>
+                <td>{{detalle.5}}</td>
+                <td>{{detalle.6}} {{detalle.7}}</td>
+                <td>{{detalle.8}}</td>
 
 
             </tr>

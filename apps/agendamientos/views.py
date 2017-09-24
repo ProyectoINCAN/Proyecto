@@ -14,7 +14,8 @@ from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 # Create your views here.
 
 from apps.agendamientos.forms import AgendaForm, AgendaDetalleForm
-from apps.agendamientos.queries import get_agenda_medico_especialidad, get_agenda_detalle_orden
+from apps.agendamientos.queries import get_agenda_medico_especialidad, get_agenda_detalle_orden, \
+    get_agenda_detalle_lista_by_agenda
 from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
 from apps.consultorios.models import HorarioMedico, DiasSemana
 
@@ -111,6 +112,7 @@ def agenda_detalle_crear(request, agenda_id):
                 if dia_semana == 8:
                     dia_semana = 1
                 dia_horario = dias.filter(id=dia_semana)[0]
+                print("dia",dia_horario)
                 horario_medico = HorarioMedico.objects.get(medico=agenda_actual.medico, dia_semana=dia_horario)
                 # si la cantidad es superior a la establecida en el parámetro, se agrega una nueva agenda
                 if orden > horario_medico.cantidad:
@@ -210,7 +212,9 @@ class AgendaDetalleDetail(DetailView):
 def agenda_detalle_list(request, agenda_id):
     print("llega a agenda_detalle. agenda_id: ", agenda_id, "request: ", request)
     agenda = Agenda.objects.get(pk=agenda_id)
-    agenda_detalle = AgendaDetalle.objects.filter(agenda=agenda_id)
+    agenda_detalle = get_agenda_detalle_lista_by_agenda(agenda_id)
+    print('agenda2', agenda_detalle[0])
+        # AgendaDetalle.objects.filter(agenda=agenda_id)
     # print("detalle "+ str(agenda_detalle))
     # for det in agenda_detalle:
     #     print(det.id)

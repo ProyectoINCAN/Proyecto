@@ -60,6 +60,25 @@ def get_max_fecha_disponible(agenda):
     return result[0]
 
 
+def get_agenda_detalle_lista_by_agenda(agenda_id):
+    query = '''select ag_detalle.orden, paciente.nro_doc, paciente.nombres, paciente.apellidos,
+    cast(extract(year  from age(paciente.fecha_nacimiento))as integer) as anho, distrito.nombre,
+    tipo_tel.descripcion, telefono.numero, ag_detalle.observacion
+    from pacientes_paciente paciente
+    join pacientes_distrito distrito on distrito.id = paciente.distrito_id
+    join pacientes_telefono telefono on telefono.paciente_id = paciente.id
+    join pacientes_tipotelefono tipo_tel on tipo_tel.codigo = telefono.tipo_id
+    join agendamientos_agendadetalle ag_detalle on ag_detalle.paciente_id = paciente.id
+    join agendamientos_agenda agenda on agenda.id = ag_detalle.agenda_id
+    where agenda.id  = %s
+        '''
+    filters = [agenda_id]
+    cursor = connection.cursor()
+    cursor.execute(query, filters)
+    agenda_detalle = cursor.fetchall()
+    print('agenda', agenda_detalle)
+    return agenda_detalle
+
 # pruebas
 # tmp_agenda = Agenda.objects.get(pk=1)
 # r = get_max_fecha_disponible(tmp_agenda)
