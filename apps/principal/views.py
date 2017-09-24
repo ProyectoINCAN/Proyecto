@@ -12,6 +12,7 @@ def distrito(request, id_departamento):
     data = serializers.serialize('json', distrito)
     return JsonResponse(data, safe=False)
 
+
 def distritoByDepartamento(request, departamento=[]):
     distrito = Distrito.objects.get(departamento=departamento).order_by('id')
     data = serializers.serialize('json', distrito)

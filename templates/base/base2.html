@@ -396,7 +396,8 @@
     <script src = "{% static 'vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
     <script src = "{% static 'vendor/datatables-plugins/dataTables.bootstrap.min.js' %}"></script>
     <script src = "{% static 'vendor/datatables-responsive/dataTables.responsive.js' %}"></script>
-
+    <script src = "{% static 'js/validate.min.js' %}"></script>
+    <script src = "{% static 'js/underscore.min.js' %}"></script>
     <!--<script src="/static/js/select2.min.js"></script>-->
     {% block extrajs %}
 
@@ -450,6 +451,24 @@
         $('.selectsearch').select2({ placeholder:"Seleccione una opción", allowClear: true});
         $('.selectsearch-multiple').select2({ placeholder:"Seleccione una o más opciones", allowClear: true});
     </script>
+
+<script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
+</script>
 
 </body>
 </html>

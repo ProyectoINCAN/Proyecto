@@ -270,7 +270,6 @@ class Paciente(models.Model):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         if self.tipo_doc.codigo in ('NT', 'NSC'):
-            print('entro', self.tipo_doc.codigo)
             self.nro_doc = paciente_utils.get_nrodoc_alternativo(self)
             self.nro_doc_alternativo = self.nro_doc.upper()
         #
@@ -671,4 +670,3 @@ class ServicioBasicos(models.Model):
         ordering = ["paciente"]
         verbose_name = "Servcio Básico"
         verbose_name_plural = "Servicios Básicos"
-

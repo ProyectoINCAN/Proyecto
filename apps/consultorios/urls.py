@@ -1,14 +1,19 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
-from apps.consultorios.views import MedicoCreate, prueba, MedicoList, MedicoUpdate,\
-    EvolucionPacienteList, EvolucionPacienteUpdate, EvolucionPacienteCreate, HorarioMedicoList, HorarioMedicoCreate, \
-    HorarioMedicoUpdate
+from apps.consultorios.views import MedicoList, EvolucionPacienteList, EvolucionPacienteUpdate, \
+    EvolucionPacienteCreate, HorarioMedicoList, HorarioMedicoCreate, HorarioMedicoUpdate, medico_update, \
+    medico_create, cambio_password, EnfermeroList, enfermero_create, enfermero_update
 
 urlpatterns = [
     url(r'^medico/$', login_required(MedicoList.as_view()), name='medico_listar'),
-    url(r'^medico/nuevo$', login_required(MedicoCreate.as_view()), name='medico_nuevo'),
-    url(r'^medico/(?P<pk>[0-9]+)/editar$', login_required(MedicoUpdate.as_view()), name='medico_editar'),
+    url(r'^medico/nuevo$', login_required(medico_create), name='medico_nuevo'),
+    url(r'^medico/(?P<pk>[0-9]+)/editar$', login_required(medico_update), name='medico_editar'),
+    url(r'^usuario/cambio_password$', login_required(cambio_password), name='cambio_password'),
+
+    url(r'^enfermero/$', login_required(EnfermeroList.as_view()), name='enfermero_listar'),
+    url(r'^enfermero/nuevo$', login_required(enfermero_create), name='enfermero_nuevo'),
+    url(r'^enfermero/(?P<pk>[0-9]+)/editar$', login_required(enfermero_update), name='enfermero_editar'),
 
     url(r'^horario_medico/$', login_required(HorarioMedicoList.as_view()), name='horario_medico_listar'),
     url(r'^horario_medico/nuevo$', login_required(HorarioMedicoCreate.as_view()), name='horario_medico_nuevo'),

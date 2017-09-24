@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
@@ -8,12 +9,14 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 
 from apps.agendamientos.functions import cancelar_agenda
-from apps.agendamientos.models import Agenda, AgendaDetalle
+from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 
 # Create your views here.
 
 from apps.agendamientos.forms import AgendaForm, AgendaDetalleForm
 from apps.agendamientos.queries import get_agenda_medico_especialidad, get_agenda_detalle_orden
+from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
+from apps.consultorios.models import HorarioMedico, DiasSemana
 
 
 def index(request):
@@ -89,35 +92,52 @@ class AgendaDetalleList(ListView):
 
 class AgendaDetalleCreate(CreateView):
     model = AgendaDetalle()
-    print("hola")
     form_class = AgendaDetalleForm
     template_name = 'agendamientos/agenda_detalle_form.html'
     success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
 
 
 def agenda_detalle_crear(request, agenda_id):
-        agenda = Agenda.objects.get(pk=agenda_id)
-        orden = get_agenda_detalle_orden(agenda_id)
-        print("detalle", agenda.estado)
-        print("detalle", orden)
-
-        if request.method == 'POST':
-            print("llego")
-            form = AgendaDetalleForm(request.POST)
-            if form.is_valid():
+    agenda_actual = Agenda.objects.get(pk=agenda_id)
+    orden = get_agenda_detalle_orden(agenda_id)
+    dias = DiasSemana.objects.all()
+    if request.method == 'POST':
+        form = AgendaDetalleForm(request.POST)
+        if form.is_valid():
+            try:
                 agenda_detalle = form.save(commit=False)
-                agenda_detalle.agenda = agenda
+                # necesito conocer el número de día para obtener el horario medico de ese día
+                dia_semana = agenda_actual.fecha.weekday() + 2
+                if dia_semana == 8:
+                    dia_semana = 1
+                dia_horario = dias.filter(id=dia_semana)[0]
+                horario_medico = HorarioMedico.objects.get(medico=agenda_actual.medico, dia_semana=dia_horario)
+                # si la cantidad es superior a la establecida en el parámetro, se agrega una nueva agenda
+                if orden > horario_medico.cantidad:
+                    agenda_nueva = Agenda(medico=agenda_actual.medico,
+                                          fecha=get_fecha_agendamiento_siguiente(agenda_actual),
+                                          turno=agenda_actual.turno, especialidad=agenda_actual.especialidad,
+                                          cantidad=agenda_actual.cantidad, estado=EstadoAgenda.objects.get(codigo="P"))
+                    agenda_nueva.save()
+                    orden = 1
+                    agenda_actual = agenda_nueva
+                agenda_detalle.agenda = agenda_actual
                 agenda_detalle.orden = orden
-                # form.agenda.id = agenda.id
+
+                # valido que el paciente no esté ya registrado en esa agenda
+                if bool(AgendaDetalle.objects.filter(agenda=agenda_actual, paciente=agenda_detalle.paciente)):
+                    messages.error(request, "El paciente %s ya se encuentra registrado en esta agenda."
+                                   % agenda_detalle.paciente)
+                    return redirect('agendamientos:agenda_detalle', agenda_actual.id)
+
                 agenda_detalle.save()
-                print("agenda", agenda_detalle.agenda_id)
-            return redirect('agendamientos:agenda_detalle', agenda_id)
-        # return redirect('pacientes:paciente_nivel_educativo', paciente_id)
-        else:
-            print("no es post")
-            form = AgendaDetalleForm()
-            contexto = {'agenda': agenda.id, 'form': form}
-            return render(request, 'agendamientos/agenda_detalle_form.html', contexto)
+            except ObjectDoesNotExist:
+                messages.error(request, "No se encuentra Horario Médico para el Dr. %s " % agenda_actual.medico)
+        return redirect('agendamientos:agenda_detalle', agenda_actual.id)
+    else:
+        form = AgendaDetalleForm()
+        contexto = {'agenda': agenda_actual.id, 'form': form}
+        return render(request, 'agendamientos/agenda_detalle_form.html', contexto)
 
 
 def agenda_detalle_edit(request, agenda_id, agenda_detalle_id):
@@ -192,8 +212,8 @@ def agenda_detalle_list(request, agenda_id):
     agenda = Agenda.objects.get(pk=agenda_id)
     agenda_detalle = AgendaDetalle.objects.filter(agenda=agenda_id)
     # print("detalle "+ str(agenda_detalle))
-    for det in agenda_detalle:
-        print(det.id)
+    # for det in agenda_detalle:
+    #     print(det.id)
 
     if request.method == 'GET':
         form = AgendaForm(instance=agenda)
@@ -234,7 +254,7 @@ def agenda_cancelar(request, agenda_id):
     agenda = Agenda.objects.get(id=agenda_id)
     if request.method == 'POST':
         agenda = cancelar_agenda(agenda.id, tipo)
-        print("id agenda = ", agenda.id)  # borrar
+        print("id agenda = ", agenda)  # borrar
         # return redirect('agendamientos:agenda_detalle', agenda.id)
         # return agenda
         # return HttpResponse(response, content_type='application/json')

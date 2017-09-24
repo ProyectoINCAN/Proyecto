@@ -5,9 +5,9 @@
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        Listado de médicos
+        Listado de enfermeros
         <div class="btn-group pull-right">
-            <a href="{% url 'consultorios:medico_nuevo' %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
+            <a href="{% url 'consultorios:enfermero_nuevo' %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
         </div>
         <p></p>
     </div>
@@ -16,9 +16,9 @@
         <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length"></div></div><div class="col-sm-6"><div id="dataTables-example_filter" class="dataTables_filter"></div></div></div><div class="row"><div class="col-sm-12"><table width="100%" class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
             <thead>
                 <tr role="row">
-                    <th aria-label>Médico</th>
+                    <th aria-label>Apellidos, Nombres</th>
                     <th aria-label>Documento de identidad</th>
-                    <th aria-label>Nro. Registro médico</th>
+                    <th aria-label>Sexo</th>
 
                 </tr>
             </thead>
@@ -27,10 +27,10 @@
             {% for data in object_list %}
                 <tr>
                     <td>
-                        <a href="/consultorios/medico/{{ data.id }}/editar">{{ data.apellidos }}, {{ data.nombres }}</a>
+                        <a href="/consultorios/enfermero/{{ data.id }}/editar">{{ data.apellidos }}, {{ data.nombres }}</a>
                     </td>
                     <td>{{ data.tipo_doc.codigo }} - {{ data.nro_doc }}</td>
-                    <td>{{ data.nro_registro_medico }}</td>
+                    <td>{{ data.sexo }}</td>
 
                 </tr>
             {% endfor %}

@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'apps.consultorios',
     'apps.urgencias',
     'apps.agendamientos',
+    'apps.principal',
 
 
 
@@ -104,7 +105,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sihincan_db',
         'USER': 'postgres',
-        'PASSWORD': '',
+        'PASSWORD': 'OscProdPost2014',
         'HOST': 'localhost',
         'PORT': 5432,
     }

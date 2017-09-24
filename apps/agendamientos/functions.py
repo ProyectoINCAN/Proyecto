@@ -23,8 +23,8 @@ def cancelar_agenda(agenda_id, tipo):
 
     # agenda_retornada = None
     if int(tipo) == 1:
-        print("entra en tipo 1. tipo: ", tipo)  # borrar
         # pasa el agendamiento a la máxima fecha disponible
+        print("entra en tipo 1. tipo: ", tipo)  # borrar
         agenda = Agenda.objects.get(pk=agenda_id)
         agenda.estado = EstadoAgenda(codigo="C")  # agenda en estado cancelado
         # nueva_fecha = get_max_fecha_disponible(agenda)
@@ -42,16 +42,16 @@ def cancelar_agenda(agenda_id, tipo):
         agenda_retornada = nueva_agenda
 
     else:
-        print("entra en tipo 2. tipo: ", tipo, isinstance(tipo, str))  # borrar
         # La nueva fecha es del siguiente día en que atiende el médico. Las siguientes agendas se pasan sucesivamente
         # a la siguiente fecha disponible
+        print("entra en tipo 2. tipo: ", tipo, isinstance(tipo, str))  # borrar
         agenda = Agenda.objects.get(pk=agenda_id)
         filters = [agenda.medico.id, agenda.especialidad.id, agenda.turno.codigo, agenda.fecha, "P", ]
-        agendas = Agenda.objects.raw("""select * from agendamientos_agenda where medico_id = %s and especialidad_id = %s
-                                        and turno_id = %s and fecha >= %s and estado_id = %s order by fecha""", filters)
+        agendas = Agenda.objects.filter(medico=agenda.medico, especialidad=agenda.especialidad, turno=agenda.turno,
+                                        fecha__gte=agenda.fecha, estado=agenda.estado).order_by('fecha')
 
         for a in agendas:
-            print("agenda.id", a.id, "fecha anterior = ", a.fecha)
+            print("agenda.id", a, "fecha anterior = ", a.fecha)
             nueva_fecha = get_fecha_agendamiento_siguiente(a)
             print("   nueva fecha = ", nueva_fecha)
             a.fecha = nueva_fecha
@@ -59,9 +59,13 @@ def cancelar_agenda(agenda_id, tipo):
 
         agenda.estado = EstadoAgenda(codigo="C")
         agenda.save()
-        agenda_retornada = Agenda.objects.raw("""select * from agendamientos_agenda where medico_id = %s and
-                                                 especialidad_id = %s and turno_id = %s and fecha > %s
-                                                 and estado_id = %s order by fecha limit 1""", filters)
+        # agenda_retornada = Agenda.objects.raw("""select * from agendamientos_agenda where medico_id = %s and
+        #                                          especialidad_id = %s and turno_id = %s and fecha > %s
+        #                                          and estado_id = %s order by fecha limit 1""", filters)
+        estado_pendiente = EstadoAgenda.objects.get(codigo="P")
+        print("agenda_especialidad", agenda.especialidad)
+        agenda_retornada = Agenda.objects.get(medico=agenda.medico, especialidad=agenda.especialidad,
+                                              turno=agenda.turno, fecha=nueva_fecha, estado=estado_pendiente)
     print("agenda retornada = ", agenda_retornada)
     return agenda_retornada
 

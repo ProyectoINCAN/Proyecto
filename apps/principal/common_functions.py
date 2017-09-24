@@ -1,6 +1,7 @@
-
 from django.contrib.auth.models import User
-#funcion para establecer los parametros recibidos de los filtros
+
+
+# funcion para establecer los parametros recibidos de los filtros
 def filtros_establecidos(request, tipo):
     if tipo == "index_paciente":
         try:

@@ -1,7 +1,17 @@
 {% extends "base/base2.html" %}
 
-{% block content %}
+{% block extrajs %}
 
+<script>
+
+$("#medico_id").change(function(){
+	console.log("LLEGA AL CHANGE");
+});
+</script>
+
+{% endblock %}
+
+{% block content %}
 
 
 <div class="row">
@@ -10,17 +20,58 @@
     </div>
 </div>
 <div class="row">
-<form class="form-horizontal col-sm-10" method="post">
+<form class="form-horizontal" method="post">
 	{% csrf_token %}
-	{% for field in form %}
+
 	<div class="form-group">
-		{{ field.errors }}
-		<label for="{{ field.name }}" class="col-sm-2 control-label">{{ field.label }}:</label>
-		<div class="col-sm-10">
-			{{ field }}
+		<div class="col-md-10 ">
+			<label for="{{ form.medico.name }}" class="col-sm-2 control-label"> {{ form.medico.label }}</label>
+			<div class="col-sm-10">
+				{{ form.medico }}
+			</div>
 		</div>
 	</div>
-	{% endfor %}
+	<div class="form-group">
+		<div class="col-md-10 ">
+			<label for="{{ form.especialidad.name }}" class="col-sm-2 control-label"> {{ form.especialidad.label }}</label>
+			<div class="col-sm-10">
+				{{ form.especialidad }}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-10">
+			<label for="{{ form.fecha.name }}" class="col-sm-2 col-md-2 col-lg-2 control-label"> {{ form.fecha.label }}</label>
+			<div class="col-lg-10">
+				{{ form.fecha }}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-10 ">
+			<label for="{{ form.turno.name }}" class="col-sm-2 col-md-2 col-lg-2 control-label"> {{ form.turno.label }}</label>
+			<div class="col-lg-10">
+				{{ form.turno }}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-10 ">
+			<label for="{{ form.cantidad.name }}" class="col-sm-2 control-label"> {{ form.cantidad.label }}</label>
+			<div class="col-sm-10">
+				{{ form.cantidad }}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-10 ">
+			<label for="{{ form.estado.name }}" class="col-sm-2 control-label"> {{ form.estado.label }}</label>
+			<div class="col-sm-10">
+				{{ form.estado }}
+			</div>
+		</div>
+	</div>
+
 	<div class="form-group" align="left">
 		<div class="col-lg-10 col-lg-offset-2">
 			 <button class="btn btn-primary">Guardar</button>

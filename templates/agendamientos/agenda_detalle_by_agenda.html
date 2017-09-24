@@ -3,36 +3,20 @@
 
 {% block extrajs %}
 <script>
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-};
-
     $(document).ready(function() {
         $('#cancelar').click(function() {
         console.log("llega al js");
             BootstrapDialog.show({
             //title: 'Tipo de Cancelación de agenda',
             title: 'Cancelación de agenda',
-            //message: 'Seleccione tipo de cancelación',
-            message: '¿Seguro que desea cancelar la agenda?',
+            message: 'Seleccione tipo de cancelación',
+            //message: '¿Seguro que desea cancelar la agenda?',
             draggable: true,
-            buttons: [/*{
+            buttons: [{
                 label: 'Siguiente fecha',
                 cssClass: 'btn-primary',
                 icon: 'fa fa-step-forward',
-                action: function(dialog){
+                  action: function(dialog){
                     dialog.close();
                     var csrftoken = getCookie('csrftoken');
                     console.log("token", csrftoken);
@@ -52,16 +36,15 @@ function getCookie(name) {
                     });
                     return false;
                 }
-            },*/ {
-                //label: 'Última fecha',
-                label: 'Cancelar',
+            }, {
+                label: 'Última fecha',
+                //label: 'Cancelar',
                 // no title as it is optional
                 cssClass: 'btn-primary',
                 icon: 'fa fa-fast-forward',
                 action: function(dialog){
                     dialog.close();
                     var csrftoken = getCookie('csrftoken');
-                    console.log("token", csrftoken);
                     $.ajax({
                          type:"POST",
                          url:"{% url 'agendamientos:agenda_cancelar' agenda.id %}",
@@ -94,10 +77,12 @@ function getCookie(name) {
 
 <form method="POST" class="form-horizontal" id="form">
 <div class="row">
-        <h2>Agenda</h2>
-<div class="col-lg-8 col-sm-12">
+    <h2>Agenda</h2>
+    {% include 'base/messages.html' %}
+    <div class="col-lg-8 col-sm-12">
         {% csrf_token %}
         {{form.media}}
+
         <div class="form-group">
 			<label class="control-label col-lg-2 col-sm-4">Fecha</label>
 			<div class="col-lg-3 col-sm-4">
