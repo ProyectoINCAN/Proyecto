@@ -285,7 +285,7 @@ class PacienteNivelEducativoForm(forms.ModelForm):
 
         labels = {
             'nivel_educativo':  'Nivel Educativo',
-            'completo': 'Ha cúlminado',
+            'completo': 'Ha culminado',
             'anho_cursado': 'Año Cursado',
         }
 
