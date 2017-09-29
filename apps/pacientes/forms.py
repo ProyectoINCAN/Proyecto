@@ -131,7 +131,7 @@ class DireccionForm(forms.ModelForm):
             'area': 'Area',
             'Sector': 'Sector',
             'manzana': 'Manzana',
-            'descripcion': 'Dirección',
+            'direccion': 'Dirección',
             'nro_casa': 'Número',
             'residencia_ocasional': 'Residencia Ocasional',
             'referencia': 'Referencia',
