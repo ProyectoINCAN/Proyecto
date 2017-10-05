@@ -4,6 +4,14 @@ from django.core.urlresolvers import reverse_lazy
 from django.db import transaction
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.core import serializers
+from django.http.response import JsonResponse
+from django.db import connection
+import json
+from django.core import serializers
+from django.views.decorators.csrf import requires_csrf_token
+from django.shortcuts import render
+
 
 # Create your views here.
 from django.views.generic.edit import CreateView, UpdateView
@@ -11,7 +19,8 @@ from django.views.generic.list import ListView
 
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
     EnfermeroForm, AdministrativoForm
-from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo
+from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo, Especialidad, \
+    Turno
 from apps.pacientes.models import Paciente
 
 
@@ -310,4 +319,35 @@ class EvolucionPacienteUpdate(UpdateView):
     form_class = EvolucionPacienteModelForm
     success_url = reverse_lazy('consultorios:evolucion_paciente_listar')
 
+
+def medico_especialidad(request, id_medico):
+    especialidad = Especialidad.objects.filter(medico=id_medico).order_by('id')
+    # print('especialidad', especialidad)
+    data = serializers.serialize('json', especialidad)
+    return JsonResponse(data, safe=False)
+
+
+def medico_turno(request, id_medico):
+    query = """select turno.*, horario.cantidad from consultorios_horariomedico horario
+               join consultorios_turno turno on horario.turno_id = turno.codigo
+               where horario.medico_id = %s """
+    cursor = connection.cursor()
+    cursor.execute(query, [id_medico])
+    turnos = cursor.fetchall()
+    data = turnos
+    if not turnos:
+        data = []
+    return JsonResponse(json.dumps(data), safe=False)
+
+
+def horario_medico(request):
+    if request.POST():
+        print("horario", request.get_id_medico)
+        medico = request.POST['medico']
+        turno = request.POST['turno']
+        print("turno", medico, turno)
+    horario_medico = HorarioMedico.objects.filter(medico=request.get_id_medico, turno=request.get_turno)
+    print('horario_medico', horario_medico)
+    data = serializers.serialize('json', horario_medico)
+    return JsonResponse(data, safe=False)
 

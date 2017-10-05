@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
+from apps.consultorios import views
 from apps.consultorios.views import MedicoList, EvolucionPacienteList, EvolucionPacienteUpdate, \
     EvolucionPacienteCreate, HorarioMedicoList, HorarioMedicoCreate, HorarioMedicoUpdate, medico_update, \
     medico_create, cambio_password, EnfermeroList, enfermero_create, enfermero_update, AdministrativoList, \
@@ -30,5 +31,8 @@ urlpatterns = [
         name='evolucion_paciente_nuevo'),
     url(r'^evolucion_paciente/(?P<pk>[0-9]+)/editar$', login_required(EvolucionPacienteUpdate.as_view()),              #TODO | cuando se termine agendamiento
         name='evolucion_paciente_editar'),
+    url(r'^medico_especialidad/(?P<id_medico>\d+)$', views.medico_especialidad, name='medico_especialidad'),
+    url(r'^medico_turno/(?P<id_medico>\d+)$', views.medico_turno, name='medico_turno'),
+    url(r'^horario_medico/$', views.horario_medico, name='horario_medico'),
 
 ]
