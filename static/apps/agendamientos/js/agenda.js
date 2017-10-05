@@ -112,15 +112,15 @@ $(document).ready(function() {
 
 
       var actualizarHorario = function(medico, turno){
-        var csrftoken = getCookie('csrftoken');
+//        var csrftoken = getCookie('csrftoken');
         $.ajax({
-            type:'POST',
+//            type:'POST',
             url: '/consultorios/horario_medico/',
 
             data: {
               'medico': medico,
               'turno':turno,
-              'csrfmiddlewaretoken':csrftoken,
+//              'csrfmiddlewaretoken':csrftoken,
             },
             dataType: 'json',
             success: function(data){
@@ -131,11 +131,8 @@ $(document).ready(function() {
                    html = "<option value="+value[0]+">"+value[1]+"</option>";
 //                   $("#id_cantidad").append(html);
 //                   var turno = $("#id_turno").val()
-
 //                   actualizarHorario(medico, turno)
-//
 //                   $("#id_cantidad").val(value[3]).disabled = true;
-//
                 });
 
             }

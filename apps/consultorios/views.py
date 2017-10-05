@@ -341,11 +341,11 @@ def medico_turno(request, id_medico):
 
 
 def horario_medico(request):
-    if request.POST():
-        print("horario", request.get_id_medico)
-        medico = request.POST['medico']
-        turno = request.POST['turno']
-        print("turno", medico, turno)
+    # if request.POST():
+    print("horario", request.get_id_medico)
+    medico = request.POST['medico']
+    turno = request.POST['turno']
+    print("turno", medico, turno)
     horario_medico = HorarioMedico.objects.filter(medico=request.get_id_medico, turno=request.get_turno)
     print('horario_medico', horario_medico)
     data = serializers.serialize('json', horario_medico)
