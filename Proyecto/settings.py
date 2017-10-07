@@ -169,6 +169,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, '../static')
 
 STATIC_URL = '/static/'
 
+LOGIN_REDIRECT_URL = '/login/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout'
+
+# Crispy Forms
+#CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
 # INSTALAR MEMCACHED
 # pip install python3-memcached
 # CACHES = {
@@ -189,4 +196,4 @@ STATIC_URL = '/static/'
 # SELECT2_CSS = 'css/select2.css'
 # SELECT2_JS = 'js/select2.min.js'
 
-LOGIN_REDIRECT_URL = reverse_lazy('consultorios:medico_listar')  # TODO cambiar por otro url para inicio
+#LOGIN_REDIRECT_URL = reverse_lazy('consultorios:medico_listar')  # TODO cambiar por otro url para inicio

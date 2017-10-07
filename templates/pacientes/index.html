@@ -1,6 +1,5 @@
 {% extends 'base/base2.html' %}
 {% load static %}
-
 {% block extrahead %}
   <link rel="stylesheet" href="{% static 'apps/pacientes/css/index.css' %}">
 {% endblock %}
@@ -11,22 +10,66 @@
 {% endblock %}
 
 {% block content %}
- <div class="bg-light lter b-b wrapper-md">
-      <div class="row">
-        <div class="col-sm-12 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">SIHINCAN</h1>
-          <small class="text-muted">Bienvenido a tu web servicios de Call Center</small>
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="bg-light lter b-b wrapper-md">
+    <h1>
+      SIHINCAN
+    </h1>
+    </div>
+    <ol class="breadcrumb">
+      <li>Administrativo: {{ user.username }}</li>
+    </ol>
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="panel panel-green">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-xs-3">
+                <i class="fa fa-users fa-5x"></i>
+              </div>
+            <div class="col-xs-9 text-right">
+              <div class="huge">{{ total_pacientes }}</div>
+              <div>Pacientes</div>
+            </div>
+          </div>
         </div>
       </div>
- </div>
-    {% block breadcrumb %}
-      <ol class="breadcrumb" style="background-color: #f6f8f8">
-        <li>Listado de Pacientes</li>
-      </ol>
-    {% endblock %}
-
-
-<div class ="row" style="display:none;">
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-xs-3">
+                <i class="fa fa-users fa-5x"></i>
+              </div>
+            <div class="col-xs-9 text-right">
+              <div class="huge">{{ mensual }}</div>
+              <div>Pacientes/Mensual</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-yellow">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-xs-3">
+                <i class="fa fa-users fa-5x"></i>
+              </div>
+            <div class="col-xs-9 text-right">
+              <div class="huge">{{ hoy }}</div>
+              <div>Pacientes/Hoy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class ="row" style="display:none;">
   <div class="col-sm-7">
      <form  class="form-horizontal" action="/pacientes/index/" method="GET">
          {% csrf_token %}
@@ -56,11 +99,15 @@
      </form>
 </div>
 </div>
-<div class="row">
-  <div class="col-xs-12 col-md-12 col-lg-12">
+  <div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Listado de Pacientes
+        <b>Listado de Pacientes</b>
+        <div class="btn-group pull-right">
+            <a href="{% url 'pacientes:nuevo_paciente' %}" class="btn btn-default">
+              <i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo Paciente</a>
+        </div><p></p>
       </div>
       <div class="panel-body">
         <table class="table table-striped table-bordered table-hover table-responsive"
@@ -112,9 +159,12 @@
       </div>
       </div>
   </div>
+  </div>
+
+
+  </section>
+
 </div>
-<div class ="btn-group" >
-             <a href="{% url 'pacientes:nuevo_paciente' %}" class="btn btn-primary" title="Crear un nuevo Paciente" role="button" >Crear Paciente <i class="fa fa-user"></i> </a>
-     </div><br><br>
+
 
 {% endblock %}

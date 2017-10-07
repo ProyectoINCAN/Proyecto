@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="{% static 'toastmessage/static/css/jquery.toastmessage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/metisMenu.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+    <title>SIHINCAN</title>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title" align="center">SIHINCAN</h3>
+          </div>
+          <div class="panel-body">
+            <form role="form" method="post">
+              <fieldset>
+                <div class="form-group">
+                  {% csrf_token %}
+                  <input type="text" style="margin-bottom: 5px"  class="form-control" id="username" placeholder="Usuario" name="username">
+                  <input type="password" style="margin-bottom: 10px" class="form-control" placeholder="Contraseña" name="password">
+                  {% if error %}
+                    <p style="color: darkred;"><strong>{{ error }}</strong></p>
+                  {% endif %}
+                </div>
+                <button type="submit" class="btn btn-lg btn-success btn-block">Iniciar sesión</button>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src = "{% static 'js/jquery.min.js' %}"></script>
+  <script src = "{% static 'js/bootstrap.min.js' %}"></script>
+  <script src = "{% static 'js/metisMenu.min.js' %}"></script>
+  <script src = "{% static 'js/sb-admin-2.js' %}"></script>
+
+  <script type="text/javascript">
+        $(document).ready(function(){
+            window.onload = function(){
+                $("#username").focus();
+            };
+        });
+  </script>
+</body>

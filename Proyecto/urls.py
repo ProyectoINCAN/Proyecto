@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login
+from apps.seguridad import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,6 +26,7 @@ urlpatterns = [
     url(r'^consultorios/', include('apps.consultorios.urls', namespace="consultorios")),
     url(r'^principal/', include('apps.principal.urls', namespace="principal")),
     url(r'^select2/', include('django_select2.urls')),
+    url(r'', include('apps.seguridad.urls')),
 
 ]
 

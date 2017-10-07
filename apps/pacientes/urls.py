@@ -9,7 +9,8 @@ from apps.pacientes import views as pacienteViews
 
 urlpatterns = [
 
-    url(r'^index/$', pacienteViews.consulta, name='index'),
+    #url(r'^index/$', pacienteViews.consulta, name='index'),
+    url(r'^index/$', pacienteViews.DashboardAdministrativoView.as_view(), name='index'),
 
     url(r'^nuevo_paciente$', login_required(PacienteCreate.as_view()), name='nuevo_paciente'),
     url(r'^paciente/(?P<pk>[0-9]+)/editar$', login_required(PacienteUpdate.as_view()), name='paciente_editar'),

@@ -256,7 +256,7 @@ class Paciente(models.Model):
     distrito = models.ForeignKey(Distrito, models.DO_NOTHING, blank=True, null=True, related_name="ciudad_paciente")
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=True, null=True)
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=True, null=True, default=1)
-    fecha_registrado = models.DateTimeField(default=now, null=False)
+    fecha_registrado = models.DateField(default=now, null=False)
     # en el admin.py poner "exclude = ('fecha_registrado',)" para que no se muestre el campo
 
     def get_full_name(self):

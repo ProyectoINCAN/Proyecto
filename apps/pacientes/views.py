@@ -16,7 +16,8 @@ from django.db import connection
 from django.contrib import messages
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+import datetime
+import calendar
 
 def paciente_delete(request, id_paciente):
     paciente = Paciente.objects.get(id=id_paciente)
@@ -688,3 +689,34 @@ class PacienteNivelEducativoUpdate(LoginRequiredMixin, UpdateView):
         else:
             form.save()
         return JsonResponse({'success': True})
+
+
+class DashboardAdministrativoView(LoginRequiredMixin, TemplateView):
+    template_name = 'pacientes/index.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(DashboardAdministrativoView, self).dispatch(request, *args, *kwargs)
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        pacientes = Paciente.objects.all()
+
+        now = datetime.datetime.now()
+        _, num_days = calendar.monthrange(now.year, now.month)
+        first_day = datetime.date(now.year, now.month, 1)
+        last_day = datetime.date(now.year, now.month, num_days)
+
+        #pacientes registrados en el mes
+        listado_mensual = Paciente.objects.filter(fecha_registrado__gte=first_day, fecha_registrado__lte=last_day)
+
+        #pacientes registrado en el dia
+        listado_diario = Paciente.objects.filter(fecha_registrado=now)
+        context.update({
+            'pacientes': pacientes,
+            'total_pacientes': pacientes.count(),
+            'mensual': listado_mensual.count(),
+            'hoy': listado_diario.count()
+        })
+        return super(TemplateView, self).render_to_response(context)
+
