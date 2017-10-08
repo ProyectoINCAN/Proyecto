@@ -1,4 +1,3 @@
-
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
@@ -42,7 +41,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SIHINCAN</a>
+                <a class="navbar-brand">Usuario:{{ user.username }}</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -71,15 +70,7 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                            </div>
-                            <!-- /input-group -->
+                          <a align="left" href="{% url 'pacientes:index' %}">SIHINCAN</a>
                         </li>
                         <li>
                             <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
@@ -100,13 +91,14 @@
                             <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
                         </li>
                         <li>
-                            <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
+                            <a href="{% url 'pacientes:index' %} }"><i class="fa fa-edit fa-fw"></i> Pacientes</a>
                         </li>
+                        {% if user.groups.all.0.name == "Administrativo" or user.is_superuser %}
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
+                            <a href="{% url 'pacientes:index' %}"><i class="fa fa-user fa-fw"></i>Pacientes<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="panels-wells.html">Panels and Wells</a>
+                                    <a href="{% url 'pacientes:nuevo_paciente' %}">Nuevo Paciente</a>
                                 </li>
                                 <li>
                                     <a href="buttons.html">Buttons</a>
@@ -126,6 +118,7 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        {% endif %}
                         <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -157,13 +150,53 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-user-md fa-fw">
+                            </i>Médicos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="blank.html">Blank Page</a>
+                                    <a href="{% url 'consultorios:medico_listar' %}">Listado de Médicos</a>
                                 </li>
                                 <li>
-                                    <a href="login.html">Login Page</a>
+                                    <a href="{% url 'consultorios:medico_nuevo' %}">Nuevo Médico</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-user-md fa-fw">
+                            </i>Administrativo<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'consultorios:enfermero_listar' %}">Listado de Enfermeros</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'consultorios:enfermero_nuevo' %}">Nuevo Enfermero</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-user-md fa-fw">
+                            </i>Enfermeros<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'consultorios:administrativo_listar' %}">Listado de Administrativos</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'consultorios:administrativo_nuevo' %}">Nuevo Administrativo</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-users fa-fw">
+                            </i>Usuarios<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'principal:user_list_global' %}">Listado de Usuarios</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'principal:usuario_nuevo' %}">Nuevo Usuario</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
