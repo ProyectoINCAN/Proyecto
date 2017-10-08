@@ -2,53 +2,58 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    {% block extrahead %}
-    {% endblock %}
-    <link rel="stylesheet" href="{% static 'toastmessage/static/css/jquery.toastmessage.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/metisMenu.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}">
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/jquery.timepicker.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap-dialog.min.css' %}">
-    <link href="/static/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{% static 'css/bootstrap-dialog.min.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/datatables-plugins/dataTables.bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/datatables-responsive/dataTables.responsive.css' %}">
-    <!--<link href="/static/css/select2.min.css" rel="stylesheet" />-->
-
-    <!--<script src="/static/js/datepicker-es.js"></script>-->
-
-
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SIHINCAN</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  {% block extrahead %}
+  {% endblock %}
+  <link rel="stylesheet" href="{% static 'toastmessage/static/css/jquery.toastmessage.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="{% static 'css/AdminLTE.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/_all-skins.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/jquery.timepicker.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-dialog.min.css' %}">
+  <link href="/static/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/bootstrap-dialog.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/datatables-plugins/dataTables.bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/datatables-responsive/dataTables.responsive.css' %}">
 
     <title>{% block title %}Title{% endblock %}</title>
 </head>
-<body>
+<body class="hold-transition skin-blue sidebar-mini">
 
-    <div id="wrapper">
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand">Usuario:{{ user.username }}</a>
-            </div>
-            <!-- /.navbar-header -->
+  <div class="wrapper">
 
-            <ul class="nav navbar-top-links navbar-right">
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>SIH</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>SIH</b>INCAN</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
 
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+
+          <li>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
@@ -60,178 +65,290 @@
                         <li><a href={% url 'logout' %}><i class="fa fa-sign-out fa-fw"></i> Salir</a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                          <a align="left" href="{% url 'pacientes:index' %}">SIHINCAN</a>
-                        </li>
-                        <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="flot.html">Flot Charts</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">Morris.js Charts</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'pacientes:index' %} }"><i class="fa fa-edit fa-fw"></i> Pacientes</a>
-                        </li>
-                        {% if user.groups.all.0.name == "Administrativo" or user.is_superuser %}
-                        <li>
-                            <a href="{% url 'pacientes:index' %}"><i class="fa fa-user fa-fw"></i>Pacientes<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{% url 'pacientes:nuevo_paciente' %}">Nuevo Paciente</a>
-                                </li>
-                                <li>
-                                    <a href="buttons.html">Buttons</a>
-                                </li>
-                                <li>
-                                    <a href="notifications.html">Notifications</a>
-                                </li>
-                                <li>
-                                    <a href="typography.html">Typography</a>
-                                </li>
-                                <li>
-                                    <a href="icons.html"> Icons</a>
-                                </li>
-                                <li>
-                                    <a href="grid.html">Grid</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        {% endif %}
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                    </ul>
-                                    <!-- /.nav-third-level -->
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-user-md fa-fw">
-                            </i>Médicos<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{% url 'consultorios:medico_listar' %}">Listado de Médicos</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'consultorios:medico_nuevo' %}">Nuevo Médico</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-user-md fa-fw">
-                            </i>Enfermero<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{% url 'consultorios:enfermero_listar' %}">Listado de Enfermeros</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'consultorios:enfermero_nuevo' %}">Nuevo Enfermero</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-user-md fa-fw">
-                            </i>Administrativo<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{% url 'consultorios:administrativo_listar' %}">Listado de Administrativos</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'consultorios:administrativo_nuevo' %}">Nuevo Administrativo</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-users fa-fw">
-                            </i>Usuarios<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{% url 'principal:user_list_global' %}">Listado de Usuarios</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'principal:usuario_nuevo' %}">Nuevo Usuario</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
-            </div>
+  <!-- =============================================== -->
 
-        </nav>
+  <!-- Left side column. contains the sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <li><a><b>Usuario:</b>{{ user.username }}</a></li>
+      </div>
+      <!-- search form -->
 
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <li class="header">MENÚ</li>
 
-        <div id="page-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        {% block content %}
-                            <h1 class="page-header">Blank</h1>
-                        {% endblock %}
-                    </div>
-                    <!-- /.col-lg-12 -->
-                </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
+        {% if user.groups.all.0.name == "Administrativo" or user.is_superuser %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-user-md fa-fw"></i><span>Pacientes</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'pacientes:nuevo_paciente' %}"><i class="fa fa-circle-o"></i>Nuevo Paciente</a></li>
+          </ul>
+        </li>
+        {% endif %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-user fa-fw"></i><span>Usuarios</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'principal:user_list_global' %}"><i class="fa fa-circle-o"></i>Lista de Usuarios</a></li>
+            <li><a href="{% url 'principal:usuario_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Usuario</a></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- =============================================== -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          {% block content %}
+            <h1 class="page-header">Blank</h1>
+          {% endblock %}
         </div>
-
+        <!-- /.col-lg-12 -->
+      </div>
+                <!-- /.row -->
     </div>
+
+
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0
+    </div>
+    <strong>Copyright &copy; 2017 <a href="#">SIHINCAN</a>.</strong>Todos los derechos reservados
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Home tab content -->
+      <div class="tab-pane" id="control-sidebar-home-tab">
+        <h3 class="control-sidebar-heading">Recent Activity</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+
+                <p>Will be 23 on April 24th</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-user bg-yellow"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+
+                <p>New phone +1(800)555-1234</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+
+                <p>nora@example.com</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-file-code-o bg-green"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+
+                <p>Execution time 5 seconds</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+        <h3 class="control-sidebar-heading">Tasks Progress</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Custom Template Design
+                <span class="label label-danger pull-right">70%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Update Resume
+                <span class="label label-success pull-right">95%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-success" style="width: 95%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Laravel Integration
+                <span class="label label-warning pull-right">50%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Back End Framework
+                <span class="label label-primary pull-right">68%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+      </div>
+      <!-- /.tab-pane -->
+      <!-- Stats tab content -->
+      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-settings-tab">
+        <form method="post">
+          <h3 class="control-sidebar-heading">General Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Report panel usage
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Some information about this general settings option
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Allow mail redirect
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Other sets of options are available
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Expose author name in posts
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Allow the user to show his name in blog posts
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <h3 class="control-sidebar-heading">Chat Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Show me as online
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Turn off notifications
+              <input type="checkbox" class="pull-right">
+            </label>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Delete chat history
+              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+            </label>
+          </div>
+          <!-- /.form-group -->
+        </form>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+  </aside>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
 
     <script src = "{% static 'js/jquery.min.js' %}"></script>
     <script src = "{% static 'js/jquery-ui.min.js' %}"></script>
     <script src = "{% static 'js/jquery.timepicker.min.js' %}"></script>
     <script src = "{% static 'js/bootstrap.min.js' %}"></script>
-    <script src = "{% static 'js/metisMenu.min.js' %}"></script>
-    <script src = "{% static 'js/sb-admin-2.js' %}"></script>
+    <script src="{% static 'js/demo.js' %}"></script>
+    <script src="{% static 'js/app.min.js' %}"></script>
+    <script src="{% static 'js/jquery.slimscroll.min.js' %}"></script>
+    <script src="{% static 'js/fastclick.min.js' %}"></script>
     <script src = "{% static 'js/select2.min.js' %}"></script>
     <script src = "{% static 'toastmessage/static/js/jquery.toastmessage.js' %}"></script>
     <script src = "{% static 'js/modales.js' %}"></script>

@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="content-wrapper">
+
   <section class="content-header">
     <div class="bg-light lter b-b wrapper-md">
     <h1>
@@ -24,29 +24,30 @@
   <section class="content">
     <div class="row">
       <div class="col-lg-4">
-        <div class="panel panel-green">
+        <div class="small-box bg-green">
           <div class="panel-heading">
             <div class="row">
               <div class="col-xs-3">
                 <i class="fa fa-users fa-5x"></i>
               </div>
             <div class="col-xs-9 text-right">
-              <div class="huge">{{ total_pacientes }}</div>
+              <h3>{{ total_pacientes }}</h3>
               <div>Pacientes</div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <div class="col-lg-4">
-        <div class="panel panel-primary">
+        <div class="small-box bg-primary">
           <div class="panel-heading">
             <div class="row">
               <div class="col-xs-3">
                 <i class="fa fa-users fa-5x"></i>
               </div>
             <div class="col-xs-9 text-right">
-              <div class="huge">{{ mensual }}</div>
+              <h3>{{ mensual }}</h3>
               <div>Pacientes/Mensual</div>
             </div>
           </div>
@@ -54,14 +55,14 @@
       </div>
     </div>
     <div class="col-lg-4">
-        <div class="panel panel-yellow">
+        <div class="small-box bg-yellow">
           <div class="panel-heading">
             <div class="row">
               <div class="col-xs-3">
                 <i class="fa fa-users fa-5x"></i>
               </div>
             <div class="col-xs-9 text-right">
-              <div class="huge">{{ hoy }}</div>
+              <h3>{{ hoy }}</h3>
               <div>Pacientes/Hoy</div>
             </div>
           </div>
@@ -153,7 +154,6 @@
 
   </section>
 
-</div>
 
 
 {% endblock %}
