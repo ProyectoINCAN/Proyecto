@@ -91,7 +91,7 @@
         {% if user.groups.all.0.name == "Administrativo" or user.is_superuser %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-user-md fa-fw"></i><span>Pacientes</span>
+            <i class="fa fa-user fa-fw"></i><span>Pacientes</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -103,7 +103,7 @@
         {% endif %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-user fa-fw"></i><span>Usuarios</span>
+            <i class="fa fa-users fa-fw"></i><span>Usuarios</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -111,6 +111,42 @@
           <ul class="treeview-menu">
             <li><a href="{% url 'principal:user_list_global' %}"><i class="fa fa-circle-o"></i>Lista de Usuarios</a></li>
             <li><a href="{% url 'principal:usuario_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Usuario</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-user-md fa-fw"></i><span>Médicos</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'consultorios:medico_listar' %}"><i class="fa fa-circle-o"></i>Lista de Médicos</a></li>
+            <li><a href="{% url 'consultorios:medico_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Médico</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-stethoscope fa-fw"></i><span>Enfermero</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'consultorios:enfermero_listar' %}"><i class="fa fa-circle-o"></i>Lista de Enfermeros</a></li>
+            <li><a href="{% url 'consultorios:enfermero_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Enfermero</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-hospital-o fa-fw"></i><span>Administrativo</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'consultorios:administrativo_listar' %}"><i class="fa fa-circle-o"></i>Lista de Administrativos</a></li>
+            <li><a href="{% url 'consultorios:administrativo_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Administrativo</a></li>
           </ul>
         </li>
       </ul>
