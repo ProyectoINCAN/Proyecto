@@ -1,12 +1,16 @@
+import calendar
+import datetime
 from django.contrib import messages
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
+from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
+from multiprocessing import get_context
 
 from apps.agendamientos.functions import cancelar_agenda
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
@@ -20,9 +24,9 @@ from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
 from apps.consultorios.models import HorarioMedico, DiasSemana
 
 
-def index(request):
-    # form = AgendaForm()
-    return render(request, 'agendamientos/index.html')
+# def index(request):
+#     # form = AgendaForm()
+#     return render(request, 'agendamientos/index.html')
 
 
 def agenda_nuevo(request):
@@ -44,12 +48,57 @@ def agenda_nuevo(request):
 #     return render(request, 'agendamientos/agenda_list.html', contexto)
 
 
-class AgendaList(ListView):
+class AgendaList(TemplateView):
     model = Agenda
     template_name = '/agendamientos/agenda_list.html'
     paginate_by = 15
 
-#
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        fecha_desde = request.GET.get('desde', None)
+        fecha_hasta = request.GET.get('hasta', None)
+
+        now = datetime.datetime.now()
+        first_day = datetime.date(now.year, now.month, 1)
+
+        if not fecha_desde or not fecha_hasta:
+            fecha_desde = first_day
+            fecha_hasta = now
+        else:
+            agendas = Agenda.objects.filter(fecha=fecha_desde)
+
+
+class AgendaByFechaList(ListView):
+    model = Agenda
+    template_name = '/agendamientos/agenda_by_fecha_list.html'
+    paginate_by = 15
+    model_form = AgendaForm
+
+    def get_context_data(self, **kwargs):
+        pass
+
+
+def agenda_by_fecha_list(request):
+    form = AgendaForm()
+    if request.method == 'POST':
+        pass
+    else:
+        now = datetime.datetime.now()
+        first_day = datetime.date(now.year, now.month, 1)
+        fecha_desde = first_day
+        fecha_hasta = now
+        list_agenda = Agenda.objects.filter(fecha__gte=fecha_desde, fecha__lte=fecha_hasta)
+
+    print("lista agendas entre fechas", list_agenda)
+    contexto = {'form': form,
+                'list_agenda': list_agenda,
+                'fecha_desde': fecha_desde,
+                'fecha_hasta': fecha_hasta,
+                }
+    return render(request, 'agendamientos/agenda_by_fecha_list.html', contexto)
+
+
+    #
 # def agenda_edit(request, agenda_id):
 #     agenda = Agenda.objects.get(id=agenda_id)
 #     if request.method == 'GET':
@@ -210,15 +259,8 @@ class AgendaDetalleDetail(DetailView):
 
 
 def agenda_detalle_list(request, agenda_id):
-    print("llega a agenda_detalle. agenda_id: ", agenda_id, "request: ", request)
     agenda = Agenda.objects.get(pk=agenda_id)
     agenda_detalle = get_agenda_detalle_lista_by_agenda(agenda_id)
-    print('agenda2', agenda_detalle[0])
-        # AgendaDetalle.objects.filter(agenda=agenda_id)
-    # print("detalle "+ str(agenda_detalle))
-    # for det in agenda_detalle:
-    #     print(det.id)
-
     if request.method == 'GET':
         form = AgendaForm(instance=agenda)
     else:

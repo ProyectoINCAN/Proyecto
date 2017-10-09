@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.deletion import DO_NOTHING
 from django.utils.timezone import now
 
-from apps.pacientes.models import TipoDoc, Sexo, Pais, EstadoCivil, Etnia, Distrito, Nacionalidad, Paciente
+from apps.pacientes.models import TipoDoc, Sexo, EstadoCivil, Etnia, Distrito, Nacionalidad, Paciente
 
 # Create your models here.
 from utils import paciente_utils
@@ -217,8 +217,7 @@ class HorarioMedico(models.Model):
 
 class OrdenEstudio(models.Model):
     nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
-    descripcion = UpperCharField(default="", max_length=80, blank=False, uppercase=True)
-    estado = models.BooleanField(default=True)
+    descripcion = UpperCharField(default="", max_length=80, blank=False, uppercase=True, verbose_name="Descripción")
 
     def __str__(self):
         return self.nombre
@@ -227,6 +226,15 @@ class OrdenEstudio(models.Model):
         ordering = ["nombre"]
         verbose_name = "Orden de Estudio"
         verbose_name_plural = "Ordenes de Estudios"
+
+
+class OrdenEstudioDetalle(models.Model):
+    """En caso de que la orden de estudio sea específica.
+    Ejemplo: Para un análisis de sangre, se puede especificar qué se quiere analizar:
+    Conteo de globulos rojos, blancos, plaquetas, etc..."""
+    orden_estudio = models.ForeignKey(OrdenEstudio, on_delete=DO_NOTHING, verbose_name="Orden de estudio")
+    nombre = UpperCharField(uppercase=True, blank=False, max_length=100)
+    observacion = UpperTextField(blank=True, uppercase=True)
 
 
 class EvolucionPaciente(models.Model):
@@ -240,3 +248,105 @@ class EvolucionPaciente(models.Model):
         ordering = ['fecha', 'hora']
         verbose_name = 'Evolución del paciente'
         verbose_name_plural = 'Evoluciones del paciente'
+
+
+class EstadoConsulta(models.Model):
+    codigo = UpperCharField(max_length=1, blank=False, primary_key=True, uppercase=True)
+    nombre = UpperCharField(max_length=50, blank=False, uppercase=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ['nombre']
+        verbose_name = 'Estado consulta'
+        verbose_name_plural = 'Estados de consulta'
+
+
+class Consulta(models.Model):
+    fecha = models.DateField(auto_now=True, blank=False, null=False, verbose_name="Fecha de consulta")
+    estado = models.ForeignKey(EstadoConsulta, on_delete=DO_NOTHING, blank=False, null=False)
+    medico = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False)
+    turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False)
+    hora_inicio = models.TimeField(auto_now=True)
+
+    def __str__(self):
+        return self.fecha
+
+    class Meta:
+        ordering = ['fecha']
+        verbose_name = 'Consulta'
+        verbose_name_plural = 'Consultas'
+
+
+class ConsultaDetalle(models.Model):
+    orden = models.IntegerField()
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
+    consulta = models.ForeignKey(Consulta, models.DO_NOTHING, blank=False, null=False)
+    confirmado = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.paciente
+
+    class Meta:
+        ordering = ['orden']
+        verbose_name = 'Detalle de consulta'
+        verbose_name_plural = 'Detalles de consulta'
+
+
+class Tratamiento(models.Model):
+    consulta_detalle = models.ForeignKey(ConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
+    descripcion = UpperCharField(max_length=255, blank=True, uppercase=True, verbose_name="Descripción")
+    observacion = UpperTextField(blank=True, uppercase=True,verbose_name="Observación")
+
+    def __str__(self):
+        return self.descripcion
+
+    class Meta:
+        ordering = ['consulta_detalle']
+        verbose_name = 'Tratamiento'
+        verbose_name_plural = 'Tratamientos'
+
+
+class ConsultaOrdenEstudio(models.Model):
+    consulta_detalle = models.ForeignKey(ConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
+    orden_estudio = models.ForeignKey(OrdenEstudio, models.DO_NOTHING, blank=False, null=False,
+                                      verbose_name="Orden de estudio")
+    interpretacion = UpperTextField(blank=True, uppercase=True, verbose_name="Interpretación")
+    fecha_presentacion = models.DateField(auto_now=False, blank=True, null=True, verbose_name="Fecha de presentación")
+
+    def __str__(self):
+        return self.orden_estudio
+
+    class Meta:
+        ordering = ['consulta_detalle']
+        verbose_name = 'Consulta - Orden de estudio'
+        verbose_name_plural = 'Consulta - Órdenes de estudio'
+
+
+class GrupoAtencion(models.Model):
+    codigo = UpperCharField(max_length=2, blank=False, primary_key=True, uppercase=True)
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ['nombre']
+        verbose_name = 'Grupo de atención'
+        verbose_name_plural = 'Grupos de atención'
+
+
+class PlanSeguimiento(models.Model):
+    consulta_detalle = models.ForeignKey(ConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
+    especialidad = models.ForeignKey(Especialidad, models.DO_NOTHING, blank=False, null=False)
+    departamento = models.ForeignKey(Departamento, models.DO_NOTHING, blank=False, null=False)
+    grupo_atencion = models.OneToOneField(GrupoAtencion, models.DO_NOTHING, blank=False, null=False)
+
+    def __str__(self):
+        return self.especialidad
+
+    class Meta:
+        ordering = ['consulta_detalle']
+        verbose_name = 'Plan de seguimiento'
+        verbose_name_plural = 'Planes de seguimiento'

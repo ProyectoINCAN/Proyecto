@@ -37,7 +37,7 @@ class HorarioMedicoAdmin(admin.ModelAdmin):
 
 @admin.register(OrdenEstudio)
 class OrdenEstudioAdmin(admin.ModelAdmin):
-    list_display = ['nombre', 'descripcion', 'estado']
+    list_display = ['nombre', 'descripcion']
     list_per_page = 15
 
 

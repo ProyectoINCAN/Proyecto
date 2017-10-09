@@ -1,10 +1,12 @@
 from django.db import models
 
 # Create your models here.
+from django.db.models.deletion import DO_NOTHING
+
 from apps.consultorios.models import Medico
 from apps.pacientes.models import Paciente
 from apps.seguridad.models import Establecimiento
-from utils.upperField import UpperCharField
+from utils.upperField import UpperCharField, UpperTextField
 
 
 class TipoReferencia(models.Model):
@@ -190,7 +192,7 @@ class Internado(models.Model):
     tipo_ingreso = UpperCharField(max_length=100, blank=False, uppercase=True)
     puesto = UpperCharField(max_length=100, blank=False, uppercase=True)
     motivo = UpperCharField(max_length=100, blank=False, uppercase=True)
-    medico_solitante = models.ForeignKey(Medico, models.SET_NULL, blank= True, null=True, related_name ="medicosolicitantec")
+    medico_solicitante = models.ForeignKey(Medico, models.SET_NULL, blank= True, null=True, related_name ="medicosolicitantec")
     medico_cabecera = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False,related_name ="medicos")
     forma_ingreso = UpperCharField(max_length=150, blank=False, uppercase=True)
     servicio =  models.ForeignKey(Servicio, models.DO_NOTHING, blank=False, null=False)
@@ -219,3 +221,19 @@ class InternadoInsumo(models.Model):
         ordering = ["internado"]
         verbose_name = "Internado"
         verbose_name_plural = "Internados"
+
+
+class Diagnostico(models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=DO_NOTHING)
+    cie10 = models.ForeignKey(CIE10, on_delete=DO_NOTHING, verbose_name="CIE-10")
+    observacion = UpperTextField(blank=True, uppercase=True)
+    fecha = models.DateField(auto_now=True, blank=False, null=False)
+    medico = models.ForeignKey(Medico, on_delete=DO_NOTHING, verbose_name="Médico")
+
+    def __str__(self):
+        return self.paciente
+
+    class Meta:
+        ordering = ['paciente']
+        verbose_name = 'Diagnóstico'
+        verbose_name_plural = 'Diagnósticos'
