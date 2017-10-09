@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.six import with_metaclass
 
+
 class UpperCharField(with_metaclass(models.SubfieldBase, models.CharField)):
     def __init__(self, *args, **kwargs):
         self.is_uppercase = kwargs.pop('uppercase', False)
@@ -12,6 +13,7 @@ class UpperCharField(with_metaclass(models.SubfieldBase, models.CharField)):
             return value.upper()
 
         return value
+
 
 class UpperTextField(with_metaclass(models.SubfieldBase, models.TextField)):
     def __init__(self, *args, **kwargs):
