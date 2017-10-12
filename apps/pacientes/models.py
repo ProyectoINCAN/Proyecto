@@ -4,14 +4,14 @@ from django.db import models
 from django.db.models.deletion import DO_NOTHING
 from django.utils.timezone import now
 
-from utils import paciente_utils, upperField
+from utils import paciente_utils
 from utils.upperField import UpperCharField
 
 from .validators import nombre_validation, charfield_validation, doc_validation
 
 
 class TipoDoc(models.Model):
-    codigo = UpperCharField(max_length=3, blank=False, primary_key=True,uppercase=True)
+    codigo = UpperCharField(max_length=3, blank=False, primary_key=True, uppercase=True)
     descripcion = UpperCharField(max_length=50, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
@@ -116,7 +116,7 @@ class Pais(models.Model):
 
 class Departamento(models.Model):
     nombre = UpperCharField(max_length=60, blank=False, uppercase=True)
-    pais = models.ForeignKey(Pais, models.SET_NULL, blank=True,null=True, default='PY')
+    pais = models.ForeignKey(Pais, models.SET_NULL, blank=True, null=True, default='PY')
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -130,7 +130,7 @@ class Departamento(models.Model):
 
 class Distrito(models.Model):
     nombre = UpperCharField(max_length=60, blank=False, uppercase=True)
-    departamento = models.ForeignKey(Departamento, models.SET_NULL, blank=True,null=True,)
+    departamento = models.ForeignKey(Departamento, models.SET_NULL, blank=True, null=True,)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -149,7 +149,7 @@ class Distrito(models.Model):
 
 class Barrio(models.Model):
     nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
-    distrito = models.ForeignKey(Distrito, models.SET_NULL, blank=True,null=True)
+    distrito = models.ForeignKey(Distrito, models.SET_NULL, blank=True, null=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -168,7 +168,7 @@ class Barrio(models.Model):
 
 class Nacionalidad(models.Model):
     nacionalidad = UpperCharField(max_length=100, blank=False, uppercase=True)
-    pais = models.ForeignKey(Pais, models.SET_NULL, blank=True,null=True,)
+    pais = models.ForeignKey(Pais, models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return self.nacionalidad
@@ -238,21 +238,19 @@ class SituacionLaboral(models.Model):
 
 
 class Paciente(models.Model):
-    nombres = UpperCharField(max_length=100, blank=False, null= True, uppercase=True)
+    nombres = UpperCharField(max_length=100, blank=False, null=True, uppercase=True)
     apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = UpperCharField(max_length=15, blank=True, null=False,
-                               verbose_name="Número de documento",
-                               unique=True,
-                               validators=[doc_validation], uppercase=True)
-    #si no tiene nrodoc, por defecto debe guardar INICIAL_APELLIDO+INICIAL_NOMBRE+FECHA_NACIMIENTO
+    nro_doc = UpperCharField(max_length=15, blank=True, null=False, verbose_name="Número de documento", unique=True,
+                             validators=[doc_validation], uppercase=True)
+    # si no tiene nrodoc, por defecto debe guardar INICIAL_APELLIDO+INICIAL_NOMBRE+FECHA_NACIMIENTO
     nro_doc_alternativo = models.CharField(max_length=15, blank=True,
                                            null=True, verbose_name="Número de documento alternativo", unique=True)
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=True, null=True)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
     lugar_nacimiento = models.ForeignKey(Distrito, models.DO_NOTHING, blank=True, null=True,
                                          verbose_name="Lugar de nacimiento", related_name="lugar_nacimiento")
-    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=True, null=True, default= 1)
+    nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=True, null=True, default=1)
     distrito = models.ForeignKey(Distrito, models.DO_NOTHING, blank=True, null=True, related_name="ciudad_paciente")
     estado_civil = models.ForeignKey(EstadoCivil, models.DO_NOTHING, blank=True, null=True)
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=True, null=True, default=1)
@@ -264,6 +262,14 @@ class Paciente(models.Model):
 
     def get_name_nro_doc(self):
         return "{} {} Nro: {}".format(self.nombres, self.apellidos, self.nro_doc)
+
+    def get_edad(self):
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute(""" select extract(year from age(fecha_nacimiento)) edad
+                    from pacientes_paciente where id = %s""", [self.pk])
+            edad = cursor.fetchone()[0]
+        return int(edad)
 
     def __str__(self):
         return '{} {}'.format(self.nombres, self.apellidos)
@@ -392,8 +398,8 @@ class PacientePadre(models.Model):
     ocupacion = models.ForeignKey(Ocupacion, models.DO_NOTHING, blank=True, null=True, verbose_name="Ocupación")
     asume_sustento = models.BooleanField(default=True, verbose_name="Asume el sustento de la familia")
     padre = models.BooleanField(default=True, verbose_name="Padre")
-    #TODO si es PADRE True, si es madre False # en el admin.py "exclude = ('padre',)" para que no se muestre el campo
-    #  validar según el sexo
+    # TODO si es PADRE True, si es madre False # en el admin.py "exclude = ('padre',)" para que no se muestre el campo
+    # validar según el sexo
     otro = models.TextField(null=True, verbose_name="Otro, especificar")
     paciente = models.ManyToManyField(Paciente)
 
@@ -468,7 +474,7 @@ class PacienteProfesion(models.Model):
 
 class PacienteNivelEducativo(models.Model):
     nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False)
-    paciente = models.ForeignKey(Paciente, models.SET_NULL,blank=True,null=True,) #relacion con el paciente
+    paciente = models.ForeignKey(Paciente, models.SET_NULL, blank=True, null=True)  # relacion con el paciente
     COMPLETO_CHOICES = (
         (True, 'SI'),
         (False, 'NO')
@@ -490,7 +496,7 @@ class PacienteOcupacion(models.Model):
     situacion_laboral_id = models.ForeignKey(SituacionLaboral, models.DO_NOTHING, blank=False, null=False)
     ocupacion = models.ForeignKey(Ocupacion, models.DO_NOTHING, blank=True, null=True)
     profesion = models.ForeignKey(Profesion, on_delete=models.CASCADE, blank=True, null=True)
-    #renumeracion = models.BooleanField(default=True)
+    # renumeracion = models.BooleanField(default=True)
     estado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -505,7 +511,7 @@ class PacienteOcupacion(models.Model):
 class PacienteSeguroMedico(models.Model):
     seguro_medico = models.ForeignKey(SeguroMedico, models.DO_NOTHING, blank=False, null=False)
 
-    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False) #relacion con el paciente
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)  # relacion con el paciente
     detalle = UpperCharField(max_length=100, blank=True, null=True, uppercase=True)
 
     def __str__(self):

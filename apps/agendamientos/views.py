@@ -21,7 +21,7 @@ from apps.agendamientos.forms import AgendaForm, AgendaDetalleForm
 from apps.agendamientos.queries import get_agenda_medico_especialidad, get_agenda_detalle_orden, \
     get_agenda_detalle_lista_by_agenda
 from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
-from apps.consultorios.models import HorarioMedico, DiasSemana
+from apps.consultorios.models import HorarioMedico, DiasSemana, Especialidad
 
 
 # def index(request):
@@ -86,14 +86,16 @@ def agenda_by_fecha_list(request):
         now = datetime.datetime.now()
         first_day = datetime.date(now.year, now.month, 1)
         fecha_desde = first_day
-        fecha_hasta = now
+        fecha_hasta = now.date()
         list_agenda = Agenda.objects.filter(fecha__gte=fecha_desde, fecha__lte=fecha_hasta)
+        especialidades = Especialidad.objects.all()
 
     print("lista agendas entre fechas", list_agenda)
     contexto = {'form': form,
                 'list_agenda': list_agenda,
                 'fecha_desde': fecha_desde,
                 'fecha_hasta': fecha_hasta,
+                'especialidades': especialidades,
                 }
     return render(request, 'agendamientos/agenda_by_fecha_list.html', contexto)
 
