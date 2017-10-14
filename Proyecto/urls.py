@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^principal/', include('apps.principal.urls', namespace="principal")),
     url(r'^select2/', include('django_select2.urls')),
     url(r'', include('apps.seguridad.urls')),
+    url(r'^internaciones/', include('apps.internaciones.urls', namespace="internaciones")),
 
 ]
 

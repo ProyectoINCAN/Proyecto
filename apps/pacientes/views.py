@@ -19,6 +19,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import datetime
 import calendar
 
+
 def paciente_delete(request, id_paciente):
     paciente = Paciente.objects.get(id=id_paciente)
     paciente_direccion = None

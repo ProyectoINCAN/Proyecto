@@ -70,8 +70,6 @@ class PacienteForm(forms.ModelForm):
             'nacionalidad':  forms.Select(attrs={'class':'form-control selectsearch', 'style':'width: 100%'}),
             #'estado_civil':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             #'etnia':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-
-
         }
 
     def clean(self):
