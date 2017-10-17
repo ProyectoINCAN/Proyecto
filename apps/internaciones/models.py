@@ -173,7 +173,7 @@ class TipoMedicamento(models.Model):
     descripcion = UpperCharField(max_length=100, blank=True, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
-    def _str__(self):
+    def __str__(self):
         return self.nombre
 
     class Meta:

@@ -1,0 +1,80 @@
+{% extends "base/base2.html" %}
+{% load static %}
+{% block content %}
+  <div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">{% if form.instance.id %}Editar: {{ form.instance.id }}{% else %}Nuevo
+      Medicamento{% endif %}</h1>
+  </div>
+  <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
+    <li><a href="#">Inicio</a></li>
+    <li><a href="{% url 'internaciones:medicamentos' %}">Listado de Medicamentos</a></li>
+    <li class="active">{% if form.instance.id %}Editar: {{ form.instance.id }}{% else %}Nuevo
+      Medicamento{% endif %}</li>
+  </ol>
+
+  <div class="row"><br>
+  <div class="wrapper-md">
+
+    <div class="row">
+      <div class="col-md-offset-1 col-md-10">
+        <div class="col-lg-12">
+          <div class="panel panel-default border">
+            <div class="panel-heading">
+              <h4>{% if form.instance.id %}Medicamento: {{ form.instance.id }}{% else %}
+                Insertar Datos del Medicamento{% endif %}</h4>
+            </div>
+            <div class="panel-body">
+              <form class="form-horizontal col-sm-10" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                  <div class="form-group" id="{{ field.name }}">
+                    <div class="col-md-12 ">
+                      {{ field.errors }}
+                      <label for="{{ field.name }}" class="col-sm-3 control-label">{{ field.label }}:</label>
+                      <div class="col-sm-9">
+                        {{ field }}
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+                <div class="row" align="center" id="acciones">
+                   <button class="btn btn-primary" type="submit">Guardar</button>
+                   <a href="{% url 'internaciones:medicamentos' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
+                 </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+{% endblock %}
+
+{% block extrajs %}
+  <script type="text/javascript">
+  $('#id_nombre').focus();
+  console.log('tipo=',$('#id_tipos').val());
+  $('#medicos').show();
+  $('#enfermeros').hide();
+  $('#administrativo').hide();
+
+  $("#id_tipos").change(function(){
+         valor = $("#id_tipos").val()
+         if(valor == 1) {
+             $('#medicos').show();
+             $('#enfermeros').hide();
+             $('#administrativo').hide();
+         }else if(valor == 2){
+             $('#medicos').hide();
+             $('#enfermeros').show();
+             $('#administrativo').hide();
+         }else if (valor ==3){
+             $('#administrativo').show();
+             $('#medicos').hide();
+             $('#enfermeros').hide();
+         }
+     });
+  </script>
+{% endblock %}
