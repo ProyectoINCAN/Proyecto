@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^distrito/([\w\s-]+)/$',  views.distritoByDepartamento, name='distritos'),
     url(r'^nacionalidad/(?P<nacionalidad_id>\d+)$', views.nacionalidad, name='nacionalidad'),
     url(r'^departamento/(?P<pais_codigo>[\w\-]+)/$', views.departamento, name='departamento'),
+    url(r'^barrio/(?P<id_distrito>\d+)$', views.barrio, name='barrio'),
 
     url(r'^usuarios/crear/$', views.UsuarioCreateView.as_view(), name='usuario_nuevo'),
     url(r'^usuarios/$', views.UsuarioList.as_view(), name='user_list_global'),

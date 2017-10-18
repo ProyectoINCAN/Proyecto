@@ -261,7 +261,7 @@ class Paciente(models.Model):
         return "{} {}".format(self.nombres, self.apellidos)
 
     def get_name_nro_doc(self):
-        return "{} {} Nro: {}".format(self.nombres, self.apellidos, self.nro_doc)
+        return "{} {} NRO DOC: {}".format(self.nombres, self.apellidos, self.nro_doc)
 
     def get_edad(self):
         from django.db import connection

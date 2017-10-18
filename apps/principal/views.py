@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.db import connection
 # Create your views here.
-from apps.pacientes.models import Distrito, Nacionalidad, Departamento
+from apps.pacientes.models import Distrito, Nacionalidad, Departamento, Barrio
 import json
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
@@ -68,6 +68,11 @@ def departamento(request, pais_codigo):
     data = distrito
     return JsonResponse(json.dumps(data), safe=False)
 
+
+def barrio(request, id_distrito):
+    barrio = Barrio.objects.filter(distrito=id_distrito).order_by('id')
+    data = serializers.serialize('json', barrio)
+    return JsonResponse(data, safe=False)
 
 class UsuarioList(LoginRequiredMixin, ListView):
     model = User

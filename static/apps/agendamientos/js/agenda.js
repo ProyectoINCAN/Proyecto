@@ -109,18 +109,21 @@ $(document).ready(function() {
             }
         })
       };
+//
+        $("#id_turno").change(function () {
+            var medico = $("#medico_id").val();
+            var turno = $("#id_turno").val();
+            console.log("lilian")
+            actualizarHorario(medico, turno)
+        })
 
 
       var actualizarHorario = function(medico, turno){
-//        var csrftoken = getCookie('csrftoken');
         $.ajax({
-//            type:'POST',
-            url: '/consultorios/horario_medico/',
-
+            url: '/consultorios/horario_medico/'+medico+'/'+turno,
             data: {
               'medico': medico,
               'turno':turno,
-//              'csrfmiddlewaretoken':csrftoken,
             },
             dataType: 'json',
             success: function(data){
@@ -128,14 +131,16 @@ $(document).ready(function() {
                 $.each($.parseJSON(data), function(key, value) {
                    console.log("Data", value);
                    console.log("data", key);
-                   html = "<option value="+value[0]+">"+value[1]+"</option>";
-//                   $("#id_cantidad").append(html);
-//                   var turno = $("#id_turno").val()
-//                   actualizarHorario(medico, turno)
-//                   $("#id_cantidad").val(value[3]).disabled = true;
+                   $("#id_cantidad").val(value['fields'].cantidad);
                 });
 
             }
         })
       };
 
+   $( document ).ready(function() {
+       $('#create').click(function(){
+           console.log("entro")
+          $('#modalAgendaDetalle').modal('show');
+       })
+   })

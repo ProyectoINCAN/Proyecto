@@ -20,7 +20,7 @@ from django.views.generic.list import ListView
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
     EnfermeroForm, AdministrativoForm
 from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo, Especialidad, \
-    Turno
+    Turno, Consulta, ConsultaDetalle
 from apps.pacientes.models import Paciente
 
 
@@ -340,14 +340,22 @@ def medico_turno(request, id_medico):
     return JsonResponse(json.dumps(data), safe=False)
 
 
-def horario_medico(request):
-    # if request.POST():
-    print("horario", request.get_id_medico)
-    medico = request.POST['medico']
-    turno = request.POST['turno']
-    print("turno", medico, turno)
-    horario_medico = HorarioMedico.objects.filter(medico=request.get_id_medico, turno=request.get_turno)
+def horario_medico(request, id_medico, codigo_turno):
+    print('id', id_medico)
+    horario_medico = HorarioMedico.objects.filter(medico=id_medico, turno=codigo_turno)
     print('horario_medico', horario_medico)
     data = serializers.serialize('json', horario_medico)
     return JsonResponse(data, safe=False)
 
+def consulta_paciente_list(request, consulta_id):
+    print("llega a consulta paciente list. consulta_id: ", consulta_id, "request: ", request)
+    consulta = Consulta.objects.get(pk=consulta_id)
+    consulta_detalle = ConsultaDetalle.objects.filter(consulta=consulta_id)
+    # if request.method == 'GET':
+    #
+    # else:
+    #     # form = ConsultaForm(request.POST, instance=consulta)
+    #     if form.is_valid():
+    #         form.save()
+    contexto = {'consulta': consulta, 'consulta_detalle': consulta_detalle}
+    return render(request, 'consultorios/consulta_detalle_list.html', contexto)

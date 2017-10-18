@@ -15,30 +15,30 @@ class MedicoForm(forms.ModelForm):
             'nombres': 'Nombres',
             'apellidos': 'Apellidos',
             'tipo_doc': 'Tipo de documento',
-            'nro_doc': 'Número de documento',
+            'nro_doc': 'Nro. de documento',
             'nro_registro_profesional': 'Nro. Registro Profesional',
             'sexo': 'Sexo',
-            'fecha_nacimiento': 'Fecha de nacimiento',
-            'lugar_nacimiento': 'Lugar de nacimiento',
+            'fecha_nacimiento': 'Fecha de Nacimiento',
+            'lugar_nacimiento': 'Lugar de Nacimiento',
             'nacionalidad': 'Nacionalidad',
             'estado_civil': 'Estado Civil',
             'etnia': 'Etnia',
             'especialidad': 'Especialidad'
         }
         widgets = {
-            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
-            'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
-            'nro_registro_profesional': forms.TextInput(attrs={'class': 'form-control'}),
-            'sexo': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nombres': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'nro_registro_profesional': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker',
                                                        'placeholder': 'dd/mm/aaaa'}),
-            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'etnia': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple'})
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple', 'style':'width: 100%'})
         }
 
 

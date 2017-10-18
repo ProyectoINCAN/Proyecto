@@ -8,13 +8,13 @@
      </div>
    </div>
    <div class="modal-body">
-     <p>Está seguro que desea la situación laboral seleccionada ?</p>
+     <p>¿Está seguro que desea la situación laboral seleccionada ?</p>
    </div>
    <div class="modal-footer">
      <form action="{% url 'pacientes:paciente_situacion_laboral_eliminar' ocupacion.id %}" method="post" id=>
        {% csrf_token %}
        <div class="controls pull-right">
-         <button type="submit" class="btn btn-danger">Eliminar</button>
+         <button type="submit" class="btn btn-primary">Eliminar</button>
          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
        </div>
      </form>

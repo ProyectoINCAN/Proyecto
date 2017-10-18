@@ -26,15 +26,15 @@
 
 {% block content %}
  <div class="bg-light lter b-b wrapper-md">
-    <h1 class="m-n font-thin h3">Ficha Clinica</h1>
+    <h1 class="m-n font-thin h3">Ficha Clínica</h1>
  </div>
   <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
     <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
-    <li class="active">Datos de Direcciones del Paciente:<b>{{ paciente.get_name_nro_doc }}</b></li>
+    <li class="active">Direcciones / Paciente: <b>{{ paciente.get_name_nro_doc }}</b></li>
   </ol><br>
 <div class="wrapper-md">
   <div class="panel panel-default">
-    <div class="panel-heading">FICHA CLINICA</div>
+    <div class="panel-heading">Ficha Clínica</div>
     <div class="panel-body">
         <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
             <ul class="nav nav-pills">
@@ -44,18 +44,10 @@
                         <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos del Padre</a></li>
                         <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
             </ul>
-
         </nav>
         <div class="panel panel-default">
             <div class="panel-heading">
-                Direcciones
-                <!--<div class="btn-group pull-right">-->
-                    <!--<a onclick="return abrir_modal-->
-                            <!--('{% url 'pacientes:crear_direccion' id_paciente %}',-->
-                            <!--'Dirección / Nuevo')" class="btn btn-primary">-->
-
-                        <!--<i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>-->
-                <!--</div><p></p>-->
+                <b>Direcciones</b>
                 <div class="btn-group pull-right">
                 <a href="javascript:void(0)" id="create"
                 class="btn btn-default btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i>  Nuevo</a>
@@ -68,11 +60,13 @@
 
                         <thead>
                               <tr>
-                                <th width="80">Direccion</th>
+                                <th width="80">Dirección</th>
+                                <th width="80">Departamento</th>
                                 <th width="80">Distrito</th>
+                                <th width="80">Barrio</th>
                                 <th width="30">Área</th>
                                 <th width="20">Referencia</th>
-                                <th> Acción</th>
+                                <th class='text-center'>Eliminar</th>
                               </tr>
                         </thead>
                         <tbody>
@@ -80,14 +74,18 @@
                             {% for direccion in direcciones %}
                             <tr id="tr{{ direccion.pk }}">
 
-                                <td>{{ direccion.descripcion }}</td>
-                                <td>{{ direccion.distrito }} </td>
-                                <td>{{ direccion.area }} </td>
-                                <td>{{ direccion.referencia }}</td>
-                                <td>
-                                  <a href="#myModal" role="button" class="btn btn-danger delete btnModal" data-toggle="modal"
+                                <td align='center' width='50'>{{ direccion.descripcion }}</td>
+                                <td align='center' width='50'>{{ direccion.departamento }}</td>
+                                <td align='center' width='50'>{{ direccion.distrito }} </td>
+                                <td align='center' width='50'>{{ direccion.barrio }}</td>
+                                <td align='center' width='50'>{{ direccion.area }} </td>
+                                <td align='center' width='50'>{{ direccion.referencia }}</td>
+                                <td align='center' width='50'>
+                                  <a href="#myModal"
+                                     role="button" class="btn btnModal"
+                                     data-toggle="modal"
                                       id="btnModalPopup"  data-name="{{ direccion.descripcion }}"
-                                      data-id="{{ direccion.pk }}"><i class="fa fa-trash"></i></a>
+                                      data-id="{{ direccion.pk }}"><i class='fa fa-times-circle'></i></a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -118,13 +116,6 @@
 				<label class="control-label col-sm-3">{{form.descripcion.label}}</label>
 				<div class="col-sm-8">
 					{{ form.descripcion }}
-				</div>
-			</div>
-
-            <div class="form-group">
-				<label class="control-label col-sm-3">{{form.descripcion.label}}</label>
-				<div class="col-sm-8">
-                    {{form.descripcion}}
 				</div>
 			</div>
 
@@ -204,17 +195,17 @@
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"
                     aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"><b>Paciente / Dirección</b></h4>
+            <h4 class="modal-title"><b>Dirección</b></h4>
           </div>
           <div class="modal-body">
-            <p>Desea eliminar los datos de la dirección seleccionada1 ?<span id="modal_name"></span></p>
+            <p>Desea eliminar los datos de la dirección?<span id="modal_name"></span></p>
           </div>
           <div class="modal-footer">
             <form method="post" id="formEliminar">
               {% csrf_token %}
               <input type="hidden" value="" name="direccion_id" id="direccion_id">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Eliminar</button>
+                <button type="submit" class="btn btn-primary">Eliminar</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </form>
           </div>
         </div><!-- /.modal-content -->

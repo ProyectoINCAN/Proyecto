@@ -24,7 +24,7 @@ class Agenda(models.Model):
     fecha = models.DateField(auto_now=False, blank=False, null=False) #TODO hacer funcion para que estire la siguiente fecha disponible del médico
     turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False)
     especialidad = models.ForeignKey(Especialidad, models.DO_NOTHING, blank=True, null=True)
-    cantidad = models.IntegerField(null=False)  # Cantidad máxima definida en HorarioMedico
+    cantidad = models.IntegerField(null=True)  # Cantidad máxima definida en HorarioMedico
     estado = models.ForeignKey(EstadoAgenda, models.DO_NOTHING, blank=False, null=False, default='P')
 
     def __str__(self):

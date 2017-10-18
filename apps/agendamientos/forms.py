@@ -34,7 +34,7 @@ class AgendaForm(forms.ModelForm):
             'medico': forms.Select(attrs={'class': 'form-control selectsearch', 'id': 'medico_id'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
             'turno': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'cantidad': forms.TextInput(attrs={'class': 'form-control'}),
+            'cantidad': forms.TextInput(attrs={'class': 'form-control', 'readonly':'readonly'}),
             'estado': forms.Select(attrs={'class': 'form-control selectsearch'}),
         }
 

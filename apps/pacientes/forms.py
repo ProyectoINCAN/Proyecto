@@ -62,14 +62,10 @@ class PacienteForm(forms.ModelForm):
              'nro_doc': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;'}),
              'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;'}),
             'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            # 'nro_doc': forms.TextInput(attrs ={'class': 'form-control', }),
-            #'sexo': forms.Select(attrs={'class': 'form-control  selectsearch', 'style':'width: 100%'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            #'lugar_nacimiento':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             'distrito': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             'nacionalidad':  forms.Select(attrs={'class':'form-control selectsearch', 'style':'width: 100%'}),
-            #'estado_civil':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            #'etnia':  forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+
         }
 
     def clean(self):

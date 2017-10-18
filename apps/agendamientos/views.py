@@ -261,8 +261,15 @@ class AgendaDetalleDetail(DetailView):
 
 
 def agenda_detalle_list(request, agenda_id):
+    print("llega a agenda_detalle. agenda_id: ", agenda_id, "request: ", request)
     agenda = Agenda.objects.get(pk=agenda_id)
     agenda_detalle = get_agenda_detalle_lista_by_agenda(agenda_id)
+    # print('agenda2', agenda_detalle[0])
+        # AgendaDetalle.objects.filter(agenda=agenda_id)
+    # print("detalle "+ str(agenda_detalle))
+    # for det in agenda_detalle:
+    #     print(det.id)
+
     if request.method == 'GET':
         form = AgendaForm(instance=agenda)
     else:
