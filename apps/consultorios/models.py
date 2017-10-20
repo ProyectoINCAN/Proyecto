@@ -55,9 +55,9 @@ class Medico(models.Model):
     nombres = UpperCharField(max_length=100, blank=False, uppercase=True)
     apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
-    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True,
+    nro_doc = UpperCharField(max_length=50, blank=False, null=False, verbose_name="Número de documento", unique=True,
                              uppercase=True)
-    nro_registro_profesional = UpperCharField(max_length=15, blank=False, null=False,  uppercase=True,
+    nro_registro_profesional = UpperCharField(max_length=50, blank=False, null=False,  uppercase=True,
                                               verbose_name="Número de Registro Profesional", unique=True)
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
@@ -99,9 +99,9 @@ class Enfermero(models.Model):
     apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento",
                                  default="CI")
-    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True,
+    nro_doc = UpperCharField(max_length=50, blank=False, null=False, verbose_name="Número de documento", unique=True,
                              uppercase=True)
-    nro_registro_profesional = UpperCharField(max_length=15, blank=False, null=False, uppercase=True, unique=True,
+    nro_registro_profesional = UpperCharField(max_length=50, blank=True, null=True, uppercase=True, unique=True,
                                               verbose_name="Número de Registro Profesional")
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
@@ -130,9 +130,9 @@ class Administrativo(models.Model):
     apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
     tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento",
                                  default="CI")
-    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True,
+    nro_doc = UpperCharField(max_length=50, blank=False, null=False, verbose_name="Número de documento", unique=True,
                              uppercase=True)
-    nro_registro_profesional = UpperCharField(max_length=15, blank=False, null=False, uppercase=True, default="N/A",
+    nro_registro_profesional = UpperCharField(max_length=50, blank=False, null=False, uppercase=True,
                                               verbose_name="Número de Registro Profesional")
     sexo = models.ForeignKey(Sexo, models.DO_NOTHING, blank=False, null=False)
     fecha_nacimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de nacimiento")
@@ -220,7 +220,7 @@ class OrdenEstudio(models.Model):
     descripcion = UpperCharField(default="", max_length=80, blank=False, uppercase=True, verbose_name="Descripción")
 
     def __str__(self):
-        return self.nombre
+        return "{} ".format(self.nombre)
 
     class Meta:
         ordering = ["nombre"]
@@ -235,6 +235,9 @@ class OrdenEstudioDetalle(models.Model):
     orden_estudio = models.ForeignKey(OrdenEstudio, on_delete=DO_NOTHING, verbose_name="Orden de estudio")
     nombre = UpperCharField(uppercase=True, blank=False, max_length=100)
     observacion = UpperTextField(blank=True, uppercase=True)
+
+    def __str__(self):
+        return "{} ".format(self.nombre)
 
 
 class EvolucionPaciente(models.Model):
