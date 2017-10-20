@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -11,17 +11,18 @@ import json
 from django.core import serializers
 from django.views.decorators.csrf import requires_csrf_token
 from django.shortcuts import render
-
+from django.db.models.deletion import ProtectedError
 
 # Create your views here.
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
-    EnfermeroForm, AdministrativoForm
+    EnfermeroForm, AdministrativoForm, OrdenEstudioForm
 from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo, Especialidad, \
-    Turno, Consulta, ConsultaDetalle
+    Turno, OrdenEstudio, OrdenEstudioDetalle, Consulta, ConsultaDetalle
 from apps.pacientes.models import Paciente
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class MedicoList(ListView):
@@ -359,3 +360,47 @@ def consulta_paciente_list(request, consulta_id):
     #         form.save()
     contexto = {'consulta': consulta, 'consulta_detalle': consulta_detalle}
     return render(request, 'consultorios/consulta_detalle_list.html', contexto)
+
+class OrdenEstudioListGlobal(LoginRequiredMixin, ListView):
+    model = OrdenEstudio
+    context_object_name = 'ordenes'
+    template_name = 'consultorios/orden_estudio/orden_estudio_list.html'
+
+
+class OrdenEstudioCreateGlobal(LoginRequiredMixin, CreateView):
+    model=OrdenEstudio
+    form_class =OrdenEstudioForm
+    template_name = 'consultorios/orden_estudio/orden_estudio_form.html'
+
+    def get_success_url(self):
+        return reverse('consultorios:ordenes_estudio')
+
+
+class OrdenEstudioDeleteGlobal(LoginRequiredMixin, DeleteView):
+    model = OrdenEstudio
+    template_name = "consultorios/orden_estudio/orden_estudio_eliminar.html"
+    pk_url_kwarg = 'orden_id'
+    context_object_name = 'orden'
+
+    def post(self, request, *args, **kwargs):
+        try:
+            return self.delete(request, *args, **kwargs)
+        except ProtectedError:
+            # render the template with your message in the context
+            # or you can use the messages framework to send the message
+            print('Estado: PROTEGIDO')
+            messages.error(request, 'No se puede borrar ' + self.object.nombre)
+            return HttpResponseRedirect(reverse('consultorios:ordenes_estudio'))
+
+    def get_success_url(self):
+        return reverse('consultorios:ordenes_estudio')
+
+
+class OrdenEstudioUpdateGlobal(LoginRequiredMixin, UpdateView):
+    model = OrdenEstudio
+    form_class = OrdenEstudioForm
+    template_name = 'consultorios/orden_estudio/orden_estudio_editar.html'
+    pk_url_kwarg = 'orden_id'
+
+    def get_success_url(self):
+        return reverse('consultorios:ordenes_estudio')

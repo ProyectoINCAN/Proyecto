@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo
+from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico,\
+    Enfermero, Administrativo, OrdenEstudio
 from django_select2 import forms as select2form
 
 
@@ -213,4 +214,19 @@ class HorarioMedicoModelForm(forms.ModelForm):
             'turno': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'cantidad': forms.TextInput(attrs={'class': 'form-control'}),
             'habilitado': forms.CheckboxInput(attrs={'class': 'form-control'}),
+        }
+
+
+class OrdenEstudioForm(forms.ModelForm):
+    class Meta:
+        model = OrdenEstudio
+        fields = ['nombre', 'descripcion']
+
+        labels = {
+            'nombre': 'Nombre',
+            'descripcion': 'Descripción'
+        }
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
         }

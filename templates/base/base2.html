@@ -149,7 +149,7 @@
             <li><a href="{% url 'consultorios:administrativo_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Administrativo</a></li>
           </ul>
         </li>
-         <li class="treeview">
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-medkit fa-fw"></i><span>Medicamentos</span>
             <span class="pull-right-container">
@@ -159,6 +159,18 @@
           <ul class="treeview-menu">
             <li><a href="{% url 'internaciones:tipo_medicamento' %}"><i class="fa fa-circle-o"></i>Tipos de Medicamentos</a></li>
             <li><a href="{% url 'internaciones:medicamentos' %}"><i class="fa fa-circle-o"></i>Medicamentos</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-medkit fa-fw"></i><span>Órdenes de Estudio</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'consultorios:ordenes_estudio' %}"><i class="fa fa-circle-o"></i>Órden de Estudio</a></li>
+
           </ul>
         </li>
       </ul>

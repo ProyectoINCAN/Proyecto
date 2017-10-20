@@ -36,4 +36,11 @@ urlpatterns = [
     url(r'^horario_medico/(?P<id_medico>\d+)/(?P<codigo_turno>[\w\-]+)/$', views.horario_medico, name='horario_medico'),
     url(r'^consulta/(?P<consulta_id>\d+)$', login_required(consulta_paciente_list), name='consulta_detalle'),
 
+    url(r'^ordenes_estudio/$', views.OrdenEstudioListGlobal.as_view(), name='ordenes_estudio'),
+    url(r'^ordenes_estudio/crear/$', views.OrdenEstudioCreateGlobal.as_view(), name='orden_estudio_crear'),
+    url(r'^ordenes_estudio/(?P<orden_id>\d+)/eliminar/$', views.OrdenEstudioDeleteGlobal.as_view(),
+        name='orden_estudio_eliminar'),
+    url(r'^ordenes_estudio/(?P<orden_id>\d+)/editar/$', views.OrdenEstudioUpdateGlobal.as_view(),
+        name='orden_estudio_editar'),
+
 ]
