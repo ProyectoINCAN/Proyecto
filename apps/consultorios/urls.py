@@ -42,5 +42,9 @@ urlpatterns = [
         name='orden_estudio_eliminar'),
     url(r'^ordenes_estudio/(?P<orden_id>\d+)/editar/$', views.OrdenEstudioUpdateGlobal.as_view(),
         name='orden_estudio_editar'),
+    url(r'^ordenes_estudio/(?P<orden_id>\d+)/detalle/listar/$', views.OrdenEstudioDetalleListGlobal.as_view(),
+        name='orden_estudio_detalle_list'),
+    url(r'^ordenes_estudio/(?P<orden_id>\d+)/detalle/crear/$', views.OrdenEstudioDetalleCreate.as_view(),
+        name='orden_estudio_detalle_crear'),
 
 ]

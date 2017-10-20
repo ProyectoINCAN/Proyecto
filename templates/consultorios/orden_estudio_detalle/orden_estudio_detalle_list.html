@@ -11,12 +11,13 @@
   <div class="app-content-body">
 
     <div class="bg-light lter b-b wrapper-md">
-      <h1 class="m-n font-thin h3">Listado de Órdenes de Estudio</h1>
+      <h1 class="m-n font-thin h3">Detalle - Órden de Estudio</h1>
     </div>
 
     <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li><a href="#">Inicio</a></li>
-      <li class="active">Listado de Órdenes de Estudio</li>
+      <li><a href="{% url 'consultorios:ordenes_estudio' %}">Listado de Órdenes de Estudio</a></li>
+      <li><b>Órden de Estudio= {{ orden.nombre }}</b></li>
     </ol>
     <div class="wrapper-md">
 
@@ -25,9 +26,9 @@
         <div class="col-xs-12 col-md-12 col-lg-12">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <b>Listado de Órdenes de Estudio</b>
+              <b>Listado de Detalles</b>
               <div class="btn-group pull-right">
-                 <a onclick="return abrir_modal('{% url 'consultorios:orden_estudio_crear'  %}')">
+                 <a onclick="return abrir_modal('{% url 'consultorios:orden_estudio_detalle_crear' orden.pk  %}')">
                    <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
                    </button>
                  </a>
@@ -45,25 +46,21 @@
                   </tr>
                   </thead>
                 <tbody>
-                {% for orden in ordenes %}
+                {% for detalle in orden_detalle %}
                   <tr>
 
-                    <td style="width: 40%">{{ orden.nombre }}</td>
-                    <td style="width:40%;">{{ orden.descripcion }} </td>
+                    <td style="width: 40%">{{ detalle.nombre }}</td>
+                    <td style="width:40%;">{{ detalle.observacion }} </td>
 
                     <td>
                       <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_editar' orden.id %}')">
+                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_editar' detalle.id %}')">
                         <i class="fa fa-pencil"></i>
                       </a>
                       <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_eliminar' orden.id %}')">
+                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_eliminar' detalle.id %}')">
                         <i class="fa fa-trash"></i>
                       </a>
-                      <a href="{% url 'consultorios:orden_estudio_detalle_list' orden.id %}">
-                       <button class="btn btn-bitbucket"></i> Detalle
-                       </button>
-                     </a>
                     </td>
                   </tr>
                 {% endfor %}

@@ -18,7 +18,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
-    EnfermeroForm, AdministrativoForm, OrdenEstudioForm
+    EnfermeroForm, AdministrativoForm, OrdenEstudioForm, OrdenEstudioDetalleForm
 from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo, Especialidad, \
     Turno, OrdenEstudio, OrdenEstudioDetalle, Consulta, ConsultaDetalle
 from apps.pacientes.models import Paciente
@@ -361,6 +361,7 @@ def consulta_paciente_list(request, consulta_id):
     contexto = {'consulta': consulta, 'consulta_detalle': consulta_detalle}
     return render(request, 'consultorios/consulta_detalle_list.html', contexto)
 
+
 class OrdenEstudioListGlobal(LoginRequiredMixin, ListView):
     model = OrdenEstudio
     context_object_name = 'ordenes'
@@ -369,7 +370,7 @@ class OrdenEstudioListGlobal(LoginRequiredMixin, ListView):
 
 class OrdenEstudioCreateGlobal(LoginRequiredMixin, CreateView):
     model=OrdenEstudio
-    form_class =OrdenEstudioForm
+    form_class=OrdenEstudioForm
     template_name = 'consultorios/orden_estudio/orden_estudio_form.html'
 
     def get_success_url(self):
@@ -404,3 +405,44 @@ class OrdenEstudioUpdateGlobal(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('consultorios:ordenes_estudio')
+
+
+class OrdenEstudioDetalleListGlobal(LoginRequiredMixin, ListView):
+    model=OrdenEstudioDetalle
+    context_object_name = 'orden_detalle'
+    template_name = 'consultorios/orden_estudio_detalle/orden_estudio_detalle_list.html'
+
+    def get_queryset(self):
+        return OrdenEstudioDetalle.objects.filter(orden_estudio=OrdenEstudio.objects.get(pk=self.kwargs['orden_id']))
+
+    def get_context_data(self, **kwargs):
+        context = super(OrdenEstudioDetalleListGlobal, self).get_context_data(**kwargs)
+        context.update({'orden': OrdenEstudio.objects.get(pk=self.kwargs['orden_id'])})
+        return context
+
+
+class OrdenEstudioDetalleCreate(LoginRequiredMixin, CreateView):
+    model = OrdenEstudioDetalle
+    form_class = OrdenEstudioDetalleForm
+    template_name = 'consultorios/orden_estudio_detalle/orden_estudio_detalle_crear.html'
+
+    def get_success_url(self):
+        return reverse('consultorios:orden_estudio_detalle_list', kwargs=self.kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(OrdenEstudioDetalleCreate, self).get_context_data(**kwargs)
+        context.update({'orden': OrdenEstudio.objects.get(pk=self.kwargs['orden_id'])})
+        return context
+
+    def form_valid(self, form):
+        detalle = form.save(commit=False)
+        orden=OrdenEstudio.objects.get(pk=self.kwargs['orden_id'])
+        detalle.orden_estudio = orden
+        detalle.save()
+        return redirect(self.get_success_url())
+
+
+
+
+
+

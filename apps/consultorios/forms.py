@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico,\
-    Enfermero, Administrativo, OrdenEstudio
+    Enfermero, Administrativo, OrdenEstudio, OrdenEstudioDetalle
 from django_select2 import forms as select2form
 
 
@@ -229,4 +229,19 @@ class OrdenEstudioForm(forms.ModelForm):
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class OrdenEstudioDetalleForm(forms.ModelForm):
+    class Meta:
+        model = OrdenEstudioDetalle
+        exclude = ['orden_estudio']
+
+        labels = {
+            'nombre': 'Nombre',
+            'observacion': 'Observación'
+        }
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
         }

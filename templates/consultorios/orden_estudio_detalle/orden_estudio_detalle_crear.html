@@ -1,0 +1,89 @@
+{% load static from staticfiles %}
+<div class="modal-content" style="width: 700px;height: auto;
+  position: absolute;left:37%;top: 32%; margin-left: -150px;
+   margin-top: -150px;">
+   <div class="modal-header">
+     <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+     <div id="modal-title">
+       <h3>Nuevo Detalle-Órden de Estudio</h3>
+     </div>
+   </div>
+   <div class="modal-body">
+     <form  role="form" id="eventoForm"
+       action="{% url 'consultorios:orden_estudio_detalle_crear' orden.pk %}" method="post">
+       {% csrf_token %}
+       {% for field in form %}
+         <div class="row" id="{{ field.name }}">
+         <div class="row">
+           <div class="col-md-10 ">
+             {{ field.errors }}
+             <label for="{{ field.name }}" class="col-sm-2 control-label">{{ field.label }}:</label>
+             <div class="col-sm-8">
+               {{ field }}
+             </div>
+           </div>
+         </div>
+         </div><br>
+       {% endfor %}
+      <div class="modal-footer">
+        <div class="col-lg-12 text-right">
+          <input type="submit" class="btn btn-primary" name="submit" value="Guardar">
+          <button type="button" class="btn btn-default" onclick="return cerrar_modal()">
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+     </form>
+   </div>
+  <script src="http://malsup.github.com/jquery.form.js"></script>
+  <script>
+  $("#id_nombre").focus();
+  /*
+  $("#eventoForm").submit(function (e) {
+      var url = $(this).data('url'); // the script where you handle the form input.
+      $(this).ajaxSubmit({
+        url: url,
+        target: '#popup',
+        success: function (data, status) {
+          if (data.success) {
+
+            $('#popup').modal('hide');
+            location.reload();
+          }
+        },
+        error: function (ajaxContext) {
+          console.log('ok');
+          alert(ajaxContext.responseText);
+
+        }
+      });
+
+      return false;
+    })*/
+  $("#eventoForm").submit(function (e) {
+      var url = $(this).data('url'); // the script where you handle the form input.
+
+      $(this).ajaxSubmit({
+        url: url,
+        target: '#popup',
+        success: function (data, status) {
+            console.log('data=', data.success)
+          if (data.success) {
+
+            $('#popup').modal('hide');
+            location.reload();
+          }
+        },
+        error: function (ajaxContext) {
+          console.log('ok');
+          alert(ajaxContext.responseText);
+
+        }
+      });
+
+      return false;
+    });
+</script>
+</div>
