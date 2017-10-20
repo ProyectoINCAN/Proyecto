@@ -17,7 +17,7 @@ class TipoDoc(models.Model):
 
     # método para que retorne el objeto en formato de string
     def __str__(self):
-        return self.descripcion
+        return "{}".format(self.descripcion)
 
     class Meta:
         ordering = ["codigo"]
