@@ -2,7 +2,8 @@ from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
 from apps.agendamientos.views import agenda_nuevo, agenda_especialidad, agenda_detalle_list, agenda_cancelar, \
-    agenda_detalle_crear2, agenda_detalle_edit, AgendaByFechaList, agenda_by_fecha_list, PacienteByAgenda
+    agenda_detalle_crear2, agenda_detalle_edit, AgendaByFechaList, agenda_by_fecha_list, PacienteByAgenda, \
+    agenda_detalle_confirmar
 
 urlpatterns = [
     # url(r'^agenda_fecha/$', login_required(AgendaByFechaList.as_view()), name='agenda_fecha_listar'),
@@ -18,6 +19,9 @@ urlpatterns = [
     url(r'^agenda/(?P<agenda_id>\d+)/paciente/listar/$', PacienteByAgenda.as_view(), name='agenda_detalle_paciente_list'),
     url(r'^agenda/(?P<agenda_id>\d+)/paciente/(?P<paciente_id>\d+)/nuevo$', login_required(agenda_detalle_crear2),
         name='agenda_detalle_crear'),
+
+    url(r'^agenda/(?P<agenda_id>\d+)/paciente/(?P<paciente_id>\d+)/confirmar$', login_required(agenda_detalle_confirmar),
+        name='agenda_detalle_confirmar'),
 
 
 

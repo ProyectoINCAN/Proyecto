@@ -43,6 +43,18 @@ def get_agenda_detalle_orden(agenda_id):
     return orden
 
 
+def get_agenda_detalle_confirmar(agenda_id):
+    query = '''    select coalesce(count(detalle.id), 0)+1 as orden
+        from agendamientos_agenda agenda
+        join agendamientos_agendadetalle detalle on agenda.id = detalle.agenda_id
+        where agenda.id = %s and confirmado =
+        '''
+    filters = [agenda_id]
+    cursor = connection.cursor()
+    cursor.execute(query, filters)
+    orden = cursor.fetchone()[0]
+    return orden
+
 def get_max_fecha_disponible(agenda):
     """
     Obtiene la máxima fecha disponible de agendamiento para un médico
@@ -63,7 +75,7 @@ def get_max_fecha_disponible(agenda):
 def get_agenda_detalle_lista_by_agenda(agenda_id):
     query = '''select ag_detalle.orden, paciente.nro_doc, paciente.nombres, paciente.apellidos,
     cast(extract(year  from age(paciente.fecha_nacimiento))as integer) as anho, distrito.nombre,
-    tipo_tel.descripcion, telefono.numero, ag_detalle.observacion
+    tipo_tel.descripcion, telefono.numero, ag_detalle.observacion, ag_detalle.agenda_id, ag_detalle.paciente_id
     from pacientes_paciente paciente
     left join pacientes_distrito distrito on distrito.id = paciente.distrito_id
     left join pacientes_telefono telefono on telefono.paciente_id = paciente.id

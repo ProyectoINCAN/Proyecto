@@ -19,7 +19,7 @@ from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 
 from apps.agendamientos.forms import AgendaForm, AgendaDetalleForm
 from apps.agendamientos.queries import get_agenda_medico_especialidad, get_agenda_detalle_orden, \
-    get_agenda_detalle_lista_by_agenda
+    get_agenda_detalle_lista_by_agenda, get_agenda_detalle_confirmar
 from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
 from apps.consultorios.models import HorarioMedico, DiasSemana, Especialidad
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -162,7 +162,7 @@ def agenda_detalle_crear2(request, agenda_id, paciente_id):
     if dia_semana == 8:
         dia_semana = 1
     dia_horario = dias.filter(id=dia_semana)[0]
-    horario_medico = HorarioMedico.objects.get(medico=agenda_actual.medico, dia_semana=dia_horario)
+    horario_medico = HorarioMedico.objects.get(medico=agenda_actual.medico, dia_semana=dia_horario, turno=agenda_actual.turno)
     if orden > horario_medico.cantidad:
         agenda_nueva = Agenda(medico=agenda_actual.medico,
                               fecha=get_fecha_agendamiento_siguiente(agenda_actual),
@@ -171,6 +171,16 @@ def agenda_detalle_crear2(request, agenda_id, paciente_id):
         agenda_nueva.save()
         orden = 1
         agenda_actual = agenda_nueva
+
+    AgendaDetalle.objects.create(paciente=paciente, agenda=agenda_actual, orden=orden)
+
+    return redirect('agendamientos:agenda_detalle', agenda_actual.id)
+
+
+def agenda_detalle_confirmar(request, agenda_id, paciente_id):
+    agenda_actual = Agenda.objects.get(pk=agenda_id)
+    orden = get_agenda_detalle_confirmar(agenda_id)
+    paciente = Paciente.objects.get(pk=paciente_id)
 
     AgendaDetalle.objects.create(paciente=paciente, agenda=agenda_actual, orden=orden)
 

@@ -1,0 +1,98 @@
+{%extends 'base/base2.html' %}
+{% load static %}
+
+
+{%block content %}
+
+
+<form method="POST" class="form-horizontal" id="form">
+<div class="row">
+    <h2>Consulta</h2>
+    {% include 'base/messages.html' %}
+    <div class="col-lg-8 col-sm-12">
+        {% csrf_token %}
+        {{form.media}}
+
+        <div class="form-group">
+			<label class="control-label col-lg-2 col-sm-4">Fecha</label>
+			<div class="col-lg-3 col-sm-4">
+				<input type="text" class="form-control text-center" id="fecha" name ="fecha" value="{{consulta.fecha}}" required="required"  disabled="disabled" data-inputmask="'alias': 'date'" placeholder="dd/mm/yyyy">
+			</div>
+		</div>
+
+        <div class="form-group">
+			<label class="control-label col-lg-2 col-sm-4">Médico</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control text-left" id="medico" name ="medico" value="{{consulta.medico}}"  disabled="disabled">
+			</div>
+		</div>
+
+        <div class="form-group">
+			<label class="control-label col-lg-2 col-sm-4">Turno</label>
+			<div class="col-lg-3 col-sm-4">
+				<input type="text" class="form-control text-left" id="turno" name ="turno" value="{{consulta.turno}}"  disabled="disabled">
+			</div>
+		</div>
+
+</div>
+</div>
+
+</div>
+    </div>
+
+</div>
+</form>
+
+
+
+
+<br>
+<div class="panel panel-default">
+    <div class="panel-heading">
+		<b>Lista</b>
+		<div class="btn-group pull-right">
+            <a href="{% url 'pacientes:nuevo_paciente' %}" id="create" class="btn btn-default btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Paciente</a>
+        </div>
+        <div class="btn-group pull-right">
+            <a href="javascript:void(0)" id="iniciar" class="btn btn-success btn-sm"><i class="fa fa-play" aria-hidden="true"></i> Iniciar Consulta</a>
+            &nbsp;&nbsp;
+        </div>
+		<div class="clearfix"></div>
+	</div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-condensed table-bordered" >
+            <thead>
+                <tr>
+                    <th>Nº</th>
+                    <th>Ficha</th>
+                    <th>Nombre y Apellido</th>
+                    <th>Edad</th>
+                    <th>Ciudad</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% if consulta_detalle %}
+        {% for detalle in consulta_detalle %}
+            <tr>
+                <td>{{detalle.orden}}</td>
+                <td>{{detalle.paciente.nro_doc}}</td>
+                <td>{{detalle.paciente}}</td>
+                <td>{{detalle.4}}</td>
+                <td>{{detalle.paciente.distrito.nombre}}</td>
+                <td>{{detalle.8}}</td>
+
+
+            </tr>
+        {% endfor %}
+
+        {% else %}
+        <h1>No hay registros de consultamientos</h1>
+
+        {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock%}

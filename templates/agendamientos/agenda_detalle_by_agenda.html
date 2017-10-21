@@ -85,23 +85,24 @@
                     <td>Ciudad</td>
                     <td>Tel&eacute;fono</td>
                     <td>Observación</td>
+                    <td>Confirmar</td>
                 </tr>
             </thead>
             <tbody>
         {% if agenda_detalle %}
         {% for detalle in agenda_detalle %}
             <tr>
-                <td>
-                    <a href="/agendamientos/agenda/{{detalle.agenda.id}}/{{detalle.id}}/editar">{{ detalle.0}}</a>
-                </td>
+                <td>{{detalle.0}}</td>
                 <td>{{detalle.1}}</td>
                 <td>{{detalle.2}} {{detalle.3}}</td>
                 <td>{{detalle.4}}</td>
                 <td>{{detalle.5}}</td>
                 <td>{{detalle.6}} {{detalle.7}}</td>
                 <td>{{detalle.8}}</td>
-
-
+                <td>
+                    <a href="{% url 'agendamientos:agenda_detalle_confirmar' detalle.9 detalle.10 %}"
+                    class="btn btn-danger">Confirmar</a>
+                </td>
             </tr>
         {% endfor %}
 
