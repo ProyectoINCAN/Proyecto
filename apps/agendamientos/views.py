@@ -83,6 +83,7 @@ def agenda_by_fecha_list(request):
     if request.method == 'POST':
         pass
     else:
+        print("llega al view agenda by fecha")
         now = datetime.datetime.now()
         first_day = datetime.date(now.year, now.month, 1)
         fecha_desde = first_day

@@ -59,7 +59,25 @@ $(document).ready(function() {
         }
     );
 
+}
+);
+
+$("#buscar").click(function(){
+    $.ajax({
+        url: '/agendamientos/agenda_fecha/',
+        data: {
+            'fecha_desde': $('#fecha_desde'),
+            'fecha_hasta': $('#fecha_hasta'),
+            'especialidad': $('#especialidades').val()
+        },
+        success: function(){
+            console.log('regreso')
+        }
+    }
+    )
+    return;
 });
+
 
    $("#medico_id").change(function () {
       var medico = $(this).val()
