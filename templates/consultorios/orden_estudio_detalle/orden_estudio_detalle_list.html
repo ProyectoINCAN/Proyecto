@@ -21,7 +21,6 @@
     </ol>
     <div class="wrapper-md">
 
-
       <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-12">
           <div class="panel panel-default">
@@ -54,11 +53,11 @@
 
                     <td>
                       <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_editar' detalle.id %}')">
+                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_detalle_editar' detalle.id %}')">
                         <i class="fa fa-pencil"></i>
                       </a>
                       <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_eliminar' detalle.id %}')">
+                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_detalle_eliminar' detalle.id %}')">
                         <i class="fa fa-trash"></i>
                       </a>
                     </td>

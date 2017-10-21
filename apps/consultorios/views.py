@@ -421,6 +421,18 @@ class OrdenEstudioDetalleListGlobal(LoginRequiredMixin, ListView):
         return context
 
 
+class OrdenEstudioDetalleUpdateGlobal(LoginRequiredMixin, UpdateView):
+    model = OrdenEstudioDetalle
+    form_class = OrdenEstudioDetalleForm
+    template_name = 'consultorios/orden_estudio_detalle/orden_estudio_detalle_editar.html'
+    pk_url_kwarg = 'detalle_id'
+
+    def get_success_url(self):
+        orden_detail = OrdenEstudioDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        orden=OrdenEstudio.objects.get(pk=orden_detail.orden_estudio.id)
+        return reverse('consultorios:orden_estudio_detalle_list', kwargs={'orden_id': orden.id })
+
+
 class OrdenEstudioDetalleCreate(LoginRequiredMixin, CreateView):
     model = OrdenEstudioDetalle
     form_class = OrdenEstudioDetalleForm
@@ -441,6 +453,18 @@ class OrdenEstudioDetalleCreate(LoginRequiredMixin, CreateView):
         detalle.save()
         return redirect(self.get_success_url())
 
+
+class OrdenEstudioDetalleDeleteGlobal(LoginRequiredMixin, DeleteView):
+    model = OrdenEstudio
+    template_name = "consultorios/orden_estudio_detalle/orden_estudio_detalle_eliminar.html"
+    pk_url_kwarg = 'detalle_id'
+    context_object_name = 'detalle'
+
+    def post(self, request, *args, **kwargs):
+        orden_detail=OrdenEstudioDetalle.objects.get(pk=kwargs['detalle_id'])
+        orden=OrdenEstudio.objects.get(pk=orden_detail.orden_estudio.id)
+        orden_detail.delete()
+        return HttpResponseRedirect(reverse('consultorios:orden_estudio_detalle_list', kwargs={'orden_id': orden.id}))
 
 
 
