@@ -1,4 +1,7 @@
 $(document).ready(function() {
+        $('#fecha_desde').datepicker({dateFormat: 'dd/mm/yy'});
+        $('#fecha_hasta').datepicker({dateFormat: 'dd/mm/yy'});
+
         $('#cancelar').click(function() {
             BootstrapDialog.show({
             title: 'Cancelación de agenda',

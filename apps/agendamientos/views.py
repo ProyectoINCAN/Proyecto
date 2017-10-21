@@ -78,30 +78,44 @@ class AgendaByFechaList(ListView):
         pass
 
 
-def agenda_by_fecha_list(request):
-    form = AgendaForm()
-    if request.method == 'POST':
-        pass
-    else:
-        print("llega al view agenda by fecha")
+class AgendaByFechaList(LoginRequiredMixin, TemplateView):
+    template_name = 'agendamientos/agenda_by_fecha_list.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
         now = datetime.datetime.now()
         first_day = datetime.date(now.year, now.month, 1)
-        fecha_desde = first_day
-        fecha_hasta = now.date()
-        list_agenda = Agenda.objects.filter(fecha__gte=fecha_desde, fecha__lte=fecha_hasta)
-        especialidades = Especialidad.objects.all()
+        p_fecha_desde = request.GET.get('fecha_desde', None)
+        p_fecha_hasta = request.GET.get('fecha_hasta', None)
+        p_especialidad = request.GET.get('especialidad', None)
+        if p_fecha_desde:
+            fecha_desde = datetime.datetime.strptime(p_fecha_desde, '%d/%m/%Y').date()
+        else:
+            fecha_desde = first_day
 
-    print("lista agendas entre fechas", list_agenda)
-    contexto = {'form': form,
-                'list_agenda': list_agenda,
-                'fecha_desde': fecha_desde,
-                'fecha_hasta': fecha_hasta,
-                'especialidades': especialidades,
-                }
-    return render(request, 'agendamientos/agenda_by_fecha_list.html', contexto)
+        if p_fecha_hasta:
+            fecha_hasta = datetime.datetime.strptime(p_fecha_hasta, '%d/%m/%Y').date()
+        else:
+            fecha_hasta = now.date()
+        if p_especialidad:
+            especialidad = Especialidad.objects.get(pk=p_especialidad)
+            list_agenda = Agenda.objects.filter(fecha__gte=fecha_desde,
+                                                fecha__lte=fecha_hasta,
+                                                especialidad=Especialidad.objects.get(pk=p_especialidad))
+        else:
+            list_agenda = Agenda.objects.filter(fecha__gte=fecha_desde, fecha__lte=fecha_hasta)
+            especialidad = None
+
+        context.update({'list_agenda': list_agenda,
+                        'fecha_desde': fecha_desde,
+                        'fecha_hasta': fecha_hasta,
+                        'especialidad_select': especialidad if especialidad else None,
+                        'especialidades': Especialidad.objects.all()})
+
+        return super(TemplateView, self).render_to_response(context)
 
 
-    #
+
 # def agenda_edit(request, agenda_id):
 #     agenda = Agenda.objects.get(id=agenda_id)
 #     if request.method == 'GET':
