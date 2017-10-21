@@ -64,7 +64,7 @@ class AgendaDetalle(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     orden = models.IntegerField()  # TODO incremento automático según el orden de llegada
     observacion = UpperCharField(max_length=50, blank=True, null=True, uppercase=True, default='');
-    confirmado = models.BooleanField(default=False)
+    confirmado = models.BooleanField(default=True)
     objects = AgendaDetalleManager()  # Instanciar el Manager de la clase definido previamente
 
     def __str__(self):

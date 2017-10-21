@@ -62,8 +62,15 @@
 		<div class="btn-group pull-right">
 			               <!--<a href="javascript:void(0)" id="create"-->
                 <!--class="btn btn-default btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i>  Nuevo</a>-->
-            <a href="/agendamientos/agenda/{{agenda.id}}/nuevo" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
-        </div>
+            <!--<a href="/agendamientos/agenda/{{agenda.id}}/nuevo" id="create" class="btn btn-default">
+              <i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>-->
+
+      <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id %}">
+        <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
+        </button>
+      </a>
+
+    </div>
 		<div class="clearfix"></div>
 	</div>
 
@@ -106,5 +113,5 @@
         </table>
     </div>
 </div>
-
+ <div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1" style="height: auto;margin: auto; posicion:fixed;"></div>
 {% endblock%}

@@ -393,6 +393,45 @@ class PacienteCreate(CreateView):
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
 
+class PacienteCreateByAgenda(LoginRequiredMixin, CreateView):
+    """
+    permite crear un nuevo paciente desde ventanilla de confirmacion para la agenda
+    """
+    model = Telefono
+    template_name = 'pacientes/paciente_callCenter_form.html'
+    form_class = TelefonoForm
+    second_form_class = PacienteForm
+
+    def get_success_url(self):
+        return reverse('agendamientos:agenda_detalle', kwargs={'agenda': self.kwargs})
+
+
+    # agregamos los form al contexto
+    def get_context_data(self, **kwargs):
+        context = super(PacienteCreateByAgenda, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class(self.request.GET)
+        if 'form2' not in context:
+            context['form2'] = self.second_form_class(self.request.GET)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)  # TelefonoForm
+        form2 = self.second_form_class(request.POST)  # PersonaForm
+
+        print(str(form.is_valid()) + " " + str(form2.is_valid()))
+        if form.is_valid() and form2.is_valid():
+            telefono = form.save(commit=False)
+            telefono.paciente = form2.save()
+            telefono.save()
+            return HttpResponseRedirect(self.get_success_url())
+
+
+        else:
+            return self.render_to_response(self.get_context_data(form=form, form2=form2))
+
+
 class PacienteUpdate(UpdateView):
     second_model = Paciente
     model = Telefono

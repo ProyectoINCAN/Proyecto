@@ -73,6 +73,9 @@ class Medico(models.Model):
     def __str__(self):
         return self.apellidos + ", " + self.nombres
 
+    def get_full_name(self):
+        return '{} {}'.format(self.nombres, self.apellidos)
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)

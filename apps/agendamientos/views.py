@@ -3,7 +3,7 @@ import datetime
 from django.contrib import messages
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic.base import View, TemplateView
@@ -22,8 +22,8 @@ from apps.agendamientos.queries import get_agenda_medico_especialidad, get_agend
     get_agenda_detalle_lista_by_agenda
 from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
 from apps.consultorios.models import HorarioMedico, DiasSemana, Especialidad
-
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from apps.pacientes.models import Paciente
 # def index(request):
 #     # form = AgendaForm()
 #     return render(request, 'agendamientos/index.html')
@@ -149,7 +149,34 @@ class AgendaDetalleCreate(CreateView):
     success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
 
 
-def agenda_detalle_crear(request, agenda_id):
+def agenda_detalle_crear2(request, agenda_id, paciente_id):
+    agenda_actual = Agenda.objects.get(pk=agenda_id)
+    orden = get_agenda_detalle_orden(agenda_id)
+    dias = DiasSemana.objects.all()
+    paciente = Paciente.objects.get(pk=paciente_id)
+
+
+    # necesito conocer el número de día para obtener el horario medico de ese día
+    dia_semana = agenda_actual.fecha.weekday() + 2
+    if dia_semana == 8:
+        dia_semana = 1
+    dia_horario = dias.filter(id=dia_semana)[0]
+    horario_medico = HorarioMedico.objects.get(medico=agenda_actual.medico, dia_semana=dia_horario)
+    if orden > horario_medico.cantidad:
+        agenda_nueva = Agenda(medico=agenda_actual.medico,
+                              fecha=get_fecha_agendamiento_siguiente(agenda_actual),
+                              turno=agenda_actual.turno, especialidad=agenda_actual.especialidad,
+                              cantidad=agenda_actual.cantidad, estado=EstadoAgenda.objects.get(codigo="P"))
+        agenda_nueva.save()
+        orden = 1
+        agenda_actual = agenda_nueva
+
+    AgendaDetalle.objects.create(paciente=paciente, agenda=agenda_actual, orden=orden)
+
+    return redirect('agendamientos:agenda_detalle', agenda_actual.id)
+
+
+def agenda_detalle_crear(request, agenda_id, paciente_id):
     agenda_actual = Agenda.objects.get(pk=agenda_id)
     orden = get_agenda_detalle_orden(agenda_id)
     dias = DiasSemana.objects.all()
@@ -186,10 +213,14 @@ def agenda_detalle_crear(request, agenda_id):
                 agenda_detalle.save()
             except ObjectDoesNotExist:
                 messages.error(request, "No se encuentra Horario Médico para el Dr. %s " % agenda_actual.medico)
-        return redirect('agendamientos:agenda_detalle', agenda_actual.id)
+            return redirect('agendamientos:agenda_detalle', agenda_actual.id)
+        else:
+            form = AgendaDetalleForm(request.POST)
+            contexto = {'agenda': agenda_actual, 'form': form}
+            return render(request, 'agendamientos/agenda_detalle_form.html', contexto)
     else:
         form = AgendaDetalleForm()
-        contexto = {'agenda': agenda_actual.id, 'form': form}
+        contexto = {'agenda': agenda_actual, 'form': form}
         return render(request, 'agendamientos/agenda_detalle_form.html', contexto)
 
 
@@ -315,3 +346,22 @@ def agenda_cancelar(request, agenda_id):
         # return HttpResponse(response, content_type='application/json')
         return JsonResponse(serializers.serialize("json", [agenda]), safe=False)
     # return render(request, 'agendamientos/agenda_especialidad_list.html', {'agenda': agenda})
+
+
+class PacienteByAgenda(LoginRequiredMixin, ListView):
+    model = Paciente
+    context_object_name = 'pacientes'
+    template_name = 'agendamientos/agenda_detalle_paciente_list.html'
+
+    def get_queryset(self):
+        return Paciente.objects.exclude(agendadetalle__agenda=self.kwargs['agenda_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteByAgenda, self).get_context_data(**kwargs)
+        context.update({'agenda': Agenda.objects.get(pk=self.kwargs['agenda_id'])})
+        return context
+
+
+
+
+

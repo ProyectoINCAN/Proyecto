@@ -40,6 +40,7 @@ class AgendaForm(forms.ModelForm):
 
 
 class AgendaDetalleForm(forms.ModelForm):
+    confirmado=forms.BooleanField(initial=True)
 
     class Meta:
         model = AgendaDetalle
@@ -60,6 +61,5 @@ class AgendaDetalleForm(forms.ModelForm):
 
         widgets = {
             'paciente': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            # 'orden': forms.NumberInput(attrs={'class': 'form-control'}),
-            'confirmado': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'confirmado': forms.RadioSelect(attrs={'class': 'form-control', 'style':'width: 100%'}),
         }

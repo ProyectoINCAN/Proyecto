@@ -1,0 +1,94 @@
+{% extends 'base/base2.html' %}
+{% load static %}
+
+{% block extrahead %}
+  <link rel="stylesheet" href="{% static 'apps/pacientes/css/index.css' %}">
+{% endblock %}
+
+{% block extrajs %}
+    <script src = "{% static 'apps/pacientes/js/index.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+  <section class="content-header">
+    <div class="bg-light lter b-b wrapper-md">
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+       <li><a href="{% url 'agendamientos:agenda_detalle' agenda.id %}">
+         Agenda: Médico({{ agenda.medico.get_full_name }})</a></li>
+      <li class="active">Listado de Pacientes</li>
+    </ol>
+    </div>
+
+  </section>
+  <section class="content">
+  <div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <b>Listado de Pacientes</b>
+        <div class="btn-group pull-right">
+            <a href="{% url 'pacientes:nuevo_paciente' %}" class="btn btn-default">
+              <i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo Paciente</a>
+        </div><p></p>
+      </div>
+      <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover table-responsive"
+                id="dataTables-example" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+                  <th>Nro Documento</th>
+                  <th>Nombres</th>
+                  <th>Apellidos</th>
+                  <th>Sexo</th>
+                  <th>Fecha Nacimiento</th>
+                  <th>Lugar Nacimiento</th>
+                  <th>Nacionalidad</th>
+                  <th>Estado Civil</th>
+                  <th>Agregar</th>
+
+            </tr>
+          </thead>
+
+          <tbody>
+
+            {% for paciente in pacientes %}
+              <tr>
+                <td>
+                  {{ paciente.nro_doc }}
+                </td>
+                <td>{{ paciente.nombres }}</td>
+                <td>{{ paciente.apellidos }} </td>
+                <td>{{ paciente.sexo }} </td>
+                <td>{{ paciente.fecha_nacimiento }}</td>
+                <td>{{ paciente.lugar_nacimiento }}</td>
+                <td>{% if paciente.nacionalidad %}
+                  {{ paciente.nacionalidad }}
+                  {% else %}
+                  {% endif %}
+                </td>
+                <td>{% if paciente.estado_civil %}
+                  {{ paciente.estado_civil }}
+                  {% else %}
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'agendamientos:agenda_detalle_crear' agenda.id paciente.id %}"
+                     class="btn btn-primary">Agregar</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+      </div>
+  </div>
+  </div>
+
+
+  </section>
+
+{% endblock %}
