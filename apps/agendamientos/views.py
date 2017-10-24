@@ -68,14 +68,14 @@ class AgendaList(TemplateView):
             agendas = Agenda.objects.filter(fecha=fecha_desde)
 
 
-class AgendaByFechaList(ListView):
-    model = Agenda
-    template_name = '/agendamientos/agenda_by_fecha_list.html'
-    paginate_by = 15
-    model_form = AgendaForm
-
-    def get_context_data(self, **kwargs):
-        pass
+# class AgendaByFechaList(ListView):
+#     model = Agenda
+#     template_name = '/agendamientos/agenda_by_fecha_list.html'
+#     paginate_by = 15
+#     model_form = AgendaForm
+#
+#     def get_context_data(self, **kwargs):
+#         pass
 
 
 class AgendaByFechaList(LoginRequiredMixin, TemplateView):

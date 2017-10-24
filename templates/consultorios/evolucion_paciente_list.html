@@ -2,45 +2,57 @@
 
 {% block content %}
 
-<h1>Evolución del paciente</h1>
+<div class="app-content-body">
 
-<table class="table table-bordered">
-	<thead>
-		<tr>
-			<td>Fecha</td>
-			<td>Hora</td>
-			<td>Observaciones</td>
-			<td>Firma</td>
-		</tr>
-	</thead>
-	<tbody>
+    <div class="bg-light lter b-b wrapper-md">
+      <h1 class="m-n font-thin h3">Evolución del paciente</h1>
+    </div>
 
-		<div class="btn-group pull-right">
-			<a href="{% url 'consultorios:evolucion_paciente_nuevo' %}" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
-			<p>
-		</div>
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+		<li><a href="#">Inicio</a></li>
+		<li><a href="#">Consultorios</a></li>
+		<li class="active">Evolución del paciente</li>
 
-		{% if object_list %}
-		{% for evolucion in object_list %}
-		<tr>
-			<td>
-				<a href="/consultorios/evolucion_paciente/{{ evolucion.id }}/editar">{{ evolucion.fecha }}</a>
-			</td>
-			<td>{{ evolucion.hora }}</td>
-			<td>{{ evolucion.observaciones }}</td>
-			<td>{{ evolucion.medico.nombres }} {{ evolucion.medico.apellidos }}</td>
+    </ol>
 
-		</tr>
-		{% endfor %}
-		{% else %}
-		<h1>No existen datos.</h1>
-		<div class="btn-group pull-right">
-			<a href="{% url 'consultorios:evolucion_paciente_nuevo' %}" id="create2" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
-			<p>
-		</div>
-		{% endif %}
-	</tbody>
-	
-</table>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<td>Fecha</td>
+				<td>Hora</td>
+				<td>Observaciones</td>
+				<td>Firma</td>
+			</tr>
+		</thead>
+		<tbody>
+
+			<div class="btn-group pull-right">
+				<a href="{% url 'consultorios:evolucion_paciente_nuevo' %}" id="create" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
+				<p>
+			</div>
+
+			{% if object_list %}
+			{% for evolucion in object_list %}
+			<tr>
+				<td>
+					<a href="/consultorios/evolucion_paciente/{{ evolucion.id }}/editar">{{ evolucion.fecha }}</a>
+				</td>
+				<td>{{ evolucion.hora }}</td>
+				<td>{{ evolucion.observaciones }}</td>
+				<td>{{ evolucion.medico.nombres }} {{ evolucion.medico.apellidos }}</td>
+
+			</tr>
+			{% endfor %}
+			{% else %}
+			<h1>No existen datos.</h1>
+			<div class="btn-group pull-right">
+				<a href="{% url 'consultorios:evolucion_paciente_nuevo' %}" id="create2" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>
+				<p>
+			</div>
+			{% endif %}
+		</tbody>
+
+	</table>
+</div>
 
 {% endblock %}

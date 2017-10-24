@@ -269,6 +269,19 @@ class EstadoConsulta(models.Model):
         verbose_name_plural = 'Estados de consulta'
 
 
+class EstadoConsultaDetalle(models.Model):
+    codigo = UpperCharField(max_length=1, blank=False, primary_key=True, uppercase=True)
+    nombre = UpperCharField(max_length=50, blank=False, uppercase=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ['nombre']
+        verbose_name = 'Estado consulta'
+        verbose_name_plural = 'Estados de consulta'
+
+
 class Consulta(models.Model):
     fecha = models.DateField(auto_now=True, blank=False, null=False, verbose_name="Fecha de consulta")
     estado = models.ForeignKey(EstadoConsulta, on_delete=DO_NOTHING, blank=False, null=False)
@@ -289,6 +302,7 @@ class ConsultaDetalle(models.Model):
     orden = models.IntegerField()
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     consulta = models.ForeignKey(Consulta, models.DO_NOTHING, blank=False, null=False)
+    estado = models.ForeignKey(EstadoConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
     confirmado = models.BooleanField(default=False)
 
     def __str__(self):

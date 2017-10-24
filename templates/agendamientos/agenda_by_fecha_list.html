@@ -13,7 +13,7 @@
       <li><b>Listado de Especialidades-Médicos</b></li>
     </ol>
   <div class="row">
-    <div class="col-lg-12">
+    <!--<div class="col-lg-12">-->
       <div class="col-lg-6">
         <div class="panel panel-default">
           <div class="panel-heading font-bold">Filtros</div>
@@ -29,9 +29,9 @@
                 </div>
               </div>
               <div class="col-lg-12">
-                <label class="col-sm-3 control-label">Especialidad</label>
-                <div class="col-lg-9">
-                  <select name="especialidad" id="id_especialidad"  class="form-control w-md">
+                <label class="control-label col-lg-2 col-sm-4">Especialidad</label>
+                <div class="col-sm-4 col-lg-8">
+                  <select name="especialidad" id="id_especialidad" class="form-control selectsearch" style="width:100%" >
                     <option value="">Todas</option>
                     {% for especialidad in especialidades %}
                       <option value="{{ especialidad.id }}"
@@ -42,13 +42,13 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-12" style="text-align: right;"><br>
-                <button type="submit" class="btn btn-primary">Buscar</button>
+              <div class="col-sm-4 col-lg-12" style="text-align: right;"><br>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
               </div>
             </form>
           </div>
         </div>
-      </div>
+      <!--</div>-->
     </div>
   </div>
 
