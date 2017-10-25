@@ -18,7 +18,7 @@ import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 import datetime
 import calendar
-
+from apps.agendamientos.models import Agenda
 
 def paciente_delete(request, id_paciente):
     paciente = Paciente.objects.get(id=id_paciente)
@@ -398,17 +398,18 @@ class PacienteCreateByAgenda(LoginRequiredMixin, CreateView):
     permite crear un nuevo paciente desde ventanilla de confirmacion para la agenda
     """
     model = Telefono
-    template_name = 'pacientes/paciente_callCenter_form.html'
+    template_name = 'pacientes/paciente_crear_by_agendamiento.html'
     form_class = TelefonoForm
     second_form_class = PacienteForm
 
     def get_success_url(self):
-        return reverse('agendamientos:agenda_detalle', kwargs={'agenda': self.kwargs})
+        return reverse('agendamientos:agenda_detalle_paciente_list', kwargs={'agenda_id': self.kwargs['agenda_id']})
 
 
     # agregamos los form al contexto
     def get_context_data(self, **kwargs):
         context = super(PacienteCreateByAgenda, self).get_context_data(**kwargs)
+        context['agenda']=Agenda.objects.get(pk=self.kwargs['agenda_id'])
         if 'form' not in context:
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:

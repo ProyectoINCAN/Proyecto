@@ -123,6 +123,8 @@
           <ul class="treeview-menu">
             <li><a href="{% url 'consultorios:medico_listar' %}"><i class="fa fa-circle-o"></i>Lista de Médicos</a></li>
             <li><a href="{% url 'consultorios:medico_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Médico</a></li>
+            <li><a href="{% url 'consultorios:horario_medico_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Horario Médico</a></li>
+            <li><a href="{% url 'consultorios:horario_medico_listar' %}"><i class="fa fa-circle-o"></i>Lista Horario Médico</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -433,6 +435,7 @@
     <script src = "{% static 'vendor/datatables-responsive/dataTables.responsive.js' %}"></script>
     <script src = "{% static 'js/validate.min.js' %}"></script>
     <script src = "{% static 'js/underscore.min.js' %}"></script>
+    <script src = "{% static 'vendor/fastclick/fastclick.js' %}"></script>
     <script src = "{% static 'js/datatable-responsive-model.js' %}"></script>
     <!--<script src="/static/js/select2.min.js"></script>-->
     {% block extrajs %}
