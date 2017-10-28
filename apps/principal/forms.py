@@ -90,6 +90,11 @@ class UserForm(forms.ModelForm):
         user.save()
         grupo = Group.objects.get(pk=self.cleaned_data['tipos'])
         grupo.user_set.add(user)
+
+        if int(self.cleaned_data.get('tipos'))== 1:
+            medico = self.cleaned_data.get('medicos')
+            medico.usuario = user
+            medico.save()
         return user
 
 

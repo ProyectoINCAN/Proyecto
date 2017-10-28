@@ -16,13 +16,18 @@ from django.db.models.deletion import ProtectedError
 # Create your views here.
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
+from django.views.generic.base import TemplateView
 
+from datetime import date
+
+from apps.agendamientos.models import Agenda, AgendaDetalle
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
     EnfermeroForm, AdministrativoForm, OrdenEstudioForm, OrdenEstudioDetalleForm
 from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo, Especialidad, \
     Turno, OrdenEstudio, OrdenEstudioDetalle, Consulta, ConsultaDetalle
 from apps.pacientes.models import Paciente
 from django.contrib.auth.mixins import LoginRequiredMixin
+from apps.internaciones.models import Diagnostico
 
 
 class MedicoList(ListView):
@@ -465,6 +470,30 @@ class OrdenEstudioDetalleDeleteGlobal(LoginRequiredMixin, DeleteView):
         orden=OrdenEstudio.objects.get(pk=orden_detail.orden_estudio.id)
         orden_detail.delete()
         return HttpResponseRedirect(reverse('consultorios:orden_estudio_detalle_list', kwargs={'orden_id': orden.id}))
+
+
+class DashboardMedico(LoginRequiredMixin, TemplateView):
+    template_name = 'consultorios/citas_dia.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        medico = Medico.objects.get(usuario=request.user)
+        agenda='';
+        detalles= '';
+        #ver si existe una agenda para el dia hoy con el medico
+        if Agenda.objects.filter(fecha=date.today(), medico=medico).exists():
+            agenda=Agenda.objects.get(fecha=date.today(), medico=medico)
+
+            #otenemos el detalle de la agenda(los pacientes agendados) y que esten confirmados
+            detalles = AgendaDetalle.objects.filter(agenda=agenda, confirmado=True)
+
+        context.update({'medico': medico,
+                        'agenda': agenda,
+                        'detalles': detalles,
+                        })
+
+        return super(TemplateView, self).render_to_response(context)
+
 
 
 
