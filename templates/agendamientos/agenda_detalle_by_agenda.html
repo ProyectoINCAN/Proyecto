@@ -37,9 +37,9 @@
 			</div>
 		</div>
         <div class="form-group" align="center">
-            <!--<a href="{% url 'agendamientos:agenda_cancelar' agenda.id %}" id="cancelar" class="btn btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>-->
-            <!--<a href="#" id="cancelar" class="btn btn-danger" onclick="confirmar();"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>-->
-            <a id="cancelar" type="button" class="btn btn-danger" > <i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>
+            <a href="{% url 'agendamientos:agenda_cancelar' agenda.id %}" id="cancelar" class="btn btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>
+            <!--<a href="{% url 'agendamientos:agenda_especialidad_medico' %}" id="cancelar" class="btn btn-danger" onclick="confirmar();"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>-->
+            <!--<a id="cancelar" type="button" class="btn btn-danger" > <i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>-->
             <a href="{% url 'agendamientos:agenda_especialidad_medico' %}" id="salir" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i> Salir</a>
         </div>
 

@@ -19,7 +19,8 @@ from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 
 from apps.agendamientos.forms import AgendaForm, AgendaDetalleForm
 from apps.agendamientos.queries import get_agenda_medico_especialidad, get_agenda_detalle_orden, \
-    get_agenda_detalle_lista_by_agenda, get_agenda_detalle_confirmar
+    get_agenda_detalle_lista_by_agenda, get_agenda_detalle_confirmar, \
+    agenda_detalle_update_orden
 from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
 from apps.consultorios.models import HorarioMedico, DiasSemana, Especialidad
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -170,7 +171,6 @@ def agenda_detalle_crear2(request, agenda_id, paciente_id):
     dias = DiasSemana.objects.all()
     paciente = Paciente.objects.get(pk=paciente_id)
 
-
     # necesito conocer el número de día para obtener el horario medico de ese día
     dia_semana = agenda_actual.fecha.weekday() + 2
     if dia_semana == 8:
@@ -193,10 +193,9 @@ def agenda_detalle_crear2(request, agenda_id, paciente_id):
 
 def agenda_detalle_confirmar(request, agenda_id, paciente_id):
     agenda_actual = Agenda.objects.get(pk=agenda_id)
+    agenda_detalle = AgendaDetalle.objects.get(agenda=agenda_id, paciente= paciente_id)
     orden = get_agenda_detalle_confirmar(agenda_id)
-    paciente = Paciente.objects.get(pk=paciente_id)
-
-    AgendaDetalle.objects.create(paciente=paciente, agenda=agenda_actual, orden=orden)
+    agenda_detalle_update_orden(orden, agenda_detalle)
 
     return redirect('agendamientos:agenda_detalle', agenda_actual.id)
 
@@ -320,12 +319,6 @@ def agenda_detalle_list(request, agenda_id):
     print("llega a agenda_detalle. agenda_id: ", agenda_id, "request: ", request)
     agenda = Agenda.objects.get(pk=agenda_id)
     agenda_detalle = get_agenda_detalle_lista_by_agenda(agenda_id)
-    # print('agenda2', agenda_detalle[0])
-        # AgendaDetalle.objects.filter(agenda=agenda_id)
-    # print("detalle "+ str(agenda_detalle))
-    # for det in agenda_detalle:
-    #     print(det.id)
-
     if request.method == 'GET':
         form = AgendaForm(instance=agenda)
     else:

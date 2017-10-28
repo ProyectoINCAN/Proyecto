@@ -1,8 +1,9 @@
 from collections import namedtuple
 
 from django.db import connection
+from django.db.models.aggregates import Min
 
-from apps.agendamientos.models import Agenda
+from apps.agendamientos.models import Agenda, AgendaDetalle
 
 
 def get_agenda_medico_especialidad():
@@ -47,13 +48,30 @@ def get_agenda_detalle_confirmar(agenda_id):
     query = '''    select coalesce(count(detalle.id), 0)+1 as orden
         from agendamientos_agenda agenda
         join agendamientos_agendadetalle detalle on agenda.id = detalle.agenda_id
-        where agenda.id = %s and confirmado =
+        where agenda.id = %s and confirmado
         '''
     filters = [agenda_id]
     cursor = connection.cursor()
     cursor.execute(query, filters)
     orden = cursor.fetchone()[0]
     return orden
+
+def agenda_detalle_update_orden(orden, agenda_detalle):
+    orden_min=1
+    orden_minimo = AgendaDetalle.objects.filter(confirmado=True).annotate(Min('orden'))
+    print('orden', orden_minimo)
+    if orden_minimo:
+        orden_min=orden_minimo
+
+    detalles = AgendaDetalle.objects.filter(orden__gte=orden_min, orden__lte=agenda_detalle.orden)
+    for det in detalles:
+        detalle = AgendaDetalle.objects.get(pk=det.id)
+        detalle.orden = detalle.orden+1
+        detalle.save()
+    agenda_detalle.confirmado = True
+    agenda_detalle.orden = orden
+    agenda_detalle.save()
+
 
 def get_max_fecha_disponible(agenda):
     """
@@ -83,6 +101,7 @@ def get_agenda_detalle_lista_by_agenda(agenda_id):
     join agendamientos_agendadetalle ag_detalle on ag_detalle.paciente_id = paciente.id
     join agendamientos_agenda agenda on agenda.id = ag_detalle.agenda_id
     where agenda.id  = %s
+    order by ag_detalle.orden
         '''
     filters = [agenda_id]
     cursor = connection.cursor()
