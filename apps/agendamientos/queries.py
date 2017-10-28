@@ -93,8 +93,7 @@ def get_max_fecha_disponible(agenda):
 def get_agenda_detalle_lista_by_agenda(agenda_id):
     query = '''select ag_detalle.orden, paciente.nro_doc, paciente.nombres, paciente.apellidos,
     cast(extract(year  from age(paciente.fecha_nacimiento))as integer) as anho, distrito.nombre,
-    tipo_tel.descripcion, telefono.numero, ag_detalle.observacion, ag_detalle.agenda_id, ag_detalle.paciente_id,
-    ag_detalle.confirmado
+    tipo_tel.descripcion, telefono.numero, ag_detalle.observacion, ag_detalle.agenda_id, ag_detalle.paciente_id
     from pacientes_paciente paciente
     left join pacientes_distrito distrito on distrito.id = paciente.distrito_id
     left join pacientes_telefono telefono on telefono.paciente_id = paciente.id

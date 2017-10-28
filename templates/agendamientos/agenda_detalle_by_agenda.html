@@ -59,19 +59,18 @@
 <div class="panel panel-default">
     <div class="panel-heading">
 		<b>Lista</b>
-		<div class="btn-group pull-right">
-			               <!--<a href="javascript:void(0)" id="create"-->
-                <!--class="btn btn-default btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i>  Nuevo</a>-->
-            <!--<a href="/agendamientos/agenda/{{agenda.id}}/nuevo" id="create" class="btn btn-default">
-              <i class="fa fa-plus-square" aria-hidden="true"></i></i> Nuevo</a>-->
 
-      <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id %}">
-        <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
-        </button>
+        <div class="btn-group pull-right">
+            <form id="consultas" method="post" action="{% url 'consultorios:consulta' agenda.id %}">
+                {% csrf_token %}
+                <a onclick="document.getElementById('consultas').submit();" class="btn btn-success btn-sm"><i class="fa fa-play" aria-hidden="true"></i> Pasar Agenda</a>
+            </form>
+        </div>
+     <div class="btn-group pull-right"> <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id %}" class="btn btn-default btn-sm">
+        <i class="fa fa-plus-square"></i> Nuevo
       </a>
-
-    </div>
-		<div class="clearfix"></div>
+     </div>
+    <div class="clearfix"></div>
 	</div>
 
     <div class="table-responsive">

@@ -5,7 +5,7 @@ from apps.consultorios import views
 from apps.consultorios.views import MedicoList, EvolucionPacienteList, EvolucionPacienteUpdate, \
     EvolucionPacienteCreate, HorarioMedicoList, HorarioMedicoCreate, HorarioMedicoUpdate, medico_update, \
     medico_create, cambio_password, EnfermeroList, enfermero_create, enfermero_update, AdministrativoList, \
-    administrativo_create, administrativo_update, consulta_paciente_list
+    administrativo_create, administrativo_update, consulta_paciente_list, ConsultaCreate
 
 urlpatterns = [
     url(r'^medico/$', login_required(MedicoList.as_view()), name='medico_listar'),
@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^medico_turno/(?P<id_medico>\d+)$', views.medico_turno, name='medico_turno'),
     url(r'^horario_medico/(?P<id_medico>\d+)/(?P<codigo_turno>[\w\-]+)/$', views.horario_medico, name='horario_medico'),
     url(r'^consulta/(?P<consulta_id>\d+)$', login_required(consulta_paciente_list), name='consulta_detalle'),
+    url(r'^consulta/create/(?P<agenda_id>\d+)$', ConsultaCreate.as_view(), name='consulta'),
 
     url(r'^ordenes_estudio/$', views.OrdenEstudioListGlobal.as_view(), name='ordenes_estudio'),
     url(r'^ordenes_estudio/crear/$', views.OrdenEstudioCreateGlobal.as_view(), name='orden_estudio_crear'),

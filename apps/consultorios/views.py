@@ -16,15 +16,15 @@ from django.db.models.deletion import ProtectedError
 # Create your views here.
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 
 from datetime import date
 
-from apps.agendamientos.models import Agenda, AgendaDetalle
+from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
     EnfermeroForm, AdministrativoForm, OrdenEstudioForm, OrdenEstudioDetalleForm
 from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo, Especialidad, \
-    Turno, OrdenEstudio, OrdenEstudioDetalle, Consulta, ConsultaDetalle
+    Turno, OrdenEstudio, OrdenEstudioDetalle, Consulta, ConsultaDetalle, EstadoConsulta, EstadoConsultaDetalle
 from apps.pacientes.models import Paciente
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.internaciones.models import Diagnostico
@@ -495,7 +495,18 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
         return super(TemplateView, self).render_to_response(context)
 
 
+class ConsultaCreate(LoginRequiredMixin, View):
+    model = Consulta
+    def post(self, request, *args, **kwargs):
+        agenda = Agenda.objects.get(pk=kwargs.get('agenda_id'))
 
-
-
+        agenda.estado=EstadoAgenda.objects.get(codigo='V')
+        agenda.save()
+        agenda_detalle = AgendaDetalle.objects.filter(agenda=agenda)
+        consulta = Consulta.objects.create(fecha=agenda.fecha, estado=EstadoConsulta.objects.get(codigo='P'),
+                                           medico=agenda.medico, turno=agenda.turno)
+        for det in agenda_detalle:
+            ConsultaDetalle.objects.create(orden=det.orden, confirmado=det.confirmado, consulta=consulta,
+                                           paciente=det.paciente, estado=EstadoConsultaDetalle.objects.get(codigo='P'))
+        return HttpResponseRedirect(reverse('agendamientos:agenda_especialidad_medico'))
 
