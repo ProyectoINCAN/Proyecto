@@ -175,6 +175,7 @@
 
           </ul>
         </li>
+        {% if user.groups.all.0.name == "Administrativo" or request.user.is_superuser %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-medkit fa-fw"></i><span>Agendamientos</span>
@@ -189,6 +190,7 @@
             <li><a href="{% url 'agendamientos:agenda_fecha_listar' %}"><i class="fa fa-circle-o"></i>Agendas por rango de fecha</a></li>
           </ul>
         </li>
+        {% endif %}
       </ul>
     </section>
     <!-- /.sidebar -->

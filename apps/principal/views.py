@@ -95,12 +95,7 @@ class UsuarioCreateView(CreateView):
     def get_success_url(self):
         return reverse('principal:user_list_global')
 
-    def form_valid(self, form):
-        user = form.save()
-        grupo = Group.objects.get(pk=form.cleaned_data['tipos'])
-        grupo.user_set.add(user)
 
-        return HttpResponseRedirect(self.get_success_url())
 
 
 def user_update_view(request, user_id):

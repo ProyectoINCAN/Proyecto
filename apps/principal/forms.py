@@ -13,10 +13,12 @@ class UserForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control selectsearch'}))
 
     enfermeros = forms.ModelChoiceField(queryset=Enfermero.objects.all(), required=False,
-                                        widget=forms.Select(attrs={'class': 'selectsearch'}))
+                                        widget=forms.Select(
+                                            attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}))
 
     administrativo = forms.ModelChoiceField(queryset=Administrativo.objects.all(), required=False,
-                                        widget=forms.Select(attrs={'class': 'selectsearch'}))
+                                        widget=forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}))
+
 
     MEDICO = 1
     ENFERMERO = 2
@@ -40,18 +42,18 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'password1', 'password2', 'is_active', 'tipos', 'medicos', 'enfermeros', 'administrativo')
-
+        fields = ('username', 'first_name', 'last_name', 'password1', 'password2',
+                  'tipos', 'medicos', 'enfermeros', 'administrativo')
 
         labels = {
             'first_name': 'Nombres',
             'last_name': 'Apellidos',
+            'is_active': 'Activo',
         }
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'form-control'}),
 
         }
 
@@ -74,6 +76,21 @@ class UserForm(forms.ModelForm):
         if int(self.cleaned_data.get('tipos'))== 1:
             if not self.cleaned_data.get('medicos'):
                 self.add_error('medicos', 'Debe seleccionar el médico')
+        elif int(self.cleaned_data.get('tipos'))== 2:
+            if not self.self.cleaned_data.get('enfermero'):
+                self.add_error('medicos', 'Debe seleccionar el médico')
+        elif int(self.cleaned_data.get('tipos'))== 3:
+            if not self.self.cleaned_data.get('administrativo'):
+                self.add_error('medicos', 'Debe seleccionar un administrativo')
+
+    def save(self, commit=True):
+        user = super(UserForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        user.is_active = True
+        user.save()
+        grupo = Group.objects.get(pk=self.cleaned_data['tipos'])
+        grupo.user_set.add(user)
+        return user
 
 
 class UserEditForm(forms.ModelForm):
