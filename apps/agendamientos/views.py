@@ -22,7 +22,7 @@ from apps.agendamientos.queries import get_agenda_medico_especialidad, get_agend
     get_agenda_detalle_lista_by_agenda, get_agenda_detalle_confirmar, \
     agenda_detalle_update_orden
 from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
-from apps.consultorios.models import HorarioMedico, DiasSemana, Especialidad
+from apps.consultorios.models import HorarioMedico, DiasSemana, Especialidad, Medico
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.pacientes.models import Paciente
 # def index(request):
@@ -89,6 +89,8 @@ class AgendaByFechaList(LoginRequiredMixin, TemplateView):
         p_fecha_desde = request.GET.get('fecha_desde', None)
         p_fecha_hasta = request.GET.get('fecha_hasta', None)
         p_especialidad = request.GET.get('especialidad', None)
+        p_medico = request.GET.get('medico', None)
+        p_estado = request.GET.get('estado', None)
         if p_fecha_desde:
             fecha_desde = datetime.datetime.strptime(p_fecha_desde, '%d/%m/%Y').date()
         else:
@@ -98,20 +100,38 @@ class AgendaByFechaList(LoginRequiredMixin, TemplateView):
             fecha_hasta = datetime.datetime.strptime(p_fecha_hasta, '%d/%m/%Y').date()
         else:
             fecha_hasta = now.date()
+
+        list_agenda = Agenda.objects.filter(fecha__gte=fecha_desde, fecha__lte=fecha_hasta)
+
         if p_especialidad:
             especialidad = Especialidad.objects.get(pk=p_especialidad)
-            list_agenda = Agenda.objects.filter(fecha__gte=fecha_desde,
-                                                fecha__lte=fecha_hasta,
-                                                especialidad=Especialidad.objects.get(pk=p_especialidad))
+            list_agenda = list_agenda.filter(especialidad=especialidad)
         else:
-            list_agenda = Agenda.objects.filter(fecha__gte=fecha_desde, fecha__lte=fecha_hasta)
             especialidad = None
+
+        if p_medico:
+            medico = Medico.objects.get(pk=p_medico)
+            list_agenda = list_agenda.filter(medico=medico)
+        else:
+            medico = None
+
+        if p_estado:
+            estado = EstadoAgenda.objects.get(codigo=p_estado)
+            list_agenda = list_agenda.filter(estado=estado)
+            print(p_estado, estado, list_agenda, len(list_agenda))
+        else:
+            estado = None
 
         context.update({'list_agenda': list_agenda,
                         'fecha_desde': fecha_desde,
                         'fecha_hasta': fecha_hasta,
                         'especialidad_select': especialidad if especialidad else None,
-                        'especialidades': Especialidad.objects.all()})
+                        'especialidades': Especialidad.objects.all(),
+                        'medico_select': medico if medico else None,
+                        'medicos': Medico.objects.all(),
+                        'estado_select': estado if estado else None,
+                        'estados': EstadoAgenda.objects.all()
+                        })
 
         return super(TemplateView, self).render_to_response(context)
 
@@ -315,17 +335,30 @@ class AgendaDetalleDetail(DetailView):
         return context
 
 
-def agenda_detalle_list(request, agenda_id):
-    print("llega a agenda_detalle. agenda_id: ", agenda_id, "request: ", request)
+def agenda_detalle_list(request, agenda_id, origen):
     agenda = Agenda.objects.get(pk=agenda_id)
     agenda_detalle = get_agenda_detalle_lista_by_agenda(agenda_id)
+
     if request.method == 'GET':
         form = AgendaForm(instance=agenda)
     else:
         form = AgendaForm(request.POST, instance=agenda)
         if form.is_valid():
             form.save()
-    contexto = {'agenda': agenda, 'agenda_detalle': agenda_detalle, 'form': form}
+
+    # dependiendo del valor de 'origen' redirige a tal o cual url de donde se solicitó
+    # TODO: agregar más si fuera necesario
+    if origen == str(1):
+        # redirige a agendar por fecha disponible
+        origen_url = '/agendamientos/agendas/'
+    elif origen == str(2):
+        # redirige a agendas por rango de fechas
+        origen_url = '/agendamientos/agenda_fecha/'
+    else:
+        # DEFAULT: redirige a agendar por fecha disponible
+        origen_url = '/agendamientos/agendas/'
+
+    contexto = {'agenda': agenda, 'agenda_detalle': agenda_detalle, 'origen_url': origen_url, 'form': form}
     return render(request, 'agendamientos/agenda_detalle_by_agenda.html', contexto)
 
 

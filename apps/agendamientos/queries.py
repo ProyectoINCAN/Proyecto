@@ -45,7 +45,7 @@ def get_agenda_detalle_orden(agenda_id):
 
 
 def get_agenda_detalle_confirmar(agenda_id):
-    query = '''    select coalesce(count(detalle.id), 0)+1 as orden
+    query = '''select coalesce(count(detalle.id), 0)+1 as orden
         from agendamientos_agenda agenda
         join agendamientos_agendadetalle detalle on agenda.id = detalle.agenda_id
         where agenda.id = %s and confirmado
