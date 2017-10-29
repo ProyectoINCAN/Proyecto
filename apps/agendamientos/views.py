@@ -150,7 +150,6 @@ class AgendaByFechaList(LoginRequiredMixin, TemplateView):
 #         return redirect('agendamientos:agenda_listar')
 #     return render(request, 'agendamientos/agenda_form.html', {'form':form})
 
-
 class AgendaUpdate(UpdateView):
     model = Agenda
     print("entro")

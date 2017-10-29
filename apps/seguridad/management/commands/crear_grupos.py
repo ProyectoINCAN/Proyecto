@@ -15,3 +15,6 @@ class Command(BaseCommand):
 
         if Group.objects.filter(name='Administrativo').exists() is False:
             newgroup = Group.objects.create(name='Administrativo')
+
+        if Group.objects.filter(name='Administrativo_Ventanilla').exists() is False:
+            newgroup = Group.objects.create(name='Administrativo_Ventanilla')

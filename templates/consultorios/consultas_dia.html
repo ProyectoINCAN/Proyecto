@@ -1,0 +1,53 @@
+{% extends 'base/base2.html' %}
+{% block content %}
+  <div class="app-content-body">
+    <br>
+    <div class="wrapper-md">
+
+
+      <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <b>Listado de Consultas del dia</b>
+
+            </div>
+              <div class="panel-body">
+                <table class="table table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                  <tr>
+                    <th>Especialidad</th>
+                    <th>Turno</th>
+                    <th>Hora de Inicio</th>
+                    <th>Estado</th>
+
+                  </tr>
+                  </thead>
+                <tbody>
+                {% for consulta in consultas %}
+                  <tr>
+
+                    <td>
+                      <a href="{% url 'consultorios:consulta_detalle_dia' consulta.id %}">< {{ consulta.especialidad }}</a></td>
+                    <td>{{ consulta.turno }}</td>
+                    <td>{{ consulta.hora_inicio }}</td>
+                    <td>{{ consulta.estado }}</td>
+
+
+                  </tr>
+                {% endfor %}
+                </tbody>
+
+              </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1" style="height: auto;margin: auto; posicion:fixed;"></div>
+
+{% endblock %}
+
+

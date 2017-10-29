@@ -52,6 +52,7 @@ urlpatterns = [
     url(r'^ordenes_estudio/detalle/(?P<detalle_id>\d+)/editar$', views.OrdenEstudioDetalleUpdateGlobal.as_view(),
         name='orden_estudio_detalle_editar'),
 
-    url(r'^citas_dia/$', views.DashboardMedico.as_view(), name='citas_dia'),
+    url(r'^consulta/(?P<consulta_id>\d+)/detalle$', views.ConsultaDetalleDia.as_view(), name='consulta_detalle_dia'),
+    url(r'^consultas_dia/$', views.ConsultasDia.as_view(), name='consultas_dia'),
 
 ]

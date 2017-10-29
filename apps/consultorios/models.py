@@ -285,6 +285,7 @@ class EstadoConsultaDetalle(models.Model):
 class Consulta(models.Model):
     fecha = models.DateField(auto_now=True, blank=False, null=False, verbose_name="Fecha de consulta")
     estado = models.ForeignKey(EstadoConsulta, on_delete=DO_NOTHING, blank=False, null=False)
+    especialidad =models.ForeignKey(Especialidad, on_delete=models.CASCADE, blank=True, null=True)
     medico = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False)
     turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False)
     hora_inicio = models.TimeField(auto_now=True)
@@ -302,7 +303,7 @@ class ConsultaDetalle(models.Model):
     orden = models.IntegerField()
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     consulta = models.ForeignKey(Consulta, models.DO_NOTHING, blank=False, null=False)
-    estado = models.ForeignKey(EstadoConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
+    estado = models.ForeignKey(EstadoConsultaDetalle, models.DO_NOTHING, blank=True, null=True)
     confirmado = models.BooleanField(default=False)
 
     def __str__(self):

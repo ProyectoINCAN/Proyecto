@@ -1,98 +1,103 @@
-{%extends 'base/base2.html' %}
-{% load static %}
 
+{% extends 'base/base2.html' %}
+{% block content %}
+  <div class="app-content-body">
+    <br>
+    <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Citas del Dia</h3>
 
-{%block content %}
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+              <i class="fa fa-minus"></i></button>
 
-
-<form method="POST" class="form-horizontal" id="form">
-<div class="row">
-    <h2>Consulta</h2>
-    {% include 'base/messages.html' %}
-    <div class="col-lg-8 col-sm-12">
-        {% csrf_token %}
-        {{form.media}}
-
-        <div class="form-group">
-			<label class="control-label col-lg-2 col-sm-4">Fecha</label>
-			<div class="col-lg-3 col-sm-4">
-				<input type="text" class="form-control text-center" id="fecha" name ="fecha" value="{{consulta.fecha}}" required="required"  disabled="disabled" data-inputmask="'alias': 'date'" placeholder="dd/mm/yyyy">
-			</div>
-		</div>
-
-        <div class="form-group">
-			<label class="control-label col-lg-2 col-sm-4">Médico</label>
-			<div class="col-sm-6">
-				<input type="text" class="form-control text-left" id="medico" name ="medico" value="{{consulta.medico}}"  disabled="disabled">
-			</div>
-		</div>
-
-        <div class="form-group">
-			<label class="control-label col-lg-2 col-sm-4">Turno</label>
-			<div class="col-lg-3 col-sm-4">
-				<input type="text" class="form-control text-left" id="turno" name ="turno" value="{{consulta.turno}}"  disabled="disabled">
-			</div>
-		</div>
-
-</div>
-</div>
-
-</div>
-    </div>
-
-</div>
-</form>
-
-
-
-
-<br>
-<div class="panel panel-default">
-    <div class="panel-heading">
-		<b>Lista</b>
-		<div class="btn-group pull-right">
-            <a href="{% url 'pacientes:nuevo_paciente' %}" id="create" class="btn btn-default btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Paciente</a>
+          </div>
         </div>
-        <div class="btn-group pull-right">
-            <a href="javascript:void(0)" id="iniciar" class="btn btn-success btn-sm"><i class="fa fa-play" aria-hidden="true"></i> Iniciar Consulta</a>
-            &nbsp;&nbsp;
-        </div>
-		<div class="clearfix"></div>
-	</div>
+        <div class="box-body">
+          <div class="col-sm-4">
+            <span class="font-bold">Médico:</span>
+            <span class="font-normal">{{ consulta.medico.get_full_name }}</span>
+            <br/>
+            <span class="font-bold">Nro Registro:</span>
+            <span class="font-normal">{{ consulta.medico.nro_registro_profesional }}</span>
+            <br/>
 
-    <div class="table-responsive">
-        <table class="table table-hover table-condensed table-bordered" >
-            <thead>
-                <tr>
+          </div>
+          <div class="col-sm-6">
+
+              <span class="font-bold">Especialidad: &nbsp;&nbsp;&nbsp;</span>
+            <span class="font-normal">{{ agenda.especialidad.nombre }}</span>
+            <br/>
+            <span class="font-bold">Fecha: &nbsp;&nbsp;&nbsp;</span>
+            <span class="font-normal">{{ consulta.fecha }}</span>
+            <br/>
+            <span class="font-bold">Turno: &nbsp;&nbsp;&nbsp;</span>
+            <span class="font-normal">{{ consulta.turno }}</span>
+            <br/>
+            <span class="font-bold">Cantidad de pacientes: &nbsp;&nbsp;&nbsp;</span>
+            <span class="font-normal">{{ consulta_detale.count }}</span>
+            <br/>
+          </div>
+
+        </div>
+
+      </div>
+    <div class="wrapper-md">
+
+
+      <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <b>Listado de Agendados</b>
+              <div class="btn-group pull-right">
+                  <a href="{% url 'pacientes:nuevo_paciente' %}" id="create" class="btn btn-default btn-sm">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Paciente</a>
+              </div>
+              <div class="btn-group pull-right">
+                  <a href="javascript:void(0)" id="iniciar" class="btn btn-success btn-sm">
+                    <i class="fa fa-play" aria-hidden="true"></i> Iniciar Consulta</a>
+                  &nbsp;&nbsp;
+              </div>
+            </div>
+              <div class="panel-body">
+                <table class="table table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                  <tr>
                     <th>Nº</th>
                     <th>Ficha</th>
                     <th>Nombre y Apellido</th>
                     <th>Edad</th>
                     <th>Ciudad</th>
-                </tr>
-            </thead>
-            <tbody>
-        {% if consulta_detalle %}
-        {% for detalle in consulta_detalle %}
-            <tr>
-                <td>{{detalle.orden}}</td>
-                <td>{{detalle.paciente.nro_doc}}</td>
-                <td>{{detalle.paciente}}</td>
-                <td>{{detalle.4}}</td>
-                <td>{{detalle.paciente.distrito.nombre}}</td>
-                <td>{{detalle.8}}</td>
+
+                  </tr>
+                  </thead>
+                <tbody>
+                {% for detalle in consulta_detalle %}
+                    <tr>
+                        <td>{{detalle.orden}}</td>
+                        <td>{{detalle.paciente.nro_doc}}</td>
+                        <td>{{detalle.paciente}}</td>
+                        <td>{{detalle.4}}</td>
+                        <td>{{detalle.paciente.distrito.nombre}}</td>
+                        <td>{{detalle.8}}</td>
 
 
-            </tr>
-        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
 
-        {% else %}
-        <h1>No hay registros de consultamientos</h1>
-
-        {% endif %}
-            </tbody>
-        </table>
+              </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+  <div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1" style="height: auto;margin: auto; posicion:fixed;"></div>
 
-{% endblock%}
+{% endblock %}
+
+
+

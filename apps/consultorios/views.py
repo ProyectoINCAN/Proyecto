@@ -472,24 +472,37 @@ class OrdenEstudioDetalleDeleteGlobal(LoginRequiredMixin, DeleteView):
         return HttpResponseRedirect(reverse('consultorios:orden_estudio_detalle_list', kwargs={'orden_id': orden.id}))
 
 
-class DashboardMedico(LoginRequiredMixin, TemplateView):
-    template_name = 'consultorios/citas_dia.html'
+class ConsultasDia(LoginRequiredMixin, TemplateView):
+    template_name = 'consultorios/consultas_dia.html'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         medico = Medico.objects.get(usuario=request.user)
-        agenda='';
-        detalles= '';
-        #ver si existe una agenda para el dia hoy con el medico
-        if Agenda.objects.filter(fecha=date.today(), medico=medico).exists():
-            agenda=Agenda.objects.get(fecha=date.today(), medico=medico)
-
-            #otenemos el detalle de la agenda(los pacientes agendados) y que esten confirmados
-            detalles = AgendaDetalle.objects.filter(agenda=agenda, confirmado=True)
-
+        #obtenemos todas las consultas del dia de hoy del medico logueado
+        consultas=Consulta.objects.filter(estado='P', medico=medico, fecha=date.today())
         context.update({'medico': medico,
-                        'agenda': agenda,
-                        'detalles': detalles,
+                        'consultas': consultas,
+                        })
+
+        return super(TemplateView, self).render_to_response(context)
+
+
+class ConsultaDetalleDia(LoginRequiredMixin, TemplateView):
+    """
+    obtenemos los detalles de la consulta
+    """
+    template_name = 'consultorios/citas_dia.html'
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        medico = Medico.objects.get(usuario=request.user)
+        consulta=Consulta.objects.get(pk=self.kwargs['consulta_id'])
+
+        detalle = ConsultaDetalle.objects.filter(consulta=consulta)
+
+
+        context.update({
+                        'consulta': consulta,
+                        'detalles': detalle,
                         })
 
         return super(TemplateView, self).render_to_response(context)
@@ -497,14 +510,19 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
 
 class ConsultaCreate(LoginRequiredMixin, View):
     model = Consulta
+
     def post(self, request, *args, **kwargs):
         agenda = Agenda.objects.get(pk=kwargs.get('agenda_id'))
 
         agenda.estado=EstadoAgenda.objects.get(codigo='V')
         agenda.save()
         agenda_detalle = AgendaDetalle.objects.filter(agenda=agenda)
+        #obtenemos el horario medico para asignar la hora de inicio
+        horario = HorarioMedico.objects.filter(medico=agenda.medico, turno=agenda.turno, especialidad=agenda.especialidad)
         consulta = Consulta.objects.create(fecha=agenda.fecha, estado=EstadoConsulta.objects.get(codigo='P'),
-                                           medico=agenda.medico, turno=agenda.turno)
+                                           medico=agenda.medico, turno=agenda.turno,
+                                           hora_inicio=horario.hora_inicio,
+                                           especialidad=agenda.especialidad)
         for det in agenda_detalle:
             ConsultaDetalle.objects.create(orden=det.orden, confirmado=det.confirmado, consulta=consulta,
                                            paciente=det.paciente, estado=EstadoConsultaDetalle.objects.get(codigo='P'))

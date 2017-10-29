@@ -2,9 +2,14 @@
 {% block content %}
   <div class="app-content-body">
     <br>
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Dia</a></li>
+      <li class="active">Especialidad:{{ consulta.especialidad }}</li>
+    </ol>
     <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Citas del Dia</h3>
+          <h3 class="box-title">Cita del Dia</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -15,10 +20,10 @@
         <div class="box-body">
           <div class="col-sm-4">
             <span class="font-bold">Médico:</span>
-            <span class="font-normal">{{ medico.get_full_name }}</span>
+            <span class="font-normal">{{ consulta.medico.get_full_name }}</span>
             <br/>
             <span class="font-bold">Nro Registro:</span>
-            <span class="font-normal">{{ medico.nro_registro_profesional }}</span>
+            <span class="font-normal">{{ consulta.medico.nro_registro_profesional }}</span>
             <br/>
 
           </div>
@@ -27,13 +32,13 @@
               <h3>No hay pacientes agendados para el dia de hoy</h3>
             {% else %}
               <span class="font-bold">Especialidad: &nbsp;&nbsp;&nbsp;</span>
-            <span class="font-normal">{{ agenda.especialidad.nombre }}</span>
+            <span class="font-normal">{{ consulta.especialidad.nombre }}</span>
             <br/>
             <span class="font-bold">Fecha: &nbsp;&nbsp;&nbsp;</span>
-            <span class="font-normal">{{ agenda.fecha }}</span>
+            <span class="font-normal">{{ consulta.fecha }}</span>
             <br/>
             <span class="font-bold">Turno: &nbsp;&nbsp;&nbsp;</span>
-            <span class="font-normal">{{ agenda.turno.nombre }}</span>
+            <span class="font-normal">{{ consulta.turno }}</span>
             <br/>
             <span class="font-bold">Cantidad de pacientes: &nbsp;&nbsp;&nbsp;</span>
             <span class="font-normal">{{ detalles.count }}</span>
@@ -54,16 +59,21 @@
             <div class="panel-heading">
               <b>Listado de Agendados</b>
               <div class="btn-group pull-right">
-            <a href="{% url 'pacientes:nuevo_paciente' %}" class="btn btn-default">
-              <i class="fa fa-plus-square" aria-hidden="true"></i> Iniciar Consultas</a>
-        </div><p></p>
+                  <a href="{% url 'pacientes:nuevo_paciente' %}" id="create" class="btn btn-default btn-sm">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Paciente</a>
+              </div>
+              <div class="btn-group pull-right">
+                  <a href="javascript:void(0)" id="iniciar" class="btn btn-success btn-sm">
+                    <i class="fa fa-play" aria-hidden="true"></i> Iniciar Consulta</a>
+                  &nbsp;&nbsp;
+              </div>
 
             </div>
               <div class="panel-body">
                 <table class="table table-bordered" cellspacing="0" width="100%">
                   <thead>
                   <tr>
-                    <th>Nombre</th>
+                    <th>Orden</th>
                     <th>Paciente</th>
                     <th>Observación</th>
 

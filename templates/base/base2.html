@@ -207,13 +207,13 @@
         {% if user.groups.all.0.name == "Medico" %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-medkit fa-fw"></i><span>Citas del Dia</span>
+            <i class="fa fa-medkit fa-fw"></i><span>Consultas del Dia</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:citas_dia' %}"><i class="fa fa-circle-o"></i>Citas</a></li>
+            <li><a href="{% url 'consultorios:consultas_dia' %}"><i class="fa fa-circle-o"></i>Consultas</a></li>
           </ul>
 
         </li>
