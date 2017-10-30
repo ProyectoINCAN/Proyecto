@@ -103,9 +103,9 @@ WSGI_APPLICATION = 'Proyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sihincan_db_2',
+        'NAME': 'sihincan_db',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': 'OscProdPost2014',
         'HOST': 'localhost',
         'PORT': 5432,
     }
