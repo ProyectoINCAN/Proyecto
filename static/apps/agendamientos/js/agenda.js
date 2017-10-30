@@ -165,3 +165,12 @@ $("#buscar").click(function(){
           $('#modalAgendaDetalle').modal('show');
        })
    })
+
+
+$("#limpiar").click(function(){
+    console.log("prueba")
+    $("#id_especialidad").val("");
+    $("#id_medico").val("");
+    $("#id_turno").val("");
+    $("#buscar")
+});

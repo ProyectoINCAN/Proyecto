@@ -1,12 +1,26 @@
-from collections import namedtuple
-
 from django.db import connection
 from django.db.models.aggregates import Min
+from django.db.models.query_utils import Q
 
-from apps.agendamientos.models import Agenda, AgendaDetalle
+from apps.agendamientos.models import AgendaDetalle
 
 
-def get_agenda_medico_especialidad():
+def get_agenda_medico_especialidad(p_especialidad, p_medico, p_turno):
+    if(p_especialidad):
+        especialidad = ' and especialidad.id = '+p_especialidad
+    else:
+        especialidad = ' and especialidad.id is not null'
+    if (p_medico):
+        medico = ' and medico.id = ' + p_medico
+    else:
+        medico = ' and medico.id is not null'
+    if (p_turno):
+        turno = " and turno.codigo = '"+p_turno+"'"
+    else:
+        turno = ' and turno.codigo is not null'
+    group = ''' group by agenda.cantidad, agenda.estado_id, agenda.turno_id, turno.nombre,
+        medico.id, medico.nombres, medico.apellidos, especialidad.id, especialidad.nombre
+        order by fecha, medico.apellidos, medico.nombres, especialidad.nombre'''
     query = '''
         select max(agenda.id) as agenda_id, max(agenda.fecha) as fecha, agenda.cantidad, agenda.estado_id as estado_agenda,
         agenda.turno_id, turno.nombre as turno,
@@ -16,11 +30,9 @@ def get_agenda_medico_especialidad():
         join consultorios_medico medico on (medico.id = agenda.medico_id)
         join consultorios_especialidad especialidad on (especialidad.id = agenda.especialidad_id)
         join consultorios_turno turno on agenda.turno_id = turno.codigo
-        where agenda.estado_id = 'P'
-        group by agenda.cantidad, agenda.estado_id, agenda.turno_id, turno.nombre,
-        medico.id, medico.nombres, medico.apellidos, especialidad.id, especialidad.nombre
-        order by fecha, medico.apellidos, medico.nombres, especialidad.nombre
-        '''
+        where agenda.estado_id = 'P' and fecha >= current_date
+        '''  + str(especialidad) +str(medico) + str(turno)+ group
+
     cursor = connection.cursor()
     cursor.execute(query)
     results = cursor.fetchall()

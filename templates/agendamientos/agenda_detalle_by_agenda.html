@@ -67,7 +67,6 @@
         <b>Lista de agendados</b>
         <div class="btn-group pull-right">
             <form id="consultas" method="post" action="{% url 'consultorios:consulta' agenda.id %}">
-                {% csrf_token %}
                 <a onclick="document.getElementById('consultas').submit();" class="btn btn-success btn-sm"><i class="fa fa-play" aria-hidden="true"></i> Pasar Agenda</a>
             </form>
         </div>

@@ -1,7 +1,96 @@
 {%extends 'base/base2.html' %}
 {% load static%}
 
+{% block extrajs %}
+<script src = "{% static 'apps/agendamientos/js/agenda.js' %}"></script>
+{% endblock %}
+
 {%block content %}
+  <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+      <li><b>Listado de Agendas</b></li>
+    </ol>
+  <div class="row">
+    <!--<div class="col-lg-12">-->
+
+
+  <!--<div class="col-md-8">-->
+    <!--<div class="box box-default">-->
+      <!--<div class="box-header with-border">-->
+        <!--<h3 class="box-title">Filtros</h3>-->
+        <!--<div class="box-tools pull-right">-->
+          <!--<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>-->
+          <!--</button>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; /.box-tools &ndash;&gt;-->
+      <!--</div>-->
+      <!--&lt;!&ndash; /.box-header &ndash;&gt;-->
+      <div class="box-body">
+        <form type="GET" action="{% url 'agendamientos:agenda_especialidad_medico' %}">
+              <div class="col-sm-8 col-lg-8">
+                <label class="control-label col-lg-2 col-sm-4" style="text-align: right;">Especialidad:</label>
+                <div class="col-sm-8 col-lg-8">
+                  <select name="especialidad" id="id_especialidad" class="form-control selectsearch" style="width:100%" >
+                    <option value="">Todas</option>
+                    {% for especialidad in especialidades %}
+                      <option value="{{ especialidad.id }}"
+                            {% if especialidad_select and especialidad.id == especialidad_select.id %}selected
+                                {% endif %}>{{ especialidad.nombre }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+                <br>
+                <br>
+              <div class="col-sm-8 col-lg-8">
+                <label class="control-label col-lg-2 col-sm-4" style="text-align: right;">Médico:</label>
+                <div class="col-sm-8 col-md-8 col-lg-8">
+                  <select name="medico" id="id_medico" class="form-control selectsearch" style="width:100%" >
+                    <option value="">Todas</option>
+                    {% for medico in medicos %}
+                      <option value="{{ medico.id }}"
+                            {% if medico_select and medico.id == medico_select.id %}selected
+                                {% endif %}>{{ medico.get_full_name }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+                <br>
+                <br>
+              <div class="col-sm-8 col-lg-8">
+                <label class="control-label col-lg-2 col-sm-4" style="text-align: right;">Turno:</label>
+                <div class="col-sm-8 col-md-8 col-lg-8">
+                  <select name="turno" id="id_turno" class="form-control selectsearch" style="width:100%" >
+                    <option value="">Todas</option>
+                    {% for turno in turnos %}
+                      <option value="{{ turno.codigo }}"
+                            {% if turno_select and turno.codigo == turno_select.codigo %}selected
+                                {% endif %}>{{ turno.nombre }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+
+
+              <div class="col-sm-8 col-lg-8" style="text-align: center;"><br>
+				<button id="limpiar" class="btn btn-default"><i class="icon-eraser fa fa-eraser"></i> Limpiar</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
+              </div>
+            </form>
+      </div>
+      <!-- /.box-body -->
+    <!--</div>-->
+    <!--&lt;!&ndash; /.box &ndash;&gt;-->
+  <!--</div>-->
+  <!--</div>-->
+
+
+
+
 <br>
 <div class="panel panel-default">
         <div class="panel-heading">

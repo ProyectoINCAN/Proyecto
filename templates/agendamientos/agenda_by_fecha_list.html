@@ -21,20 +21,20 @@
     <!--<div class="col-lg-12">-->
 
 
-  <div class="col-md-8">
-    <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title">Filtros</h3>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-          </button>
-        </div>
-        <!-- /.box-tools -->
-      </div>
+  <!--<div class="col-md-8">-->
+    <!--<div class="box box-default">-->
+      <!--<div class="box-header with-border">-->
+        <!--<h3 class="box-title">Filtros</h3>-->
+        <!--<div class="box-tools pull-right">-->
+          <!--<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>-->
+          <!--</button>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; /.box-tools &ndash;&gt;-->
+      <!--</div>-->
       <!-- /.box-header -->
       <div class="box-body">
           <form>
-              <div class="col-lg-12">
+              <div class="col-sm-4 col-lg-8">
                   <label class="control-label col-lg-2 col-sm-4">Rango de Fechas</label>
                   <div class="col-lg-4 col-sm-4">
                       <input type="text" class="form-control text-center" id="fecha_desde" name ="fecha_desde" value='{{fecha_desde|date:"SHORT_DATE_FORMAT"}}' required="required"  data-inputmask="'alias': 'date'" placeholder="dd/mm/yyyy">
@@ -43,7 +43,7 @@
                       <input type="text" class="form-control text-center" id="fecha_hasta" name ="fecha_hasta" value='{{fecha_hasta|date:"SHORT_DATE_FORMAT"}}' required="required"  data-inputmask="'alias': 'date'" placeholder="dd/mm/yyyy">
                   </div>
               </div>
-              <div class="col-lg-12">
+              <div class="col-sm-4 col-lg-8">
                   <label class="control-label col-lg-2 col-sm-4">Especialidad</label>
                   <div class="col-sm-4 col-lg-8">
                       <select name="especialidad" id="id_especialidad" class="form-control selectsearch" style="width:100%" >
@@ -58,7 +58,7 @@
                   </div>
               </div>
 
-              <div class="col-lg-12">
+              <div class="col-sm-4 col-lg-8">
                   <label class="control-label col-lg-2 col-sm-4">Médico</label>
                   <div class="col-sm-4 col-lg-8">
                       <select name="medico" id="id_medico" class="form-control selectsearch" style="width:100%" >
@@ -73,7 +73,7 @@
                   </div>
               </div>
 
-              <div class="col-lg-12">
+              <div class="col-sm-4 col-lg-8">
                   <label class="control-label col-lg-2 col-sm-4">Estado</label>
                   <div class="col-sm-4 col-lg-8">
                       <select name="estado" id="id_estado" class="form-control selectsearch" style="width:100%" >
@@ -88,16 +88,16 @@
                   </div>
               </div>
 
-              <div class="col-sm-4 col-lg-12" style="text-align: right;"><br>
+              <div class="col-sm-4 col-lg-8" style="text-align: center;"><br>
                 <button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
               </div>
             </form>
       </div>
       <!-- /.box-body -->
-    </div>
-    <!-- /.box -->
-  </div>
-  </div>
+    <!--</div>-->
+    <!--&lt;!&ndash; /.box &ndash;&gt;-->
+  <!--</div>-->
+  <!--</div>-->
 <div class="panel panel-default">
 
 

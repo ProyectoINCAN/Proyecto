@@ -10,7 +10,7 @@ from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
-from multiprocessing import get_context
+from multiprocessing import get_context, context
 
 from apps.agendamientos.functions import cancelar_agenda
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
@@ -22,8 +22,10 @@ from apps.agendamientos.queries import get_agenda_medico_especialidad, get_agend
     get_agenda_detalle_lista_by_agenda, get_agenda_detalle_confirmar, \
     agenda_detalle_update_orden
 from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
-from apps.consultorios.models import HorarioMedico, DiasSemana, Especialidad, Medico
+from apps.consultorios.models import HorarioMedico, DiasSemana, Especialidad, Medico, Turno
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from apps.internaciones.models import Medicamento
 from apps.pacientes.models import Paciente
 # def index(request):
 #     # form = AgendaForm()
@@ -377,10 +379,34 @@ class AgendaDetalleCreateView(CreateView):
 
 def agenda_especialidad(request):
     if request.method == 'GET':
-        agenda = get_agenda_medico_especialidad()
+        p_especialidad = request.GET.get('especialidad', None)
+        p_medico = request.GET.get('medico', None)
+        p_turno = request.GET.get('turno', None)
+        if p_especialidad:
+            especialidad=Especialidad.objects.get(pk=p_especialidad)
+        else:
+            especialidad=None
+        if p_medico:
+            medico=Medico.objects.get(pk=p_medico)
+        else:
+            medico=None
+        if p_turno:
+            turno=Turno.objects.get(pk=p_turno)
+        else:
+            turno=None
+        agenda = get_agenda_medico_especialidad(p_especialidad, p_medico, p_turno)
     else:
         form = AgendaForm()
-    return render(request, 'agendamientos/agenda_especialidad_list.html', {'object_list': agenda})
+
+    context = ({'especialidad_select': especialidad if especialidad else None,
+                    'especialidades': Especialidad.objects.all(),
+                    'medico_select': medico if medico else None,
+                    'medicos': Medico.objects.all(),
+                    'turno_select': turno if turno else None,
+                    'turnos': Turno.objects.all(),
+                    'object_list': agenda})
+
+    return render(request, 'agendamientos/agenda_especialidad_list.html', context)
 
 
 def agenda_cancelar(request, agenda_id):
