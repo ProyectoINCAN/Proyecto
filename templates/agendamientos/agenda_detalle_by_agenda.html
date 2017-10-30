@@ -71,7 +71,7 @@
             </form>
         </div>
         <div class="btn-group pull-right">
-            <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id %}">
+            <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id origen %}">
                 <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo</button>
             </a>
         </div>
@@ -108,7 +108,7 @@
                    {% if detalle.11 %}
                      <h5>Confirmado</h5>
                    {% else %}
-                    <a href="{% url 'agendamientos:agenda_detalle_confirmar' detalle.9 detalle.10 %}"
+                    <a href="{% url 'agendamientos:agenda_detalle_confirmar' detalle.9 detalle.10 origen %}"
                     class="btn btn-danger">Confirmar</a>
                   {% endif %}
                   {% endif %}

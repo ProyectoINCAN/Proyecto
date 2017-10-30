@@ -12,15 +12,21 @@
 
 {% block content %}
 
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">Agendar paciente</h1>
+</div>
+
   <section class="content-header">
     <div class="bg-light lter b-b wrapper-md">
     <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li><a href="#">Inicio</a></li>
-       <li><a href="{% url 'agendamientos:agenda_detalle' agenda.id %}">
+       <li><a href="{% url 'agendamientos:agenda_detalle' agenda.id origen %}">
          Agenda: Médico({{ agenda.medico.get_full_name }})</a></li>
       <li class="active">Listado de Pacientes</li>
     </ol>
     </div>
+
+    {% include 'base/messages.html' %}
 
   </section>
   <section class="content">
@@ -75,7 +81,7 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{% url 'agendamientos:agenda_detalle_crear' agenda.id paciente.id %}"
+                  <a href="{% url 'agendamientos:agenda_detalle_crear' agenda.id paciente.id origen %}"
                      class="btn btn-primary">Agregar</a>
                 </td>
               </tr>

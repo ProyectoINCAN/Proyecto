@@ -25,8 +25,8 @@ $(document).ready(function() {
                          success: function(data){
                             console.log("llega al success");
                             console.log("data", data );
-                            console.log("data", $.parseJSON(data)[0].pk );
-                            window.location="/agendamientos/agenda/"+$.parseJSON(data)[0].pk;
+                            console.log("data", $.parseJSON(data)[0].pk, $.parseJSON(data)[1] );
+                            window.location="/agendamientos/agenda/"+$.parseJSON(data)[0].pk+"/2/";
                          }
                     });
                     return false;

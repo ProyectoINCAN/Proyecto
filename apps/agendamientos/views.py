@@ -152,6 +152,7 @@ class AgendaByFechaList(LoginRequiredMixin, TemplateView):
 #         return redirect('agendamientos:agenda_listar')
 #     return render(request, 'agendamientos/agenda_form.html', {'form':form})
 
+
 class AgendaUpdate(UpdateView):
     model = Agenda
     print("entro")
@@ -186,7 +187,7 @@ class AgendaDetalleCreate(CreateView):
     success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
 
 
-def agenda_detalle_crear2(request, agenda_id, paciente_id):
+def agenda_detalle_crear2(request, agenda_id, paciente_id, origen):
     agenda_actual = Agenda.objects.get(pk=agenda_id)
     orden = get_agenda_detalle_orden(agenda_id)
     dias = DiasSemana.objects.all()
@@ -197,7 +198,13 @@ def agenda_detalle_crear2(request, agenda_id, paciente_id):
     if dia_semana == 8:
         dia_semana = 1
     dia_horario = dias.filter(id=dia_semana)[0]
-    horario_medico = HorarioMedico.objects.get(medico=agenda_actual.medico, dia_semana=dia_horario, turno=agenda_actual.turno)
+    print("medico:", agenda_actual.medico, "dia_semana:", dia_horario, "turno: ", agenda_actual.turno) # borrar
+    try:
+        horario_medico = HorarioMedico.objects.get(medico=agenda_actual.medico, dia_semana=dia_horario, turno=agenda_actual.turno)
+    except ObjectDoesNotExist:
+        messages.error(request, "No se encuentra Horario Médico para el Dr. %s. (Día: %s. Turno: %s) " % (agenda_actual.medico, dia_horario, agenda_actual.turno))
+        return redirect('agendamientos:agenda_detalle_paciente_list', agenda_actual.id, origen)
+
     if orden > horario_medico.cantidad:
         agenda_nueva = Agenda(medico=agenda_actual.medico,
                               fecha=get_fecha_agendamiento_siguiente(agenda_actual),
@@ -209,16 +216,16 @@ def agenda_detalle_crear2(request, agenda_id, paciente_id):
 
     AgendaDetalle.objects.create(paciente=paciente, agenda=agenda_actual, orden=orden)
 
-    return redirect('agendamientos:agenda_detalle', agenda_actual.id)
+    return redirect('agendamientos:agenda_detalle', agenda_actual.id, origen)
 
 
-def agenda_detalle_confirmar(request, agenda_id, paciente_id):
+def agenda_detalle_confirmar(request, agenda_id, paciente_id, origen):
     agenda_actual = Agenda.objects.get(pk=agenda_id)
     agenda_detalle = AgendaDetalle.objects.get(agenda=agenda_id, paciente= paciente_id)
     orden = get_agenda_detalle_confirmar(agenda_id)
     agenda_detalle_update_orden(orden, agenda_detalle)
 
-    return redirect('agendamientos:agenda_detalle', agenda_actual.id)
+    return redirect('agendamientos:agenda_detalle', agenda_actual.id, origen)
 
 
 def agenda_detalle_crear(request, agenda_id, paciente_id):
@@ -359,7 +366,8 @@ def agenda_detalle_list(request, agenda_id, origen):
         # DEFAULT: redirige a agendar por fecha disponible
         origen_url = '/agendamientos/agendas/'
 
-    contexto = {'agenda': agenda, 'agenda_detalle': agenda_detalle, 'origen_url': origen_url, 'form': form}
+    contexto = {'agenda': agenda, 'agenda_detalle': agenda_detalle, 'origen': origen, 'origen_url': origen_url,
+                'form': form}
     return render(request, 'agendamientos/agenda_detalle_by_agenda.html', contexto)
 
 
@@ -399,17 +407,19 @@ def agenda_especialidad(request):
         form = AgendaForm()
 
     context = ({'especialidad_select': especialidad if especialidad else None,
-                    'especialidades': Especialidad.objects.all(),
-                    'medico_select': medico if medico else None,
-                    'medicos': Medico.objects.all(),
-                    'turno_select': turno if turno else None,
-                    'turnos': Turno.objects.all(),
-                    'object_list': agenda})
+                'especialidades': Especialidad.objects.all(),
+                'medico_select': medico if medico else None,
+                'medicos': Medico.objects.all(),
+                'turno_select': turno if turno else None,
+                'turnos': Turno.objects.all(),
+                'object_list': agenda,
+                'origen': 1})
 
     return render(request, 'agendamientos/agenda_especialidad_list.html', context)
 
 
-def agenda_cancelar(request, agenda_id):
+def agenda_cancelar(request, agenda_id, origen):
+    # TODO: VERIFICAR FUNCIONAMIENTO
     print("llega al view")  # borrar
     tipo = request.POST["tipo"]
     print("tipo: ", tipo)  # borrar
@@ -420,7 +430,7 @@ def agenda_cancelar(request, agenda_id):
         # return redirect('agendamientos:agenda_detalle', agenda.id)
         # return agenda
         # return HttpResponse(response, content_type='application/json')
-        return JsonResponse(serializers.serialize("json", [agenda]), safe=False)
+        return JsonResponse(serializers.serialize("json", [agenda, origen]), safe=False)
     # return render(request, 'agendamientos/agenda_especialidad_list.html', {'agenda': agenda})
 
 
@@ -434,7 +444,8 @@ class PacienteByAgenda(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PacienteByAgenda, self).get_context_data(**kwargs)
-        context.update({'agenda': Agenda.objects.get(pk=self.kwargs['agenda_id'])})
+        origen = self.kwargs['origen']
+        context.update({'agenda': Agenda.objects.get(pk=self.kwargs['agenda_id']), 'origen': origen})
         return context
 
 

@@ -403,7 +403,8 @@ class PacienteCreateByAgenda(LoginRequiredMixin, CreateView):
     second_form_class = PacienteForm
 
     def get_success_url(self):
-        return reverse('agendamientos:agenda_detalle_paciente_list', kwargs={'agenda_id': self.kwargs['agenda_id']})
+        return reverse('agendamientos:agenda_detalle_paciente_list', kwargs={'agenda_id': self.kwargs['agenda_id'],
+                                                                             'origen': 2})
 
 
     # agregamos los form al contexto
