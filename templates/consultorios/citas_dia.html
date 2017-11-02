@@ -63,7 +63,7 @@
                     <i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Paciente</a>
               </div>
               <div class="btn-group pull-right">
-                  <a href="javascript:void(0)" id="iniciar" class="btn btn-success btn-sm">
+                  <a href="{% url 'consultorios:consulta_detalle_iniciar' consulta.pk %}" class="btn btn-success btn-sm">
                     <i class="fa fa-play" aria-hidden="true"></i> Iniciar Consulta</a>
                   &nbsp;&nbsp;
               </div>

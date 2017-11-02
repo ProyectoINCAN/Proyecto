@@ -1,0 +1,171 @@
+{% extends 'base/base2.html' %}
+{% block extrahead %}
+  <style type="text/css">
+  h1 {
+    margin-left: 15px;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+
+    .brand-pills > li > a {
+        border-top-right-radius: 0px;
+    	border-bottom-right-radius: 0px;
+    }
+
+    li.brand-nav.active a:after{
+    	content: " ";
+    	display: block;
+    	width: 0;
+    	height: 0;
+    	border-top: 20px solid transparent;
+    	border-bottom: 20px solid transparent;
+    	border-left: 9px solid #428bca;
+    	position: absolute;
+    	top: 50%;
+    	margin-top: -20px;
+    	left: 100%;
+    	z-index: 2;
+    }
+}
+  </style>
+{% endblock %}
+{% block content %}
+  <div class="app-content-body">
+
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Dia</a></li>
+      <li class="active">Especialidad:{{ consulta.especialidad }}</li>
+    </ol>
+    <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Datos Básicos del Paciente</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+              <i class="fa fa-minus"></i></button>
+
+          </div>
+        </div>
+        <div class="box-body">
+          <div class="col-sm-4">
+            <span class="font-bold">Nombre y Apellido:</span>
+            <span class="font-normal">{{ detalle.paciente.get_full_name }}</span>
+            <br/>
+            <span class="font-bold">Tipo de Documento:</span>
+            <span class="font-normal">{{ detalle.paciente.tipo_doc }}</span>
+            <br/>
+            <span class="font-bold">Nro Documento:</span>
+            <span class="font-normal">{{ detalle.paciente.nro_doc }}</span>
+            <br/>
+            <span class="font-bold">Sexo:</span>
+            <span class="font-normal">{% if detalle.paciente.sexo %}
+              {{ detalle.paciente.sexo }}
+              {% else %}SIN DATOS
+              {% endif %}
+            </span>
+            <br/>
+             <span class="font-bold">Estado Civil:</span>
+            <span class="font-normal">{% if detalle.paciente.estado_civil %}
+              {{ detalle.paciente.estado_civil }}
+            {% else %}SIN DATOS
+              {% endif %}
+            </span>
+            <br/>
+          </div>
+          <div class="col-sm-6">
+
+            <span class="font-bold">Fecha Nacimiento: &nbsp;&nbsp;&nbsp;</span>
+            <span class="font-normal">{{ detalle.paciente.fecha_nacimiento }}</span>
+            <br/>
+            <span class="font-bold">Lugar Nacimiento: &nbsp;&nbsp;&nbsp;</span>
+            <span class="font-normal">{% if detalle.paciente.lugar_nacimiento %}
+              {{ detalle.paciente.lugar_nacimiento }}
+              {% else %}SIN DATOS
+              {% endif %}
+            </span>
+            <br/>
+            <span class="font-bold">Nacionalidad: &nbsp;&nbsp;&nbsp;</span>
+            <span class="font-normal">{{ detalle.paciente.nacionalidad }}</span>
+            <br/>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+	<div class="row">
+        <div role="tabpanel">
+            <div class="col-sm-2">
+                <ul class="nav nav-pills brand-pills nav-stacked" role="tablist">
+                    <li role="presentation" class="brand-nav active"><a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Datos de Última Consulta</a></li>
+                    <li role="presentation" class="brand-nav ">
+                      <a href="{% url 'consultorios:consulta_diagnostico_crear' detalle.id %}" aria-controls="tab2"
+                         >Diagnóstico</a></li>
+                    <li role="presentation" class="brand-nav"><a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">Gansta ipsum</a></li>
+                    <li role="presentation" class="brand-nav"><a href="#tab4" aria-controls="tab4" role="tab" data-toggle="tab">Corporate ipsum</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-10">
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="tab1">
+                        <p>Aqui se adjuntará datos de la ultima consulta del paciente.En caso de ser primera consulta solo un mensaje</p>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab2">
+                      <p>rolo</p>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab3">
+                        <p>
+                            Lorem ipsizzle dolor away amizzle, consectetuer pizzle elizzle. Nullizzle yo velizzle, check it out volutpizzle, quis, gravida vel, yo.
+                            Ma nizzle eget tortor. Sizzle eros. My shizz izzle dolizzle gizzle turpis tempizzle fo shizzle mah nizzle fo rizzle, mah home g-dizzle.
+                            Maurizzle pellentesque nibh izzle own yo'. Check it out in tortor. Pellentesque fizzle rhoncizzle nisi.
+                        </p>
+                        <p>
+                            In hac habitasse platea dictumst. Shizzlin dizzle dapibus. You son of a bizzle tellizzle urna, pretizzle fo shizzle mah nizzle fo rizzle, mah home g-dizzle,
+                            ghetto ac, check it out vitae, nunc. Shizzlin dizzle suscipizzle. Integizzle sempizzle velit sizzle dizzle.
+                        </p>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab4">
+                        <p>
+                            Collaboratively administrate empowered markets via plug-and-play networks.
+                            Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without
+                            revolutionary ROI.
+                        </p>
+                        <p>
+                            Efficiently unleash cross-media information without cross-media value.
+                            Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar
+                            solutions without functional solutions.
+                        </p>
+                        <p>
+                            Completely synergize resource sucking relationships via premier niche markets. Professionally cultivate
+                            one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service
+                            for state of the art customer service.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+
+
+  </div>
+
+{% endblock %}
+{% block extrajs %}
+  <script>
+  $(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace('editor1');
+    //bootstrap WYSIHTML5 - text editor
+    $(".textarea").wysihtml5();
+  });
+</script>
+
+{% endblock %}
+
+

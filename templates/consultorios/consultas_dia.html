@@ -28,7 +28,7 @@
                   <tr>
 
                     <td>
-                      <a href="{% url 'consultorios:consulta_detalle_dia' consulta.id %}">< {{ consulta.especialidad }}</a></td>
+                      <a href="{% url 'consultorios:consulta_detalle_dia' consulta.id %}">{{ consulta.especialidad }}</a></td>
                     <td>{{ consulta.turno }}</td>
                     <td>{{ consulta.hora_inicio }}</td>
                     <td>{{ consulta.estado }}</td>

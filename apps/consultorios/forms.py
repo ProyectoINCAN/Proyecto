@@ -5,6 +5,8 @@ from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico,\
     Enfermero, Administrativo, OrdenEstudio, OrdenEstudioDetalle
 from django_select2 import forms as select2form
 
+from apps.internaciones.models import Diagnostico
+
 
 class MedicoForm(forms.ModelForm):
     class Meta:
@@ -243,5 +245,21 @@ class OrdenEstudioDetalleForm(forms.ModelForm):
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        }
+
+
+class DiagnosticoPacienteForm(forms.ModelForm):
+
+    class Meta:
+        model = Diagnostico
+        exclude = ['paciente', 'medico', 'fecha']
+
+        labels = {
+            'cie10': 'CIE10',
+            'observacion': 'Observación'
+        }
+        widgets = {
+            'cie10': forms.TextInput(attrs={'class': 'form-control'}),
             'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
         }

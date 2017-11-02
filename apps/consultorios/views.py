@@ -14,7 +14,7 @@ from django.shortcuts import render
 from django.db.models.deletion import ProtectedError
 
 # Create your views here.
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView, View
 
@@ -22,7 +22,7 @@ from datetime import date
 
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
-    EnfermeroForm, AdministrativoForm, OrdenEstudioForm, OrdenEstudioDetalleForm
+    EnfermeroForm, AdministrativoForm, OrdenEstudioForm, OrdenEstudioDetalleForm, DiagnosticoPacienteForm
 from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo, Especialidad, \
     Turno, OrdenEstudio, OrdenEstudioDetalle, Consulta, ConsultaDetalle, EstadoConsulta, EstadoConsultaDetalle
 from apps.pacientes.models import Paciente
@@ -473,6 +473,9 @@ class OrdenEstudioDetalleDeleteGlobal(LoginRequiredMixin, DeleteView):
 
 
 class ConsultasDia(LoginRequiredMixin, TemplateView):
+    """
+    permite obtener todas las consultas del dia
+    """
     template_name = 'consultorios/consultas_dia.html'
 
     def get(self, request, *args, **kwargs):
@@ -489,16 +492,16 @@ class ConsultasDia(LoginRequiredMixin, TemplateView):
 
 class ConsultaDetalleDia(LoginRequiredMixin, TemplateView):
     """
-    obtenemos los detalles de la consulta
+    obtenemos los detalles de la consulta seleccionada
     """
     template_name = 'consultorios/citas_dia.html'
+
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         medico = Medico.objects.get(usuario=request.user)
         consulta=Consulta.objects.get(pk=self.kwargs['consulta_id'])
 
         detalle = ConsultaDetalle.objects.filter(consulta=consulta)
-
 
         context.update({
                         'consulta': consulta,
@@ -527,4 +530,46 @@ class ConsultaCreate(LoginRequiredMixin, View):
             ConsultaDetalle.objects.create(orden=det.orden, confirmado=det.confirmado, consulta=consulta,
                                            paciente=det.paciente, estado=EstadoConsultaDetalle.objects.get(codigo='P'))
         return HttpResponseRedirect(reverse('agendamientos:agenda_especialidad_medico'))
+
+
+class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
+    """
+    permite iniciar la consulta con el primer paciente que confirmo su llegada.
+    """
+    template_name = 'consultorios/consulta_iniciar.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        consulta = Consulta.objects.get(pk=self.kwargs['consulta_id'])
+
+        detalle = ConsultaDetalle.objects.filter(consulta=consulta).first()
+
+        #para iniciar debemos obtener el primer paciente de manera a comenzar
+        #detalle = ConsultaDetalle.objects.get(orden=1)
+        primer_paciente = Paciente.objects.get(pk=detalle.paciente.id)
+
+        context.update({
+            'consulta': consulta,
+            'detalle': detalle,
+        })
+
+        return super(TemplateView, self).render_to_response(context)
+
+
+class ConsultaDetalleDiagnosticoCreate(LoginRequiredMixin, FormView):
+    model = Diagnostico
+    template_name = 'consultorios/diagnostico_paciente.html'
+    pk_url_kwarg = "detalle_id"
+    form_class = DiagnosticoPacienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ConsultaDetalleDiagnosticoCreate, self).get_context_data(**kwargs)
+        detalle=ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        context.update({'consulta': Consulta.objects.get(pk=detalle.consulta.id),
+                        'detalle': detalle})
+        return context
+
+    def form_valid(self, form):
+        pass
+
 
