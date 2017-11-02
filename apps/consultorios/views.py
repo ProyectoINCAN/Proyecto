@@ -541,18 +541,37 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         consulta = Consulta.objects.get(pk=self.kwargs['consulta_id'])
-
-        detalle = ConsultaDetalle.objects.filter(consulta=consulta).first()
-
-        #para iniciar debemos obtener el primer paciente de manera a comenzar
-        #detalle = ConsultaDetalle.objects.get(orden=1)
-        primer_paciente = Paciente.objects.get(pk=detalle.paciente.id)
+        #obtenemos el detalle de la consulta donde el estado sea pendiente
+        detalle = ConsultaDetalle.objects.filter(consulta=consulta, estado='P').first()
+        #actualizamos el estado de la detalle de la consulta a "en proceso"
+        detalle.estado = EstadoConsultaDetalle.objects.get(codigo='E')
+        detalle.save()
 
         context.update({
             'consulta': consulta,
             'detalle': detalle,
         })
 
+        return super(TemplateView, self).render_to_response(context)
+
+
+class ConsultaDetalleContinuar(LoginRequiredMixin, TemplateView):
+    """
+    permite registrar las siguientes acciones de la consulta del paciente.
+    Muestra el detalle de la consulta actual
+    """
+    template_name = 'consultorios/consulta_iniciar.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        #obtenemos el detalle actual
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        consulta = Consulta.objects.get(pk=detalle.consulta.id)
+        #obtenemos el detalle de la consulta donde el estado sea en proceso
+        context.update({
+            'consulta': consulta,
+            'detalle': detalle,
+        })
         return super(TemplateView, self).render_to_response(context)
 
 
@@ -570,6 +589,16 @@ class ConsultaDetalleDiagnosticoCreate(LoginRequiredMixin, FormView):
         return context
 
     def form_valid(self, form):
-        pass
+        """guardamos el diagnostico de la consulta del paciente(consulta detalle)"""
+        diagnostico = form.save(commit=False)
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        consulta = Consulta.objects.get(pk=detalle.consulta.id)
+        diagnostico.detalle = detalle
+        diagnostico.paciente = detalle.paciente
+        diagnostico.medico = consulta.medico
+        diagnostico.save()
+
+        return HttpResponseRedirect(reverse('consultorios:consulta_detalle_continuar',
+                                            kwargs={'detalle_id': detalle.id}))
 
 

@@ -306,9 +306,6 @@ class ConsultaDetalle(models.Model):
     estado = models.ForeignKey(EstadoConsultaDetalle, models.DO_NOTHING, blank=True, null=True)
     confirmado = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.paciente
-
     class Meta:
         ordering = ['orden']
         verbose_name = 'Detalle de consulta'

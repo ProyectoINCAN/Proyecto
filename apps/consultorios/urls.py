@@ -5,7 +5,7 @@ from apps.consultorios import views
 from apps.consultorios.views import MedicoList, EvolucionPacienteList, EvolucionPacienteUpdate, \
     EvolucionPacienteCreate, HorarioMedicoList, HorarioMedicoCreate, HorarioMedicoUpdate, medico_update, \
     medico_create, cambio_password, EnfermeroList, enfermero_create, enfermero_update, AdministrativoList, \
-    administrativo_create, administrativo_update, consulta_paciente_list, ConsultaCreate
+    administrativo_create, administrativo_update, consulta_paciente_list, ConsultaCreate, ConsultaDetalleContinuar
 
 urlpatterns = [
     url(r'^medico/$', login_required(MedicoList.as_view()), name='medico_listar'),
@@ -54,11 +54,13 @@ urlpatterns = [
 
 
     url(r'^consultas_dia/$', views.ConsultasDia.as_view(), name='consultas_dia'),
-    url(r'^consulta/(?P<consulta_id>\d+)/detalle$', views.ConsultaDetalleDia.as_view(), name='consulta_detalle_dia'),
+    url(r'^consulta/(?P<consulta_id>\d+)/detalles/$', views.ConsultaDetalleDia.as_view(), name='consulta_detalle_dia'),
     url(r'^consulta/(?P<consulta_id>\d+)/detalle/iniciar/$',
         views.ConsultaDetalleIniciar.as_view(), name='consulta_detalle_iniciar'),
 
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/diagnostico/crear/$', views.ConsultaDetalleDiagnosticoCreate.as_view(),
         name='consulta_diagnostico_crear'),
+    url(r'^consulta/detalle/(?P<detalle_id>\d+)/$',
+        views.ConsultaDetalleContinuar.as_view(), name='consulta_detalle_continuar'),
 
 ]

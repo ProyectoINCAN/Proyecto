@@ -1,0 +1,19 @@
+[{"model": "consultorios.cie10",
+  "pk": 1,
+  "fields": {"codigo": "A00-B99",
+             "descripcion": "Enfermedades infecciosas y parasitarias",
+              "habilitado": true}
+},
+ {"model": "internaciones.cie10",
+   "pk": 2,
+    "fields": {"codigo": "C00-D48",
+             "descripcion": "Neoplasias",
+              "habilitado": true}
+ },
+  {"model": "internaciones.cie10",
+   "pk": 3,
+    "fields": {"codigo": "E00-E90",
+             "descripcion": "Enfermedades endocrinas, nutricionales y metabólicas",
+              "habilitado": true}
+ }
+]

@@ -97,12 +97,12 @@
 
       </div>
 
-
 	<div class="row">
         <div role="tabpanel">
             <div class="col-sm-2">
                 <ul class="nav nav-pills brand-pills nav-stacked" role="tablist">
-                    <li role="presentation" class="brand-nav active"><a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Datos de Última Consulta</a></li>
+                    <li role="presentation" class="brand-nav active">
+                      <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Datos de la Consulta</a></li>
                     <li role="presentation" class="brand-nav ">
                       <a href="{% url 'consultorios:consulta_diagnostico_crear' detalle.id %}" aria-controls="tab2"
                          >Diagnóstico</a></li>
@@ -113,7 +113,7 @@
             <div class="col-sm-10">
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="tab1">
-                        <p>Aqui se adjuntará datos de la ultima consulta del paciente.En caso de ser primera consulta solo un mensaje</p>
+                        <p>Aqui se adjuntará datos de la consulta actual. Ejemplo los diagnosticos, tratamientos, medicamentos, etc...</p>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab2">
                       <p>rolo</p>
