@@ -32,17 +32,17 @@ from apps.pacientes.models import Paciente
 #     return render(request, 'agendamientos/index.html')
 
 
-def agenda_nuevo(request):
+def agenda_nuevo(request, origen):
     if request.method == 'POST':
         form = AgendaForm(request.POST)
         if form.is_valid():  # consulta si el formulario es valido
             data = form.save()  # guarda
             messages.success(request, 'Datos guardados')
-            return redirect('agendamientos:agenda_detalle', data.id)
+            return redirect('agendamientos:agenda_detalle', data.id, origen)
     else:
         print("metodo noes POST")
         form = AgendaForm()
-    return render(request, 'agendamientos/agenda_form.html', {'form': form})
+    return render(request, 'agendamientos/agenda_form.html', {'form': form, 'origen':origen})
 
 
 # def agenda_list(request):
