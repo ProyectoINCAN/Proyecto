@@ -64,6 +64,7 @@ def cancelar_agenda(agenda_id, tipo):
         #                                          and estado_id = %s order by fecha limit 1""", filters)
         estado_pendiente = EstadoAgenda.objects.get(codigo="P")
         print("agenda_especialidad", agenda.especialidad)
+        print("busca agenda: ", agenda.medico, agenda.especialidad, agenda.turno, nueva_fecha, estado_pendiente)
         agenda_retornada = Agenda.objects.get(medico=agenda.medico, especialidad=agenda.especialidad,
                                               turno=agenda.turno, fecha=nueva_fecha, estado=estado_pendiente)
     print("agenda retornada = ", agenda_retornada)

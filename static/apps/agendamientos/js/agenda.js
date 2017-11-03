@@ -1,8 +1,14 @@
-$(document).ready(function() {
+//$(document).ready(function() {
         $('#fecha_desde').datepicker({dateFormat: 'dd/mm/yy'});
         $('#fecha_hasta').datepicker({dateFormat: 'dd/mm/yy'});
 
         $('#cancelar').click(function() {
+        console.log("llega a cancelar")
+            var agenda_id = $("#agenda_id").val();
+            var origen = $("#origen").val();
+
+            console.log(agenda_id, origen);
+
             BootstrapDialog.show({
             title: 'Cancelación de agenda',
             message: 'Seleccione tipo de cancelación',
@@ -17,7 +23,8 @@ $(document).ready(function() {
                     console.log("token", csrftoken);
                     $.ajax({
                          type:"POST",
-                         url:"{% url 'agendamientos:agenda_cancelar' agenda.id %}",
+                         //url:"{% url 'agendamientos:agenda_cancelar' agenda.id %}",
+                         url:"/agendamientos/agenda/"+agenda_id+"/"+origen+"/cancelar",
                          data: {
                                 'tipo': 2,
                                 'csrfmiddlewaretoken': csrftoken
@@ -26,7 +33,7 @@ $(document).ready(function() {
                             console.log("llega al success");
                             console.log("data", data );
                             console.log("data", $.parseJSON(data)[0].pk, $.parseJSON(data)[1] );
-                            window.location="/agendamientos/agenda/"+$.parseJSON(data)[0].pk+"/2/";
+                            window.location="/agendamientos/agenda/"+$.parseJSON(data)[0].pk+"/"+origen+"/";
                          }
                     });
                     return false;
@@ -42,7 +49,7 @@ $(document).ready(function() {
                     var csrftoken = getCookie('csrftoken');
                     $.ajax({
                          type:"POST",
-                         url:"{% url 'agendamientos:agenda_cancelar' agenda.id %}",
+                         url:"/agendamientos/agenda/"+agenda_id+"/"+origen+"/cancelar",
                          data: {
                                 'tipo': 1,
                                 'csrfmiddlewaretoken': csrftoken
@@ -51,7 +58,7 @@ $(document).ready(function() {
                             console.log("llega al success");
                             console.log("data", data );
                             console.log("data", $.parseJSON(data)[0].pk );
-                            window.location="/agendamientos/agenda/"+$.parseJSON(data)[0].pk;
+                            window.location="/agendamientos/agenda/"+$.parseJSON(data)[0].pk+"/"+origen+"/";
                          }
                     });
                     return false;
@@ -62,8 +69,8 @@ $(document).ready(function() {
         }
     );
 
-}
-);
+//}
+//);
 
 $("#buscar").click(function(){
     $.ajax({
