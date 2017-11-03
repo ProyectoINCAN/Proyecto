@@ -7,10 +7,11 @@
 
 {%block content %}
 
-<div class="app-content-body">
-    <div class="bg-light lter b-b wrapper-md">
+  <div class="app-content-body">
+      <div class="bg-light lter b-b wrapper-md">
         <h1 class="m-n font-thin h3">Detalles de agenda</h1>
     </div>
+
 
     <ol class="breadcrumb" style="background-color: #f6f8f8">
         <li><a href="#">Inicio</a></li>
@@ -53,7 +54,7 @@
             </div>
         </form>
     </div>
-</div>
+
 
 </div>
 </form>
@@ -66,8 +67,8 @@
     <div class="panel-heading">
         <b>Lista de agendados</b>
         <div class="btn-group pull-right">
-            <form id="consultas" method="post" action="{% url 'consultorios:consulta' agenda.id %}">
-                <a onclick="document.getElementById('consultas').submit();" class="btn btn-success btn-sm"><i class="fa fa-play" aria-hidden="true"></i> Pasar Agenda</a>
+            <form id="consultas" method="post" action="{% url 'consultorios:consulta' agenda.id %}">{% csrf_token %}
+                <a onclick="document.getElementById('consultas').submit();" class="btn btn-success"><i class="fa fa-play" aria-hidden="true"></i> Pasar Agenda</a>
             </form>
         </div>
         <div class="btn-group pull-right">
@@ -138,5 +139,6 @@
             {% endif%}
         </li>
     </ul>
+</div>
 </div>
 {% endblock%}

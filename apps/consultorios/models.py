@@ -288,7 +288,7 @@ class Consulta(models.Model):
     especialidad =models.ForeignKey(Especialidad, on_delete=models.CASCADE, blank=True, null=True)
     medico = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False)
     turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False)
-    hora_inicio = models.TimeField(auto_now=True)
+    # hora_inicio = models.TimeField(auto_now=True)
 
     def __str__(self):
         return self.fecha

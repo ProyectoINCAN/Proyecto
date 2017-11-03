@@ -521,10 +521,9 @@ class ConsultaCreate(LoginRequiredMixin, View):
         agenda.save()
         agenda_detalle = AgendaDetalle.objects.filter(agenda=agenda)
         #obtenemos el horario medico para asignar la hora de inicio
-        horario = HorarioMedico.objects.filter(medico=agenda.medico, turno=agenda.turno, especialidad=agenda.especialidad)
+        # horario = HorarioMedico.objects.filter(medico=agenda.medico, turno=agenda.turno, especialidad=agenda.especialidad)
         consulta = Consulta.objects.create(fecha=agenda.fecha, estado=EstadoConsulta.objects.get(codigo='P'),
                                            medico=agenda.medico, turno=agenda.turno,
-                                           hora_inicio=horario.hora_inicio,
                                            especialidad=agenda.especialidad)
         for det in agenda_detalle:
             ConsultaDetalle.objects.create(orden=det.orden, confirmado=det.confirmado, consulta=consulta,
