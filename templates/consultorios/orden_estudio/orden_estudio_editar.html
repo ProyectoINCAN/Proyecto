@@ -36,31 +36,36 @@
 
      </form>
    </div>
-  <script src="http://malsup.github.com/jquery.form.js"></script>
-  <script>
+   <script language="JavaScript">
 
-  $("#eventoForm").submit(function (e) {
-      var url = $(this).data('url'); // the script where you handle the form input.
+        $("#eventoForm").submit(function(e) {
 
-      $(this).ajaxSubmit({
-        url: url,
-        target: '#popup',
-        success: function (data, status) {
-            console.log('data=', data.success)
-          if (data.success) {
+            var url = this.action; // the script where you handle the form input.
+            console.log(url)
+            $.ajax({
+                   type: "POST",
+                   url: url,
+                   data: $("#eventoForm").serialize(), // serializes the form's elements.
+                   success: function(data, status) {
+                       if (data.success){
+                           $('#popup').modal('hide');
+                           location.reload();
+                       }else {
+                           $('#eventoForm').html(data);
+                       }
 
-            $('#popup').modal('hide');
-            location.reload();
-          }
-        },
-        error: function (ajaxContext) {
-          console.log('ok');
-          alert(ajaxContext.responseText);
+                   },
+                error: function(ajaxContext) {
 
-        }
-      });
+                   alert(ajaxContext.responseText);
 
-      return false;
-    });
-</script>
+                },
+                done: function (response) {
+                    $('#popup').modal('hide');
+                }
+            });
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+	      });
+    </script>
 </div>
