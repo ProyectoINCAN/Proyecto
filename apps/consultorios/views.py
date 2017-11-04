@@ -534,7 +534,7 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
     """
     permite iniciar la consulta con el primer paciente que confirmo su llegada.
     """
-    template_name = 'consultorios/consulta_iniciar.html'
+    template_name = 'consultorios/consulta/consulta_iniciar.html'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -564,7 +564,7 @@ class ConsultaDetalleContinuar(LoginRequiredMixin, TemplateView):
     permite registrar las siguientes acciones de la consulta del paciente.
     Muestra el detalle de la consulta actual
     """
-    template_name = 'consultorios/consulta_iniciar.html'
+    template_name = 'consultorios/consulta/consulta_iniciar.html'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -589,7 +589,7 @@ class ConsultaDetalleContinuar(LoginRequiredMixin, TemplateView):
 
 class ConsultaDetalleDiagnosticoList(LoginRequiredMixin, TemplateView):
     """permite obtener el listado de diagnostico del paciente. Obtiene la lista completa."""
-    template_name = 'consultorios/consulta_iniciar.html'
+    template_name = 'consultorios/consulta/consulta_iniciar.html'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -635,6 +635,29 @@ class PacienteDiagnosticoCreate(LoginRequiredMixin, FormView):
         diagnostico.save()
 
         return JsonResponse({'success': True})
+
+
+class PacienteDiagnosticoEditar(LoginRequiredMixin, UpdateView):
+    model = Diagnostico
+    template_name = 'consultorios/consulta/diagnostico_paciente_editar.html'
+    pk_url_kwarg = 'diagnostico_id'
+    form_class = DiagnosticoPacienteForm
+
+    def form_valid(self, form):
+        form.save()
+        return JsonResponse({'success': True})
+
+
+class PacienteDiagnosticoEliminar(LoginRequiredMixin, DeleteView):
+    model = Diagnostico
+    template_name = "consultorios/consulta/diagnostico_paciente_eliminar.html"
+    pk_url_kwarg = 'diagnostico_id'
+    context_object_name = 'diagnostico'
+
+    def post(self, request, *args, **kwargs):
+        diagnostico = Diagnostico.objects.get(pk=self.kwargs['diagnostico_id'])
+        diagnostico.delete()
+
 
 
 

@@ -63,6 +63,10 @@ urlpatterns = [
         name='consulta_diagnostico_crear'),
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/diagnostico/crear/$', views.PacienteDiagnosticoCreate.as_view(),
         name='consulta_diagnostico_crear'),
+    url(r'^consulta/detalle/diagnostico/(?P<diagnostico_id>\d+)/$', views.PacienteDiagnosticoEditar.as_view(),
+        name='consulta_diagnostico_editar'),
+    url(r'^consulta/detalle/diagnostico/(?P<diagnostico_id>\d+)/eliminar$', views.PacienteDiagnosticoEliminar.as_view(),
+        name='consulta_diagnostico_eliminar'),
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/$',
         views.ConsultaDetalleContinuar.as_view(), name='consulta_detalle_continuar'),
 

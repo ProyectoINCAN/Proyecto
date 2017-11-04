@@ -1,0 +1,23 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+   <div class="modal-header">
+     <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+     <div id="modal-title">
+       <h3>Eliminar Diágnostico</h3>
+     </div>
+   </div>
+   <div class="modal-body">
+     <p>Está seguro que desea eliminar el diagnóstico seleccionado?</p>
+   </div>
+   <div class="modal-footer">
+     <form action="{% url 'consultorios:consulta_diagnostico_eliminar' object.pk %}" method="post" id=>
+       {% csrf_token %}
+       <div class="controls pull-right">
+         <button type="submit" class="btn btn-danger">Eliminar</button>
+         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+       </div>
+     </form>
+   </div>
+  </div>
+</div>

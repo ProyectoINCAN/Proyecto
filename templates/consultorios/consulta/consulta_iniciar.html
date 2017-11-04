@@ -143,9 +143,13 @@
                                     <td style="width:40%;">{{ diagnostico.observacion }} </td>
                                     <td>
                                       {% if diagnostico.detalle.id == detalle.id %}
-                                      <a class="btn btn-default btn-xs" title="Eliminar"
-                                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_editar' diagnostico.id %}')">
+                                      <a class="btn btn-default btn-xs" title="Editar"
+                                         onclick="return abrir_modal('{% url 'consultorios:consulta_diagnostico_editar' diagnostico.id %}')">
                                         <i class="fa fa-pencil"></i>
+                                      </a>
+                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                         onclick="return abrir_modal('{% url 'consultorios:consulta_diagnostico_eliminar' diagnostico.id %}')">
+                                        <i class="fa fa-trash"></i>
                                       </a>
                                       {% endif %}
                                     </td>
@@ -192,6 +196,7 @@
                                          onclick="return abrir_modal('{% url 'consultorios:orden_estudio_editar' diagnostico.id %}')">
                                         <i class="fa fa-pencil"></i>
                                       </a>
+
                                       {% endif %}
                                     </td>
                                   </tr>
