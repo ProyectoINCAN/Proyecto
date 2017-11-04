@@ -23,8 +23,7 @@ from datetime import date
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
     EnfermeroForm, AdministrativoForm, OrdenEstudioForm, OrdenEstudioDetalleForm, DiagnosticoPacienteForm
-from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, Enfermero, Administrativo, Especialidad, \
-    Turno, OrdenEstudio, OrdenEstudioDetalle, Consulta, ConsultaDetalle, EstadoConsulta, EstadoConsultaDetalle
+from apps.consultorios.models import *
 from apps.pacientes.models import Paciente
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.internaciones.models import Diagnostico
@@ -548,12 +547,14 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
 
         #diagnosticos del paciente.
         diagnosticos = Diagnostico.objects.filter(paciente=detalle.paciente)
-        #ordenes de estudio
+        #ordenes de estudio del paciente
+        ordenes = ConsultaOrdenEstudio.objects.filter(paciente=detalle.paciente)
 
         context.update({
             'consulta': consulta,
             'detalle': detalle,
             'diagnosticos': diagnosticos,
+            'ordenes': ordenes,
         })
         return super(TemplateView, self).render_to_response(context)
 
@@ -632,6 +633,7 @@ class PacienteDiagnosticoCreate(LoginRequiredMixin, FormView):
         diagnostico.paciente = detalle.paciente
         diagnostico.medico = consulta.medico
         diagnostico.save()
+
         return JsonResponse({'success': True})
 
 
