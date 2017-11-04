@@ -1,0 +1,165 @@
+{% extends 'base/base2.html' %}
+{% block extrahead %}
+  <style type="text/css">
+  h1 {
+    margin-left: 15px;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+
+    .brand-pills > li > a {
+        border-top-right-radius: 0px;
+    	border-bottom-right-radius: 0px;
+    }
+
+    li.brand-nav.active a:after{
+    	content: " ";
+    	display: block;
+    	width: 0;
+    	height: 0;
+    	border-top: 20px solid transparent;
+    	border-bottom: 20px solid transparent;
+    	border-left: 9px solid #428bca;
+    	position: absolute;
+    	top: 50%;
+    	margin-top: -20px;
+    	left: 100%;
+    	z-index: 2;
+    }
+}
+  </style>
+{% endblock %}
+{% block content %}
+  <div class="app-content-body">
+
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Dia</a></li>
+      <li class="active">Especialidad:{{ consulta.especialidad }}</li>
+    </ol>
+    <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Datos Básicos del Paciente</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+              <i class="fa fa-minus"></i></button>
+
+          </div>
+        </div>
+        <div class="box-body">
+          <div class="col-sm-4">
+            <span class="font-bold">Nombre y Apellido:</span>
+            <span class="font-normal">{{ detalle.paciente.get_full_name }}</span>
+            <br/>
+            <span class="font-bold">Tipo de Documento:</span>
+            <span class="font-normal">{{ detalle.paciente.tipo_doc }}</span>
+            <br/>
+            <span class="font-bold">Nro Documento:</span>
+            <span class="font-normal">{{ detalle.paciente.nro_doc }}</span>
+            <br/>
+            <span class="font-bold">Sexo:</span>
+            <span class="font-normal">{% if detalle.paciente.sexo %}
+              {{ detalle.paciente.sexo }}
+              {% else %}SIN DATOS
+              {% endif %}
+            </span>
+            <br/>
+             <span class="font-bold">Estado Civil:</span>
+            <span class="font-normal">{% if detalle.paciente.estado_civil %}
+              {{ detalle.paciente.estado_civil }}
+            {% else %}SIN DATOS
+              {% endif %}
+            </span>
+            <br/>
+          </div>
+          <div class="col-sm-6">
+
+            <span class="font-bold">Fecha Nacimiento: &nbsp;&nbsp;&nbsp;</span>
+            <span class="font-normal">{{ detalle.paciente.fecha_nacimiento }}</span>
+            <br/>
+            <span class="font-bold">Lugar Nacimiento: &nbsp;&nbsp;&nbsp;</span>
+            <span class="font-normal">{% if detalle.paciente.lugar_nacimiento %}
+              {{ detalle.paciente.lugar_nacimiento }}
+              {% else %}SIN DATOS
+              {% endif %}
+            </span>
+            <br/>
+            <span class="font-bold">Nacionalidad: &nbsp;&nbsp;&nbsp;</span>
+            <span class="font-normal">{{ detalle.paciente.nacionalidad }}</span>
+            <br/>
+
+
+          </div>
+
+        </div>
+
+      </div>
+  </div>
+
+
+  <div class="app-content-body">
+    <br>
+    <div class="wrapper-md">
+
+
+      <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <b>Listado de Consultas del dia</b>
+
+            </div>
+              <div class="panel-body">
+                <table class="table table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                  <tr>
+                    <th>Especialidad</th>
+                    <th>Turno</th>
+                    <th>Hora de Inicio</th>
+                    <th>Estado</th>
+
+                  </tr>
+                  </thead>
+                <tbody>
+                {% for consulta in consultas %}
+                  <tr>
+
+                    <td>
+                      <a href="{% url 'consultorios:consulta_detalle_dia' consulta.id %}">{{ consulta.especialidad }}</a></td>
+                    <td>{{ consulta.turno }}</td>
+                    <td>{{ consulta.hora_inicio }}</td>
+                    <td>{{ consulta.estado }}</td>
+
+
+                  </tr>
+                {% endfor %}
+                </tbody>
+
+              </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1" style="height: auto;margin: auto; posicion:fixed;"></div>
+
+
+{% endblock %}
+{% block extrajs %}
+  <script>
+  $(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace('editor1');
+    //bootstrap WYSIHTML5 - text editor
+    $(".textarea").wysihtml5();
+  });
+</script>
+
+{% endblock %}
+
+
