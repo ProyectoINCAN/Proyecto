@@ -11,7 +11,7 @@
      <p>Está seguro que desea eliminar el diagnóstico seleccionado?</p>
    </div>
    <div class="modal-footer">
-     <form action="{% url 'consultorios:consulta_diagnostico_eliminar' object.pk %}" method="post" id=>
+     <form action="{% url 'consultorios:consulta_diagnostico_eliminar' object.pk %}" method="post" id="diagnosticoForm">
        {% csrf_token %}
        <div class="controls pull-right">
          <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -20,4 +20,36 @@
      </form>
    </div>
   </div>
+  <script language="JavaScript">
+
+        $("#diagnosticoForm").submit(function(e) {
+
+            var url = this.action; // the script where you handle the form input.
+            console.log(url)
+            $.ajax({
+                   type: "POST",
+                   url: url,
+                   data: $("#diagnosticoForm").serialize(), // serializes the form's elements.
+                   success: function(data, status) {
+                       if (data.success){
+                           $('#popup').modal('hide');
+                           location.reload();
+                       }else {
+                           $('#diagnosticoForm').html(data);
+                       }
+
+                   },
+                error: function(ajaxContext) {
+
+                   alert(ajaxContext.responseText);
+
+                },
+                done: function (response) {
+                    $('#popup').modal('hide');
+                }
+            });
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+	      });
+  </script>
 </div>

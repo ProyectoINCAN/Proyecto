@@ -657,6 +657,7 @@ class PacienteDiagnosticoEliminar(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         diagnostico = Diagnostico.objects.get(pk=self.kwargs['diagnostico_id'])
         diagnostico.delete()
+        return JsonResponse({'success': True})
 
 
 
