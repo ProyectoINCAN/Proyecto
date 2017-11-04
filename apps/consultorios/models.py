@@ -345,6 +345,56 @@ class ConsultaOrdenEstudio(models.Model):
         verbose_name_plural = 'Consulta - Órdenes de estudio'
 
 
+class TipoMedicamento(models.Model):
+    nombre = UpperCharField(max_length=50, blank=False, uppercase=True)
+    descripcion = UpperCharField(max_length=100, blank=True, uppercase=True)
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering=["nombre"]
+        verbose_name="Tipo de Medicamento"
+        verbose_name_plural = "Tipos de Medicamentos"
+
+class Medicamento(models.Model):
+    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
+    forma_farmaceutica = UpperCharField(max_length=200, blank=False, uppercase=True)
+    nro_lote = UpperCharField(max_length=100, blank=False, verbose_name="Número de Lote", uppercase=True)
+    cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
+    fabricado = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fabricado")
+    vencimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Vencimiento")
+    tipificacion = models.ForeignKey(TipoMedicamento, on_delete=models.CASCADE, blank=False, null=False,)
+    habilitado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Medicamento"
+        verbose_name_plural = "Medicamentos"
+
+
+class ConsultaPrescripcion(models.Model):
+    consulta_detalle = models.ForeignKey(ConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
+    medicamento = models.ForeignKey(Medicamento, models.DO_NOTHING, blank=False, null=False,
+                                      verbose_name="Medicamento")
+    posologia = UpperTextField(blank=True, uppercase=True, verbose_name="POSOLOGIA")
+    fecha = models.DateField(auto_now=True, blank=True, null=True, verbose_name="Fecha")
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)
+    cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
+
+    def __str__(self):
+        return self.consulta_prescripcion
+
+    class Meta:
+        ordering = ['consulta_detalle']
+        verbose_name = 'Consulta - Prescripción'
+        verbose_name_plural = 'Consulta - Prescripciones'
+
+
 class GrupoAtencion(models.Model):
     codigo = UpperCharField(max_length=2, blank=False, primary_key=True, uppercase=True)
     nombre = UpperCharField(max_length=100, blank=False, uppercase=True)

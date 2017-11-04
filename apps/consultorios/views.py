@@ -23,7 +23,7 @@ from datetime import date
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
     EnfermeroForm, AdministrativoForm, OrdenEstudioForm, OrdenEstudioDetalleForm, DiagnosticoPacienteForm, \
-    OrdenEstudioPacienteForm
+    OrdenEstudioPacienteForm, PrescripcionPacienteForm
 from apps.consultorios.models import *
 from apps.pacientes.models import Paciente
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -550,12 +550,15 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
         diagnosticos = Diagnostico.objects.filter(paciente=detalle.paciente)
         #ordenes de estudio del paciente
         ordenes = ConsultaOrdenEstudio.objects.filter(paciente=detalle.paciente)
+        # prescripciones del paciente
+        prescripciones = ConsultaPrescripcion.objects.filter(paciente=detalle.paciente)
 
         context.update({
             'consulta': consulta,
             'detalle': detalle,
             'diagnosticos': diagnosticos,
             'ordenes': ordenes,
+            'prescripciones': prescripciones,
         })
         return super(TemplateView, self).render_to_response(context)
 
@@ -661,8 +664,6 @@ class PacienteDiagnosticoEliminar(LoginRequiredMixin, DeleteView):
         return JsonResponse({'success': True})
 
 
-
-
 class PacienteOrdenEstudioCreate(LoginRequiredMixin, FormView):
     """permite registrar el diagnostico al paciente"""
     model = ConsultaOrdenEstudio
@@ -697,7 +698,66 @@ class PacienteOrdenEstudioUpdate(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         print("entro")
         """guardamos el diagnostico de la consulta del paciente(consulta detalle)"""
-        orden=form.save()
-        consulta=orden.consulta_detalle.consulta
         form.save()
+        return JsonResponse({'success': True})
+
+
+class PacienteOrdenEstudioDelete(LoginRequiredMixin, DeleteView):
+    model = ConsultaOrdenEstudio
+    template_name = "consultorios/consulta/orden_estudio_eliminar.html"
+    pk_url_kwarg = 'orden_id'
+    context_object_name = 'orden'
+
+    def post(self, request, *args, **kwargs):
+        orden = ConsultaOrdenEstudio.objects.get(pk=self.kwargs['orden_id'])
+        orden.delete()
+        return JsonResponse({'success': True})
+
+
+class PacientePrescripcionCreate(LoginRequiredMixin, FormView):
+    """permite registrar el diagnostico al paciente"""
+    model = ConsultaPrescripcion
+    template_name = 'consultorios/consulta/prescripcion_form.html'
+    pk_url_kwarg = "prescripcion_id"
+    form_class = PrescripcionPacienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PacientePrescripcionCreate, self).get_context_data(**kwargs)
+        detalle=ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        context.update({'detalle': detalle})
+        return context
+
+    def form_valid(self, form):
+        """guardamos el diagnostico de la consulta del paciente(consulta detalle)"""
+        prescripcion = form.save(commit=False)
+        consulta_detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        prescripcion.paciente = consulta_detalle.paciente
+        prescripcion.consulta_detalle = consulta_detalle
+        prescripcion.save()
+
+        return JsonResponse({'success': True})
+
+
+class PacientePrescripcionUpdate(LoginRequiredMixin, UpdateView):
+    model = ConsultaPrescripcion
+    form_class = PrescripcionPacienteForm
+    template_name = 'consultorios/consulta/prescripcion_editar.html'
+    pk_url_kwarg = 'prescripcion_id'
+    context_object_name = 'prescripcion'
+
+    def form_valid(self, form):
+        """guardamos la prescripcion de la consulta del paciente(consulta detalle)"""
+        form.save()
+        return JsonResponse({'success': True})
+
+
+class PacientePrescripcionDelete(LoginRequiredMixin, DeleteView):
+    model = ConsultaPrescripcion
+    template_name = "consultorios/consulta/prescripcion_eliminar.html"
+    pk_url_kwarg = 'prescripcion_id'
+    context_object_name = 'prescripcion'
+
+    def post(self, request, *args, **kwargs):
+        orden = ConsultaPrescripcion.objects.get(pk=self.kwargs['prescripcion_id'])
+        orden.delete()
         return JsonResponse({'success': True})

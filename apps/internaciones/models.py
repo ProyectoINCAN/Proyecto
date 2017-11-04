@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db.models.deletion import DO_NOTHING
 
-from apps.consultorios.models import Medico, ConsultaDetalle
+from apps.consultorios.models import Medico, ConsultaDetalle, Medicamento
 from apps.pacientes.models import Paciente
 from apps.seguridad.models import Establecimiento
 from utils.upperField import UpperCharField, UpperTextField
@@ -166,39 +166,6 @@ class Insumo(models.Model):
         ordering = ["nombre"]
         verbose_name = "Insumo"
         verbose_name_plural = "Insumos"
-
-
-class TipoMedicamento(models.Model):
-    nombre = UpperCharField(max_length=50, blank=False, uppercase=True)
-    descripcion = UpperCharField(max_length=100, blank=True, uppercase=True)
-    habilitado = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.nombre
-
-    class Meta:
-        ordering=["nombre"]
-        verbose_name="Tipo de Medicamento"
-        verbose_name_plural = "Tipos de Medicamentos"
-
-
-class Medicamento(models.Model):
-    nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
-    forma_farmaceutica = UpperCharField(max_length=200, blank=False, uppercase=True)
-    nro_lote = UpperCharField(max_length=100, blank=False, verbose_name="Número de Lote", uppercase=True)
-    cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
-    fabricado = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fabricado")
-    vencimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Vencimiento")
-    tipificacion = models.ForeignKey(TipoMedicamento, on_delete=models.CASCADE, blank=False, null=False,)
-    habilitado = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.nombre
-
-    class Meta:
-        ordering = ["nombre"]
-        verbose_name = "Medicamento"
-        verbose_name_plural = "Medicamentos"
 
 
 class Internado(models.Model):

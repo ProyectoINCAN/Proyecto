@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico,\
-    Enfermero, Administrativo, OrdenEstudio, OrdenEstudioDetalle, ConsultaOrdenEstudio
+    Enfermero, Administrativo, OrdenEstudio, OrdenEstudioDetalle, ConsultaOrdenEstudio, ConsultaPrescripcion
 from django_select2 import forms as select2form
 
 from apps.internaciones.models import Diagnostico
@@ -282,3 +282,20 @@ class OrdenEstudioPacienteForm(forms.ModelForm):
                                                        'placeholder': 'dd/mm/aaaa'}),
         }
 
+
+class PrescripcionPacienteForm(forms.ModelForm):
+
+    class Meta:
+        model = ConsultaPrescripcion
+        exclude = ['paciente', 'consulta_detalle', 'fecha']
+
+        labels = {
+            'medicamento':'Medicamento',
+            'posologia': 'Posología',
+            'cantidad':'Cantidad',
+        }
+        widgets = {
+            'medicamento': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'posologia': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
+        }

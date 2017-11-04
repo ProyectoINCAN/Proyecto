@@ -1,4 +1,6 @@
 from django import forms
+
+from apps.consultorios.models import TipoMedicamento
 from apps.internaciones.models import *
 
 

@@ -73,5 +73,13 @@ urlpatterns = [
         name='consulta_orden_estudio_crear'),
     url(r'^consulta/detalle/orden_estudio/(?P<orden_id>\d+)/editar/$', views.PacienteOrdenEstudioUpdate.as_view(),
         name='consulta_orden_estudio_editar'),
+    url(r'^consulta/detalle/orden_estudio/(?P<orden_id>\d+)/eliminar$', views.PacienteOrdenEstudioDelete.as_view(),
+        name='consulta_orden_estudio_eliminar'),
+    url(r'^consulta/detalle/(?P<detalle_id>\d+)/prescripcion/crear/$', views.PacientePrescripcionCreate.as_view(),
+        name='consulta_prescripcion_crear'),
+    url(r'^consulta/detalle/prescripcion/(?P<prescripcion_id>\d+)/editar/$', views.PacientePrescripcionUpdate.as_view(),
+        name='consulta_prescripcion_editar'),
+    url(r'^consulta/detalle/prescripcion/(?P<prescripcion_id>\d+)/eliminar$', views.PacientePrescripcionDelete.as_view(),
+        name='consulta_prescripcion_eliminar'),
 
 ]
