@@ -30,8 +30,10 @@ def get_agenda_medico_especialidad(p_especialidad, p_medico, p_turno):
         join consultorios_medico medico on (medico.id = agenda.medico_id)
         join consultorios_especialidad especialidad on (especialidad.id = agenda.especialidad_id)
         join consultorios_turno turno on agenda.turno_id = turno.codigo
-        where agenda.estado_id = 'P' and fecha >= current_date
+        where agenda.estado_id = 'P' --and fecha >= current_date
         '''  + str(especialidad) +str(medico) + str(turno)+ group
+
+    print("query = ", query)
 
     cursor = connection.cursor()
     cursor.execute(query)
