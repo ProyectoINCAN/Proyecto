@@ -413,7 +413,7 @@ class OrdenEstudioUpdateGlobal(LoginRequiredMixin, UpdateView):
 
 
 class OrdenEstudioDetalleListGlobal(LoginRequiredMixin, ListView):
-    model=OrdenEstudioDetalle
+    model = OrdenEstudioDetalle
     context_object_name = 'orden_detalle'
     template_name = 'consultorios/orden_estudio_detalle/orden_estudio_detalle_list.html'
 
@@ -543,14 +543,18 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
         #obtenemos el detalle de la consulta donde el estado sea pendiente
         detalle = ConsultaDetalle.objects.filter(consulta=consulta, estado='P').first()
         #actualizamos el estado de la detalle de la consulta a "en proceso"
-        detalle.estado = EstadoConsultaDetalle.objects.get(codigo='E')
+        #detalle.estado = EstadoConsultaDetalle.objects.get(codigo='E')
         detalle.save()
+
+        #diagnosticos del paciente.
+        diagnosticos = Diagnostico.objects.filter(paciente=detalle.paciente)
+        #ordenes de estudio
 
         context.update({
             'consulta': consulta,
             'detalle': detalle,
+            'diagnosticos': diagnosticos,
         })
-
         return super(TemplateView, self).render_to_response(context)
 
 
@@ -567,24 +571,56 @@ class ConsultaDetalleContinuar(LoginRequiredMixin, TemplateView):
         detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
         consulta = Consulta.objects.get(pk=detalle.consulta.id)
         #obtenemos el detalle de la consulta donde el estado sea en proceso
+
+        #consultamos si el paciente ya tiene un diagnostico en la consulta actual
+        if Diagnostico.objects.filter(detalle=detalle).exists():
+            diagnostico = Diagnostico.objects.get(detalle=detalle)
+        else:
+            diagnostico = None
+
         context.update({
             'consulta': consulta,
             'detalle': detalle,
+            'diagnostico': diagnostico,
         })
         return super(TemplateView, self).render_to_response(context)
 
 
-class ConsultaDetalleDiagnosticoCreate(LoginRequiredMixin, FormView):
+class ConsultaDetalleDiagnosticoList(LoginRequiredMixin, TemplateView):
+    """permite obtener el listado de diagnostico del paciente. Obtiene la lista completa."""
+    template_name = 'consultorios/consulta_iniciar.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        #obtenemos el detalle actual
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        consulta = Consulta.objects.get(pk=detalle.consulta.id)
+
+        #consultamos si el paciente ya tiene un diagnostico en la consulta actual
+        if Diagnostico.objects.filter(detalle=detalle).exists():
+            diagnostico = Diagnostico.objects.get(detalle=detalle)
+        else:
+            diagnostico = None
+
+        context.update({
+            'consulta': consulta,
+            'detalle': detalle,
+            'diagnostico': diagnostico,
+        })
+        return super(TemplateView, self).render_to_response(context)
+
+
+class PacienteDiagnosticoCreate(LoginRequiredMixin, FormView):
+    """permite registrar el diagnostico al paciente"""
     model = Diagnostico
     template_name = 'consultorios/diagnostico_paciente.html'
     pk_url_kwarg = "detalle_id"
     form_class = DiagnosticoPacienteForm
 
     def get_context_data(self, **kwargs):
-        context = super(ConsultaDetalleDiagnosticoCreate, self).get_context_data(**kwargs)
+        context = super(PacienteDiagnosticoCreate, self).get_context_data(**kwargs)
         detalle=ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
-        context.update({'consulta': Consulta.objects.get(pk=detalle.consulta.id),
-                        'detalle': detalle})
+        context.update({'detalle': detalle})
         return context
 
     def form_valid(self, form):
@@ -596,8 +632,7 @@ class ConsultaDetalleDiagnosticoCreate(LoginRequiredMixin, FormView):
         diagnostico.paciente = detalle.paciente
         diagnostico.medico = consulta.medico
         diagnostico.save()
+        return JsonResponse({'success': True})
 
-        return HttpResponseRedirect(reverse('consultorios:consulta_detalle_continuar',
-                                            kwargs={'detalle_id': detalle.id}))
 
 

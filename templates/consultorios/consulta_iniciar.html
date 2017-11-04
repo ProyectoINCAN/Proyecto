@@ -89,82 +89,87 @@
             <span class="font-bold">Nacionalidad: &nbsp;&nbsp;&nbsp;</span>
             <span class="font-normal">{{ detalle.paciente.nacionalidad }}</span>
             <br/>
-
-
           </div>
-
         </div>
-
       </div>
 
-	<div class="row">
-        <div role="tabpanel">
+	  <div class="row">
+
+      <div role="tabpanel">
             <div class="col-sm-2">
                 <ul class="nav nav-pills brand-pills nav-stacked" role="tablist">
                     <li role="presentation" class="brand-nav active">
                       <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Datos de la Consulta</a></li>
-                    <li role="presentation" class="brand-nav ">
-                      <a href="{% url 'consultorios:consulta_diagnostico_crear' detalle.id %}" aria-controls="tab2"
-                         >Diagnóstico</a></li>
-                    <li role="presentation" class="brand-nav"><a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">Gansta ipsum</a></li>
-                    <li role="presentation" class="brand-nav"><a href="#tab4" aria-controls="tab4" role="tab" data-toggle="tab">Corporate ipsum</a></li>
+                    <li role="presentation" class="brand-nav">
+                      <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">Diagnóstico</a></li>
+                    <li role="presentation" class="brand-nav">
+                      <a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">Órden de Estudio</a></li>
+                    <li role="presentation" class="brand-nav">
+                      <a href="#tab4" aria-controls="tab4" role="tab" data-toggle="tab">Medicamentos</a></li>
                 </ul>
             </div>
             <div class="col-sm-10">
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="tab1">
-                        <p>Aqui se adjuntará datos de la consulta actual. Ejemplo los diagnosticos, tratamientos, medicamentos, etc...</p>
+                      <h3>fsahfasdhf</h3>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab2">
-                      <p>rolo</p>
+                      <div class="row">
+                        <div class="col-xs-12 col-md-12 col-lg-12">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <b>Lista de Diagnósticos</b>
+                              <div class="btn-group pull-right">
+                                <a onclick="return abrir_modal('{% url 'consultorios:consulta_diagnostico_crear' detalle.pk  %}')">
+                                  <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
+                                  </button>
+                                </a>
+                              </div><p></p>
+                            </div>
+                            <div class="panel-body">
+                              <table class="table table-striped table-bordered table-hover table-responsive datatable"
+                                     id="dataTables-example" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                  <th>CIE10</th>
+                                  <th>Descripcion</th>
+                                  <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for diagnostico in diagnosticos %}
+                                  <tr>
+                                    <td style="width: 40%">{{ diagnostico.cie10 }}</td>
+                                    <td style="width:40%;">{{ diagnostico.observacion }} </td>
+                                    <td>
+                                      {% if diagnostico.detalle.id == detalle.id %}
+                                      <a class="btn btn-default btn-xs" title="Eliminar"
+                                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_editar' diagnostico.id %}')">
+                                        <i class="fa fa-pencil"></i>
+                                      </a>
+                                      {% endif %}
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab3">
-                        <p>
-                            Lorem ipsizzle dolor away amizzle, consectetuer pizzle elizzle. Nullizzle yo velizzle, check it out volutpizzle, quis, gravida vel, yo.
-                            Ma nizzle eget tortor. Sizzle eros. My shizz izzle dolizzle gizzle turpis tempizzle fo shizzle mah nizzle fo rizzle, mah home g-dizzle.
-                            Maurizzle pellentesque nibh izzle own yo'. Check it out in tortor. Pellentesque fizzle rhoncizzle nisi.
-                        </p>
-                        <p>
-                            In hac habitasse platea dictumst. Shizzlin dizzle dapibus. You son of a bizzle tellizzle urna, pretizzle fo shizzle mah nizzle fo rizzle, mah home g-dizzle,
-                            ghetto ac, check it out vitae, nunc. Shizzlin dizzle suscipizzle. Integizzle sempizzle velit sizzle dizzle.
-                        </p>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="tab4">
-                        <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks.
-                            Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without
-                            revolutionary ROI.
-                        </p>
-                        <p>
-                            Efficiently unleash cross-media information without cross-media value.
-                            Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar
-                            solutions without functional solutions.
-                        </p>
-                        <p>
-                            Completely synergize resource sucking relationships via premier niche markets. Professionally cultivate
-                            one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service
-                            for state of the art customer service.
-                        </p>
+                      <h3>fsahfasdhf</h3>
                     </div>
                 </div>
             </div>
-        </div>
-	</div>
 
+      </div>
+      </div>
 
   </div>
-
-{% endblock %}
-{% block extrajs %}
-  <script>
-  $(function () {
-    // Replace the <textarea id="editor1"> with a CKEditor
-    // instance, using default configuration.
-    CKEDITOR.replace('editor1');
-    //bootstrap WYSIHTML5 - text editor
-    $(".textarea").wysihtml5();
-  });
-</script>
+  <div id="popup" class="modal fade"  aria-hidden="true"
+       role="dialog" tabindex="-1" style="height: auto;margin: auto; posicion:fixed;"></div>
 
 {% endblock %}
 
