@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico,\
-    Enfermero, Administrativo, OrdenEstudio, OrdenEstudioDetalle
+    Enfermero, Administrativo, OrdenEstudio, OrdenEstudioDetalle, ConsultaOrdenEstudio
 from django_select2 import forms as select2form
 
 from apps.internaciones.models import Diagnostico
@@ -263,3 +263,22 @@ class DiagnosticoPacienteForm(forms.ModelForm):
             'cie10': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+
+class OrdenEstudioPacienteForm(forms.ModelForm):
+
+    class Meta:
+        model = ConsultaOrdenEstudio
+        exclude = ['paciente', 'consulta_detalle', 'fecha_solicitud', 'interpretacion', 'fecha_presentacion']
+
+        labels = {
+            'orden_estudio': 'Orden Estudio',
+            'observacion':'Observación',
+        }
+        widgets = {
+            'orden_estudio': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'fecha_presentacion': forms.DateInput(attrs={'class': 'form-control datepicker',
+                                                       'placeholder': 'dd/mm/aaaa'}),
+        }
+

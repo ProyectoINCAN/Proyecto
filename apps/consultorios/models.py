@@ -331,8 +331,9 @@ class ConsultaOrdenEstudio(models.Model):
     orden_estudio = models.ForeignKey(OrdenEstudio, models.DO_NOTHING, blank=False, null=False,
                                       verbose_name="Orden de estudio")
     interpretacion = UpperTextField(blank=True, uppercase=True, verbose_name="Interpretación")
+    observacion = UpperTextField(blank=True, uppercase=True, verbose_name="Observación")
     fecha_presentacion = models.DateField(auto_now=False, blank=True, null=True, verbose_name="Fecha de presentación")
-    fecha_solicitud = models.DateField(auto_now=False, blank=True, null=True, verbose_name="Fecha de solicitud")
+    fecha_solicitud = models.DateField(auto_now=True, blank=True, null=True, verbose_name="Fecha de solicitud")
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):

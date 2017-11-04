@@ -169,7 +169,7 @@
                             <div class="panel-heading">
                               <b>Lista de Órdenes de Estudio</b>
                               <div class="btn-group pull-right">
-                                <a onclick="return abrir_modal('{% url 'consultorios:consulta_diagnostico_crear' detalle.pk  %}')">
+                                <a onclick="return abrir_modal('{% url 'consultorios:consulta_orden_estudio_crear' detalle.pk  %}')">
                                   <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
                                   </button>
                                 </a>
@@ -191,9 +191,9 @@
                                     <td style="width: 40%">{{ orden.orden_estudio }}</td>
                                     <td style="width:40%;">{{ orden.fecha_solicitud }} </td>
                                     <td>
-                                      {% if diagnostico.detalle.id == detalle.id %}
+                                      {% if orden.consulta_detalle.id == detalle.id %}
                                       <a class="btn btn-default btn-xs" title="Eliminar"
-                                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_editar' diagnostico.id %}')">
+                                         onclick="return abrir_modal('{% url 'consultorios:consulta_orden_estudio_editar' orden.id %}')">
                                         <i class="fa fa-pencil"></i>
                                       </a>
 

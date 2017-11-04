@@ -22,7 +22,8 @@ from datetime import date
 
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
-    EnfermeroForm, AdministrativoForm, OrdenEstudioForm, OrdenEstudioDetalleForm, DiagnosticoPacienteForm
+    EnfermeroForm, AdministrativoForm, OrdenEstudioForm, OrdenEstudioDetalleForm, DiagnosticoPacienteForm, \
+    OrdenEstudioPacienteForm
 from apps.consultorios.models import *
 from apps.pacientes.models import Paciente
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -564,7 +565,7 @@ class ConsultaDetalleContinuar(LoginRequiredMixin, TemplateView):
     permite registrar las siguientes acciones de la consulta del paciente.
     Muestra el detalle de la consulta actual
     """
-    template_name = 'consultorios/consulta/consulta_iniciar.html'
+    template_name = 'consultorios/consulta_iniciar.html'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -589,7 +590,7 @@ class ConsultaDetalleContinuar(LoginRequiredMixin, TemplateView):
 
 class ConsultaDetalleDiagnosticoList(LoginRequiredMixin, TemplateView):
     """permite obtener el listado de diagnostico del paciente. Obtiene la lista completa."""
-    template_name = 'consultorios/consulta/consulta_iniciar.html'
+    template_name = 'consultorios/consulta_iniciar.html'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -662,3 +663,41 @@ class PacienteDiagnosticoEliminar(LoginRequiredMixin, DeleteView):
 
 
 
+class PacienteOrdenEstudioCreate(LoginRequiredMixin, FormView):
+    """permite registrar el diagnostico al paciente"""
+    model = ConsultaOrdenEstudio
+    template_name = 'consultorios/consulta/orden_estudio_form.html'
+    pk_url_kwarg = "detalle_id"
+    form_class = OrdenEstudioPacienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteOrdenEstudioCreate, self).get_context_data(**kwargs)
+        detalle=ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        context.update({'detalle': detalle})
+        return context
+
+    def form_valid(self, form):
+        """guardamos el diagnostico de la consulta del paciente(consulta detalle)"""
+        orden_estudio = form.save(commit=False)
+        consulta_detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        orden_estudio.consulta_detalle = consulta_detalle
+        orden_estudio.paciente = consulta_detalle.paciente
+        orden_estudio.save()
+
+        return JsonResponse({'success': True})
+
+
+class PacienteOrdenEstudioUpdate(LoginRequiredMixin, UpdateView):
+    model = ConsultaOrdenEstudio
+    form_class = OrdenEstudioPacienteForm
+    template_name = 'consultorios/consulta/orden_estudio_editar.html'
+    pk_url_kwarg = 'orden_id'
+    context_object_name = 'orden'
+
+    def form_valid(self, form):
+        print("entro")
+        """guardamos el diagnostico de la consulta del paciente(consulta detalle)"""
+        orden=form.save()
+        consulta=orden.consulta_detalle.consulta
+        form.save()
+        return JsonResponse({'success': True})
