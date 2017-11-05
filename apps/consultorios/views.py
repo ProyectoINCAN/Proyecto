@@ -800,3 +800,15 @@ class PacienteTratamientoDelete(LoginRequiredMixin, DeleteView):
         diagnostico = Tratamiento.objects.get(pk=self.kwargs['tratamiento_id'])
         diagnostico.delete()
         return JsonResponse({'success': True})
+
+
+class PacienteTratamientoUpdate(LoginRequiredMixin, UpdateView):
+    model = Tratamiento
+    template_name = 'consultorios/consulta/tratamiento/tratamiento_paciente_editar.html'
+    pk_url_kwarg = 'tratamiento_id'
+    context_object_name = 'tratamiento'
+    form_class = TratamientoPacienteForm
+
+    def form_valid(self, form):
+        form.save()
+        return JsonResponse({'success': True})
