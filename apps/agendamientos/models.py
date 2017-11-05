@@ -21,7 +21,7 @@ class EstadoAgenda(models.Model):
 
 class Agenda(models.Model):
     medico = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False)
-    fecha = models.DateField(auto_now=False, blank=False, null=False) #TODO hacer funcion para que estire la siguiente fecha disponible del médico
+    fecha = models.DateField(auto_now=False, blank=False, null=False)
     turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False)
     especialidad = models.ForeignKey(Especialidad, models.DO_NOTHING, blank=True, null=True)
     cantidad = models.IntegerField(null=True)  # Cantidad máxima definida en HorarioMedico
@@ -29,6 +29,13 @@ class Agenda(models.Model):
 
     def __str__(self):
         return self.fecha.isoformat() + ", Turno: " + self.turno.nombre
+
+    def get_cantidad_agendados(self):
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("""select count(*) from agendamientos_agendadetalle where agenda_id = %s""", [self.pk])
+            cantidad = cursor.fetchone()[0]
+        return int(cantidad)
 
     class Meta:
         ordering = ['fecha', 'id']
@@ -62,8 +69,8 @@ class AgendaDetalleManager(models.Manager):
 class AgendaDetalle(models.Model):
     agenda = models.ForeignKey(Agenda, models.DO_NOTHING, blank=False, null=False)
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
-    orden = models.IntegerField()  # TODO incremento automático según el orden de llegada
-    observacion = UpperCharField(max_length=50, blank=True, null=True, uppercase=True, default='');
+    orden = models.IntegerField()
+    observacion = UpperCharField(max_length=50, blank=True, null=True, uppercase=True, default='')
     confirmado = models.BooleanField(default=False)
     objects = AgendaDetalleManager()  # Instanciar el Manager de la clase definido previamente
 

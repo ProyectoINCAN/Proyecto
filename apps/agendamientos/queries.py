@@ -1,6 +1,4 @@
 from django.db import connection
-from django.db.models.aggregates import Min
-from django.db.models.query_utils import Q
 
 from apps.agendamientos.models import AgendaDetalle
 

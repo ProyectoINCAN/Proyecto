@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy, reverse
+from django.db import transaction
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic.base import View, TemplateView
@@ -42,7 +43,7 @@ def agenda_nuevo(request, origen):
     else:
         print("metodo noes POST")
         form = AgendaForm()
-    return render(request, 'agendamientos/agenda_form.html', {'form': form, 'origen':origen})
+    return render(request, 'agendamientos/agenda_form.html', {'form': form, 'origen': origen})
 
 
 # def agenda_list(request):
@@ -124,6 +125,8 @@ class AgendaByFechaList(LoginRequiredMixin, TemplateView):
         else:
             estado = None
 
+        list_agenda = list_agenda.order_by('fecha')  # ordenamos
+
         context.update({'list_agenda': list_agenda,
                         'fecha_desde': fecha_desde,
                         'fecha_hasta': fecha_hasta,
@@ -132,7 +135,8 @@ class AgendaByFechaList(LoginRequiredMixin, TemplateView):
                         'medico_select': medico if medico else None,
                         'medicos': Medico.objects.all(),
                         'estado_select': estado if estado else None,
-                        'estados': EstadoAgenda.objects.all()
+                        'estados': EstadoAgenda.objects.all(),
+                        'origen': 2
                         })
 
         return super(TemplateView, self).render_to_response(context)
@@ -418,20 +422,14 @@ def agenda_especialidad(request):
     return render(request, 'agendamientos/agenda_especialidad_list.html', context)
 
 
+@transaction.atomic
 def agenda_cancelar(request, agenda_id, origen):
-    # TODO: VERIFICAR FUNCIONAMIENTO
-    print("llega al view")  # borrar
-    tipo = request.POST["tipo"]
+    tipo = request.POST["tipo"]  # TODO quitar el parametro 'origen'
     print("tipo: ", tipo)  # borrar
     agenda = Agenda.objects.get(id=agenda_id)
     if request.method == 'POST':
         agenda = cancelar_agenda(agenda.id, tipo)
-        print("id agenda = ", agenda)  # borrar
-        # return redirect('agendamientos:agenda_detalle', agenda.id)
-        # return agenda
-        # return HttpResponse(response, content_type='application/json')
-        return JsonResponse(serializers.serialize("json", [agenda, origen]), safe=False)
-    # return render(request, 'agendamientos/agenda_especialidad_list.html', {'agenda': agenda})
+        return JsonResponse(serializers.serialize("json", [agenda]), safe=False)
 
 
 class PacienteByAgenda(LoginRequiredMixin, ListView):

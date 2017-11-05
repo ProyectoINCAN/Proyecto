@@ -105,7 +105,7 @@
         <div class="panel-heading">
             Lista de Agendas
             <div class="btn-group pull-right">
-                <a href="{% url 'agendamientos:agenda_nuevo' 2 %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
+                <a href="{% url 'agendamientos:agenda_nuevo' origen %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
             </div>
             <p></p>
         </div>
@@ -136,7 +136,7 @@
                         <td>{{agenda.especialidad}}</td>
                         <td>{{agenda.turno.nombre}}</td>
                         <td>{{agenda.estado.nombre}}</td>
-                        <td>{{agenda.cantidad}}</td>
+                        <td>{{agenda.get_cantidad_agendados}}</td>
                         <td>
                             <a href="{% url 'agendamientos:agenda_detalle' agenda.id 2 %} " text-align="center"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
                         </td>
@@ -166,6 +166,7 @@
             {% endif%}
         </li>
     </ul>
+</div>
 </div>
 
 {% endblock%}
