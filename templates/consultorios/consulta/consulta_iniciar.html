@@ -127,7 +127,7 @@
                               </div><p></p>
                             </div>
                             <div class="panel-body">
-                              <table class="table table-striped table-bordered table-hover table-responsive datatable"
+                              <table class="table table-striped table-bordered table-hover table-responsive datatable display"
                                      id="dataTables-example" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
@@ -161,6 +161,25 @@
                           </div>
                         </div>
                       </div>
+                      <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Bootstrap WYSIHTML5
+                <small>Simple and fast</small>
+              </h3>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fa fa-minus"></i></button>
+              </div>
+              <!-- /. tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body pad">
+              <form>
+                <textarea class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+              </form>
+            </div>
+          </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab3">
                       <div class="row">
@@ -176,8 +195,8 @@
                               </div><p></p>
                             </div>
                             <div class="panel-body">
-                              <table class="table table-striped table-bordered table-hover table-responsive datatable"
-                                     id="dataTables-example" cellspacing="0" width="100%">
+                              <table class="table table-striped table-bordered table-hover table-responsive datatable display"
+                                     id="dataTables-example2" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
                                   <th>Órden de Estudio</th>
@@ -275,6 +294,38 @@
   </div>
   <div id="popup" class="modal fade"  aria-hidden="true"
        role="dialog" tabindex="-1" style="height: auto;margin: auto; posicion:fixed;"></div>
+
+
+{% endblock %}
+
+{% block extrajs %}
+  <script>
+  $('#dataTables-example2').DataTable({
+         responsive: true,
+         "language": {
+             "lengthMenu": "Mostrar _MENU_   registros",
+             "zeroRecords": "No existen registros",
+             "info": "Mostrando la página page _PAGE_ de _PAGES_",
+             "infoEmpty": "No hay registros disponibles",
+             "infoFiltered": " ",
+             "sSearch": "Buscar:",
+             "paginate": {
+                 "previous": "Anterior",
+                 "next": "Siguiente"
+             }
+
+         }
+     });
+  </script>
+  <script>
+  $(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+
+    //bootstrap WYSIHTML5 - text editor
+    $(".textarea").wysihtml5();
+  });
+</script>
 
 {% endblock %}
 

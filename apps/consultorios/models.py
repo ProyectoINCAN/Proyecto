@@ -316,6 +316,7 @@ class Tratamiento(models.Model):
     consulta_detalle = models.ForeignKey(ConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
     descripcion = UpperCharField(max_length=255, blank=True, uppercase=True, verbose_name="Descripción")
     observacion = UpperTextField(blank=True, uppercase=True,verbose_name="Observación")
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.descripcion

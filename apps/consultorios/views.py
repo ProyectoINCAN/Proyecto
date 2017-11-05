@@ -698,6 +698,8 @@ class PacienteOrdenEstudioUpdate(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         print("entro")
         """guardamos el diagnostico de la consulta del paciente(consulta detalle)"""
+        orden=form.save()
+        consulta=orden.consulta_detalle.consulta
         form.save()
         return JsonResponse({'success': True})
 
