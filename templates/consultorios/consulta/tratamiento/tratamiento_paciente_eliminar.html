@@ -1,0 +1,56 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+   <div class="modal-header">
+     <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+     <div id="modal-title">
+       <h3>Eliminar Tratamiento</h3>
+     </div>
+   </div>
+   <div class="modal-body">
+     <p>Está seguro que desea eliminar el tratamiento seleccionado?</p>
+   </div>
+   <div class="modal-footer">
+     <form action="{% url 'consultorios:consulta_tratamiento_eliminar' tratamiento.pk %}" method="post" id="tratamientoForm">
+       {% csrf_token %}
+       <div class="controls pull-right">
+         <button type="submit" class="btn btn-danger">Eliminar</button>
+         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+       </div>
+     </form>
+   </div>
+  </div>
+  <script language="JavaScript">
+
+        $("#tratamientoForm").submit(function(e) {
+
+            var url = this.action; // the script where you handle the form input.
+            console.log(url)
+            $.ajax({
+                   type: "POST",
+                   url: url,
+                   data: $("#tratamientoForm").serialize(), // serializes the form's elements.
+                   success: function(data, status) {
+                       if (data.success){
+                           $('#popup').modal('hide');
+                           location.reload();
+                       }else {
+                           $('#tratamientoForm').html(data);
+                       }
+
+                   },
+                error: function(ajaxContext) {
+
+                   alert(ajaxContext.responseText);
+
+                },
+                done: function (response) {
+                    $('#popup').modal('hide');
+                }
+            });
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+	      });
+  </script>
+</div>
+>

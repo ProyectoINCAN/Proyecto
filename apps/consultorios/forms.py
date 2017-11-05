@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico,\
-    Enfermero, Administrativo, OrdenEstudio, OrdenEstudioDetalle, ConsultaOrdenEstudio, ConsultaPrescripcion
+from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, \
+    Enfermero, Administrativo, OrdenEstudio, OrdenEstudioDetalle, ConsultaOrdenEstudio, ConsultaPrescripcion, \
+    Tratamiento
 from django_select2 import forms as select2form
 
 from apps.internaciones.models import Diagnostico
@@ -299,3 +300,25 @@ class PrescripcionPacienteForm(forms.ModelForm):
             'posologia': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
+
+class TratamientoPacienteForm(forms.ModelForm):
+
+    class Meta:
+        model = Tratamiento
+
+        fields = ['descripcion', 'observacion']
+
+        labels = {
+            'descripcion': 'Descripción',
+            'observacion': 'Observacion',
+        }
+        widgets = {
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+
+    def clean(self):
+        descripcion = self.cleaned_data['descripcion']
+        if descripcion is None or descripcion == '':
+            self.add_error('descripcion', 'Campo obligatorio')

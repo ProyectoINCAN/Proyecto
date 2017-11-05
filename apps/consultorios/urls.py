@@ -82,4 +82,10 @@ urlpatterns = [
     url(r'^consulta/detalle/prescripcion/(?P<prescripcion_id>\d+)/eliminar$', views.PacientePrescripcionDelete.as_view(),
         name='consulta_prescripcion_eliminar'),
 
+    url(r'^consulta/detalle/(?P<detalle_id>\d+)/tratamiento/crear/$', views.PacienteTratamientoCreate.as_view(),
+        name='consulta_tratamiento_crear'),
+    url(r'^consulta/detalle/tratamiento/(?P<tratamiento_id>\d+)/eliminar$', views.PacienteTratamientoDelete.as_view(),
+        name='consulta_tratamiento_eliminar'),
+
+
 ]

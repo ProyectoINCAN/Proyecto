@@ -21,9 +21,7 @@ from django.views.generic.base import TemplateView, View
 from datetime import date
 
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
-from apps.consultorios.forms import MedicoForm, UserForm, EvolucionPacienteModelForm, HorarioMedicoModelForm, \
-    EnfermeroForm, AdministrativoForm, OrdenEstudioForm, OrdenEstudioDetalleForm, DiagnosticoPacienteForm, \
-    OrdenEstudioPacienteForm, PrescripcionPacienteForm
+from apps.consultorios.forms import *
 from apps.consultorios.models import *
 from apps.pacientes.models import Paciente
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -552,6 +550,8 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
         ordenes = ConsultaOrdenEstudio.objects.filter(paciente=detalle.paciente)
         # prescripciones del paciente
         prescripciones = ConsultaPrescripcion.objects.filter(paciente=detalle.paciente)
+        #tratamientos del paciente
+        tratamientos = Tratamiento.objects.filter(paciente=detalle.paciente)
 
         context.update({
             'consulta': consulta,
@@ -559,6 +559,7 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
             'diagnosticos': diagnosticos,
             'ordenes': ordenes,
             'prescripciones': prescripciones,
+            'tratamientos': tratamientos,
         })
         return super(TemplateView, self).render_to_response(context)
 
@@ -762,4 +763,40 @@ class PacientePrescripcionDelete(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         orden = ConsultaPrescripcion.objects.get(pk=self.kwargs['prescripcion_id'])
         orden.delete()
+        return JsonResponse({'success': True})
+
+
+class PacienteTratamientoCreate(LoginRequiredMixin, FormView):
+    """permite registrar el tratamiento al paciente"""
+    model = Tratamiento
+    template_name = 'consultorios/consulta/tratamiento/tratamiento_paciente_form.html'
+    pk_url_kwarg = "detalle_id"
+    form_class = TratamientoPacienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteTratamientoCreate, self).get_context_data(**kwargs)
+        detalle=ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        context.update({'detalle': detalle})
+        return context
+
+    def form_valid(self, form):
+        """guardamos el tratamiento de la consulta del paciente(consulta detalle)"""
+        tratamiento = form.save(commit=False)
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        tratamiento.consulta_detalle = detalle
+        tratamiento.paciente = detalle.paciente
+        tratamiento.save()
+
+        return JsonResponse({'success': True})
+
+
+class PacienteTratamientoDelete(LoginRequiredMixin, DeleteView):
+    model = Tratamiento
+    template_name = "consultorios/consulta/tratamiento/tratamiento_paciente_eliminar.html"
+    pk_url_kwarg = 'tratamiento_id'
+    context_object_name = 'tratamiento'
+
+    def post(self, request, *args, **kwargs):
+        diagnostico = Tratamiento.objects.get(pk=self.kwargs['tratamiento_id'])
+        diagnostico.delete()
         return JsonResponse({'success': True})
