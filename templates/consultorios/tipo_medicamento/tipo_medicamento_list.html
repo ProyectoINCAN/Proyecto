@@ -37,7 +37,7 @@ jQuery(document).ready(function($) {
               <b>Listado de Tipos de Medicamentos</b>
               <div class="btn-group pull-right">
                  <a>
-                   <button onclick="return abrir_modal('{% url 'internaciones:tipo_medicamento_crear' %}')"
+                   <button onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_crear' %}')"
                     class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
                    </button>
                  </a>
@@ -60,11 +60,11 @@ jQuery(document).ready(function($) {
                     <td style="width:30%">{{ tipo.descripcion }} </td>
                     <td>
                       <a class="btn btn-default btn-xs"
-                         onclick="return abrir_modal('{% url 'internaciones:tipo_medicamento_editar' tipo.id %}')">
+                         onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_editar' tipo.id %}')">
                         <i class="fa fa-pencil"></i>
                       </a>
                       <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'internaciones:tipo_medicamento_eliminar' tipo.id %}')">
+                         onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_eliminar' tipo.id %}')">
                         <i class="fa fa-trash"></i>
                       </a>
                     </td>

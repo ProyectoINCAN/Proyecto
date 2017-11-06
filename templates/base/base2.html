@@ -80,7 +80,7 @@
     <section class="sidebar">
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <li><a><b>Usuario:</b>{{ user.username }}</a></li>
+        <li><a><b>Usuario:</b> {{ user.username }}</a></li>
       </div>
       <!-- search form -->
 
@@ -89,6 +89,22 @@
       <ul class="sidebar-menu">
         <li class="header">MENÚ</li>
 
+         {% if user.groups.all.0.name == "Administrativo" or request.user.is_superuser %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-clipboard"></i><span>Agendamientos</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'agendamientos:agenda_especialidad_medico' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas Pendientes</a></li>
+          </ul>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'agendamientos:agenda_fecha_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas por rango de fecha</a></li>
+          </ul>
+        </li>
+        {% endif %}
         {% if user.groups.all.0.name == "Administrativo" or user.is_superuser %}
         <li class="treeview">
           <a href="#">
@@ -111,8 +127,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{% url 'principal:user_list_global' %}"><i class="fa fa-circle-o"></i>Lista de Usuarios</a></li>
-            <li><a href="{% url 'principal:usuario_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Usuario</a></li>
+            <li><a href="{% url 'principal:user_list_global' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Usuarios</a></li>
           </ul>
         </li>
         {% endif %}
@@ -125,10 +140,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:medico_listar' %}"><i class="fa fa-circle-o"></i>Lista de Médicos</a></li>
-            <li><a href="{% url 'consultorios:medico_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Médico</a></li>
-            <li><a href="{% url 'consultorios:horario_medico_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Horario Médico</a></li>
-            <li><a href="{% url 'consultorios:horario_medico_listar' %}"><i class="fa fa-circle-o"></i>Lista Horario Médico</a></li>
+            <li><a href="{% url 'consultorios:medico_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Médicos</a></li>
+            <li><a href="{% url 'consultorios:horario_medico_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista Horario Médico</a></li>
           </ul>
         </li>
         {% endif %}
@@ -141,8 +154,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:enfermero_listar' %}"><i class="fa fa-circle-o"></i>Lista de Enfermeros</a></li>
-            <li><a href="{% url 'consultorios:enfermero_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Enfermero</a></li>
+            <li><a href="{% url 'consultorios:enfermero_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Enfermeros</a></li>
           </ul>
         </li>
         {% endif %}
@@ -155,8 +167,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:administrativo_listar' %}"><i class="fa fa-circle-o"></i>Lista de Administrativos</a></li>
-            <li><a href="{% url 'consultorios:administrativo_nuevo' %}"><i class="fa fa-circle-o"></i>Nuevo Administrativo</a></li>
+            <li><a href="{% url 'consultorios:administrativo_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Administrativos</a></li>
           </ul>
         </li>
         {% endif %}
@@ -169,41 +180,25 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{% url 'internaciones:tipo_medicamento' %}"><i class="fa fa-circle-o"></i>Tipos de Medicamentos</a></li>
-            <li><a href="{% url 'internaciones:medicamentos' %}"><i class="fa fa-circle-o"></i>Medicamentos</a></li>
+            <li><a href="{% url 'consultorios:tipo_medicamento' %}"><i class="fa fa-list" aria-hidden="true"></i>Tipos de Medicamentos</a></li>
+            <li><a href="{% url 'consultorios:medicamentos' %}"><i class="fa fa-list" aria-hidden="true"></i>Medicamentos</a></li>
           </ul>
         </li>
         {% endif %}
         {% if request.user.is_superuser %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-medkit fa-fw"></i><span>Órdenes de Estudio</span>
+            <i class="fa fa-sticky-note"></i><span>Órdenes de Estudio</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:ordenes_estudio' %}"><i class="fa fa-circle-o"></i>Órden de Estudio</a></li>
+            <li><a href="{% url 'consultorios:ordenes_estudio' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Orden de Estudio</a></li>
 
           </ul>
         </li>
        {% endif %}
-        {% if user.groups.all.0.name == "Administrativo" or request.user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-medkit fa-fw"></i><span>Agendamientos</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'agendamientos:agenda_especialidad_medico' %}"><i class="fa fa-circle-o"></i>Agendar</a></li>
-          </ul>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'agendamientos:agenda_fecha_listar' %}"><i class="fa fa-circle-o"></i>Agendas por rango de fecha</a></li>
-          </ul>
-        </li>
-        {% endif %}
         {% if user.groups.all.0.name == "Medico" %}
         <li class="treeview">
           <a href="#">

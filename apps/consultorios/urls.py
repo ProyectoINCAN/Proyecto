@@ -6,7 +6,9 @@ from apps.consultorios.views import MedicoList, EvolucionPacienteList, Evolucion
     EvolucionPacienteCreate, HorarioMedicoList, HorarioMedicoCreate, HorarioMedicoUpdate, medico_update, \
     medico_create, cambio_password, EnfermeroList, enfermero_create, enfermero_update, AdministrativoList, \
     administrativo_create, administrativo_update, consulta_paciente_list, ConsultaCreate, \
-    ConsultaDetalleContinuar, PacienteDiagnosticoCreate
+    ConsultaDetalleContinuar, PacienteDiagnosticoCreate, TipoMedicamentoListView, TipoMedicamentoCreateView, \
+    TipoMedicamentoUpdateView, TipoMedicamentoDelete, MedicamentoListView, MedicamentoCreateView, MedicamentoUpdateView, \
+    MedicamentoDeleteView
 
 urlpatterns = [
     url(r'^medico/$', login_required(MedicoList.as_view()), name='medico_listar'),
@@ -88,6 +90,19 @@ urlpatterns = [
         name='consulta_tratamiento_editar'),
     url(r'^consulta/detalle/tratamiento/(?P<tratamiento_id>\d+)/eliminar$', views.PacienteTratamientoDelete.as_view(),
         name='consulta_tratamiento_eliminar'),
+
+    url(r'^tipo_medicamento/$', TipoMedicamentoListView.as_view(), name='tipo_medicamento'),
+    url(r'^tipo_medicamento/crear/$', TipoMedicamentoCreateView.as_view(), name='tipo_medicamento_crear'),
+    url(r'^tipo_medicamento/(?P<tipo_id>\d+)/editar$',
+        TipoMedicamentoUpdateView.as_view(), name='tipo_medicamento_editar'),
+    url(r'^tipo_medicamento/(?P<tipo_id>\d+)/eliminar$',
+        TipoMedicamentoDelete.as_view(), name='tipo_medicamento_eliminar'),
+
+    url(r'^medicamentos/$', MedicamentoListView.as_view(), name='medicamentos'),
+    url(r'^medicamento/crear/$', MedicamentoCreateView.as_view(), name='medicamento_crear'),
+    url(r'^medicamento/(?P<medicamento_id>\d+)/editar$', MedicamentoUpdateView.as_view(), name='medicamento_editar'),
+    url(r'^medicamento/(?P<medicamento_id>\d+)/eliminar$',
+        MedicamentoDeleteView.as_view(), name='medicamento_eliminar'),
 
 
 ]

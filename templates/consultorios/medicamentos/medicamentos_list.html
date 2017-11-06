@@ -36,7 +36,7 @@ jQuery(document).ready(function($) {
             <div class="panel-heading">
               <b>Listado de Medicamentos</b>
               <div class="btn-group pull-right">
-                 <a href="{% url 'internaciones:medicamento_crear' %}">
+                 <a href="{% url 'consultorios:medicamento_crear' %}">
                    <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
                    </button>
                  </a>
@@ -64,11 +64,11 @@ jQuery(document).ready(function($) {
                     <td>{{ med.cantidad }}</td>
                     <td>{{ med.vencimiento }}</td>
                     <td>
-                      <a class="btn btn-default btn-xs" href="{% url 'internaciones:medicamento_editar' med.id %}">
+                      <a class="btn btn-default btn-xs" href="{% url 'consultorios:medicamento_editar' med.id %}">
                         <i class="fa fa-pencil"></i>
                       </a>
                       <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'internaciones:medicamento_eliminar' med.id %}')">
+                         onclick="return abrir_modal('{% url 'consultorios:medicamento_eliminar' med.id %}')">
                         <i class="fa fa-trash"></i>
                       </a>
                     </td>

@@ -30,12 +30,12 @@ class AgendaForm(forms.ModelForm):
         }
 
         widgets = {
-            'especialidad': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'medico': forms.Select(attrs={'class': 'form-control selectsearch', 'id': 'medico_id'}),
+            'especialidad': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'medico': forms.Select(attrs={'class': 'form-control selectsearch', 'id': 'medico_id', 'style':'width: 100%'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'turno': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'turno': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             'cantidad': forms.TextInput(attrs={'class': 'form-control', 'readonly':'readonly'}),
-            'estado': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'estado': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
         }
 
 

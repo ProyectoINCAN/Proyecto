@@ -11,7 +11,7 @@
    </div>
    <div class="modal-body">
      <form  role="form" id="eventoForm"
-       action="{% url 'internaciones:tipo_medicamento_crear' %}" method="post">
+       action="{% url 'consultorios:tipo_medicamento_crear' %}" method="post">
        {% csrf_token %}
        {% for field in form %}
          <div class="row" id="{{ field.name }}">

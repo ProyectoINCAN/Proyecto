@@ -4,33 +4,62 @@
     <script src = "{% static 'apps/agendamientos/js/agenda.js' %}"></script>
 {% endblock %}
 
+
 {% block content %}
 
 
-<div class="row">
-	<div class="col-lg-12">
-        <h1 class="page-header">Agendas</h1>
-    </div>
-</div>
-<div class="row">
+<style type="text/css">
+<!--
+label.div_center {
+text-align:center;
+}
+
+</style>
+
+<style>
+label { position: absolute; text-align:right; width:130px; }
+</style>
+
+<style>
+#columna1,#columna,#columna6, #columna7{
+    text-align:left;
+}
+</style>
+
+
+
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">Agendas</h1>
+  </div>
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="#">Agendamientos</a></li>
+      <li><a href="{{origen_url}}">Agendas</a></li>
+      <li class="active">Nuevo</li>
+    </ol>
+
 <form class="form-horizontal" method="POST">
         {% csrf_token %}
         <div class="form-group">
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.medico.label }}</label>
+         {{ form.medico.error }}
+         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.medico.label }}:</label>
          <div class="col-lg-4 col-md-3 col-sm-4">
              {{form.medico}}
          </div>
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.especialidad.label }}</label>
+         {{ form.especialidad.error }}
+         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.especialidad.label }}:</label>
          <div class="col-lg-4 col-md-3 col-sm-4">
              {{form.especialidad}}
          </div>
         </div>
 
         <div class="form-group">
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.fecha.label }}</label>
+            {{ form.fecha.error }}
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.fecha.label}}</label>
              <div class="col-lg-4 col-md-3 col-sm-4">
                  {{form.fecha}}
              </div>
+            {{ form.turno.error }}
              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.turno.label}}</label>
              <div class="col-lg-4 col-md-3 col-sm-4">
                  {{ form.turno }}
@@ -38,81 +67,30 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.cantidad.label }}</label>
+              {{ form.cantidad.error }}
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.cantidad.label}}</label>
              <div class="col-lg-4 col-md-3 col-sm-4">
                  {{form.cantidad}}
              </div>
+             {{ form.estado.error }}
              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.estado.label}}</label>
              <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{form.estado}}
+                 {{ form.estado }}
              </div>
          </div>
+
     <div class="form-group">
 	 <div class="col-sm-offset-4 col-sm-8">
-         <button class="btn btn-primary" type="submit">Guardar</button>
+         <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
          <a href="{% url 'agendamientos:agenda_especialidad_medico' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
      </div>
     </div>
+
+
+
 </form>
-
-<!--<form class="form-horizontal" method="post">-->
-	<!--{% csrf_token %}-->
-
-	<!--<div class="form-group">-->
-		<!--<div class="col-md-10 ">-->
-			<!--<label for="{{ form.medico.name }}" class="col-sm-2 control-label"> {{ form.medico.label }}</label>-->
-			<!--<div class="col-sm-10">-->
-				<!--{{ form.medico }}-->
-			<!--</div>-->
-		<!--</div>-->
-	<!--</div>-->
-	<!--<div class="form-group">-->
-		<!--<div class="col-md-10 ">-->
-			<!--<label for="{{ form.especialidad.name }}" class="col-sm-2 control-label"> {{ form.especialidad.label }}</label>-->
-			<!--<div class="col-sm-10">-->
-				<!--{{ form.especialidad }}-->
-			<!--</div>-->
-		<!--</div>-->
-	<!--</div>-->
-	<!--<div class="form-group">-->
-		<!--<div class="col-md-10">-->
-			<!--<label for="{{ form.fecha.name }}" class="col-sm-2 col-md-2 col-lg-2 control-label"> {{ form.fecha.label }}</label>-->
-			<!--<div class="col-lg-10">-->
-				<!--{{ form.fecha }}-->
-			<!--</div>-->
-		<!--</div>-->
-	<!--</div>-->
-	<!--<div class="form-group">-->
-		<!--<div class="col-md-10 ">-->
-			<!--<label for="{{ form.turno.name }}" class="col-sm-2 col-md-2 col-lg-2 control-label"> {{ form.turno.label }}</label>-->
-			<!--<div class="col-lg-10">-->
-				<!--{{ form.turno }}-->
-			<!--</div>-->
-		<!--</div>-->
-	<!--</div>-->
-	<!--<div class="form-group">-->
-		<!--<div class="col-md-10 ">-->
-			<!--<label for="{{ form.cantidad.name }}" class="col-sm-2 control-label"> {{ form.cantidad.label }}</label>-->
-			<!--<div class="col-sm-10">-->
-				<!--{{ form.cantidad }}-->
-			<!--</div>-->
-		<!--</div>-->
-	<!--</div>-->
-	<!--<div class="form-group">-->
-		<!--<div class="col-md-10 ">-->
-			<!--<label for="{{ form.estado.name }}" class="col-sm-2 control-label"> {{ form.estado.label }}</label>-->
-			<!--<div class="col-sm-10">-->
-				<!--{{ form.estado }}-->
-			<!--</div>-->
-		<!--</div>-->
-	<!--</div>-->
-
-	<!--<div class="form-group" align="left">-->
-		<!--<div class="col-lg-10 col-lg-offset-2">-->
-			 <!--<button class="btn btn-primary">Guardar</button>-->
-			 <!--<a href="{% url 'agendamientos:agenda_especialidad_medico' %}" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>-->
-		<!--</div>-->
-	<!--</div>-->
-<!--</form>-->
 </div>
+
+
+
 {% endblock %}

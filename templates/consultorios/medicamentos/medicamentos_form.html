@@ -7,7 +7,7 @@
   </div>
   <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
     <li><a href="#">Inicio</a></li>
-    <li><a href="{% url 'internaciones:medicamentos' %}">Listado de Medicamentos</a></li>
+    <li><a href="{% url 'consultorios:medicamentos' %}">Listado de Medicamentos</a></li>
     <li class="active">{% if form.instance.id %}Editar: {{ form.instance.id }}{% else %}Nuevo
       Medicamento{% endif %}</li>
   </ol>
@@ -39,7 +39,7 @@
                 {% endfor %}
                 <div class="row" align="center" id="acciones">
                    <button class="btn btn-primary" type="submit">Guardar</button>
-                   <a href="{% url 'internaciones:medicamentos' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
+                   <a href="{% url 'consultorios:medicamentos' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
                  </div>
               </form>
             </div>

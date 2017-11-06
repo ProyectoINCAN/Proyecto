@@ -4,14 +4,14 @@
      <button type="button" class="close" data-dismiss="modal"
                     aria-label="Close"><span aria-hidden="true">&times;</span></button>
      <div id="modal-title">
-       <h3>Eliminar Medicamento</h3>
+       <h3>Eliminar Tipo Medicamento</h3>
      </div>
    </div>
    <div class="modal-body">
-     <p>Está seguro que desea eliminar el  medicamento seleccionado?</p>
+     <p>Está seguro que desea eliminar el tipo de medicamento seleccionado?</p>
    </div>
    <div class="modal-footer">
-     <form action="{% url 'internaciones:medicamento_eliminar' medicamento.id %}" method="post" id=>
+     <form action="{% url 'consultorios:tipo_medicamento_eliminar' tipo.id %}" method="post" id=>
        {% csrf_token %}
        <div class="controls pull-right">
          <button type="submit" class="btn btn-danger">Eliminar</button>

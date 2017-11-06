@@ -6,10 +6,16 @@
 {% endblock %}
 
 {%block content %}
+<div class="app-content-body">
+  <div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">Listado de Agendas Pendientes</h1>
+  </div>
   <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="#">Inicio</a></li>
-      <li><b>Listado de Agendas</b></li>
-    </ol>
+    <li><a href="#">Inicio</a></li>
+    <li><a href="#">Agendamientos</a></li>
+    <li class="active">Agendas Pendientes</li>
+  </ol>
+  <div class="wrapper-md">
   <div class="row">
     <!--<div class="col-lg-12">-->
 
@@ -28,7 +34,7 @@
       <div class="box-body">
         <form type="GET" action="{% url 'agendamientos:agenda_especialidad_medico' %}">
               <div class="col-sm-8 col-lg-8">
-                <label class="control-label col-lg-2 col-sm-4" style="text-align: right;">Especialidad:</label>
+                <label class="control-label col-lg-4 col-sm-4" style="text-align: right;">Especialidad:</label>
                 <div class="col-sm-8 col-lg-8">
                   <select name="especialidad" id="id_especialidad" class="form-control selectsearch" style="width:100%" >
                     <option value="">Todas</option>
@@ -44,7 +50,7 @@
                 <br>
                 <br>
               <div class="col-sm-8 col-lg-8">
-                <label class="control-label col-lg-2 col-sm-4" style="text-align: right;">Médico:</label>
+                <label class="control-label col-lg-4 col-sm-4" style="text-align: right;">Médico:</label>
                 <div class="col-sm-8 col-md-8 col-lg-8">
                   <select name="medico" id="id_medico" class="form-control selectsearch" style="width:100%" >
                     <option value="">Todas</option>
@@ -60,7 +66,7 @@
                 <br>
                 <br>
               <div class="col-sm-8 col-lg-8">
-                <label class="control-label col-lg-2 col-sm-4" style="text-align: right;">Turno:</label>
+                <label class="control-label col-lg-4 col-sm-4" style="text-align: right;">Turno:</label>
                 <div class="col-sm-8 col-md-8 col-lg-8">
                   <select name="turno" id="id_turno" class="form-control selectsearch" style="width:100%" >
                     <option value="">Todas</option>
@@ -92,9 +98,10 @@
 
 
 <br>
+<div class="col-xs-12 col-md-12 col-lg-12">
 <div class="panel panel-default">
         <div class="panel-heading">
-            Agenda
+            Lista de Agendas
             <div class="btn-group pull-right">
                 <a href="{% url 'agendamientos:agenda_nuevo' origen %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
             </div>
@@ -135,21 +142,9 @@
         </div>
             <!-- /.panel-body -->
         </div>
-
-<div class="pagination">
-    <ul class="pager">
-        <li>
-            {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number}}">Anterior</a>
-            {% endif%}
-        </li>
-        <li>
-            {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number}}">Siguiente</a>
-            {% endif%}
-        </li>
-    </ul>
 </div>
 </div>
+  </div>
+    </div>
 {% endblock%}
 

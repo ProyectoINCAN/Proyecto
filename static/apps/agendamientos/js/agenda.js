@@ -181,3 +181,17 @@ $("#limpiar").click(function(){
     $("#id_turno").val("");
     $("#buscar")
 });
+
+$("#limpiar_filtros").click(function(){
+    //revisar mañana
+    console.log("prueba")
+    var date = new Date();
+    var primerDia = new Date(date.getFullYear(), date.getMonth(), 1)
+
+//        $("#fecha_desde").val(primerDia).format('%d/%m/%Y');
+        $("#fecha_hasta").val( moment().format('MMM D, YYYY') )
+    $("#id_especialidad").val("");
+    $("#id_medico").val("");
+    $("#id_estado").val("");
+    $("#buscar")
+});
