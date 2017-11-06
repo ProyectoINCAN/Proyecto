@@ -243,19 +243,6 @@ class OrdenEstudioDetalle(models.Model):
         return "{} ".format(self.nombre)
 
 
-class EvolucionPaciente(models.Model):
-    fecha = models.DateField(default=now, null=False)
-    hora = models.TimeField(default=now, null=False)
-    observaciones = UpperTextField(blank=False, uppercase=True)
-    medico = models.ForeignKey(Medico, on_delete=DO_NOTHING, verbose_name="Firma")
-    paciente = models.ForeignKey(Paciente, on_delete=DO_NOTHING)
-
-    class Meta:
-        ordering = ['fecha', 'hora']
-        verbose_name = 'Evolución del paciente'
-        verbose_name_plural = 'Evoluciones del paciente'
-
-
 class EstadoConsulta(models.Model):
     codigo = UpperCharField(max_length=1, blank=False, primary_key=True, uppercase=True)
     nombre = UpperCharField(max_length=50, blank=False, uppercase=True)
@@ -346,6 +333,20 @@ class ConsultaOrdenEstudio(models.Model):
         verbose_name_plural = 'Consulta - Órdenes de estudio'
 
 
+class EvolucionPaciente(models.Model):
+    fecha = models.DateField(default=now, null=False)
+    hora = models.TimeField(default=now, null=False)
+    observaciones = UpperTextField(blank=False, uppercase=True)
+    medico = models.ForeignKey(Medico, on_delete=DO_NOTHING, verbose_name="Firma")
+    paciente = models.ForeignKey(Paciente, on_delete=DO_NOTHING)
+    consulta_detalle = models.ForeignKey(ConsultaDetalle, on_delete=models.CASCADE, blank=True, null=True, default="")
+
+    class Meta:
+        ordering = ['fecha', 'hora']
+        verbose_name = 'Evolución del paciente'
+        verbose_name_plural = 'Evoluciones del paciente'
+
+
 class TipoMedicamento(models.Model):
     nombre = UpperCharField(max_length=50, blank=False, uppercase=True)
     descripcion = UpperCharField(max_length=100, blank=True, uppercase=True)
@@ -358,6 +359,7 @@ class TipoMedicamento(models.Model):
         ordering=["nombre"]
         verbose_name="Tipo de Medicamento"
         verbose_name_plural = "Tipos de Medicamentos"
+
 
 class Medicamento(models.Model):
     nombre = UpperCharField(max_length=100, blank=False, uppercase=True)

@@ -35,7 +35,7 @@
 
     <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li><a href="#">Inicio</a></li>
-      <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Dia</a></li>
+      <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Día</a></li>
       <li class="active">Especialidad:{{ consulta.especialidad }}</li>
     </ol>
     <div class="box">
@@ -45,6 +45,7 @@
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
               <i class="fa fa-minus"></i></button>
+
           </div>
         </div>
         <div class="box-body">
@@ -98,23 +99,25 @@
             <div class="col-sm-2">
                 <ul class="nav nav-pills brand-pills nav-stacked" role="tablist">
                     <li role="presentation" class="brand-nav active">
-                      <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Datos de la Consulta</a></li>
+                      <a href="#tab_datos_consulta" aria-controls="tab_datos_consulta" role="tab" data-toggle="tab">Datos de la Consulta</a></li>
                     <li role="presentation" class="brand-nav">
-                      <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">Diagnóstico</a></li>
+                      <a href="#tab_diagnostico" aria-controls="tab_diagnostico" role="tab" data-toggle="tab">Diagnóstico</a></li>
                     <li role="presentation" class="brand-nav">
-                      <a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">Orden de Estudio</a></li>
+                      <a href="#tab_evolucion" aria-controls="tab_evolucion" role="tab" data-toggle="tab">Evolución del Paciente</a></li>
                     <li role="presentation" class="brand-nav">
-                      <a href="#tab4" aria-controls="tab4" role="tab" data-toggle="tab">Prescripción</a></li>
+                      <a href="#tab_orden_estudio" aria-controls="tab_orden_estudio" role="tab" data-toggle="tab">Orden de Estudio</a></li>
                     <li role="presentation" class="brand-nav">
-                      <a href="#tab5" aria-controls="tab5" role="tab" data-toggle="tab">Tratamiento</a></li>
+                      <a href="#tab_prescripcion" aria-controls="tab_prescripcion" role="tab" data-toggle="tab">Prescripción</a></li>
+                    <li role="presentation" class="brand-nav">
+                      <a href="#tab_tratamiento" aria-controls="tab_tratamiento" role="tab" data-toggle="tab">Tratamiento</a></li>
                 </ul>
             </div>
             <div class="col-sm-10">
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="tab1">
+                    <div role="tabpanel" class="tab-pane active" id="tab_datos_consulta">
                       <h3>fsahfasdhf</h3>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab2">
+                    <div role="tabpanel" class="tab-pane" id="tab_diagnostico">
                       <div class="row">
                         <div class="col-xs-12 col-md-12 col-lg-12">
                           <div class="panel panel-default">
@@ -133,7 +136,7 @@
                                 <thead>
                                 <tr>
                                   <th>CIE10</th>
-                                  <th>Descripcion</th>
+                                  <th>Descripción</th>
                                   <th>Acción</th>
                                 </tr>
                                 </thead>
@@ -182,7 +185,62 @@
             </div>
           </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab3">
+
+                  <div role="tabpanel" class="tab-pane" id="tab_evolucion">
+                      <div class="row">
+                        <div class="col-xs-12 col-md-12 col-lg-12">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <b>Anotaciones del médico</b>
+                              <div class="btn-group pull-right">
+                                <a onclick="return abrir_modal('{% url 'consultorios:evolucion_paciente_crear' detalle.pk  %}')">
+                                  <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
+                                  </button>
+                                </a>
+                              </div><p></p>
+                            </div>
+                            <div class="panel-body">
+                              <table class="table table-striped table-bordered table-hover table-responsive datatable"
+                                     id="dataTables-example" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                  <th>Fecha</th>
+                                  <th>Hora</th>
+                                  <th style="width:65%;">Observaciones</th>
+                                  <th>Firma</th>
+                                  <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for evo in evoluciones %}
+                                  <tr>
+                                    <td>{{ evo.fecha|date:"SHORT_DATE_FORMAT" }}</td>
+                                    <td>{{ evo.hora }} </td>
+                                    <td>{{ evo.observaciones }} </td>
+                                    <td>Dr. {{ evo.medico }} </td>
+                                    <td>
+                                      {% if evo.consulta_detalle.id == detalle.id %}
+                                      <a class="btn btn-default btn-xs" title="Editar"
+                                         onclick="return abrir_modal('{% url 'consultorios:evolucion_paciente_editar' evo.id %}')">
+                                        <i class="fa fa-pencil"></i>
+                                      </a>
+                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                         onclick="return abrir_modal('{% url 'consultorios:evolucion_paciente_eliminar' evo.id %}')">
+                                        <i class="fa fa-trash"></i>
+                                      </a>
+                                      {% endif %}
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="tab_orden_estudio">
                       <div class="row">
                         <div class="col-xs-12 col-md-12 col-lg-12">
                           <div class="panel panel-default">
@@ -200,7 +258,7 @@
                                      id="dataTables-example2" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
-                                  <th>Órden de Estudio</th>
+                                  <th>Orden de Estudio</th>
                                   <th>Fecha de Solicitud</th>
                                   <th>Acción</th>
                                 </tr>
@@ -233,7 +291,7 @@
                         </div>
                       </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab4">
+                    <div role="tabpanel" class="tab-pane" id="tab_prescripcion">
                       <div class="row">
                         <div class="col-xs-12 col-md-12 col-lg-12">
                           <div class="panel panel-default">
@@ -284,7 +342,7 @@
                         </div>
                       </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab5">
+                    <div role="tabpanel" class="tab-pane" id="tab_tratamiento">
                       <div class="row">
                         <div class="col-xs-12 col-md-12 col-lg-12">
                           <div class="panel panel-default">

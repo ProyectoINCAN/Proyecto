@@ -52,8 +52,9 @@
                         </div>
                     </div>
                     <div class="form-group" align="center">
-                        <a id="cancelar" type="button" class="btn btn-danger" > <i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>
                         <a href="{{origen_url}}" id="salir" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i> Salir</a>
+                        <a id="cancelar" type="button" class="btn btn-danger" href="javascript:void(0)"> <i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>
+                        <a id="consultas" type="button" class="btn btn-success" href="javascript:void(0)"> <i class="fa fa-play" aria-hidden="true"></i> Pasar a consultorio</a>
                     </div>
                 </div>
             </div>
@@ -71,11 +72,9 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <b>Lista de agendados</b>
-        <div class="btn-group pull-right">
-            <form id="consultas" method="post" action="{% url 'consultorios:consulta' agenda.id %}">{% csrf_token %}
-                <a onclick="document.getElementById('consultas').submit();" class="btn btn-success"><i class="fa fa-play" aria-hidden="true"></i> Pasar Agenda</a>
-            </form>
-        </div>
+        <!--<div class="btn-group pull-right">
+
+        </div>-->
         <div class="btn-group pull-right">
             <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id origen %}">
                 <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo</button>

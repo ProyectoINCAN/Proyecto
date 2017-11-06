@@ -69,6 +69,56 @@
         }
     );
 
+
+    $('#consultas').click(function() {
+        console.log("llega a consulta")
+            var agenda_id = $("#agenda_id").val();
+            var origen = $("#origen").val();
+
+            console.log(agenda_id, origen);
+
+            BootstrapDialog.show({
+            title: 'Pasar agenda a Consultorio',
+            message: '¿Está seguro de que desea pasar la agenda a consultorio?',
+            draggable: true,
+            buttons: [{
+                label: 'No',
+                //cssClass: 'btn-primary',
+                icon: 'fa fa-times',
+                  action: function(dialog){
+                    dialog.close();
+                    return false;
+                }
+            }, {
+                label: 'Sí',
+                //label: 'Cancelar',
+                // no title as it is optional
+                cssClass: 'btn-primary',
+                icon: 'fa fa-check',
+                action: function(dialog){
+                    dialog.close();
+                    var csrftoken = getCookie('csrftoken');
+                    $.ajax({
+                         type:"POST",
+                         url:"/consultorios/consulta/create/"+agenda_id+"",
+                         data: {
+                                'origen': origen,
+                                'csrfmiddlewaretoken': csrftoken
+                                },
+                         success: function(data){
+                            console.log("llega al success");
+                            console.log("data", data );
+                            window.location=data;
+                         }
+                    });
+                    return false;
+                }
+            }, ]
+        });
+
+        }
+    );
+
 //}
 //);
 

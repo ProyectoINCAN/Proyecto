@@ -175,21 +175,15 @@ class UserForm(forms.ModelForm):
     #     }
 
 
-class EvolucionPacienteModelForm(forms.ModelForm):
+class EvolucionPacienteForm(forms.ModelForm):
     class Meta:
         model = EvolucionPaciente
-        fields = ['fecha', 'hora', 'observaciones', 'medico', ]
+        fields = ['observaciones', ]
         labels = {
-            'fecha': 'Fecha',
-            'hora': 'Hora',
             'observaciones': 'Observaciones',
-            'medico': 'Médico'
         }
         widgets = {
-            'fecha': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'hora': forms.TimeInput(attrs={'class': 'form-control'}),
             'observaciones': forms.Textarea(attrs={'class': 'form-control'}),
-            'medico': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 

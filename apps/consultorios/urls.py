@@ -2,8 +2,8 @@ from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
 from apps.consultorios import views
-from apps.consultorios.views import MedicoList, EvolucionPacienteList, EvolucionPacienteUpdate, \
-    EvolucionPacienteCreate, HorarioMedicoList, HorarioMedicoCreate, HorarioMedicoUpdate, medico_update, \
+from apps.consultorios.views import MedicoList, \
+    HorarioMedicoList, HorarioMedicoCreate, HorarioMedicoUpdate, medico_update, \
     medico_create, cambio_password, EnfermeroList, enfermero_create, enfermero_update, AdministrativoList, \
     administrativo_create, administrativo_update, consulta_paciente_list, ConsultaCreate, \
     ConsultaDetalleContinuar, PacienteDiagnosticoCreate, TipoMedicamentoListView, TipoMedicamentoCreateView, \
@@ -29,11 +29,19 @@ urlpatterns = [
     url(r'^horario_medico/(?P<pk>[0-9]+)/editar$', login_required(HorarioMedicoUpdate.as_view()),
         name='horario_medico_editar'),
 
-    url(r'^consulta/evolucion_paciente/$', login_required(EvolucionPacienteList.as_view()), name='evolucion_paciente_listar'),  #TODO | agregar id del paciente en URL
-    url(r'^evolucion_paciente/nuevo$', login_required(EvolucionPacienteCreate.as_view()),
-        name='evolucion_paciente_nuevo'),
-    url(r'^evolucion_paciente/(?P<pk>[0-9]+)/editar$', login_required(EvolucionPacienteUpdate.as_view()),              #TODO | cuando se termine agendamiento
+    # url(r'^consulta/evolucion_paciente/$', login_required(EvolucionPacienteList.as_view()), name='evolucion_paciente_listar'),  #TODO | agregar id del paciente en URL
+    # url(r'^evolucion_paciente/nuevo$', login_required(EvolucionPacienteCreate.as_view()),
+    #     name='evolucion_paciente_nuevo'),
+    # url(r'^evolucion_paciente/(?P<pk>[0-9]+)/editar$', login_required(EvolucionPacienteUpdate.as_view()),              #TODO | cuando se termine agendamiento
+    #     name='evolucion_paciente_editar'),
+
+    url(r'^consulta/detalle/(?P<detalle_id>\d+)/evolucion/crear/$', views.EvolucionPacienteCreate.as_view(),
+        name='evolucion_paciente_crear'),
+    url(r'^consulta/detalle/evolucion/(?P<evolucion_id>\d+)/$', views.EvolucionPacienteUpdate.as_view(),
         name='evolucion_paciente_editar'),
+    url(r'^consulta/detalle/evolucion/(?P<evolucion_id>\d+)/eliminar$', views.EvolucionPacienteDetele.as_view(),
+        name='evolucion_paciente_eliminar'),
+
     url(r'^medico_especialidad/(?P<id_medico>\d+)$', views.medico_especialidad, name='medico_especialidad'),
     url(r'^medico_turno/(?P<id_medico>\d+)$', views.medico_turno, name='medico_turno'),
     url(r'^horario_medico/(?P<id_medico>\d+)/(?P<codigo_turno>[\w\-]+)/$', views.horario_medico, name='horario_medico'),

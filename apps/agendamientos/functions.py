@@ -46,7 +46,6 @@ def cancelar_agenda(agenda_id, tipo):
         # TIPO 2: Siguiente fecha
         # La nueva fecha es del siguiente día en que atiende el médico. Las siguientes agendas se pasan sucesivamente
         # a la siguiente fecha disponible
-        print("entra en tipo 2. tipo: ", tipo, isinstance(tipo, str))  # borrar
         agenda = Agenda.objects.get(pk=agenda_id)
         agendas = Agenda.objects.filter(medico=agenda.medico, especialidad=agenda.especialidad, turno=agenda.turno,
                                         fecha__gte=agenda.fecha, estado=agenda.estado).exclude(fecha=agenda.fecha).order_by('fecha')
@@ -71,20 +70,5 @@ def cancelar_agenda(agenda_id, tipo):
         agenda.estado = EstadoAgenda(codigo="C")
         agenda.save()
 
-        # estado_pendiente = EstadoAgenda.objects.get(codigo="P")
-        # print("agenda_especialidad", agenda.especialidad)
-        # print("busca agenda: ", agenda.medico, agenda.especialidad, agenda.turno, nueva_fecha, estado_pendiente)
-        # agenda_retornada = Agenda.objects.get(medico=agenda.medico, especialidad=agenda.especialidad,
-        #                                       turno=agenda.turno, fecha=nueva_fecha, estado=estado_pendiente)
     print("agenda retornada = ", agenda_retornada)
     return agenda_retornada
-
-
-# def crear_agenda(agenda, fecha_nueva):
-#     """
-#     Crea una agenda nueva a partir de una agenda vieja que se pasa
-#     como parámetro y la nueva fecha que tendrá la nueva agenda
-#     :param agenda: la agenda vieja
-#     :param fecha_nueva: la nueva fecha que tendrá la agenda a crear
-#     :return: agenda_nueva: agenda nueva creada con la nueva fecha
-#     """
