@@ -29,13 +29,13 @@ class PacienteForm(forms.ModelForm):
             'apellidos',
             'tipo_doc',
             'nro_doc',
-            #'sexo',
+            'sexo',
             'fecha_nacimiento',
-            #'nacionalidad',
-            #'lugar_nacimiento',
+            'nacionalidad',
+            'lugar_nacimiento',
             'distrito',
-            #'estado_civil',
-            #'etnia'
+            'estado_civil',
+            'etnia'
 
         ]
 
@@ -46,12 +46,12 @@ class PacienteForm(forms.ModelForm):
             'tipo_doc':'Tipo Documento:',
             'nro_doc': 'Nro de Documento:',
             'nro_doc_alternativo':'Documento Alternativo',
-            #'sexo': 'Sexo',
+            'sexo': 'Sexo',
             'fecha_nacimiento': 'Fecha de Nac.',
-            #'lugar_nacimiento': 'Lugar de Nac.',
+            'lugar_nacimiento': 'Lugar de Nac.',
             'distrito': 'Lugar de Residencia',
-            #'nacionalidad': 'Nacionalidad',
-            #'estado_civil': 'Estado Civil',
+            'nacionalidad': 'Nacionalidad',
+            'estado_civil': 'Estado Civil',
             'etnia': 'Etnia',
              }
 
@@ -65,7 +65,9 @@ class PacienteForm(forms.ModelForm):
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
             'distrito': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             'nacionalidad':  forms.Select(attrs={'class':'form-control selectsearch', 'style':'width: 100%'}),
-
+            'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;'}),
+            'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;'}),
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;'}),
         }
 
     def clean(self):

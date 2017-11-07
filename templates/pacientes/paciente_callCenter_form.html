@@ -19,22 +19,16 @@ text-align:center;
 <style>
 label { position: absolute; text-align:right; width:130px; }
 </style>
-
-<style>
-#columna1,#columna,#columna6, #columna7{
-    text-align:left;
-}
-</style>
-
-{# <div class="alert alert-dismissible alert-info"> #}
-        {# <button type="button" class="close" data-dismiss="alert">&times;</button> #}
-       {# <strong>SIHINCAN!</strong>Completar <a href="#" class="alert-link">los datos básicos del paciente</a>,y luego cargar los otros datos. #}
-{# </div> #}
-<div class="row">
-	<div class="col-lg-14">
-        <h1 class="page-header">Datos Básicos del Paciente</h1>
+<div class="app-content-body">
+  <div class="bg-light lter b-b wrapper-md">
+      <h1 class="m-n font-thin h3">Pacientes Call Center</h1>
     </div>
-</div>
+  <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="#">Pacientes</a></li>
+      <li class="active">Nuevo</li>
+    </ol>
+  <div class="wrapper-md">
 
 <form class="form-horizontal" method="POST">
         {% csrf_token %}
@@ -95,6 +89,7 @@ label { position: absolute; text-align:right; width:130px; }
 
 
 </form>
+</div>
 </div>
 
 

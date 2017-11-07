@@ -13,7 +13,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from multiprocessing import get_context, context
 
-from apps.agendamientos.functions import cancelar_agenda
+from apps.agendamientos.functions import cancelar_agenda, get_origen_url_agendamiento
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 
 # Create your views here.
@@ -43,7 +43,8 @@ def agenda_nuevo(request, origen):
     else:
         print("metodo noes POST")
         form = AgendaForm()
-    return render(request, 'agendamientos/agenda_form.html', {'form': form, 'origen': origen})
+    origen_url = get_origen_url_agendamiento(origen)
+    return render(request, 'agendamientos/agenda_form.html', {'form': form, 'origen_url': origen_url})
 
 
 # def agenda_list(request):
@@ -360,15 +361,16 @@ def agenda_detalle_list(request, agenda_id, origen):
 
     # dependiendo del valor de 'origen' redirige a tal o cual url de donde se solicitó
     # TODO: agregar más si fuera necesario
-    if origen == str(1):
-        # redirige a agendar por fecha disponible
-        origen_url = '/agendamientos/agendas/'
-    elif origen == str(2):
-        # redirige a agendas por rango de fechas
-        origen_url = '/agendamientos/agenda_fecha/'
-    else:
-        # DEFAULT: redirige a agendar por fecha disponible
-        origen_url = '/agendamientos/agendas/'
+    origen_url = get_origen_url_agendamiento(origen)
+    # if origen == str(1):
+    #     # redirige a agendar por fecha disponible
+    #     origen_url = '/agendamientos/agendas/'
+    # elif origen == str(2):
+    #     # redirige a agendas por rango de fechas
+    #     origen_url = '/agendamientos/agenda_fecha/'
+    # else:
+    #     # DEFAULT: redirige a agendar por fecha disponible
+    #     origen_url = '/agendamientos/agendas/'
 
     contexto = {'agenda': agenda, 'agenda_detalle': agenda_detalle, 'origen': origen, 'origen_url': origen_url,
                 'form': form}

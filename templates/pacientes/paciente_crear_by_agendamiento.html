@@ -20,21 +20,16 @@ text-align:center;
 label { position: absolute; text-align:right; width:130px; }
 </style>
 
-<style>
-#columna1,#columna,#columna6, #columna7{
-    text-align:left;
-}
-</style>
+<div class="app-content-body">
 
-{# <div class="alert alert-dismissible alert-info"> #}
-        {# <button type="button" class="close" data-dismiss="alert">&times;</button> #}
-       {# <strong>SIHINCAN!</strong>Completar <a href="#" class="alert-link">los datos básicos del paciente</a>,y luego cargar los otros datos. #}
-{# </div> #}
-<div class="row">
-	<div class="col-lg-14">
-        <h1 class="page-header">Datos Básicos del Paciente</h1>
-    </div>
+<div class="bg-light lter b-b wrapper-md">
+      <h1 class="m-n font-thin h3">Pacientes Call Center</h1>
 </div>
+  <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="#">Pacientes</a></li>
+      <li class="active">Nuevo</li>
+    </ol>
 
 <form class="form-horizontal" method="POST">
         {% csrf_token %}
@@ -88,7 +83,7 @@ label { position: absolute; text-align:right; width:130px; }
     <div class="form-group">
 	 <div class="col-sm-offset-4 col-sm-8">
          <button class="btn btn-primary" type="submit">Guardar</button>
-         <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
+         <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id origen %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
      </div>
     </div>
 
@@ -96,6 +91,8 @@ label { position: absolute; text-align:right; width:130px; }
 
 </form>
 </div>
+
+
 
 
 

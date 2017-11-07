@@ -411,6 +411,7 @@ class PacienteCreateByAgenda(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(PacienteCreateByAgenda, self).get_context_data(**kwargs)
         context['agenda']=Agenda.objects.get(pk=self.kwargs['agenda_id'])
+        context['origen']=self.kwargs['origen']
         if 'form' not in context:
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:
@@ -428,8 +429,6 @@ class PacienteCreateByAgenda(LoginRequiredMixin, CreateView):
             telefono.paciente = form2.save()
             telefono.save()
             return HttpResponseRedirect(self.get_success_url())
-
-
         else:
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 

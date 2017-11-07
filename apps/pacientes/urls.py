@@ -68,6 +68,6 @@ urlpatterns = [
 
     url(r'^distrito/(?P<paciente_id>\d+)$', pacienteViews.distrito, name='distrito'),
 
-    url(r'^agenda/(?P<agenda_id>\d+)/paciente/nuevo/$',
+    url(r'^agenda/(?P<agenda_id>\d+)/(?P<origen>\d+)/paciente/nuevo/$',
         pacienteViews.PacienteCreateByAgenda.as_view(), name='agenda_paciente_crear'),
 ]

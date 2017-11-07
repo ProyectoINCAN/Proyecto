@@ -72,3 +72,18 @@ def cancelar_agenda(agenda_id, tipo):
 
     print("agenda retornada = ", agenda_retornada)
     return agenda_retornada
+
+
+def get_origen_url_agendamiento(origen):
+    # dependiendo del valor de 'origen' redirige a tal o cual url de donde se solicitó
+    # TODO: agregar más si fuera necesario
+    if origen == str(1):
+        # redirige a agendar por fecha disponible
+        origen_url = '/agendamientos/agendas/'
+    elif origen == str(2):
+        # redirige a agendas por rango de fechas
+        origen_url = '/agendamientos/agenda_fecha/'
+    else:
+        # DEFAULT: redirige a agendar por fecha disponible
+        origen_url = '/agendamientos/agendas/'
+    return origen_url
