@@ -1,7 +1,7 @@
 {% extends 'base/base2.html' %}
 {% load static %}
 {% block extrajs %}
-    <script src = "{% static 'apps/pacientes/js/pacientes.js' %}"></script>
+    <script src = "{% static 'apps/pacientes/js/paciente_call_center' %}"></script>
 {% endblock %}
 
 
@@ -35,7 +35,7 @@ label { position: absolute; text-align:right; width:130px; }
         {% csrf_token %}
         <div class="form-group">
          <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.tipo_doc.label }}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
+         <div class="col-lg-4 col-md-3 col-sm-4" onclick="myFunction()">
              {{form2.tipo_doc}}
          </div>
          <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.nro_doc.label }}</label>
@@ -82,7 +82,7 @@ label { position: absolute; text-align:right; width:130px; }
 
     <div class="form-group">
 	 <div class="col-sm-offset-4 col-sm-8">
-         <button class="btn btn-primary" type="submit">Guardar</button>
+         <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
          <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id origen %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
      </div>
     </div>

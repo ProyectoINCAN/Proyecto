@@ -232,17 +232,16 @@ $("#limpiar").click(function(){
     $("#buscar")
 });
 
-//$("#limpiar_filtros").click(function(){
-//    //revisar mañana
-//    console.log("prueba")
-//    var date = new Date('YYYY-MM-DD');
-//    var primerDia = new Date(date.getFullYear(), date.getMonth(), 1)
-//    console.log("primerdia", primerDia)
-//
-////        $("#fecha_desde").val(primerDia).format('%d/%m/%Y');
-////        $("#fecha_hasta").val( moment().format('MMM D, YYYY') )
-//    $("#id_especialidad").val("");
-//    $("#id_medico").val("");
-//    $("#id_estado").val("");
-//    $("#buscar")
-//});
+$("#limpiar_filtros").click(function(){
+    console.log("prueba")
+    var date = new Date();
+    var primerDia = 01 + "/" + (date.getMonth()+1) + "/" + date.getFullYear()
+    var fechaActual = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear()
+    $("#fecha_desde").val(primerDia)
+    $("#fecha_hasta").val(fechaActual)
+    $("#id_especialidad").val("")
+    $("#id_medico").val("");
+    $("#id_estado").val("");
+    $("#buscar")
+});
+

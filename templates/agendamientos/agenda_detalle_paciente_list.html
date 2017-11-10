@@ -21,7 +21,7 @@
     <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li><a href="#">Inicio</a></li>
        <li><a href="{% url 'agendamientos:agenda_detalle' agenda.id origen %}">
-         Agenda: Médico({{ agenda.medico.get_full_name }})</a></li>
+         Agenda: Médico ({{ agenda.medico.get_full_name }})</a></li>
       <li class="active">Listado de Pacientes</li>
     </ol>
     </div>
@@ -34,7 +34,7 @@
     <div class="col-xs-12 col-md-12 col-lg-12">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <b>Listado de Pacientes</b>
+        Listado de Pacientes
         <div class="btn-group pull-right">
             <a href="{% url 'pacientes:agenda_paciente_crear' agenda.id origen%}" class="btn btn-default">
               <i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo Paciente</a>
@@ -45,14 +45,12 @@
                 id="dataTables-example" cellspacing="0" width="100%">
           <thead>
             <tr>
-                  <th>Nro Documento</th>
+                  <th>Ficha</th>
+                  <th>Nº Documento</th>
                   <th>Nombres</th>
                   <th>Apellidos</th>
-                  <th>Sexo</th>
                   <th>Fecha Nacimiento</th>
-                  <th>Lugar Nacimiento</th>
-                  <th>Nacionalidad</th>
-                  <th>Estado Civil</th>
+                  <th>Ciudad</th>
                   <th>Agregar</th>
 
             </tr>
@@ -65,23 +63,14 @@
                 <td>
                   {{ paciente.nro_doc }}
                 </td>
+                <td>
+                  {{ paciente.nro_doc }}
+                </td>
                 <td>{{ paciente.nombres }}</td>
                 <td>{{ paciente.apellidos }} </td>
-                <td>{{ paciente.sexo }} </td>
                 <td>{{ paciente.fecha_nacimiento }}</td>
-                <td>{{ paciente.lugar_nacimiento }}</td>
-                <td>{% if paciente.nacionalidad %}
-                  {{ paciente.nacionalidad }}
-                  {% else %}
-                  {% endif %}
-                </td>
-                <td>{% if paciente.estado_civil %}
-                  {{ paciente.estado_civil }}
-                  {% else %}
-                  {% endif %}
-                </td>
-                <td>
-                  <a href="{% url 'agendamientos:agenda_detalle_crear' agenda.id paciente.id origen %}"
+                <td>{{ paciente.distrito}}</td>
+                <td>  <a href="{% url 'agendamientos:agenda_detalle_crear' agenda.id paciente.id origen %}"
                      class="btn btn-primary">Agregar</a>
                 </td>
               </tr>

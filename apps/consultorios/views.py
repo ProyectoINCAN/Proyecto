@@ -675,7 +675,7 @@ class EvolucionPacienteList(LoginRequiredMixin, ListView):
 class PacienteDiagnosticoCreate(LoginRequiredMixin, FormView):
     """permite registrar el diagnostico al paciente"""
     model = Diagnostico
-    template_name = 'consultorios/diagnostico_paciente.html'
+    template_name = 'consultorios/consulta/diagnostico_paciente.html'
     pk_url_kwarg = "detalle_id"
     form_class = DiagnosticoPacienteForm
 
@@ -700,7 +700,7 @@ class PacienteDiagnosticoCreate(LoginRequiredMixin, FormView):
 
 class PacienteDiagnosticoEditar(LoginRequiredMixin, UpdateView):
     model = Diagnostico
-    template_name = 'consultorios/consulta/diagnostico_paciente_editar.html'
+    template_name = 'consultorios/consulta/diagnostico_paciente.html'
     pk_url_kwarg = 'diagnostico_id'
     form_class = DiagnosticoPacienteForm
 

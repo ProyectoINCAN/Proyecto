@@ -9,7 +9,7 @@
 
   <div class="app-content-body">
       <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Detalles de agenda</h1>
+        <h1 class="m-n font-thin h3">Agenda Detalles</h1>
     </div>
 
 
@@ -71,7 +71,7 @@
 <br>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <b>Lista de agendados</b>
+        Lista de Agendados
         <!--<div class="btn-group pull-right">
 
         </div>-->
@@ -87,14 +87,13 @@
         <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length"></div></div><div class="col-sm-6"><div id="dataTables-example_filter" class="dataTables_filter"></div></div></div><div class="row"><div class="col-sm-12"><table width="100%" class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
             <thead>
             <tr role="row">
-                <td>Nº</td>
-                <td>Ficha</td>
-                <td>Nombre y Apellido</td>
-                <td>Edad</td>
-                <td>Ciudad</td>
-                <td>Tel&eacute;fono</td>
-                <td>Observación</td>
-                <td>Confirmar</td>
+                <th>Nº</th>
+                <th>Ficha</th>
+                <th>Nombre y Apellido</th>
+                <th>Edad</th>
+                <th>Ciudad</th>
+                <th>Tel&eacute;fono</th>
+                <th>Confirmar</th>
             </tr>
             </thead>
             <tbody>
@@ -107,7 +106,6 @@
                 <td>{{detalle.4}}</td>
                 <td>{{detalle.5}}</td>
                 <td>{{detalle.6}}: {{detalle.7}}</td>
-                <td>{{detalle.8}}</td>
                 <td>
                   {% if user.groups.all.0.name == "Administrativo_Ventanilla" or request.user.is_superuser %}
                    {% if detalle.11 %}

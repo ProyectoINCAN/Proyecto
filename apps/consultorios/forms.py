@@ -183,7 +183,7 @@ class EvolucionPacienteForm(forms.ModelForm):
             'observaciones': 'Observaciones',
         }
         widgets = {
-            'observaciones': forms.Textarea(attrs={'class': 'form-control'}),
+            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
         }
 
 
@@ -256,7 +256,7 @@ class DiagnosticoPacienteForm(forms.ModelForm):
         }
         widgets = {
             'cie10': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'style':'text-transform:uppercase;'}),
         }
 
 
