@@ -113,4 +113,6 @@ urlpatterns = [
         MedicamentoDeleteView.as_view(), name='medicamento_eliminar'),
 
 
+    url(r'^$', views.DashboardMedico.as_view(), name='dashboard_medico')
+
 ]
