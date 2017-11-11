@@ -1096,3 +1096,15 @@ class AnamnesisPacienteCreate(LoginRequiredMixin, FormView):
         anamnesis.save()
 
         return JsonResponse({'success': True})
+
+
+class AnamnesisPacienteDetele(LoginRequiredMixin, DeleteView):
+    model = Anamnesis
+    template_name = "consultorios/consulta/anamnesis/anamnesis_paciente_eliminar.html"
+    pk_url_kwarg = 'anamnesis_id'
+    context_object_name = 'anamnesis'
+
+    def post(self, request, *args, **kwargs):
+        anamnesis = Anamnesis.objects.get(pk=self.kwargs['anamnesis_id'])
+        anamnesis.delete()
+        return JsonResponse({'success': True})

@@ -1,0 +1,50 @@
+<input id="url" type="hidden" value="{% url 'consultorios:anamnesis_paciente_eliminar' object.pk %}">
+<script>
+
+$( document ).ready(function() {
+        console.log("llega a bootstrap dialog");
+        var url = $("#url").val();
+        console.log("url", url);
+
+        BootstrapDialog.show({
+        type: BootstrapDialog.TYPE_DANGER,
+        title: 'Eliminar detalle',
+        message: '¿Está seguro de que desea eliminar la Anamnesis de la consulta del Paciente?',
+        draggable: true,
+        closable: false,
+        buttons: [{
+            label: 'Cancelar',
+            //cssClass: 'btn-primary',
+            icon: 'fa fa-times',
+              action: function(dialog){
+                dialog.close();
+                cerrar_modal();
+                return false;
+            }
+        }, {
+            label: 'Eliminar',
+            cssClass: 'btn-danger',
+            icon: 'fa fa-trash',
+            action: function(dialog){
+                dialog.close();
+                var csrftoken = getCookie('csrftoken');
+                $.ajax({
+                     type:"POST",
+                     url:url,
+                     data: {
+                            'csrfmiddlewaretoken': csrftoken
+                            },
+                     success: function(data){
+                        dialog.close();
+                        cerrar_modal();
+                        location.reload();
+                     }
+                });
+                return false;
+            }
+        }, ]
+        });
+    }
+);
+
+</script>

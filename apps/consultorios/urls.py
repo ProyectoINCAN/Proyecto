@@ -116,5 +116,7 @@ urlpatterns = [
     url(r'^$', views.DashboardMedico.as_view(), name='dashboard_medico'),
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/anamnesis/crear/$', views.AnamnesisPacienteCreate.as_view(),
         name='anamnesis_crear'),
+    url(r'^consulta/detalle/anamnesis/(?P<anamnesis_id>\d+)/eliminar$', views.AnamnesisPacienteDetele.as_view(),
+        name='anamnesis_paciente_eliminar'),
 
 ]
