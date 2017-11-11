@@ -522,6 +522,9 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
         #detalle.estado = EstadoConsultaDetalle.objects.get(codigo='E')
         detalle.save()
 
+        #anamnesis del paciente
+        anamnesis = Anamnesis.objects.filter(paciente=detalle.paciente).order_by('-pk')
+
         #diagnosticos del paciente.
         diagnosticos = Diagnostico.objects.filter(paciente=detalle.paciente).order_by('-pk')
 
@@ -537,6 +540,7 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
         # tratamientos del paciente
         tratamientos = Tratamiento.objects.filter(paciente=detalle.paciente)
 
+
         context.update({
             'consulta': consulta,
             'detalle': detalle,
@@ -545,6 +549,7 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
             'ordenes': ordenes,
             'prescripciones': prescripciones,
             'tratamientos': tratamientos,
+            'anamnesis': anamnesis
         })
         return super(TemplateView, self).render_to_response(context)
 
@@ -1068,3 +1073,26 @@ class MedicamentoDeleteView(LoginRequiredMixin, DeleteView):
         medicamento.save()
         return HttpResponseRedirect(reverse('consultorios:medicamentos'))
 
+
+class AnamnesisPacienteCreate(LoginRequiredMixin, FormView):
+    """permite registrar anamnesis del paciente en una consulta"""
+    model = Anamnesis
+    template_name = 'consultorios/consulta/anamnesis/anamnesis_form.html'
+    pk_url_kwarg = "detalle_id"
+    form_class = AnamnesisPacienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AnamnesisPacienteCreate, self).get_context_data(**kwargs)
+        detalle=ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        context.update({'detalle': detalle})
+        return context
+
+    def form_valid(self, form):
+        anamnesis = form.save(commit=False)
+        consulta_detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        consulta = Consulta.objects.get(pk=consulta_detalle.consulta.id)
+        anamnesis.consulta_detalle = consulta_detalle
+        anamnesis.paciente = consulta_detalle.paciente
+        anamnesis.save()
+
+        return JsonResponse({'success': True})

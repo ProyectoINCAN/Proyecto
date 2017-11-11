@@ -113,6 +113,8 @@ urlpatterns = [
         MedicamentoDeleteView.as_view(), name='medicamento_eliminar'),
 
 
-    url(r'^$', views.DashboardMedico.as_view(), name='dashboard_medico')
+    url(r'^$', views.DashboardMedico.as_view(), name='dashboard_medico'),
+    url(r'^consulta/detalle/(?P<detalle_id>\d+)/anamnesis/crear/$', views.AnamnesisPacienteCreate.as_view(),
+        name='anamnesis_crear'),
 
 ]

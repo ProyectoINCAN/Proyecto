@@ -1,9 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from apps.consultorios.models import Medico, EvolucionPaciente, HorarioMedico, \
-    Enfermero, Administrativo, OrdenEstudio, OrdenEstudioDetalle, ConsultaOrdenEstudio, ConsultaPrescripcion, \
-    Tratamiento, TipoMedicamento, Medicamento
+from apps.consultorios.models import *
 from django_select2 import forms as select2form
 
 from apps.internaciones.models import Diagnostico
@@ -326,3 +324,20 @@ class TipoMedicamentoForm(forms.ModelForm):
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
             'descripcion': forms.Textarea(attrs={'rows': 2, 'cols': 45, 'style':'text-transform:uppercase;'}),
         }
+
+
+class AnamnesisPacienteForm(forms.ModelForm):
+    class Meta:
+        model = Anamnesis
+        fields = ['observacion']
+        labels = {
+            'observacion': 'Observaciones',
+        }
+        widgets = {
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+        }
+
+    def clean(self):
+        observacion = self.cleaned_data['observacion']
+        if observacion == '':
+            self.add_error('observacion', 'Campo obligatorio')

@@ -424,3 +424,12 @@ class PlanSeguimiento(models.Model):
         ordering = ['consulta_detalle']
         verbose_name = 'Plan de seguimiento'
         verbose_name_plural = 'Planes de seguimiento'
+
+
+class Anamnesis(models.Model):
+    consulta_detalle = models.ForeignKey(ConsultaDetalle, on_delete=models.CASCADE, blank=False, null=False)
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=False, null=False)
+    observacion = models.CharField(max_length=250, blank=False, null=False)
+
+    class Meta:
+        verbose_name = 'Anamnesis'

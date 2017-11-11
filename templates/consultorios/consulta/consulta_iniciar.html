@@ -1,34 +1,7 @@
 {% extends 'base/base2.html' %}
+{% load staticfiles %}
 {% block extrahead %}
-  <style type="text/css">
-  h1 {
-    margin-left: 15px;
-    margin-bottom: 20px;
-}
-
-@media (min-width: 768px) {
-
-    .brand-pills > li > a {
-        border-top-right-radius: 0px;
-    	border-bottom-right-radius: 0px;
-    }
-
-    li.brand-nav.active a:after{
-    	content: " ";
-    	display: block;
-    	width: 0;
-    	height: 0;
-    	border-top: 20px solid transparent;
-    	border-bottom: 20px solid transparent;
-    	border-left: 9px solid #428bca;
-    	position: absolute;
-    	top: 50%;
-    	margin-top: -20px;
-    	left: 100%;
-    	z-index: 2;
-    }
-}
-  </style>
+  <link rel="stylesheet" href="{% static 'apps/consultorios/css/consulta_iniciar.css' %}">
 {% endblock %}
 {% block content %}
   <div class="app-content-body">
@@ -48,7 +21,7 @@
           </div>
         </div>
         <div class="box-body">
-          <div class="col-sm-4">
+          <div class="col-sm-3">
             <span class="font-bold">Nombre y Apellido:</span>
             <span class="font-normal">{{ detalle.paciente.get_full_name }}</span>
             <br/>
@@ -73,7 +46,7 @@
             </span>
             <br/>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-3">
 
             <span class="font-bold">Fecha Nacimiento: &nbsp;&nbsp;&nbsp;</span>
             <span class="font-normal">{{ detalle.paciente.fecha_nacimiento }}</span>
@@ -89,6 +62,17 @@
             <span class="font-normal">{{ detalle.paciente.nacionalidad }}</span>
             <br/>
           </div>
+          <div class="col-sm-6">
+              <div class="reloj" id="Horas">00</div>
+              <div class="reloj" id="Minutos">:00</div>
+              <div class="reloj" id="Segundos">:00</div>
+              <div class="reloj" id="Centesimas">:00</div>
+              <input type="button" class="boton" id="inicio" value="Iniciar &#9658;" onclick="inicio();">
+              <input type="button" class="boton" id="parar" value="Detener &#8718;" onclick="parar();" disabled>
+              <input type="button" class="boton" id="continuar" value="Continuar &#8634;" onclick="inicio();" disabled>
+              <input type="button" class="boton" id="reinicio" value="Reiniciar &#8635;" onclick="reinicio();" disabled>
+
+          </div>
         </div>
       </div>
 
@@ -98,7 +82,7 @@
             <div class="col-sm-2">
                 <ul class="nav nav-pills brand-pills nav-stacked" role="tablist">
                     <li role="presentation" class="brand-nav active">
-                      <a href="#tab_datos_consulta" aria-controls="tab_datos_consulta" role="tab" data-toggle="tab">Datos de la Consulta</a></li>
+                      <a href="#tab_datos_anamnesis" aria-controls="tab_datos_anamnesis" role="tab" data-toggle="tab">Anamnesis</a></li>
                     <li role="presentation" class="brand-nav">
                       <a href="#tab_diagnostico" aria-controls="tab_diagnostico" role="tab" data-toggle="tab">Diagnóstico</a></li>
                     <li role="presentation" class="brand-nav">
@@ -113,8 +97,53 @@
             </div>
             <div class="col-sm-10">
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="tab_datos_consulta">
-                      <h3>fsahfasdhf</h3>
+                    <div role="tabpanel" class="tab-pane active" id="tab_datos_anamnesis">
+                      <div class="row">
+                        <div class="col-xs-12 col-md-12 col-lg-12">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <b>Anamnesis del Paciente</b>
+                              <div class="btn-group pull-right">
+                                <a onclick="return abrir_modal('{% url 'consultorios:anamnesis_crear' detalle.pk  %}')">
+                                  <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
+                                  </button>
+                                </a>
+                              </div><p></p>
+                            </div>
+                            <div class="panel-body">
+                              <table class="table table-striped table-bordered table-hover table-responsive datatable"
+                                     id="dataTables-example" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                  <th>Observación</th>
+
+                                  <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for anamne in anamnesis %}
+                                  <tr>
+                                    <td>{{ anamne.observacion }}</td>
+                                    <td>
+                                      {% if anamne.consulta_detalle.id == detalle.id %}
+                                      <a class="btn btn-default btn-xs" title="Editar"
+                                         onclick="return abrir_modal('{% url 'consultorios:evolucion_paciente_editar' anamne.id %}')">
+                                        <i class="fa fa-pencil"></i>
+                                      </a>
+                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                         onclick="return abrir_modal('{% url 'consultorios:evolucion_paciente_eliminar' anamne.id %}')">
+                                        <i class="fa fa-trash"></i>
+                                      </a>
+                                      {% endif %}
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab_diagnostico">
                       <div class="row">
@@ -186,7 +215,7 @@
                     </div>
 
                   <div role="tabpanel" class="tab-pane" id="tab_evolucion">
-                      <div class="row">
+                    <div class="row">
                         <div class="col-xs-12 col-md-12 col-lg-12">
                           <div class="panel panel-default">
                             <div class="panel-heading">
@@ -241,7 +270,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                  </div>
 
                     <div role="tabpanel" class="tab-pane" id="tab_orden_estudio">
                       <div class="row">
@@ -406,6 +435,71 @@
 {% endblock %}
 
 {% block extrajs %}
+  <script src = "{% static 'apps/consultorios/' %}"></script>
+  <script>
+    var centesimas = 0;
+    var segundos = 0;
+    var minutos = 0;
+    var horas = 0;
+    function inicio () {
+      control = setInterval(cronometro,10);
+      document.getElementById("inicio").disabled = true;
+      document.getElementById("parar").disabled = false;
+      document.getElementById("continuar").disabled = true;
+      document.getElementById("reinicio").disabled = false;
+    }
+    function parar () {
+      clearInterval(control);
+      document.getElementById("parar").disabled = true;
+      document.getElementById("continuar").disabled = false;
+    }
+    function reinicio () {
+      clearInterval(control);
+      centesimas = 0;
+      segundos = 0;
+      minutos = 0;
+      horas = 0;
+      Centesimas.innerHTML = ":00";
+      Segundos.innerHTML = ":00";
+      Minutos.innerHTML = ":00";
+      Horas.innerHTML = "00";
+      document.getElementById("inicio").disabled = false;
+      document.getElementById("parar").disabled = true;
+      document.getElementById("continuar").disabled = true;
+      document.getElementById("reinicio").disabled = true;
+    }
+    function cronometro () {
+      if (centesimas < 99) {
+        centesimas++;
+        if (centesimas < 10) { centesimas = "0"+centesimas }
+        Centesimas.innerHTML = ":"+centesimas;
+      }
+      if (centesimas == 99) {
+        centesimas = -1;
+      }
+      if (centesimas == 0) {
+        segundos ++;
+        if (segundos < 10) { segundos = "0"+segundos }
+        Segundos.innerHTML = ":"+segundos;
+      }
+      if (segundos == 59) {
+        segundos = -1;
+      }
+      if ( (centesimas == 0)&&(segundos == 0) ) {
+        minutos++;
+        if (minutos < 10) { minutos = "0"+minutos }
+        Minutos.innerHTML = ":"+minutos;
+      }
+      if (minutos == 59) {
+        minutos = -1;
+      }
+      if ( (centesimas == 0)&&(segundos == 0)&&(minutos == 0) ) {
+        horas ++;
+        if (horas < 10) { horas = "0"+horas }
+        Horas.innerHTML = horas;
+      }
+    }
+  </script>
   <script>
   $('#dataTables-example2').DataTable({
          responsive: true,
