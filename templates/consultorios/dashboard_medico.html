@@ -15,7 +15,7 @@
     </div>
     {% block breadcrumb %}
       <ol class="breadcrumb" style="background-color: #f6f8f8">
-        <li>Médico : {{ medico.get_full_name }}</li>
+        <li><b>Médico : {{ medico.get_full_name }}</b></li>
       </ol>
     {% endblock %}
     <div class="row">
@@ -102,6 +102,54 @@
       </div>
 
     </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title"><b>Pacientes por grupo de Edad</b></h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="chart">
+                 <canvas id="doughnutChart" width="800" height="450"></canvas>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title"><b>Mis Especialidades</b></h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <ul class="products-list product-list-in-box">
+                {% for especialidad in especialidades %}
+                <li class="item">
+                  <div class="product-info">
+                        <span class="product-description">
+                          <b>{{ especialidad.nombre }}</b>
+                        </span>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <!-- /.box-body -->
+
+          </div>
+      </div>
+    </div>
     <canvas id="pie-chart" width="800" height="450"></canvas>
 
   </div>
@@ -114,7 +162,7 @@
 
   <script>
     var operaciones_suma = 2;
-    var dias = {{ especialidades }};
+    var dias = {{ especialidades_nombre }};
     var genero_masculino = {{ genero_masculino }};
     var genero_femenino = {{ genero_femenino }};
 
@@ -125,7 +173,7 @@
     var myChart2 = new Chart(ctx2, {
       type: 'pie',
       data: {
-        labels: {{ especialidades }},
+        labels: {{ especialidades_nombre }},
         datasets: [{
           label: "Population (millions)",
           backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
@@ -139,6 +187,25 @@
         }
       }
     });
+    new Chart(document.getElementById("doughnutChart"), {
+    type: 'doughnut',
+    data: {
+      labels: {{ grupo_edades }},
+      datasets: [
+        {
+          label: "Population (millions)",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          data: {{ pacientes_by_edad }}
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Predicted world population (millions) in 2050'
+      }
+    }
+});
   </script>
 
 {% endblock %}

@@ -28,6 +28,7 @@ from apps.pacientes.models import Paciente
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.internaciones.models import Diagnostico
 from django.utils.safestring import mark_safe
+from apps.consultorios.helpers import calculate_age
 
 class MedicoList(ListView):
     print("llegamos al list de medico")
@@ -444,7 +445,7 @@ class ConsultasDia(LoginRequiredMixin, TemplateView):
         context = self.get_context_data(**kwargs)
         medico = Medico.objects.get(usuario=request.user)
         #obtenemos todas las consultas del dia de hoy del medico logueado
-        consultas=Consulta.objects.filter(estado='P', medico=medico, fecha=date.today())
+        consultas=Consulta.objects.filter(estado='P', medico=medico, fecha=datetime.date.today())
         context.update({'medico': medico,
                         'consultas': consultas,
                         })
@@ -899,15 +900,45 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
         last_day = datetime.date(now.year, now.month, num_days)
 
         consultas_mes = ConsultaDetalle.objects.filter(consulta__medico=medico,
-                                       estado=EstadoConsultaDetalle.objects.get(codigo='F'),
-                                       consulta__fecha__range=[first_day, last_day]).count()
+                                                       estado=EstadoConsultaDetalle.objects.get(codigo='F'),
+                                                       consulta__fecha__range=[first_day, last_day]).count()
 
-        consultas_dia = ConsultaDetalle.objects.filter(consulta__medico=medico, consulta__fecha=datetime.date.today()).count()
+        consultas_dia = ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                                       consulta__fecha=datetime.date.today()).count()
 
         genero_masculino = []
         genero_femenino = []
         lista_especialidades = []
         lista_pacientes_especialidad = []
+        max_ninhez = 12
+        max_adolescencia = 18
+        max_juventud = 30
+        max_adultez = 65
+
+        cant_ninhez = 0
+        cant_adolescencia = 0
+        cant_juventud = 0
+        cant_adultez = 0
+        cant_vejez = 0
+
+        consultas = ConsultaDetalle.objects.filter(consulta__medico=medico).values('paciente').distinct()
+
+        for consulta in consultas:
+            paciente = Paciente.objects.get(pk=consulta['paciente'])
+            edad = calculate_age(paciente.fecha_nacimiento)
+            if edad <= max_ninhez:
+                cant_ninhez += 1
+            elif edad <= max_adolescencia:
+                cant_adolescencia += 1
+            elif edad <= max_juventud:
+                cant_juventud += 1
+            elif edad <= max_adultez:
+                cant_adultez += 1
+            else:
+                cant_vejez += 1
+
+        lista_pacientes_by_edad = [cant_ninhez, cant_adolescencia, cant_juventud, cant_adultez, cant_vejez]
+
         for especialidad in especialidades:
 
             consulta_masculina =ConsultaDetalle.objects.filter(consulta__medico=medico,
@@ -916,8 +947,8 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
             genero_masculino.append(consulta_masculina.count())
 
             consulta_femenina = ConsultaDetalle.objects.filter(consulta__medico=medico,
-                                                                consulta__especialidad=especialidad,
-                                                                paciente__sexo__codigo='F')
+                                                               consulta__especialidad=especialidad,
+                                                               paciente__sexo__codigo='F')
 
             genero_femenino.append(consulta_femenina.count())
 
@@ -931,14 +962,17 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
 
         context.update({
             'pacientes_by_especialidad': lista_pacientes_especialidad,
-            'especialidades': mark_safe(lista_especialidades),
+            'especialidades_nombre': mark_safe(lista_especialidades),
             'genero_masculino': genero_masculino,
             'genero_femenino': genero_femenino,
             'medico': medico,
             'consultas_realizadas': consultas_realizadas,
             'consultas_canceladas': consultas_canceladas,
             'consultas_mes': consultas_mes,
-            'consultas_dia': consultas_dia
+            'consultas_dia': consultas_dia,
+            'grupo_edades': mark_safe(['Infancia', 'Adolescencia', 'Juventud', 'Adultez', 'Vejez']),
+            'pacientes_by_edad': lista_pacientes_by_edad,
+            'especialidades': especialidades
         })
 
         return super(TemplateView, self).render_to_response(context)

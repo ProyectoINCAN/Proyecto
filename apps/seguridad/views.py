@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from apps.consultorios.models import Medico
 
 
 def login_view(request):
@@ -20,7 +21,10 @@ def login_view(request):
                 login(request, user)
                 #luego se definira el redirect al dashboard correspondiente de acuerdo al tipo
                 #de usuario logueado.
-                return redirect('pacientes:index')
+                if Medico.objects.filter(usuario=user).exists():
+                    return redirect('consultorios:dashboard_medico')
+                else:
+                    return redirect('pacientes:index')
             else:
                 return render(request, "principal/login.html", {'error': 'Cuenta inactiva'})
         else:
