@@ -336,7 +336,7 @@ class ConsultaOrdenEstudio(models.Model):
 class EvolucionPaciente(models.Model):
     fecha = models.DateField(default=now, null=False)
     hora = models.TimeField(default=now, null=False)
-    observaciones = UpperTextField(blank=False, uppercase=True)
+    observaciones = models.TextField(blank=True)
     medico = models.ForeignKey(Medico, on_delete=DO_NOTHING, verbose_name="Firma")
     paciente = models.ForeignKey(Paciente, on_delete=DO_NOTHING)
     consulta_detalle = models.ForeignKey(ConsultaDetalle, on_delete=models.CASCADE, blank=True, null=True, default="")
