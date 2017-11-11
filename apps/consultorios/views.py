@@ -1,3 +1,5 @@
+import calendar
+
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
@@ -18,8 +20,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView, View
 
-from datetime import date
-
+import datetime
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import *
 from apps.consultorios.models import *
@@ -884,6 +885,27 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
         #consultas = Consulta.objects.filter(medico=medico)
         detalles = ConsultaDetalle.objects.filter(consulta__medico=medico)
 
+
+        consultas_realizadas = ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                       estado=EstadoConsultaDetalle.objects.get(codigo='F')).count()
+
+        consultas_canceladas = ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                                              estado=EstadoConsultaDetalle.objects.get(
+                                                                  codigo='C')).count()
+
+        now = datetime.datetime.now()
+        _, num_days = calendar.monthrange(now.year, now.month)
+        first_day = datetime.date(now.year, now.month, 1)
+        last_day = datetime.date(now.year, now.month, num_days)
+
+        consultas_mes = ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                       estado=EstadoConsultaDetalle.objects.get(codigo='F'),
+                                       consulta__fecha__range=[first_day, last_day]).count()
+
+        consultas_dia = ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                       estado=EstadoConsultaDetalle.objects.get(codigo='F'),
+                                       consulta__fecha = datetime.date.today()).count()
+
         genero_masculino = []
         genero_femenino = []
         lista_especialidades = []
@@ -905,16 +927,14 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
             'especialidades': mark_safe(lista_especialidades),
             'genero_masculino': genero_masculino,
             'genero_femenino': genero_femenino,
-            'medico': medico
+            'medico': medico,
+            'consultas_realizadas': consultas_realizadas,
+            'consultas_canceladas': consultas_canceladas,
+            'consultas_mes': consultas_mes,
+            'consultas_dia': consultas_dia
         })
 
         return super(TemplateView, self).render_to_response(context)
-
-
-
-
-
-
 
 
 class TipoMedicamentoListView(LoginRequiredMixin, ListView):
