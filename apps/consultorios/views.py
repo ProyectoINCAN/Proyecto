@@ -1,3 +1,5 @@
+import calendar
+
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
@@ -18,15 +20,14 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView, View
 
-from datetime import date
-
+import datetime
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import *
 from apps.consultorios.models import *
 from apps.pacientes.models import Paciente
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.internaciones.models import Diagnostico
-
+from django.utils.safestring import mark_safe
 
 class MedicoList(ListView):
     print("llegamos al list de medico")
@@ -868,6 +869,72 @@ class PacienteTratamientoUpdate(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.save()
         return JsonResponse({'success': True})
+
+
+class DashboardMedico(LoginRequiredMixin, TemplateView):
+    template_name = 'consultorios/dashboard_medico.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        medico = Medico.objects.get(usuario=request.user)
+        #obtenemos las especialidades del médico
+        especialidades = medico.especialidad.all()
+
+        #obtenemos las consultas relacionadas al médico
+        #consultas = Consulta.objects.filter(medico=medico)
+        detalles = ConsultaDetalle.objects.filter(consulta__medico=medico)
+
+
+        consultas_realizadas = ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                       estado=EstadoConsultaDetalle.objects.get(codigo='F')).count()
+
+        consultas_canceladas = ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                                              estado=EstadoConsultaDetalle.objects.get(
+                                                                  codigo='C')).count()
+
+        now = datetime.datetime.now()
+        _, num_days = calendar.monthrange(now.year, now.month)
+        first_day = datetime.date(now.year, now.month, 1)
+        last_day = datetime.date(now.year, now.month, num_days)
+
+        consultas_mes = ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                       estado=EstadoConsultaDetalle.objects.get(codigo='F'),
+                                       consulta__fecha__range=[first_day, last_day]).count()
+
+        consultas_dia = ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                       estado=EstadoConsultaDetalle.objects.get(codigo='F'),
+                                       consulta__fecha = datetime.date.today()).count()
+
+        genero_masculino = []
+        genero_femenino = []
+        lista_especialidades = []
+        for especialidad in especialidades:
+
+            consulta_masculina =ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                                               consulta__especialidad=especialidad,
+                                                               paciente__sexo__codigo='M')
+            genero_masculino.append(consulta_masculina.count())
+
+            consulta_femenina = ConsultaDetalle.objects.filter(consulta__medico=medico,
+                                                                consulta__especialidad=especialidad,
+                                                                paciente__sexo__codigo='F')
+
+            genero_femenino.append(consulta_femenina.count())
+
+            lista_especialidades.append(especialidad.nombre)
+        context.update({
+            'especialidades': mark_safe(lista_especialidades),
+            'genero_masculino': genero_masculino,
+            'genero_femenino': genero_femenino,
+            'medico': medico,
+            'consultas_realizadas': consultas_realizadas,
+            'consultas_canceladas': consultas_canceladas,
+            'consultas_mes': consultas_mes,
+            'consultas_dia': consultas_dia
+        })
+
+        return super(TemplateView, self).render_to_response(context)
 
 
 class TipoMedicamentoListView(LoginRequiredMixin, ListView):

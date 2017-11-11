@@ -1,0 +1,49 @@
+{% extends 'base/base2.html' %}
+{% load staticfiles %}
+
+{% block content %}
+  <div class="col">
+    <!--main-header -->
+
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-12 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">SIHINCAN</h1>
+          <small class="text-muted">Bienvenido a tu web de Médicos</small>
+        </div>
+      </div>
+    </div>
+    {% block breadcrumb %}
+      <ol class="breadcrumb" style="background-color: #f6f8f8">
+        <li>Médico : {{ medico.get_full_name }}</li>
+      </ol>
+    {% endblock %}
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+          <div class="panel-heading font-bold">Especialidades</div>
+          <div class="panel-body">
+            <canvas id="accionChart" height="100"></canvas>
+          </div>
+        </div>
+    </div>
+
+
+  </div>
+{% endblock %}
+
+
+{% block extrajs %}
+  <!--<script src= "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.3/Chart.bundle.min.js"></script>-->
+  <script src="{% static 'vendor/chart-js/Chart.min.js' %}"></script>
+
+  <script>
+    var operaciones_suma = 2;
+    var dias = {{ especialidades }};
+    var genero_masculino = {{ genero_masculino }};
+    var genero_femenino = {{ genero_femenino }};
+
+  </script>
+  <script src="{% static 'apps/consultorios/dashboard_medico.js' %}"></script>
+
+{% endblock %}
+
