@@ -18,15 +18,91 @@
         <li>Médico : {{ medico.get_full_name }}</li>
       </ol>
     {% endblock %}
-    <div class="col-lg-6">
-        <div class="panel panel-default">
-          <div class="panel-heading font-bold">Especialidades</div>
-          <div class="panel-body">
-            <canvas id="accionChart" height="100"></canvas>
+    <div class="row">
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+          <span class="info-box-icon bg-aqua"><i class="ion ion-ios-folder"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Consultas Realizadas</span>
+              <h2 align="center">{{ consultas_realizadas }}</h2>
+            </div>
           </div>
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+          <span class="info-box-icon bg-red"><i class="ion-ios-folder-outline"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">Consultas Canceladas</span>
+            <h2 align="center">{{ consultas_canceladas }}</h2>
+          </div>
+            <!-- /.info-box-content -->
         </div>
-    </div>
+          <!-- /.info-box -->
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="ion-ios-calendar"></i></span>
 
+            <div class="info-box-content">
+              <span class="info-box-text">Consultas del Mes</span>
+              <h2 align="center">{{ consultas_mes }}</h2>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+          <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">Consultas del Día</span>
+            <h2 align="center">{{ consultas_dia }}</h2>
+          </div>
+            <!-- /.info-box-content -->
+        </div>
+          <!-- /.info-box -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title"><b>Pacientes por Género en Especialidad</b></h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="chart">
+                 <canvas id="accionChart" height="100"></canvas>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title"><b>Pacientes Agendados por Especialidad</b></h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="chart">
+                 <canvas id="pieChart" height="100"></canvas>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+      </div>
+
+    </div>
+    <canvas id="pie-chart" width="800" height="450"></canvas>
 
   </div>
 {% endblock %}
@@ -44,6 +120,26 @@
 
   </script>
   <script src="{% static 'apps/consultorios/dashboard_medico.js' %}"></script>
+  <script>
+    var ctx2 = $("#pieChart");
+    var myChart2 = new Chart(ctx2, {
+      type: 'pie',
+      data: {
+        labels: {{ especialidades }},
+        datasets: [{
+          label: "Population (millions)",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          data: {{ pacientes_by_especialidad }}
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Cantidad de Pacientes en unidades'
+        }
+      }
+    });
+  </script>
 
 {% endblock %}
 

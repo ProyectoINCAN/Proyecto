@@ -902,13 +902,12 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
                                        estado=EstadoConsultaDetalle.objects.get(codigo='F'),
                                        consulta__fecha__range=[first_day, last_day]).count()
 
-        consultas_dia = ConsultaDetalle.objects.filter(consulta__medico=medico,
-                                       estado=EstadoConsultaDetalle.objects.get(codigo='F'),
-                                       consulta__fecha = datetime.date.today()).count()
+        consultas_dia = ConsultaDetalle.objects.filter(consulta__medico=medico, consulta__fecha=datetime.date.today()).count()
 
         genero_masculino = []
         genero_femenino = []
         lista_especialidades = []
+        lista_pacientes_especialidad = []
         for especialidad in especialidades:
 
             consulta_masculina =ConsultaDetalle.objects.filter(consulta__medico=medico,
@@ -922,8 +921,16 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
 
             genero_femenino.append(consulta_femenina.count())
 
+            #obtenemos la cantidad de pacientes que se agendaron en una especialidad
+            paciente_by_especialidad = ConsultaDetalle.objects.filter(consulta__especialidad=especialidad).\
+                values('paciente').distinct().count()
+
+            lista_pacientes_especialidad.append(paciente_by_especialidad)
+
             lista_especialidades.append(especialidad.nombre)
+
         context.update({
+            'pacientes_by_especialidad': lista_pacientes_especialidad,
             'especialidades': mark_safe(lista_especialidades),
             'genero_masculino': genero_masculino,
             'genero_femenino': genero_femenino,
