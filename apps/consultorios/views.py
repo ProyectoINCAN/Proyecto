@@ -1108,3 +1108,14 @@ class AnamnesisPacienteDetele(LoginRequiredMixin, DeleteView):
         anamnesis = Anamnesis.objects.get(pk=self.kwargs['anamnesis_id'])
         anamnesis.delete()
         return JsonResponse({'success': True})
+
+
+class AnamnesisPacienteUpdate(LoginRequiredMixin, UpdateView):
+    model = Anamnesis
+    template_name = 'consultorios/consulta/anamnesis/anamnesis_form.html'
+    pk_url_kwarg = 'anamnesis_id'
+    form_class = AnamnesisPacienteForm
+
+    def form_valid(self, form):
+        form.save()
+        return JsonResponse({'success': True})
