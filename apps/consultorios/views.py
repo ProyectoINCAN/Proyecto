@@ -11,7 +11,8 @@ from django.http.response import JsonResponse
 from django.db import connection
 import json
 from django.core import serializers
-from django.views.decorators.csrf import requires_csrf_token
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import requires_csrf_token, csrf_exempt
 from django.shortcuts import render
 from django.db.models.deletion import ProtectedError
 
@@ -879,6 +880,16 @@ class PacienteTratamientoUpdate(LoginRequiredMixin, UpdateView):
 
 class DashboardMedico(LoginRequiredMixin, TemplateView):
     template_name = 'consultorios/dashboard_medico.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.is_authenticated():
+            if Medico.objects.filter(usuario=user).exists():
+                return super(DashboardMedico, self).dispatch(request, *args, **kwargs)
+            else:
+                return HttpResponseRedirect(reverse('logout'))
+        return super(DashboardMedico, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)

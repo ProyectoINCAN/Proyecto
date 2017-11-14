@@ -5,6 +5,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import TemplateView, View
 from django.views.generic.list import ListView
+
+from apps.consultorios.models import Administrativo
 from apps.pacientes.forms import *
 from apps.pacientes.models import *
 from apps.principal.common_functions import filtros_establecidos
@@ -737,7 +739,15 @@ class DashboardAdministrativoView(LoginRequiredMixin, TemplateView):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        return super(DashboardAdministrativoView, self).dispatch(request, *args, *kwargs)
+        #return super(DashboardAdministrativoView, self).dispatch(request, *args, *kwargs)
+
+        user = self.request.user
+        if user.is_authenticated():
+            if Administrativo.objects.filter(usuario=user).exists():
+                return super(DashboardAdministrativoView, self).dispatch(request, *args, **kwargs)
+            else:
+                return HttpResponseRedirect(reverse('logout'))
+        return super(DashboardAdministrativoView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
