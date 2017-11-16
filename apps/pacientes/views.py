@@ -743,7 +743,7 @@ class DashboardAdministrativoView(LoginRequiredMixin, TemplateView):
 
         user = self.request.user
         if user.is_authenticated():
-            if Administrativo.objects.filter(usuario=user).exists():
+            if Administrativo.objects.filter(usuario=user).exists() or user.is_superuser:
                 return super(DashboardAdministrativoView, self).dispatch(request, *args, **kwargs)
             else:
                 return HttpResponseRedirect(reverse('logout'))
