@@ -27,6 +27,9 @@
   <link rel="stylesheet" href="{% static 'vendor/datatables-plugins/dataTables.bootstrap.css' %}">
   <link rel="stylesheet" href="{% static 'vendor/datatables-responsive/dataTables.responsive.css' %}">
   <link rel="stylesheet" href="{% static 'css/bootstrap3-wysihtml5.min.css' %}">
+
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
   <title>{% block title %}Title{% endblock %}</title>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -465,6 +468,10 @@
     <!--<script src= "https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>-->
     <script src = "{% static 'js/bootstrap3-wysihtml5.all.min.js' %}"></script>
     <!--<script src="/static/js/select2.min.js"></script>-->
+
+    <!-- date-range-picker -->
+    <script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
 
     {% block extrajs %}
 

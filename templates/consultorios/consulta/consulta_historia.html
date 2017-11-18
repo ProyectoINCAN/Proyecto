@@ -1,0 +1,92 @@
+{% extends 'base/base2.html' %}
+{% load staticfiles %}
+
+{% block content %}
+  <div class="app-content-body">
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+      <li class="active">Historia Clínica</li>
+    </ol>
+    <div class="col-md-6">
+          <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">Filtros</h3>
+            </div>
+            <div class="box-body">
+              <!-- Date -->
+
+
+              <!-- Date range -->
+              <div class="form-group">
+                <label>Fechas:</label>
+
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right" id="reservation">
+                </div>
+                <!-- /.input group -->
+              </div>
+              <!-- /.form group -->
+
+
+
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+        </div>
+
+
+  </div>
+{% endblock %}
+
+{% block extrajs %}
+  <script>
+    $(function () {
+        //Date range picker
+
+        $('#reservation').daterangepicker({
+          "locale": {
+              "format": "DD/MM/YYYY",
+              "separator": " - ",
+              "applyLabel": "Aplicar",
+              "cancelLabel": "Cancelar",
+              "fromLabel": "From",
+              "toLabel": "To",
+              "customRangeLabel": "Custom",
+              "daysOfWeek": [
+                  "Do",
+                  "Lu",
+                  "Ma",
+                  "Mi",
+                  "Ju",
+                  "Vi",
+                  "Sa"
+              ],
+              "monthNames": [
+                  "Enero",
+                  "Febrero",
+                  "Marzo",
+                  "Abril",
+                  "Mayo",
+                  "Junio",
+                  "Julio",
+                  "Agosto",
+                  "Septiembre",
+                  "Octubre",
+                  "Noviembre",
+                  "Diciembre"
+              ],
+              "firstDay": 1
+          }
+      })
+    })
+
+  </script>
+
+{% endblock %}
+
+
+

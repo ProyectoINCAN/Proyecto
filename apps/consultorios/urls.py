@@ -121,4 +121,7 @@ urlpatterns = [
     url(r'^consulta/detalle/anamnesis/(?P<anamnesis_id>\d+)/editar/$', views.AnamnesisPacienteUpdate.as_view(),
         name='anamnesis_paciente_editar'),
 
+    url(r'^consulta/historia/paciente/(?P<paciente_id>\d+)/$', views.HistoriaClinicaList.as_view(),
+        name='consulta_historia_clinica'),
+
 ]

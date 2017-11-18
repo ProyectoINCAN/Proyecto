@@ -1130,3 +1130,26 @@ class AnamnesisPacienteUpdate(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.save()
         return JsonResponse({'success': True})
+
+
+class HistoriaClinicaList(LoginRequiredMixin, TemplateView):
+    template_name = 'consultorios/consulta/consulta_historia.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        hoy = datetime.datetime.now()
+
+        p_desde = request.GET.get('desde', None)
+
+        p_hasta = request.GET.get('hasta', None)
+
+        if not p_desde or not p_hasta:
+            p_desde = hoy
+            p_hasta = hoy
+
+        consultas = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id'],
+                                                   consulta__fecha__range=[p_desde, p_hasta])
+
+        return super(TemplateView, self).render_to_response(context)
+
+

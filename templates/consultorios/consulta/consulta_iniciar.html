@@ -62,7 +62,7 @@
             <span class="font-normal">{{ detalle.paciente.nacionalidad }}</span>
             <br/>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6" style="display:none">
               <div class="reloj" id="Horas">00</div>
               <div class="reloj" id="Minutos">:00</div>
               <div class="reloj" id="Segundos">:00</div>
@@ -74,10 +74,20 @@
 
           </div>
         </div>
+    </div>
+    <div class="row">
+
+      <div class="col-lg-2 pull-right">
+        <p>
+        <a class="btn btn-block btn-primary"
+                onclick="window.location.href='{% url 'consultorios:consulta_historia_clinica' detalle.paciente.pk %}'">
+          Historia Clínica</a>
+        </p>
       </div>
 
-	  <div class="row">
+    </div>
 
+	  <div class="row">
       <div role="tabpanel">
             <div class="col-sm-2">
                 <ul class="nav nav-pills brand-pills nav-stacked" role="tablist">
@@ -435,7 +445,7 @@
 {% endblock %}
 
 {% block extrajs %}
-  <script src = "{% static 'apps/consultorios/' %}"></script>
+  <script src = "{% static 'apps/consultorios/js/consulta_iniciar.js' %}"></script>
   <script>
     var centesimas = 0;
     var segundos = 0;
