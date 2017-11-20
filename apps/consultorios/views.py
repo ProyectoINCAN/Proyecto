@@ -4,13 +4,14 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.core import serializers
 from django.http.response import JsonResponse
 from django.db import connection
 import json
 from django.core import serializers
+from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import requires_csrf_token, csrf_exempt
 from django.shortcuts import render
@@ -30,6 +31,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.internaciones.models import Diagnostico
 from django.utils.safestring import mark_safe
 from apps.consultorios.helpers import calculate_age
+from utils.generate_pdf import render_to_pdf
+
 
 class MedicoList(ListView):
     print("llegamos al list de medico")
@@ -1149,7 +1152,37 @@ class HistoriaClinicaList(LoginRequiredMixin, TemplateView):
 
         consultas = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id'],
                                                    consulta__fecha__range=[p_desde, p_hasta])
+        #la ultima consulta corresponde a la consulta actual
+        ultima_consulta = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id']).last()
+
+        context.update({
+            'detalle': ultima_consulta,
+            'consultas': consultas
+        })
 
         return super(TemplateView, self).render_to_response(context)
+
+
+class GeneratePDF(View):
+    def get(self, request, *args, **kwargs):
+        template = get_template('consultorios/test_pdf.html')
+        context = {
+            "invoice_id": 123,
+            "customer_name": "John Cooper",
+            "amount": 1399.99,
+            "today": "Today",
+        }
+        html = template.render(context)
+        pdf = render_to_pdf('consultorios/test_pdf.html', context)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = "Invoice_%s.pdf" % ("12341231")
+            content = "inline; filename='%s'" % (filename)
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename='%s'" % (filename)
+            response['Content-Disposition'] = content
+            return response
+        return HttpResponse("Not found")
 
 
