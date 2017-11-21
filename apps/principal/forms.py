@@ -78,10 +78,10 @@ class UserForm(forms.ModelForm):
                 self.add_error('medicos', 'Debe seleccionar el médico')
         elif int(self.cleaned_data.get('tipos'))== 2:
             if not self.self.cleaned_data.get('enfermero'):
-                self.add_error('medicos', 'Debe seleccionar el médico')
+                self.add_error('enfermero', 'Debe seleccionar el enfermero')
         elif int(self.cleaned_data.get('tipos'))== 3:
             if not self.self.cleaned_data.get('administrativo'):
-                self.add_error('medicos', 'Debe seleccionar un administrativo')
+                self.add_error('administrativo', 'Debe seleccionar un administrativo')
 
     def save(self, commit=True):
         user = super(UserForm, self).save(commit=False)

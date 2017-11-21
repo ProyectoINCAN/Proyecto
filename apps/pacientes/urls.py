@@ -28,6 +28,8 @@ urlpatterns = [
         login_required(pacienteViews.PacienteDireccionDeleteView.as_view()), name='paciente_direccion_eliminar'),
     #abre la url para agregar una nueva direccion
     url(r'^direccion/nuevo/(?P<paciente_id>\d+)$', login_required(pacienteViews.crear_direccion), name='crear_direccion'),
+    url(r'^paciente/direccion/(?P<direccion_id>\d+)/editar/$',
+        pacienteViews.PacienteDireccionUpdate.as_view(), name='paciente_direccion_editar'),
 
 
     #seguro medico del paciente
@@ -70,4 +72,7 @@ urlpatterns = [
 
     url(r'^agenda/(?P<agenda_id>\d+)/(?P<origen>\d+)/paciente/nuevo/$',
         pacienteViews.PacienteCreateByAgenda.as_view(), name='agenda_paciente_crear'),
+
+    url(r'^paciente/(?P<paciente_id>\d+)/padre/list$',
+        pacienteViews.PacientePadreList.as_view(), name='paciente_padre_listar'),
 ]

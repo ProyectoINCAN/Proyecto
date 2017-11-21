@@ -6,103 +6,118 @@
 
 
 {% block content %}
+<style type="text/css">
+<!--
+label.div_center {
+text-align:center;
+}
+
+</style>
+
+<style>
+label { position: absolute; text-align:right; width:130px; }
+</style>
+
 <div class="bg-light lter b-b wrapper-md">
-    <h1 class="m-n font-thin h3">Ficha Clinica</h1>
- </div>
+    <h1 class="m-n font-thin h3">Ficha Clínica</h1>
+</div>
   <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
     <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+    <li><a href="{% url 'pacientes:index' %}">Pacientes</a></li>
     <li class="active">Datos Básicos del Paciente</li>
   </ol><br>
 <div class="wrapper-md">
 <div class="panel panel-default">
-    <div class="panel-heading">FICHA CLINICA</div>
-    <div class="panel-body">
-        <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-            <ul class="nav nav-pills">
-              <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
-              <li>{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a>{% endblock %}</li>
+    <!--<div class="panel-heading">FICHA CLÍNICA</div>-->
+<div class="panel-body">
+        <div class="nav-tabs-custom">
+        <!--<nav class="navbar navbar-toggleable-md navbar-light bg-faded">-->
+            <ul class="nav nav-tabs">
+              <li class="active">{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" data-toggle="tab" class="active" aria-expanded="true">Datos Básicos</a>{% endblock %}</li>
+              <li class="">{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}" data-toggle="tab2" aria-expanded="false">Direcciones</a>{% endblock %}</li>
 
               <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
               <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
               <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
             </ul>
 
-        </nav>
+        <!--</nav>-->
+            </div>
         <div class ="row">
 <form class="form-horizontal" method="POST">
         {% csrf_token %}
         <div class="form-group">
          <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.tipo_doc.label }}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
+         <div class="col-lg-3 col-md-3 col-sm-4">
              {{form2.tipo_doc}}
          </div>
          <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.nro_doc.label }}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
+         <div class="col-lg-3 col-md-3 col-sm-4">
              {{form2.nro_doc}}
          </div>
         </div>
 
         <div class="form-group">
              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.nombres.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <div class="col-lg-3 col-md-3 col-sm-4">
                  {{form2.nombres}}
              </div>
              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.apellidos.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <div class="col-lg-3 col-md-3 col-sm-4">
                  {{ form2.apellidos }}
              </div>
         </div>
 
         <div class="form-group">
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.fecha_nacimiento.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.fecha_nacimiento.label}}:</label>
+             <div class="col-lg-3 col-md-3 col-sm-4">
                  {{form2.fecha_nacimiento}}
              </div>
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.nacionalidad.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.nacionalidad.label}}:</label>
+             <div class="col-lg-3 col-md-3 col-sm-4">
                  {{form2.nacionalidad}}
              </div>
          </div>
             <div class="form-group">
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.lugar_nacimiento.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.lugar_nacimiento.label}}:</label>
+             <div class="col-lg-3 col-md-3 col-sm-4">
                  {{ form2.lugar_nacimiento }}
              </div>
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.distrito.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.distrito.label}}:</label>
+             <div class="col-lg-3 col-md-3 col-sm-4">
                  {{ form2.distrito }}
              </div>
          </div>
          <div class="form-group">
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.sexo.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.sexo.label}}:</label>
+             <div class="col-lg-3 col-md-3 col-sm-4">
                  {{form2.sexo}}
              </div>
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.estado_civil.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.estado_civil.label}}:</label>
+             <div class="col-lg-3 col-md-3 col-sm-4">
                  {{ form2.estado_civil }}
              </div>
          </div>
          <div class="form-group">
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.tipo.label }}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.tipo.label }}:</label>
+             <div class="col-lg-3 col-md-3 col-sm-4">
                  {{form.tipo}}
              </div>
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.numero.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.numero.label}}:</label>
+             <div class="col-lg-3 col-md-3 col-sm-4">
                 {{form.numero}}
              </div>
          </div>
          <div class="form-group">
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.etnia.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
+             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.etnia.label}}:</label>
+             <div class="col-lg-3 col-md-3 col-sm-4">
                  {{form2.etnia}}
              </div>
          </div>
 
     <div class="form-group">
 	 <div class="col-sm-offset-4 col-sm-8">
-         <button class="btn btn-primary" type="submit">Guardar</button>
+         <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
          <a href="{% url 'pacientes:index' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
      </div>
     </div>
@@ -110,17 +125,6 @@
 
 
 </form>
-
-
-     {#  <div class="form-group" align="center"> #}
-            {#  <div class="col-lg-10 col-lg-offset-2"> #}
-                 {#  <button class="btn btn-info" type="submit" ><span class="glyphicon glyphicon-align-justify"></span>Siguiente</button>#}
-                 {#<a href="{% url 'pacientes:index' %}" class="btn btn-info" role="button" > Cancelar </a>#}
-                {# <a href="{% url 'pacientes:index' %}" class="btn btn-info" role="button"> Finalizar</a>#}
-            {#  </div> #}
-
-     {#</div> #}
-
 </form>
 </div>
     </div></div></div>

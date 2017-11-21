@@ -30,21 +30,25 @@
  </div>
   <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
     <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
-    <li class="active">Direcciones / Paciente: <b>{{ paciente.get_name_nro_doc }}</b></li>
+    <li><a href="{% url 'pacientes:index' %}">Pacientes</a></li>
+    <li><b>{{ paciente.get_name_nro_doc }}</b></li>
+    <li class="active">Direcciones</li>
   </ol><br>
 <div class="wrapper-md">
   <div class="panel panel-default">
-    <div class="panel-heading">Ficha Clínica</div>
+    <!--<div class="panel-heading">Ficha Clínica</div>-->
     <div class="panel-body">
-        <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-            <ul class="nav nav-pills">
-                        <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
-                        <li>{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a>{% endblock %}</li>
-                        <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
-                        <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos del Padre</a></li>
-                        <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
+        <div class="nav-tabs-custom">
+        <!--<nav class="navbar navbar-toggleable-md navbar-light bg-faded">-->
+            <ul class="nav nav-tabs">
+                <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
+                <li class="active">{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}" data-toggle="tab" class="active" aria-expanded="true">Direcciones</a>{% endblock %}</li>
+                <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+                <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
+                <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
             </ul>
-        </nav>
+        <!--</nav>-->
+            </div>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <b>Direcciones</b>
@@ -56,7 +60,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="panel-body">
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table class="table table-hover table-condensed table-bordered">
 
                         <thead>
                               <tr>
@@ -70,7 +74,6 @@
                               </tr>
                         </thead>
                         <tbody>
-                            {% if direcciones %}
                             {% for direccion in direcciones %}
                             <tr id="tr{{ direccion.pk }}">
 
@@ -81,17 +84,25 @@
                                 <td align='center' width='50'>{{ direccion.area }} </td>
                                 <td align='center' width='50'>{{ direccion.referencia }}</td>
                                 <td align='center' width='50'>
+                                  <a class="btn btn-xs" title="Editar"
+                                    onclick="return abrir_modal('{% url 'pacientes:paciente_direccion_editar' direccion.pk %}')">
+                                    <i class="fa fa-pencil"></i>
+                                  </a>
+
+                                  <a href="#modalDireccion"
+                                     role="button" class="btn btnModal"
+                                     data-toggle="modal"
+                                     data-id="{{ direccion.pk }}"><i class='fa fa-times-circle'></i>
+                                  </a>
                                   <a href="#myModal"
                                      role="button" class="btn btnModal"
                                      data-toggle="modal"
                                       id="btnModalPopup"  data-name="{{ direccion.descripcion }}"
-                                      data-id="{{ direccion.pk }}"><i class='fa fa-times-circle'></i></a>
+                                      data-id="{{ direccion.pk }}"><i class='fa fa-times-circle'></i>
+                                  </a>
                                 </td>
                             </tr>
                             {% endfor %}
-                            {% else %}
-                            <h4 align="center">No hay registros</h4>
-                            {% endif %}
                         </tbody>
                 </table>
             </div>

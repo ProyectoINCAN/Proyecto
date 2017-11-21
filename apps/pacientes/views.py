@@ -163,8 +163,21 @@ def crear_direccion(request, paciente_id):
             print('direccion', direccion)
             direccion.save()
             return redirect('pacientes:paciente_direccion', paciente_id)
-    return render(request, 'pacientes/direccion.html', contexto)
+    return render(request, 'pacientes/paciente_direccion.html', contexto)
+    # return render(request, 'pacientes/direccion.html', contexto)
 
+
+class PacienteDireccionUpdate(LoginRequiredMixin, UpdateView):
+    print("hola")
+    model = Direccion
+    form_class = DireccionForm
+    template_name = 'pacientes/paciente_direccion_form.html'
+    pk_url_kwarg = 'direccion_id'
+
+    def form_valid(self, form):
+        form.save()
+
+        return JsonResponse({'success': True})
 
 def paciente_padre_crear(request, paciente_id):
     """
@@ -182,7 +195,7 @@ def paciente_padre_crear(request, paciente_id):
             new_paciente = Paciente.objects.get(id=paciente_id)
             padre_paciente.paciente.add(new_paciente)
             messages.success(request, "Datos del Padre guardado correctamente!!")
-            return redirect('pacientes:nuevo_paciente')
+            return redirect('pacientes:paciente_padre_listar', kwargs={'paciente_id': paciente_id})
     else:
         paciente_padre = PacientePadre.objects.filter(paciente=paciente_id).filter(padre='on')
         if paciente_padre.exists():
@@ -194,11 +207,22 @@ def paciente_padre_crear(request, paciente_id):
         else:
             form = PacientePadreForm()
 
+    paciente = Paciente.objects.get(pk=paciente_id)
     contexto = {
         'form': form,
-        'id_paciente': paciente_id
+        'id_paciente': paciente_id,
+        'paciente':paciente
     }
     return render(request, 'pacientes/paciente_padre_crear.html', contexto)
+
+
+class PacientePadreList(ListView):
+    template_name = 'pacientes/paciente_padre_list.html'
+    model = PacientePadre
+
+    def get_queryset(self):
+        paciente_padres=PacientePadre.objects.filter(padre=True, paciente=Paciente.objects.get(pk=self.kwargs["paciente_id"]))
+        return paciente_padres
 
 
 def paciente_madre_crear(request, paciente_id):
@@ -229,11 +253,13 @@ def paciente_madre_crear(request, paciente_id):
         else:
             form = PacientePadreForm()
 
+    paciente = Paciente.objects.get(pk=paciente_id)
     contexto = {
         'form': form,
-        'id_paciente': paciente_id
+        'id_paciente': paciente_id,
+        'paciente':paciente
     }
-    return render(request, 'pacientes/paciente_padre_crear.html', contexto)
+    return render(request, 'pacientes/paciente_madre_crear.html', contexto)
 
 
 class PacientePadreCreateView(FormView):
@@ -425,7 +451,8 @@ class PacienteCreateByAgenda(LoginRequiredMixin, CreateView):
         form = self.form_class(request.POST)  # TelefonoForm
         form2 = self.second_form_class(request.POST)  # PersonaForm
 
-        print(str(form.is_valid()) + " " + str(form2.is_valid()))
+        print('hola0', str(form.is_valid()) + " " + str(form2.is_valid()))
+        print('hola', form.errors)
         if form.is_valid() and form2.is_valid():
             telefono = form.save(commit=False)
             telefono.paciente = form2.save()
@@ -492,7 +519,8 @@ class PacienteUpdate(UpdateView):
         if form.is_valid() and form2.is_valid():
             form.save()
             form2.save()
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(reverse('pacientes:paciente_editar',
+                                            kwargs={'pk': id_paciente}))
 
 
 class PacienteDireccionDeleteView(View):
@@ -580,7 +608,11 @@ class PacienteSeguroMedicoCreate(LoginRequiredMixin, CreateView):
         seguro_medico.paciente_id = self.kwargs['paciente_id']
         seguro_medico.detalle = detalle
         seguro_medico.save()
-        return JsonResponse({'success': True})
+        # return reverse('pacientes:paciente_seguro_medico', kwargs=self.kwargs)
+        return HttpResponseRedirect(reverse('pacientes:paciente_seguro_medico',
+                                            kwargs=self.kwargs))
+
+        # return JsonResponse({'success': True})
 
 
 class PacienteSeguroMedicoDelete(LoginRequiredMixin, DeleteView):
@@ -664,6 +696,7 @@ class PacienteSituacionLaboralDelete(LoginRequiredMixin, DeleteView):
 
 
 class PacienteSituacionLaboralUpdate(LoginRequiredMixin, UpdateView):
+    print("entro")
     model = PacienteOcupacion
     form_class = PacienteOcupacionForm
     template_name = 'pacientes/situacion_laboral/paciente_situacion_laboral_editar.html'
@@ -671,7 +704,9 @@ class PacienteSituacionLaboralUpdate(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save()
+        # return HttpResponseRedirect(reverse('pacientes:paciente_seguro_medico', kwargs=self.kwargs))
         return JsonResponse({'success': True})
+
 
 
 class PacienteNivelEducativoCreate(LoginRequiredMixin, CreateView):

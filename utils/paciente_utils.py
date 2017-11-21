@@ -11,10 +11,17 @@ def get_nrodoc_alternativo(paciente):
     from apps.seguridad.models import ParametroSistema
     fecha_nacimiento = str(paciente.fecha_nacimiento.__format__('%d-%m-%Y'))
     sys = ParametroSistema.objects.get(id=1)
+    print("system", sys.secuencia)
+    print("paciente", paciente.apellidos)
+    print("paciente", paciente.nombres)
+    print("paciente", paciente.fecha_nacimiento)
+
     secuencia = sys.secuencia+1
+    print("hola1", secuencia)
     nro_doc_alt = paciente.apellidos[0]+paciente.nombres[0]+fecha_nacimiento+'_'+str(secuencia)  # agregar parametro_sys.secuencia
     sys.secuencia = secuencia
     sys.save()
+    print("salgo")
     return nro_doc_alt
 
 

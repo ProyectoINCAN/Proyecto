@@ -1,7 +1,7 @@
 {% extends 'base/base2.html' %}
 {% load static %}
 {% block extrajs %}
-    <script src = "{% static 'apps/pacientes/js/paciente_call_center' %}"></script>
+    <script src = "{% static 'apps/pacientes/js/paciente_call_center.js' %}"></script>
 {% endblock %}
 
 
@@ -29,8 +29,8 @@ label { position: absolute; text-align:right; width:130px; }
       <li class="active">Nuevo</li>
     </ol>
   <div class="wrapper-md">
-
-<form class="form-horizontal" method="POST">
+        <div class ="row">
+<form id="paciente_form" class="form-horizontal" method="POST">
         {% csrf_token %}
         <div class="form-group">
          <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.tipo_doc.label }}</label>
@@ -81,7 +81,7 @@ label { position: absolute; text-align:right; width:130px; }
 
     <div class="form-group">
 	 <div class="col-sm-offset-4 col-sm-8">
-         <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i>Guardar</button>
+         <button class="btn btn-primary" id="submit" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i>Guardar</button>
          <a href="{% url 'pacientes:index' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
      </div>
     </div>
@@ -89,6 +89,7 @@ label { position: absolute; text-align:right; width:130px; }
 
 
 </form>
+            </div>
 </div>
 </div>
 

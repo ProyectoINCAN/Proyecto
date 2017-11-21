@@ -37,7 +37,7 @@
                   <tr>
                     <th>Nombre</th>
                     <th>Observaci&oacute;n</th>
-                    <th>Eliminar</th>
+                    <th>Acción</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -95,13 +95,13 @@
                         <td>{% if not ocupacion.profesion %}--------{% else %}
                           {{ ocupacion.profesion }}{% endif %} </td>
                         <td>
-                          <a class="btn btn-default btn-xs"
+                          <a class="btn btn-xs" title="Editar"
                             onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_editar' ocupacion.id %}')">
                             <i class="fa fa-pencil"></i>
                           </a>
-                          <a class="btn btn-default btn-xs" title="Eliminar"
+                          <a class="btn btn-xs" title="Eliminar"
                             onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_eliminar' ocupacion.id %}')">
-                            <i class="fa fa-trash"></i>
+                            <i class='fa fa-times-circle'></i>
                           </a>
                         </td>
                       </tr>
@@ -140,7 +140,7 @@
                         <td>{% if nivel.completo %}SI{% else %}NO{% endif %}</td>
                         <td>{% if nivel.anho_cursado %}{{ nivel.anho_cursado }}{% else %}--------{% endif %}</td>
                         <td>
-                          <a class="btn btn-default btn-xs"
+                          <a class="btn btn-default btn-xs" title="Editar"
                             onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_editar' nivel.id %}')">
                             <i class="fa fa-pencil"></i>
                           </a>
@@ -166,7 +166,7 @@
         </div>
      </div>
 </div>
-<div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1" style="width: 600px;height: auto;margin: auto; posicion:fixed;top: 15%;"></div>
+<div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1"></div>
 <div class="modal hide" id="contactModal"></div>
 <div id="modalSeguroMedico" class="modal" data-keyboard="true">
   <div class="modal-dialog">
@@ -185,9 +185,6 @@
               <label for="{{ field.name }}" class="col-sm-3 control-label">{{ field.label }}:</label>
               <div class="col-sm-6">
                 {{ field }}
-              </div>
-              <div id="otro_seguro" class="col-sm-offset-3" style="display:none;">
-                <input type='text'  name='nombre_seguro' placeholder="Ingrese otro seguro medico">
               </div>
               </div>
             </div>
@@ -218,8 +215,8 @@
             <form method="post" id="formEliminar" action="#">
               {% csrf_token %}
               <input type="hidden" value="" name="paciente_seguro" id="paciente_seguro">
-              <button type="submit" class="btn btn-primary">Eliminar</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i>Sí</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> No</button>
             </form>
           </div>
         </div><!-- /.modal-content -->

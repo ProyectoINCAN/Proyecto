@@ -276,7 +276,7 @@ class Paciente(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        if self.tipo_doc.codigo in ('NT', 'NSC'):
+        if self.tipo_doc.codigo in ('NT', 'NSC', 'NP'):
             self.nro_doc = paciente_utils.get_nrodoc_alternativo(self)
             self.nro_doc_alternativo = self.nro_doc.upper()
         #
@@ -298,11 +298,11 @@ class Direccion(models.Model):
     distrito = models.ForeignKey(Distrito, models.DO_NOTHING, blank=False, null=False)
     barrio = models.ForeignKey(Barrio, models.DO_NOTHING, blank=False, null=False)
     area = models.ForeignKey(Area, models.DO_NOTHING, blank=False, null=False)
-    sector = UpperCharField(max_length=100, blank=False, uppercase=True)
-    manzana = UpperCharField(max_length=60, blank=False, uppercase=True)
-    nro_casa = models.IntegerField(blank=False)
-    residencia_ocasional = UpperCharField(max_length=300, blank=False, uppercase=True)
-    referencia = UpperCharField(max_length=200, blank=False, uppercase=True)
+    sector = UpperCharField(max_length=100, blank=True, uppercase=True)
+    manzana = UpperCharField(max_length=60, blank=True, uppercase=True)
+    nro_casa = models.IntegerField(null=True, blank=True, default=0)
+    residencia_ocasional = UpperCharField(max_length=300, blank=True, uppercase=True)
+    referencia = UpperCharField(max_length=200, blank=True, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -474,12 +474,12 @@ class PacienteProfesion(models.Model):
 
 class PacienteNivelEducativo(models.Model):
     nivel_educativo = models.ForeignKey(NivelEducativo, models.DO_NOTHING, blank=False, null=False)
-    paciente = models.ForeignKey(Paciente, models.SET_NULL, blank=True, null=True)  # relacion con el paciente
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)  # relacion con el paciente
     COMPLETO_CHOICES = (
         (True, 'SI'),
         (False, 'NO')
     )
-    completo = models.BooleanField(choices=COMPLETO_CHOICES, verbose_name="Completo", blank=False, null=False)
+    completo = models.BooleanField(choices=COMPLETO_CHOICES, verbose_name="Completo", blank=False, null=False, default=False)
     anho_cursado = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
