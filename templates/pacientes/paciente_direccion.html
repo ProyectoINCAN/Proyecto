@@ -88,7 +88,6 @@
                                     onclick="return abrir_modal('{% url 'pacientes:paciente_direccion_editar' direccion.pk %}')">
                                     <i class="fa fa-pencil"></i>
                                   </a>
-
                                   <a href="#modalDireccion"
                                      role="button" class="btn btnModal"
                                      data-toggle="modal"
@@ -111,6 +110,7 @@
     </div>
 </div>
 </div>
+<div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1"></div>
 <div id="modalDireccion" class="modal" data-keyboard="true">
   <div class="modal-dialog">
     <div class="modal-content">

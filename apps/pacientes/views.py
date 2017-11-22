@@ -168,12 +168,13 @@ def crear_direccion(request, paciente_id):
 
 
 class PacienteDireccionUpdate(LoginRequiredMixin, UpdateView):
-    print("hola")
     model = Direccion
     form_class = DireccionForm
     template_name = 'pacientes/paciente_direccion_form.html'
     pk_url_kwarg = 'direccion_id'
 
+    def get_context_data(self, **kwargs):
+        print("hola")
     def form_valid(self, form):
         form.save()
 
