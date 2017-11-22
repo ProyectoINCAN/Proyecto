@@ -174,7 +174,10 @@ class PacienteDireccionUpdate(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = 'direccion_id'
 
     def get_context_data(self, **kwargs):
-        print("hola")
+        context = super(PacienteDireccionUpdate, self).get_context_data(**kwargs)
+        return context
+
+
     def form_valid(self, form):
         form.save()
 
