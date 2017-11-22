@@ -1,0 +1,106 @@
+{% extends 'base/base2.html' %}
+{% load static %}
+{% block extrajs %}
+    <script src = "{% static 'apps/pacientes/js/direcciones.js' %}"></script>
+  <script>
+    $(document).ready(function () {
+            $('.btnModal').click(function () {
+             var codigo_direccion = $(this).data('id');
+                console.log(codigo_direccion)
+                $("#direccion_id").val(codigo_direccion)
+            });
+    });
+
+  </script>
+{% endblock %}
+
+
+<div id="modalDireccion" class="modal" data-keyboard="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+					<form role="form" action="{% url 'pacientes:crear_direccion' id_paciente %}" method="post">
+
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">Direcciones</h4>
+      </div>
+      <div class="modal-body">
+			{% csrf_token %}
+		<div class="form-horizontal" id="form_direccion" >
+      <div class="form-group">
+				<label class="control-label col-sm-3">{{form.descripcion.label}}</label>
+				<div class="col-sm-8">
+					{{ form.descripcion }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">{{form.departamento.label}}</label>
+				<div class="col-sm-8">
+					{{ form.departamento }}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-3">{{form.distrito.label}}</label>
+				<div class="col-sm-8">
+					<!--<select class="form-control" id="id_distrito"></select>-->
+					{{ form.distrito }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">{{form.barrio.label}}</label>
+				<div class="col-sm-8">
+					{{ form.barrio }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">{{form.area.label}}</label>
+				<div class="col-sm-3">
+					{{ form.area }}
+				</div>
+
+				<label class="control-label col-sm-2">{{form.sector.label}}</label>
+				<div class="col-sm-3">
+					{{ form.sector }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">{{form.manzana.label}}</label>
+				<div class="col-sm-3">
+					{{ form.manzana }}
+				</div>
+
+				<label class="control-label col-sm-2">{{form.nro_casa.label}}</label>
+				<div class="col-sm-3">
+					{{ form.nro_casa }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">Residencia Ocasional</label>
+				<div class="col-sm-8">
+					{{ form.residencia_ocasional }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3">Referencia</label>
+				<div class="col-sm-8">
+					{{ form.referencia }}
+				</div>
+			</div>
+
+		</div>
+		  </div>
+      <div class="modal-footer">
+      		<button type="submit" id="grabarDireccion" class="btn btn-primary"><i class="icon-save fa fa-fw fa-save"></i> Grabar</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-remove fa fa-fw fa-times"></i> Cancelar</button>
+      </div>
+		</form>
+    </div>
+
+  </div>
+</div>
