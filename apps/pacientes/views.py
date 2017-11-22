@@ -179,6 +179,7 @@ class PacienteDireccionUpdate(LoginRequiredMixin, UpdateView):
 
         return JsonResponse({'success': True})
 
+
 def paciente_padre_crear(request, paciente_id):
     """
     permite insertar los datos del padre/madre del paciente
@@ -195,7 +196,9 @@ def paciente_padre_crear(request, paciente_id):
             new_paciente = Paciente.objects.get(id=paciente_id)
             padre_paciente.paciente.add(new_paciente)
             messages.success(request, "Datos del Padre guardado correctamente!!")
-            return redirect('pacientes:paciente_padre_listar', kwargs={'paciente_id': paciente_id})
+
+            return HttpResponseRedirect(reverse('pacientes:paciente_padre_listar',
+                                                kwargs={'id_paciente': paciente_id }))
     else:
         paciente_padre = PacientePadre.objects.filter(paciente=paciente_id).filter(padre='on')
         if paciente_padre.exists():
@@ -220,9 +223,19 @@ class PacientePadreList(ListView):
     template_name = 'pacientes/paciente_padre_list.html'
     model = PacientePadre
 
-    def get_queryset(self):
-        paciente_padres=PacientePadre.objects.filter(padre=True, paciente=Paciente.objects.get(pk=self.kwargs["paciente_id"]))
+    def get_padre(self):
+        paciente_padres=PacientePadre.objects.filter(padre=True, paciente=Paciente.objects.get(pk=self.kwargs["id_paciente"]))
         return paciente_padres
+
+    def get_context_data(self, **kwargs):
+        context = super(PacientePadreList, self).get_context_data(**kwargs)
+        context.update({
+                        'id_paciente': self.kwargs["id_paciente"],
+                        'paciente_padres': self.get_padre()
+
+                        })
+        return context
+
 
 
 def paciente_madre_crear(request, paciente_id):

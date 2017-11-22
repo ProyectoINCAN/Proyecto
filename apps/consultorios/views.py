@@ -1167,7 +1167,7 @@ class GeneratePDF(View):
     def get(self, request, *args, **kwargs):
         template = get_template('consultorios/test_pdf.html')
         context = {
-            "invoice_id": 123,
+            "invoice_id": Paciente.objects.fi,
             "customer_name": "John Cooper",
             "amount": 1399.99,
             "today": "Today",
