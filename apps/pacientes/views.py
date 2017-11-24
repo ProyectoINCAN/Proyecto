@@ -497,12 +497,13 @@ class PacienteUpdate(UpdateView):
             WHERE paciente_id =''' + pk_paciente + '''
                                             '''
         )
+        print("query ", query)
         cursor = connection.cursor()
         cursor.execute(query)
         results = cursor.fetchall()
         for r in results:
             codigo_telefono = r[0]
-        print(codigo_telefono)
+        print("codigo tel", codigo_telefono)
         telefono = self.model.objects.get(id=codigo_telefono)
         paciente = self.second_model.objects.get(id=telefono.paciente_id)
         if 'form' not in context:

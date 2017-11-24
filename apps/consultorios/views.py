@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
-from django.core import serializers
 from django.http.response import JsonResponse
 from django.db import connection
 import json
@@ -23,6 +22,8 @@ from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView, View
 
 import datetime
+
+from apps.agendamientos.functions import get_origen_url_agendamiento
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import *
 from apps.consultorios.models import *
@@ -32,6 +33,7 @@ from apps.internaciones.models import Diagnostico
 from django.utils.safestring import mark_safe
 from apps.consultorios.helpers import calculate_age
 from utils.generate_pdf import render_to_pdf
+
 
 
 class MedicoList(ListView):
@@ -469,10 +471,12 @@ class ConsultaDetalleDia(LoginRequiredMixin, TemplateView):
         consulta=Consulta.objects.get(pk=self.kwargs['consulta_id'])
 
         detalle = ConsultaDetalle.objects.filter(consulta=consulta)
+        existe_en_proceso = detalle.filter(estado=EstadoConsultaDetalle.objects.get(codigo='E')).exists()
+        print("existe_en_proceso", existe_en_proceso)
 
-        context.update({
-                        'consulta': consulta,
+        context.update({'consulta': consulta,
                         'detalles': detalle,
+                        'existe_en_proceso': existe_en_proceso,
                         })
 
         return super(TemplateView, self).render_to_response(context)
@@ -498,32 +502,30 @@ class ConsultaCreate(LoginRequiredMixin, View):
                                            paciente=det.paciente, estado=EstadoConsultaDetalle.objects.get(codigo='P'))
         # return HttpResponseRedirect(reverse('agendamientos:agenda_especialidad_medico'))
 
-        if origen == str(1):
-            # redirige a agendar por fecha disponible
-            origen_url = '/agendamientos/agendas/'
-        elif origen == str(2):
-            # redirige a agendas por rango de fechas
-            origen_url = '/agendamientos/agenda_fecha/'
-        else:
-            # DEFAULT: redirige a agendar por fecha disponible
-            origen_url = '/agendamientos/agendas/'
+        origen_url = get_origen_url_agendamiento(origen)
 
         return JsonResponse(origen_url, safe=False)
 
 
 class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
     """
-    permite iniciar la consulta con el primer paciente que confirmo su llegada.
+    permite iniciar la consulta del paciente.
     """
     template_name = 'consultorios/consulta/consulta_iniciar.html'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        consulta = Consulta.objects.get(pk=self.kwargs['consulta_id'])
-        #obtenemos el detalle de la consulta donde el estado sea pendiente
-        detalle = ConsultaDetalle.objects.filter(consulta=consulta, estado='P').first()
-        #actualizamos el estado de la detalle de la consulta a "en proceso"
-        #detalle.estado = EstadoConsultaDetalle.objects.get(codigo='E')
+
+        # obtenemos la consuta detalle
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+
+        # actualizamos el estado del detalle de la consulta a "en proceso"
+        if detalle.estado.codigo == "P":
+            detalle.estado = EstadoConsultaDetalle.objects.get(codigo='E')
+
+        if not detalle.hora_inicio:
+            detalle.hora_inicio = datetime.datetime.now()
+
         detalle.save()
 
         #anamnesis del paciente
@@ -546,7 +548,7 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
 
 
         context.update({
-            'consulta': consulta,
+            'consulta': detalle.consulta,
             'detalle': detalle,
             'diagnosticos': diagnosticos,
             'evoluciones': evoluciones,
@@ -563,7 +565,7 @@ class ConsultaDetalleContinuar(LoginRequiredMixin, TemplateView):
     permite registrar las siguientes acciones de la consulta del paciente.
     Muestra el detalle de la consulta actual
     """
-    template_name = 'consultorios/consulta_iniciar.html'
+    template_name = 'consultorios/consulta/consulta_iniciar.html'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -583,6 +585,97 @@ class ConsultaDetalleContinuar(LoginRequiredMixin, TemplateView):
             'detalle': detalle,
             'diagnostico': diagnostico,
         })
+        return super(TemplateView, self).render_to_response(context)
+
+
+class ConsultaDetalleVolver(LoginRequiredMixin, View):
+    model = ConsultaDetalle
+
+    def post(self, request, *args, **kwargs):
+        consulta_det_id = request.POST.get('consulta_det_id')
+        print("consulta det id", consulta_det_id)
+        consulta_det = ConsultaDetalle.objects.get(pk=consulta_det_id)
+
+        consulta_det.estado = EstadoConsultaDetalle.objects.get(codigo="P")  # cambio de estado a PENDIENTE
+        consulta_det.hora_inicio = None
+        consulta_det.save()
+
+        return JsonResponse({'success': True})
+
+
+class ConsultaDetalleCancelar(LoginRequiredMixin, View):
+    model = ConsultaDetalle
+
+    def post(self, request, *args, **kwargs):
+        consulta_det_id = request.POST.get('consulta_det_id')
+        print("consulta det id", consulta_det_id)
+        consulta_det = ConsultaDetalle.objects.get(pk=consulta_det_id)
+
+        consulta_det.estado = EstadoConsultaDetalle.objects.get(codigo="C")  # cambio de estado a CANCELADO
+        consulta_det.hora_fin = datetime.datetime.now()
+        consulta_det.save()
+
+        return JsonResponse({'success': True})
+
+
+class ConsultaDetalleFinalizar(LoginRequiredMixin, View):
+    model = ConsultaDetalle
+
+    def post(self, request, *args, **kwargs):
+        consulta_det_id = request.POST.get('consulta_det_id')
+        print("consulta det id", consulta_det_id)
+        consulta_det = ConsultaDetalle.objects.get(pk=consulta_det_id)
+
+        consulta_det.estado = EstadoConsultaDetalle.objects.get(codigo="F")  # cambio de estado a FINALIZADO
+        consulta_det.hora_fin = datetime.datetime.now()
+        consulta_det.save()
+
+        return JsonResponse({'success': True})
+
+
+class ConsultaDetalleResumen(LoginRequiredMixin, TemplateView):
+    """
+    Resumen que se muestra al finalizar la consulta de un paciente
+    """
+    template_name = 'consultorios/consulta/consulta_resumen.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        # detalle_id = request.GET.get('consulta_det_id')
+        # consulta = Consulta.objects.get(pk=self.kwargs['consulta_id'])
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        print("detalle id = ", detalle.pk)
+
+        # anamnesis del paciente
+        anamnesis = Anamnesis.objects.filter(paciente=detalle.paciente, consulta_detalle=detalle.id).order_by('-pk')
+
+        # diagnosticos del paciente.  # TODO: ver si no se cambió a módulo de Consultorios. Agregar el Foreign key de consulta detalle
+        # diagnosticos = Diagnostico.objects.filter(paciente=detalle.paciente,
+        #                                           consulta_detalle=detalle.id).order_by('-pk')
+        # evoluciones del paciente
+        evoluciones = EvolucionPaciente.objects.filter(paciente=detalle.paciente,
+                                                       consulta_detalle=detalle.id).order_by('-pk')
+        # ordenes de estudio del paciente
+        ordenes = ConsultaOrdenEstudio.objects.filter(paciente=detalle.paciente,
+                                                      consulta_detalle=detalle.id).order_by('-pk')
+        # prescripciones del paciente
+        prescripciones = ConsultaPrescripcion.objects.filter(paciente=detalle.paciente,
+                                                             consulta_detalle=detalle.id).order_by('-pk')
+        # tratamientos del paciente
+        tratamientos = Tratamiento.objects.filter(paciente=detalle.paciente,
+                                                  consulta_detalle=detalle.id).order_by('-pk')
+
+        context.update({
+            'consulta': detalle.consulta,
+            'detalle': detalle,
+            # 'diagnosticos': diagnosticos,
+            'evoluciones': evoluciones,
+            'ordenes': ordenes,
+            'prescripciones': prescripciones,
+            'tratamientos': tratamientos,
+            'anamnesis': anamnesis
+        })
+
         return super(TemplateView, self).render_to_response(context)
 
 
@@ -625,6 +718,10 @@ class EvolucionPacienteCreate(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         evolucion = form.save(commit=False)
+        obs = evolucion.observaciones
+        if obs:
+            obs = obs.replace(' src="', ' class="img-responsive" src="')
+        evolucion.observaciones = obs
         consulta_detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
         consulta = Consulta.objects.get(pk=consulta_detalle.consulta.id)
         evolucion.consulta_detalle = consulta_detalle
@@ -642,7 +739,12 @@ class EvolucionPacienteUpdate(LoginRequiredMixin, UpdateView):
     form_class = EvolucionPacienteForm
 
     def form_valid(self, form):
-        form.save()
+        evolucion = form.save(commit=False)
+        obs = evolucion.observaciones
+        if obs:
+            obs = obs.replace(' src="', ' class="img-responsive" src="')
+        evolucion.observaciones = obs
+        evolucion.save()
         return JsonResponse({'success': True})
 
 

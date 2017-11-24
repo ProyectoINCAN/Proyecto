@@ -29,12 +29,6 @@ urlpatterns = [
     url(r'^horario_medico/(?P<pk>[0-9]+)/editar$', login_required(HorarioMedicoUpdate.as_view()),
         name='horario_medico_editar'),
 
-    # url(r'^consulta/evolucion_paciente/$', login_required(EvolucionPacienteList.as_view()), name='evolucion_paciente_listar'),  #TODO | agregar id del paciente en URL
-    # url(r'^evolucion_paciente/nuevo$', login_required(EvolucionPacienteCreate.as_view()),
-    #     name='evolucion_paciente_nuevo'),
-    # url(r'^evolucion_paciente/(?P<pk>[0-9]+)/editar$', login_required(EvolucionPacienteUpdate.as_view()),              #TODO | cuando se termine agendamiento
-    #     name='evolucion_paciente_editar'),
-
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/evolucion/crear/$', views.EvolucionPacienteCreate.as_view(),
         name='evolucion_paciente_crear'),
     url(r'^consulta/detalle/evolucion/(?P<evolucion_id>\d+)/$', views.EvolucionPacienteUpdate.as_view(),
@@ -63,11 +57,17 @@ urlpatterns = [
     url(r'^ordenes_estudio/detalle/(?P<detalle_id>\d+)/editar$', views.OrdenEstudioDetalleUpdateGlobal.as_view(),
         name='orden_estudio_detalle_editar'),
 
-
     url(r'^consultas_dia/$', views.ConsultasDia.as_view(), name='consultas_dia'),
     url(r'^consulta/(?P<consulta_id>\d+)/detalles/$', views.ConsultaDetalleDia.as_view(), name='consulta_detalle_dia'),
-    url(r'^consulta/(?P<consulta_id>\d+)/detalle/iniciar/$',
-        views.ConsultaDetalleIniciar.as_view(), name='consulta_detalle_iniciar'),
+    url(r'^consulta/detalle/(?P<detalle_id>\d+)/iniciar/$', views.ConsultaDetalleIniciar.as_view(),
+        name='consulta_detalle_iniciar'),
+    url(r'^consulta/detalle/(?P<detalle_id>\d+)/$', views.ConsultaDetalleIniciar.as_view(),
+        name='consulta_detalle_continuar'),
+    url(r'^consulta/detalle/volver/$', views.ConsultaDetalleVolver.as_view(), name='consulta_detalle_volver'),
+    url(r'^consulta/detalle/cancelar/$', views.ConsultaDetalleCancelar.as_view(), name='consulta_detalle_volver'),
+    url(r'^consulta/detalle/finalizar/$', views.ConsultaDetalleFinalizar.as_view(), name='consulta_detalle_finalizar'),
+    url(r'^consulta/detalle/(?P<detalle_id>\d+)/resumen/$', views.ConsultaDetalleResumen.as_view(),
+        name='consulta_detalle_resumen'),
 
     # url(r'^consulta/detalle/(?P<detalle_id>\d+)/diagnostico/list/$', views.ConsultaDetalleDiagnosticoList.as_view(),
     #     name='consulta_diagnostico_crear'),
@@ -77,8 +77,6 @@ urlpatterns = [
         name='consulta_diagnostico_editar'),
     url(r'^consulta/detalle/diagnostico/(?P<diagnostico_id>\d+)/eliminar$', views.PacienteDiagnosticoEliminar.as_view(),
         name='consulta_diagnostico_eliminar'),
-    url(r'^consulta/detalle/(?P<detalle_id>\d+)/$',
-        views.ConsultaDetalleContinuar.as_view(), name='consulta_detalle_continuar'),
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/orden_estudio/crear/$', views.PacienteOrdenEstudioCreate.as_view(),
         name='consulta_orden_estudio_crear'),
     url(r'^consulta/detalle/orden_estudio/(?P<orden_id>\d+)/editar/$', views.PacienteOrdenEstudioUpdate.as_view(),

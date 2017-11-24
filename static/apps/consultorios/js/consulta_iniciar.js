@@ -62,3 +62,129 @@ $( document ).ready(function() {
       }
     }
     });
+
+$('#finalizar').click(function() {
+    var $this = this;
+    var detalle_id = $("#detalle_id").val();
+
+    console.log(detalle_id);
+
+    BootstrapDialog.show({
+    title: 'Finalizar consulta',
+    message: '¿Desea finalizar la consulta? Este proceso es irreversible.',
+    draggable: true,
+    buttons: [{
+        label: 'Finalizar',
+        cssClass: 'btn-primary',
+        icon: 'fa fa-check',
+        action: function(dialog){
+            dialog.close();
+            var csrftoken = getCookie('csrftoken');
+            console.log("token", csrftoken);
+            $.ajax({
+                 type:"POST",
+                 url:"/consultorios/consulta/detalle/finalizar/",
+                 data: {
+                        'consulta_det_id': detalle_id,
+                        'csrfmiddlewaretoken': csrftoken
+                        },
+                 success: function(data){
+                    console.log("llega al success");
+                    console.log("data", data );
+                    window.location="/consultorios/consulta/detalle/"+detalle_id+"/resumen/";
+                 }
+            });
+            return false;
+        }
+    }, {
+        label: 'Cancelar',
+        // no title as it is optional
+        cssClass: 'btn-default',
+        icon: 'fa fa-times',
+        action: function(dialog){
+            dialog.close();
+            return false;
+        }
+    },
+    ]
+    });
+
+    }
+
+);
+
+
+$('#cancelar').click(function() {
+    var $this = this;
+    var detalle_id = $("#detalle_id").val();
+
+    console.log(detalle_id);
+
+    BootstrapDialog.show({
+    type: BootstrapDialog.TYPE_DANGER,
+    title: 'Cancelar consulta',
+    message: '¿Desea cancelar la consulta?',
+    draggable: true,
+    buttons: [{
+        label: 'Sí',
+        cssClass: 'btn-danger',
+        icon: 'fa fa-check',
+        action: function(dialog){
+            dialog.close();
+            var csrftoken = getCookie('csrftoken');
+            console.log("token", csrftoken);
+            $.ajax({
+                 type:"POST",
+                 url:"/consultorios/consulta/detalle/cancelar/",
+                 data: {
+                        'consulta_det_id': detalle_id,
+                        'csrfmiddlewaretoken': csrftoken
+                        },
+                 success: function(data){
+                    console.log("llega al success");
+                    console.log("data", data );
+                    window.location="/consultorios/consulta/detalle/"+detalle_id+"/resumen/";
+                 }
+            });
+            return false;
+        }
+    }, {
+        label: 'No',
+        // no title as it is optional
+        cssClass: 'btn-default',
+        icon: 'fa fa-times',
+        action: function(dialog){
+            dialog.close();
+            return false;
+        }
+    }, {
+        label: 'Volver a pendientes',
+        // no title as it is optional
+        cssClass: 'btn-default',
+        icon: 'fa fa-reply',
+        action: function(dialog){
+            dialog.close();
+            var csrftoken = getCookie('csrftoken');
+            var consulta_id = $('#consulta_id').val();
+            console.log("token", csrftoken);
+            $.ajax({
+                 type:"POST",
+                 url:"/consultorios/consulta/detalle/volver/",
+                 data: {
+                        'consulta_det_id': detalle_id,
+                        'csrfmiddlewaretoken': csrftoken
+                        },
+                 success: function(data){
+                    console.log("llega al success de volver");
+                    window.location="/consultorios/consulta/"+consulta_id+"/detalles/";
+                 }
+            });
+            return false;
+        }
+    },
+    ]
+    });
+
+    }
+
+);

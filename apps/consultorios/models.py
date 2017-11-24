@@ -76,6 +76,9 @@ class Medico(models.Model):
     def get_full_name(self):
         return '{} {}'.format(self.nombres, self.apellidos)
 
+    def get_dr_full_name(self):
+        return '{} {} {}'.format("DR." if self.sexo.codigo == "M" else "DRA.", self.nombres, self.apellidos)
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)
@@ -292,6 +295,8 @@ class ConsultaDetalle(models.Model):
     consulta = models.ForeignKey(Consulta, models.DO_NOTHING, blank=False, null=False)
     estado = models.ForeignKey(EstadoConsultaDetalle, models.DO_NOTHING, blank=True, null=True)
     confirmado = models.BooleanField(default=False)
+    hora_inicio = models.TimeField(auto_now=False, null=True)
+    hora_fin = models.TimeField(auto_now=False, null=True)
 
     class Meta:
         ordering = ['orden']
@@ -302,7 +307,7 @@ class ConsultaDetalle(models.Model):
 class Tratamiento(models.Model):
     consulta_detalle = models.ForeignKey(ConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
     descripcion = UpperCharField(max_length=255, blank=True, uppercase=True, verbose_name="Descripción")
-    observacion = UpperTextField(blank=True, uppercase=True,verbose_name="Observación")
+    observacion = UpperTextField(blank=True, uppercase=True, verbose_name="Observación")
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
@@ -362,8 +367,26 @@ class TipoMedicamento(models.Model):
 
 
 class Medicamento(models.Model):
+    COMPRIMIDO = 'CO'
+    CAPSULA = 'CA'
+    LIQUIDO_ORAL = 'LO'
+    INYECTABLE = 'IN'
+    OVULO = 'OV'
+    CREMA = 'CR'
+    SOLUCION = 'SO'
+    AEROSOL = 'AE'
+    FORMA_FARMACEUTICA_CHOICES = (
+        (COMPRIMIDO, 'COMPRIMIDO'),
+        (CAPSULA, 'CAPSULA'),
+        (LIQUIDO_ORAL, 'LÍQUIDO ORAL'),
+        (INYECTABLE, 'INYECTABLE'),
+        (OVULO, 'OVULO'),
+        (CREMA, 'CREMA'),
+        (SOLUCION, 'SOLUCIÓN'),
+        (AEROSOL, 'AEROSOL'),
+    )
     nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
-    forma_farmaceutica = UpperCharField(max_length=200, blank=False, uppercase=True)
+    forma_farmaceutica = UpperCharField(max_length=2, choices=FORMA_FARMACEUTICA_CHOICES, blank=False, uppercase=True)
     nro_lote = UpperCharField(max_length=100, blank=False, verbose_name="Número de Lote", uppercase=True)
     cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
     fabricado = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fabricado")
@@ -382,8 +405,7 @@ class Medicamento(models.Model):
 
 class ConsultaPrescripcion(models.Model):
     consulta_detalle = models.ForeignKey(ConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
-    medicamento = models.ForeignKey(Medicamento, models.DO_NOTHING, blank=False, null=False,
-                                      verbose_name="Medicamento")
+    medicamento = models.ForeignKey(Medicamento, models.DO_NOTHING, blank=False, null=False, verbose_name="Medicamento")
     posologia = UpperTextField(blank=True, uppercase=True, verbose_name="POSOLOGIA")
     fecha = models.DateField(auto_now=True, blank=True, null=True, verbose_name="Fecha")
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)
@@ -429,7 +451,8 @@ class PlanSeguimiento(models.Model):
 class Anamnesis(models.Model):
     consulta_detalle = models.ForeignKey(ConsultaDetalle, on_delete=models.CASCADE, blank=False, null=False)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=False, null=False)
-    observacion = models.CharField(max_length=250, blank=False, null=False)
+    # observacion = models.CharField(max_length=250, blank=False, null=False)
+    observacion = models.TextField(blank=True)
 
     class Meta:
         verbose_name = 'Anamnesis'

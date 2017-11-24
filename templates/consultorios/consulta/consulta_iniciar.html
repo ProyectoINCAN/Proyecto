@@ -3,6 +3,9 @@
 {% block extrahead %}
   <link rel="stylesheet" href="{% static 'apps/consultorios/css/consulta_iniciar.css' %}">
 {% endblock %}
+
+
+
 {% block content %}
   <div class="app-content-body">
 
@@ -11,6 +14,18 @@
       <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Día</a></li>
       <li class="active">Especialidad:{{ consulta.especialidad }}</li>
     </ol>
+    <input type="hidden" id="detalle_id" name="detalle_id" value="{{ detalle.id }}">
+    <input type="hidden" id="consulta_id" name="consulta_id" value="{{ detalle.consulta.pk }}">
+    <div class="row">
+      <div class="btn-group pull-right">
+        <div class="col pull-right">
+          <a id="volver" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_detalle_dia' consulta.id  %}"> <i class="fa fa-list" aria-hidden="true"></i> Volver a la lista</a>
+          <a id="cancelar" type="button" class="btn btn-danger" href="javascript:void(0)"> <i class="fa fa-ban" aria-hidden="true"></i> Cancelar consulta</a>
+          <a id="finalizar" type="button" class="btn btn-success" href="javascript:void(0)"> <i class="fa fa-check-square-o" aria-hidden="true"></i> Finalizar consulta</a>
+        </div>
+
+      </div>
+    </div><p>
     <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Datos Básicos del Paciente</h3>
@@ -126,14 +141,13 @@
                                 <thead>
                                 <tr>
                                   <th>Observación</th>
-
                                   <th>Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for anamne in anamnesis %}
                                   <tr>
-                                    <td>{{ anamne.observacion }}</td>
+                                    <td>{{ anamne.observacion|safe }}</td>
                                     <td>
                                       {% if anamne.consulta_detalle.id == detalle.id %}
                                       <a class="btn btn-default btn-xs" title="Editar"
@@ -244,7 +258,8 @@
                                 <tr>
                                   <th>Fecha</th>
                                   <th>Hora</th>
-                                  <!--<th style="width:65%;">Observaciones</th>-->
+                                  <th style="width:50%;">Observaciones</th>
+                                  <!--<th>Observaciones</th>-->
                                   <th>Firma</th>
                                   <th>Acción</th>
                                 </tr>
@@ -255,7 +270,8 @@
                                     <td>{{ evo.fecha|date:"SHORT_DATE_FORMAT" }}</td>
                                     <td>{{ evo.hora }} </td>
                                     <!--<td>{{ evo.observaciones }} </td>-->
-                                    <td>Dr. {{ evo.medico }} </td>
+                                    <td>{% autoescape off %}{{ evo.observaciones|safe }}{% endautoescape %} </td>
+                                    <td>{{ evo.medico.get_dr_full_name }} </td>
                                     <td>
                                       <a class="btn btn-default btn-xs" title="Ver"
                                          onclick="return abrir_modal('{% url 'consultorios:evolucion_paciente_editar' evo.id %}')">

@@ -322,10 +322,10 @@ class AgendaDetalleUpdate(UpdateView):
     success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
 
 
-class AgendaDetalleDelete(DeleteView):
-    model = AgendaDetalle
-    template_name = 'agendamientos/agenda_cancelar.html'
-    success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
+# class AgendaDetalleDelete(DeleteView):
+#     model = AgendaDetalle
+#     template_name = 'agendamientos/agenda_cancelar.html'
+#     success_url = reverse_lazy('agendamientos:agenda_detalle_listar')
 
 
 def agenda_detalle_delete(request, agenda_detalle_id):

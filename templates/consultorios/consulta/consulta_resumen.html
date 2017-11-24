@@ -1,0 +1,204 @@
+{% extends 'base/base2.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+<div class="app-content-body">
+
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Consultorios</a></li>
+        <li class="active">Resumen de consulta. Paciente: {{ detalle.paciente.get_full_name }}</li>
+    </ol>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b class="panel-title">Resumen de la atención ambulatoria</b>
+            <div class="btn-group btn-group-sm pull-right">
+                <div class="col pull-right">
+                    <a id="volver" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_detalle_dia' detalle.consulta.id  %}"> <i class="fa fa-list" aria-hidden="true"></i> Volver a la lista</a>
+                    <a id="pdf" type="button" class="btn btn-default" href="javascript:void(0)"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
+                </div>
+            </div><p></p>
+
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-4 col-md-2 col-lg-3">
+                    <b>Fecha de la consulta:</b>
+                </div>
+                {{ detalle.consulta.fecha }}
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 col-lg-3">
+                    <b>Hora de inicio:</b>
+                </div>
+                {{ detalle.hora_inicio }}
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 col-lg-3">
+                    <b>Hora de finalización:</b>
+                </div>
+                {{ detalle.hora_fin }}
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 col-lg-3">
+                    <b>Dependencia:</b>
+                </div>
+                {{ detalle.consulta.especialidad }}
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 col-lg-3">
+                    <b>Médico:</b>
+                </div>
+                {{ detalle.consulta.medico.get_dr_full_name }}
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 col-lg-3">
+                    <b>Paciente:</b>
+                </div>
+                {{ detalle.paciente.get_name_nro_doc }}
+            </div>
+
+            {% if detalle.estado.codigo == "C" %}
+            <div class="row">
+                <div class="col-xs-4 col-md-2 col-lg-3">
+                    <b>Finalizado como:</b>
+                </div>
+                {{ detalle.estado.nombre }}
+            </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <b>Resumen de la anamnesis:</b>
+                </div>
+                <div class="col-sm-11 col-lg-11">
+                    {% for data in anamnesis %}
+                        {{ data.observacion|safe }}
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-4">
+                    <b>Resumen del diagnóstico:</b>
+                </div>
+                <div class="col-sm-4 col-lg-11">
+                    {% if diagnosticos %}
+                        {% for data in diagnosticos %}
+                            {{ data.observacion|safe }}
+                        {% endfor %}
+                    {% else %}
+                        {{ "SIN ESPECIFICAR" }}
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-4">
+                    <b>Resumen de evolución del paciente:</b>
+                </div>
+                <div class="col-sm-11 col-lg-11">
+                    {% if evoluciones %}
+                        {% for data in evoluciones %}
+                            {{ data.observaciones|safe }}
+                        {% endfor %}
+                    {% else %}
+                        {{ "SIN ESPECIFICAR" }}
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-4 col-lg-11">
+                    <b>Resumen de la orden de estudio:</b>
+                </div>
+                <div class="col-sm-4 col-lg-11">
+                    {% if ordenes %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Estudio</th>
+                                <th>Observación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in ordenes %}
+                            <tr>
+                                <td>{{ data.orden_estudio }}</td>
+                                <td>{{ data.observacion|safe }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        {{ "SIN ESPECIFICAR" }}
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-4">
+                    <b>Resumen de la prescripción:</b>
+                </div>
+                <div class="col-sm-4 col-lg-11">
+                    {% if prescripciones %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Medicamento</th>
+                                <th>Posología</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in prescripciones %}
+                            <tr>
+                                <td>{{ data.medicamento }}</td>
+                                <td>{{ data.posologia|safe }}</td>
+                                <td class="text-center">{{ data.cantidad }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        {{ "SIN ESPECIFICAR" }}
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-4">
+                    <b>Resumen del tratamiento:</b>
+                </div>
+                <div class="col-sm-4 col-lg-11">
+                    {% if tratamientos %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Descripción</th>
+                                <th>Observación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in tratamientos %}
+                            <tr>
+                                <td>{{ data.descripcion }}</td>
+                                <td>{{ data.observacion|safe }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        {{ "SIN ESPECIFICAR" }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

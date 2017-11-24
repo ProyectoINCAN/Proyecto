@@ -9,7 +9,7 @@
     </ol>
     <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Cita del Dia</h3>
+          <h3 class="box-title">Cita del Día</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -20,7 +20,7 @@
         <div class="box-body">
           <div class="col-sm-4">
             <span class="font-bold">Médico:</span>
-            <span class="font-normal">{{ consulta.medico.get_full_name }}</span>
+            <span class="font-normal">{{ consulta.medico.get_dr_full_name }}</span>
             <br/>
             <span class="font-bold">Nro Registro:</span>
             <span class="font-normal">{{ consulta.medico.nro_registro_profesional }}</span>
@@ -29,7 +29,7 @@
           </div>
           <div class="col-sm-6">
             {% if detalles == '' %}
-              <h3>No hay pacientes agendados para el dia de hoy</h3>
+              <h3>No hay pacientes agendados para el día de hoy</h3>
             {% else %}
               <span class="font-bold">Especialidad: &nbsp;&nbsp;&nbsp;</span>
             <span class="font-normal">{{ consulta.especialidad.nombre }}</span>
@@ -50,6 +50,11 @@
         </div>
 
       </div>
+
+    <p class="col col-sm-6 col-md-6 col-lg-6" align="center">
+      <a href="{% url 'consultorios:consultas_dia' %}" id="salir" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i> Salir</a>
+    </p>
+
     <div class="wrapper-md">
 
 
@@ -59,14 +64,9 @@
             <div class="panel-heading">
               <b>Listado de Agendados</b>
               <div class="btn-group pull-right">
-                  <a href="{% url 'pacientes:nuevo_paciente' %}" id="create" class="btn btn-default btn-sm">
-                    <i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Paciente</a>
-              </div>
-              <div class="btn-group pull-right">
-                  <a href="{% url 'consultorios:consulta_detalle_iniciar' consulta.pk %}" class="btn btn-success btn-sm">
-                    <i class="fa fa-play" aria-hidden="true"></i> Iniciar Consulta</a>
-                  &nbsp;&nbsp;
-              </div>
+                <a href="{% url 'pacientes:nuevo_paciente' %}" id="create" class="btn btn-default btn-sm">
+                  <i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Paciente</a>
+              </div><p></p>
 
             </div>
               <div class="panel-body">
@@ -75,7 +75,8 @@
                   <tr>
                     <th>Orden</th>
                     <th>Paciente</th>
-                    <th>Observación</th>
+                    <th>Estado consulta</th>
+                    <th>Acción</th>
 
                   </tr>
                   </thead>
@@ -85,10 +86,29 @@
 
                     <td>{{ detalle.orden }}</td>
                     <td>{{ detalle.paciente.get_full_name }}</td>
-                    <td>{% if detalle.observacion %}
-                      {{ detalle.observacion }}
+                    <td>{{ detalle.estado.nombre }}</td>
+                    <td>
+                      {% if not existe_en_proceso %}
+                      {% if detalle.estado.codigo == "P" %}
+                        <a href="{% url 'consultorios:consulta_detalle_iniciar' detalle.id %}" class="btn btn-success btn-sm">
+                          <i class="fa fa-play" aria-hidden="true"></i> Iniciar Consulta</a>
                       {% else %}
+                        <a href="{% url 'consultorios:consulta_detalle_resumen' detalle.id %}" class="btn btn-default btn-sm">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i> Ver Resumen</a>
                       {% endif %}
+                      {% else %}
+                        {% if detalle.estado.codigo == "E" %}
+                          <a href="{% url 'consultorios:consulta_detalle_continuar' detalle.id %}" class="btn btn-default btn-sm">
+                            <i class="fa fa-pause" aria-hidden="true"></i> Continuar Consulta</a>
+                        {% elif detalle.estado.codigo == "F" or detalle.estado.codigo == "C"%}
+                          <a href="{% url 'consultorios:consulta_detalle_resumen' detalle.id %}" class="btn btn-default btn-sm">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i> Ver Resumen</a>
+                        {% else %}
+                          <a href="#" class="btn btn-success btn-sm" disabled>
+                            <i class="fa fa-play" aria-hidden="true"></i> Iniciar Consulta</a>
+                        {% endif %}
+                      {% endif %}
+
                     </td>
 
 
