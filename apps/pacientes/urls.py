@@ -67,6 +67,8 @@ urlpatterns = [
         name='padre_crear'),
     url(r'^paciente/(?P<paciente_id>\d+)/madre/crear$', pacienteViews.paciente_madre_crear,
         name='madre_crear'),
+    url(r'^paciente/padre/(?P<pk>[0-9]+)/editar/$',
+        pacienteViews.PacientePadreUpdate.as_view(), name='paciente_padre_editar'),
 
     url(r'^distrito/(?P<paciente_id>\d+)$', pacienteViews.distrito, name='distrito'),
 
