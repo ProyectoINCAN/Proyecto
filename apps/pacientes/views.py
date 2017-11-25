@@ -235,9 +235,9 @@ class PacientePadreUpdate(LoginRequiredMixin, UpdateView):
     def get_paciente(self):
         padre = PacientePadre.objects.get(pk=self.kwargs['pk'])
         print("entro1", padre)
-        paciente = padre.paciente
-        print("entro2", paciente)
-        return paciente
+        paciente = Paciente.objects.get(pacientepadre__padre=padre)
+        print("entro2", paciente.id)
+        return paciente.id
 
     def get_context_data(self, **kwargs):
         context = super(PacientePadreUpdate, self).get_context_data(**kwargs)
