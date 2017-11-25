@@ -2,7 +2,6 @@
 {% load static %}
 {% block extrajs %}
   <script src = "{% static 'apps/pacientes/js/otros_datos.js' %}"></script>
-
 {% endblock %}
 
 {% block content %}
@@ -15,17 +14,22 @@
 </ol><br>
 <div class="wrapper-md">
     <div class="panel panel-default">
-     <div class="panel-heading">Ficha Clínica</div>
+     <!--<div class="panel-heading">Ficha Clínica</div>-->
      <div class="panel-body">
-       <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-         <ul class="nav nav-pills">
-           <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
-           <li>{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a>{% endblock %}</li>
-           <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
-           <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
-          <li><a class="active" href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
-         </ul>
-       </nav>
+                 <div class="nav-tabs-custom">
+        <!--<nav class="navbar navbar-toggleable-md navbar-light bg-faded">-->
+            <ul class="nav nav-tabs">
+              <li class="">{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" data-toggle="tab" class="active" aria-expanded="true">Datos Básicos</a>{% endblock %}</li>
+              <li><a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a></li>
+              <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+              <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
+              <li class="active">{% block nav-about %}<a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}" data-toggle="tab5" aria-expanded="false">Otros Datos</a>{% endblock %}</li>
+
+            </ul>
+
+        <!--</nav>-->
+            </div>
+
        <div class="row">
          <div class="tab-content" id="panel_tab">
           <div class="tab-pane active" id="tab_informacion_personal">

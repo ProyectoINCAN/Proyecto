@@ -26,6 +26,9 @@ label { position: absolute; text-align:right; width:130px; }
     <li><a href="{% url 'pacientes:index' %}">Pacientes</a></li>
     <li class="active">Datos Básicos del Paciente</li>
   </ol><br>
+
+    {% include 'base/messages.html' %}
+
 <div class="wrapper-md">
 <div class="panel panel-default">
     <!--<div class="panel-heading">FICHA CLÍNICA</div>-->
@@ -43,6 +46,7 @@ label { position: absolute; text-align:right; width:130px; }
 
         <!--</nav>-->
             </div>
+
         <div class ="row">
 <form class="form-horizontal" method="POST">
         {% csrf_token %}
@@ -128,5 +132,6 @@ label { position: absolute; text-align:right; width:130px; }
 </form>
 </div>
     </div></div></div>
+
 
 {% endblock %}

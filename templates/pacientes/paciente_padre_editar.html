@@ -21,11 +21,11 @@
         <div class="panel-body">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                    <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" >Datos Básicos</a>{% endblock %}</li>
-                    <li>{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a>{% endblock %}</li>
-                    <li class="active"><a href="{% url 'pacientes:padre_crear' id_paciente %}" data-toggle="tab3" aria-expanded="true">Datos del Padre</a></li>
-                    <li><a href="{% url 'pacientes:madre_crear' id_paciente %}" data-toggle="tab4" aria-expanded="false">Datos de la Madre</a></li>
-                    <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
+                    <li>{% block nav-home %}<a href="" >Datos Básicos</a>{% endblock %}</li>
+                    <li>{% block nav-about %}<a href="">Direcciones</a>{% endblock %}</li>
+                    <li class="active"><a href="" data-toggle="tab3" aria-expanded="true">Datos del Padre</a></li>
+                    <li><a href="" data-toggle="tab4" aria-expanded="false">Datos de la Madre</a></li>
+                    <li><a href="">Otros Datos</a></li>
                 </ul>
 
             <!--</nav>-->
@@ -120,7 +120,7 @@
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-8">
                             <button class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
-                            <a href="{% url 'pacientes:paciente_padre_listar' id_paciente %}" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
+                            <a href="" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
                         </div>
                     </div>
                 </form>

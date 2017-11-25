@@ -163,6 +163,7 @@ def crear_direccion(request, paciente_id):
             print('direccion', direccion)
             direccion.save()
             return redirect('pacientes:paciente_direccion', paciente_id)
+        messages.success(request, "Se ha guardado correctamente!!!")
     return render(request, 'pacientes/paciente_direccion.html', contexto)
     # return render(request, 'pacientes/direccion.html', contexto)
 
@@ -179,9 +180,11 @@ class PacienteDireccionUpdate(LoginRequiredMixin, UpdateView):
 
 
     def form_valid(self, form):
-        form.save()
-
-        return JsonResponse({'success': True})
+        direccion = form.save()
+        paciente_id = direccion.paciente.pk
+        messages.success(self.request, "Se ha guardado correctamente!!!")
+        return HttpResponseRedirect(reverse('pacientes:paciente_direccion',
+                                            kwargs={'paciente_id': paciente_id}))
 
 
 def paciente_padre_crear(request, paciente_id):
@@ -207,7 +210,7 @@ def paciente_padre_crear(request, paciente_id):
         paciente_padre = PacientePadre.objects.filter(paciente=paciente_id).filter(padre='on')
         if paciente_padre.exists():
             context = {
-                'form': paciente_padre,
+                'paciente_padres': paciente_padre,
                 'id_paciente': paciente_id
             }
             return render(request, 'pacientes/paciente_padre_list.html', context)
@@ -223,6 +226,32 @@ def paciente_padre_crear(request, paciente_id):
     return render(request, 'pacientes/paciente_padre_crear.html', contexto)
 
 
+class PacientePadreUpdate(LoginRequiredMixin, UpdateView):
+    model = PacientePadre
+    form_class = PacientePadreForm
+    template_name = 'pacientes/paciente_padre_editar.html'
+
+
+    def get_paciente(self):
+        padre = PacientePadre.objects.get(pk=self.kwargs['pk'])
+        print("entro1")
+        paciente = padre.paciente.id
+        return paciente
+
+    def get_context_data(self, **kwargs):
+        context = super(PacientePadreUpdate, self).get_context_data(**kwargs)
+        context.update({
+                        'id_paciente': self.get_paciente(),
+                        })
+        return context
+
+
+    def form_valid(self, form):
+        paciente_padre = form.save()
+        messages.success(self.request, "Se ha guardado correctamente!!!")
+        return HttpResponseRedirect(reverse('pacientes:paciente_padre_listar',
+                                            kwargs={'id_paciente': self.get_paciente()}))
+
 class PacientePadreList(ListView):
     template_name = 'pacientes/paciente_padre_list.html'
     model = PacientePadre
@@ -236,10 +265,24 @@ class PacientePadreList(ListView):
         context.update({
                         'id_paciente': self.kwargs["id_paciente"],
                         'paciente_padres': self.get_padre()
-
                         })
         return context
 
+class PacienteMadreList(ListView):
+    template_name = 'pacientes/paciente_padre_list.html'
+    model = PacientePadre
+
+    def get_padre(self):
+        paciente_padres=PacientePadre.objects.filter(padre=False, paciente=Paciente.objects.get(pk=self.kwargs["id_paciente"]))
+        return paciente_padres
+
+    def get_context_data(self, **kwargs):
+        context = super(PacientePadreList, self).get_context_data(**kwargs)
+        context.update({
+                        'id_paciente': self.kwargs["id_paciente"],
+                        'paciente_padres': self.get_padre()
+                        })
+        return context
 
 
 def paciente_madre_crear(request, paciente_id):
@@ -258,12 +301,13 @@ def paciente_madre_crear(request, paciente_id):
             new_paciente = Paciente.objects.get(id=paciente_id)
             padre_paciente.paciente.add(new_paciente)
             messages.success(request, "Datos de la Madre guardado correctamente!!")
-            return redirect('pacientes:nuevo_paciente')
+            return HttpResponseRedirect(reverse('pacientes:paciente_padre_listar',
+                                                kwargs={'id_paciente': paciente_id}))
     else:
         paciente_padre = PacientePadre.objects.filter(paciente=paciente_id).filter(padre=False)
         if paciente_padre.exists():
             context = {
-                'form': paciente_padre,
+                'paciente_padres': paciente_padre,
                 'id_paciente': paciente_id
             }
             return render(request, 'pacientes/paciente_padre_list.html', context)
@@ -537,6 +581,7 @@ class PacienteUpdate(UpdateView):
         if form.is_valid() and form2.is_valid():
             form.save()
             form2.save()
+        messages.success(request, "Se ha actualizado correctamente!!!")
         return HttpResponseRedirect(reverse('pacientes:paciente_editar',
                                             kwargs={'pk': id_paciente}))
 
@@ -554,8 +599,12 @@ class PacienteDireccionDeleteView(View):
 
     def post(self, request, *args, **kwargs):
         direccion = get_object_or_404(Direccion, pk=kwargs.get('direccion_id'))
+        paciente_id= direccion.paciente.pk
         direccion.delete()
+        messages.success(self.request, "Se ha eliminado correctamente!!!")
         return JsonResponse({'success': True})
+        return HttpResponseRedirect(reverse('pacientes:paciente_direccion',
+                                            kwargs={'paciente_id': paciente_id}))
 
 
 def distrito(request):

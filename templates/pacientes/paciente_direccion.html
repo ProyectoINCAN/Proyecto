@@ -34,12 +34,13 @@
     <li><b>{{ paciente.get_name_nro_doc }}</b></li>
     <li class="active">Direcciones</li>
   </ol><br>
+    {% include 'base/messages.html' %}
+
 <div class="wrapper-md">
   <div class="panel panel-default">
     <!--<div class="panel-heading">Ficha Clínica</div>-->
     <div class="panel-body">
         <div class="nav-tabs-custom">
-        <!--<nav class="navbar navbar-toggleable-md navbar-light bg-faded">-->
             <ul class="nav nav-tabs">
                 <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
                 <li class="active">{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}" data-toggle="tab" class="active" aria-expanded="true">Direcciones</a>{% endblock %}</li>
@@ -47,7 +48,6 @@
                 <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
                 <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
             </ul>
-        <!--</nav>-->
             </div>
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -87,11 +87,6 @@
                                   <a class="btn btn-xs" title="Editar"
                                     onclick="return abrir_modal('{% url 'pacientes:paciente_direccion_editar' direccion.pk %}')">
                                     <i class="fa fa-pencil"></i>
-                                  </a>
-                                  <a href="#modalDireccion"
-                                     role="button" class="btn btnModal"
-                                     data-toggle="modal"
-                                     data-id="{{ direccion.pk }}"><i class='fa fa-times-circle'></i>
                                   </a>
                                   <a href="#myModal"
                                      role="button" class="btn btnModal"
@@ -209,16 +204,18 @@
             <h4 class="modal-title"><b>Dirección</b></h4>
           </div>
           <div class="modal-body">
-            <p>Desea eliminar los datos de la dirección?<span id="modal_name"></span></p>
+             <p>¿Está seguro que desea eliminar los datos la dirección?</p>
           </div>
-          <div class="modal-footer">
-            <form method="post" id="formEliminar">
-              {% csrf_token %}
-              <input type="hidden" value="" name="direccion_id" id="direccion_id">
-                <button type="submit" class="btn btn-primary">Eliminar</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            </form>
-          </div>
+   <div class="modal-footer">
+     <form method="post" id="formEliminar">
+       {% csrf_token %}
+       <div class="controls pull-right">
+         <input type="hidden" value="" name="direccion_id" id="direccion_id">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Sí</button>
+         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-remove fa fa-fw fa-times"></i> No</button>
+       </div>
+     </form>
+   </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
