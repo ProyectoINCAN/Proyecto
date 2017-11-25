@@ -210,9 +210,7 @@ class Diagnostico(models.Model):
     observacion = UpperTextField(blank=True, uppercase=True)
     fecha = models.DateField(auto_now=True, blank=False, null=False)
     medico = models.ForeignKey(Medico, on_delete=DO_NOTHING, verbose_name="Médico")
-    detalle = models.ForeignKey(ConsultaDetalle, on_delete=models.CASCADE, blank=True, null=True)
-
-
+    consulta_detalle = models.ForeignKey(ConsultaDetalle, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         ordering = ['paciente']

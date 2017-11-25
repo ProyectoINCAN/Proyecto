@@ -87,9 +87,24 @@
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if diagnosticos %}
-                        {% for data in diagnosticos %}
-                            {{ data.observacion|safe }}
-                        {% endfor %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Código CIE-10</th>
+                                <th>Nombre</th>
+                                <th>Observación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in diagnosticos %}
+                            <tr>
+                                <td>{{ data.cie10.codigo }}</td>
+                                <td>{{ data.cie10.descripcion }}</td>
+                                <td>{{ data.observacion|safe }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                     {% else %}
                         {{ "SIN ESPECIFICAR" }}
                     {% endif %}

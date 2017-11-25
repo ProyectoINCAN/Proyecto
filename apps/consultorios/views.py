@@ -575,8 +575,8 @@ class ConsultaDetalleContinuar(LoginRequiredMixin, TemplateView):
         #obtenemos el detalle de la consulta donde el estado sea en proceso
 
         #consultamos si el paciente ya tiene un diagnostico en la consulta actual
-        if Diagnostico.objects.filter(detalle=detalle).exists():
-            diagnostico = Diagnostico.objects.get(detalle=detalle)
+        if Diagnostico.objects.filter(consulta_detalle=detalle).exists():
+            diagnostico = Diagnostico.objects.get(consulta_detalle=detalle)
         else:
             diagnostico = None
 
@@ -650,8 +650,8 @@ class ConsultaDetalleResumen(LoginRequiredMixin, TemplateView):
         anamnesis = Anamnesis.objects.filter(paciente=detalle.paciente, consulta_detalle=detalle.id).order_by('-pk')
 
         # diagnosticos del paciente.  # TODO: ver si no se cambió a módulo de Consultorios. Agregar el Foreign key de consulta detalle
-        # diagnosticos = Diagnostico.objects.filter(paciente=detalle.paciente,
-        #                                           consulta_detalle=detalle.id).order_by('-pk')
+        diagnosticos = Diagnostico.objects.filter(paciente=detalle.paciente,
+                                                  consulta_detalle=detalle.id).order_by('-pk')
         # evoluciones del paciente
         evoluciones = EvolucionPaciente.objects.filter(paciente=detalle.paciente,
                                                        consulta_detalle=detalle.id).order_by('-pk')
@@ -668,7 +668,7 @@ class ConsultaDetalleResumen(LoginRequiredMixin, TemplateView):
         context.update({
             'consulta': detalle.consulta,
             'detalle': detalle,
-            # 'diagnosticos': diagnosticos,
+            'diagnosticos': diagnosticos,
             'evoluciones': evoluciones,
             'ordenes': ordenes,
             'prescripciones': prescripciones,
@@ -690,8 +690,8 @@ class ConsultaDetalleDiagnosticoList(LoginRequiredMixin, TemplateView):
         consulta = Consulta.objects.get(pk=detalle.consulta.id)
 
         #consultamos si el paciente ya tiene un diagnostico en la consulta actual
-        if Diagnostico.objects.filter(detalle=detalle).exists():
-            diagnostico = Diagnostico.objects.get(detalle=detalle)
+        if Diagnostico.objects.filter(consulta_detalle=detalle).exists():
+            diagnostico = Diagnostico.objects.get(consulta_detalle=detalle)
         else:
             diagnostico = None
 
@@ -803,7 +803,7 @@ class PacienteDiagnosticoCreate(LoginRequiredMixin, FormView):
         diagnostico = form.save(commit=False)
         detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
         consulta = Consulta.objects.get(pk=detalle.consulta.id)
-        diagnostico.detalle = detalle
+        diagnostico.consulta_detalle = detalle
         diagnostico.paciente = detalle.paciente
         diagnostico.medico = consulta.medico
         diagnostico.save()

@@ -195,15 +195,16 @@ class DiagnosticoPacienteForm(forms.ModelForm):
 
     class Meta:
         model = Diagnostico
-        exclude = ['paciente', 'medico', 'fecha', 'detalle']
+        exclude = ['paciente', 'medico', 'fecha', 'consulta_detalle']
 
         labels = {
             'cie10': 'CIE10',
             'observacion': 'Observación'
         }
         widgets = {
-            'cie10': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'style':'text-transform:uppercase;'}),
+            'cie10': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,
+                                                 'style': 'text-transform:uppercase;'}),
         }
 
 

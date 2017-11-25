@@ -198,7 +198,7 @@
                                     <td style="width: 40%">{{ diagnostico.cie10 }}</td>
                                     <td style="width:40%;">{{ diagnostico.observacion }} </td>
                                     <td>
-                                      {% if diagnostico.detalle.id == detalle.id %}
+                                      {% if diagnostico.consulta_detalle.id == detalle.id %}
                                       <a class="btn btn-default btn-xs" title="Editar"
                                          onclick="return abrir_modal('{% url 'consultorios:consulta_diagnostico_editar' diagnostico.id %}')">
                                         <i class="fa fa-pencil"></i>
