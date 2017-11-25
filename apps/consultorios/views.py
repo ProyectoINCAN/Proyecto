@@ -1266,14 +1266,46 @@ class HistoriaClinicaList(LoginRequiredMixin, TemplateView):
 
 
 class GeneratePDF(View):
+    pk_url_kwarg = "detalle_id"
+
     def get(self, request, *args, **kwargs):
-        template = get_template('consultorios/test_pdf.html')
+        template = get_template('consultorios/consulta/consulta_resumen.html')
+
+        detalle = "asdlkfjadsñlf"
+        print("detalle id = ", detalle)
+
+        consulta = Consulta.objects.get(pk=12)
+
+        # anamnesis del paciente
+        anamnesis = Anamnesis.objects.filter(paciente=222, consulta_detalle=30).order_by('-pk')
+
+        # diagnosticos del paciente.
+        diagnosticos = Diagnostico.objects.filter(paciente=222,
+                                                  consulta_detalle=30).order_by('-pk')
+        # evoluciones del paciente
+        evoluciones = EvolucionPaciente.objects.filter(paciente=222,
+                                                       consulta_detalle=30).order_by('-pk')
+        # ordenes de estudio del paciente
+        ordenes = ConsultaOrdenEstudio.objects.filter(paciente=222,
+                                                      consulta_detalle=30).order_by('-pk')
+        # prescripciones del paciente
+        prescripciones = ConsultaPrescripcion.objects.filter(paciente=222,
+                                                             consulta_detalle=30).order_by('-pk')
+        # tratamientos del paciente
+        tratamientos = Tratamiento.objects.filter(paciente=222,
+                                                  consulta_detalle=30).order_by('-pk')
+
         context = {
-            "invoice_id": Paciente.objects.fi,
-            "customer_name": "John Cooper",
-            "amount": 1399.99,
-            "today": "Today",
+            'consulta': consulta,
+            'detalle': detalle,
+            'diagnosticos': diagnosticos,
+            'evoluciones': evoluciones,
+            'ordenes': ordenes,
+            'prescripciones': prescripciones,
+            'tratamientos': tratamientos,
+            'anamnesis': anamnesis
         }
+
         html = template.render(context)
         pdf = render_to_pdf('consultorios/test_pdf.html', context)
         if pdf:
