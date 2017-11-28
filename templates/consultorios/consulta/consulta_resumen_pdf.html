@@ -1,67 +1,58 @@
-{% extends 'base/base2.html' %}
-{% block content %}
-  <div class="app-content-body">
-    <br>
-    <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="#">Inicio</a></li>
-      <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Dia</a></li>
-    </ol>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <b class="panel-title">Resumen de la atención ambulatoria</b>
-            <div class="btn-group btn-group-sm pull-right">
-                <div class="col pull-right">
-                    <a id="volver" type="button" class="btn btn-default"
-                       href="{% url 'consultorios:consulta_detalle_continuar' detalle.pk  %}">
-                      <i class="fa fa-stethoscope" aria-hidden="true"></i> Volver a la consulta</a>
-                    <a  class="btn btn-default" type="button"
-                       href="{% url 'consultorios:consulta_historia_clinica' detalle.paciente.pk  %}">
-                      <i class="fa fa-list" aria-hidden="true"></i>Historia Clinica</a>
-                    <a id="pdf" type="button" class="btn btn-default"
-                       href="{% url 'consultorios:consulta_historia_clinica_descargar' detalle.pk %}" target="_blank">
-                      <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
-                </div>
-            </div><p></p>
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>Resumen de la Consulta</title>
+    <style type="text/css">
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
 
-        </div>
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+      table, th, td {
+    border: 1px solid black;
+}
+    </style>
+  </head>
+  <body>
+    <div class="app-content-body">
+      <div class="panel panel-default">
         <div class="panel-body">
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Fecha de la consulta:</b>
-                </div>
-                {{ detalle.consulta.fecha }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Hora de inicio:</b>
-                </div>
-                {{ detalle.hora_inicio }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Hora de finalización:</b>
-                </div>
-                {{ detalle.hora_fin }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Dependencia:</b>
-                </div>
-                {{ detalle.consulta.especialidad }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Médico:</b>
-                </div>
-                {{ detalle.consulta.medico.get_dr_full_name }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Paciente:</b>
-                </div>
-                {{ detalle.paciente.get_name_nro_doc }}
-            </div>
+          <div class="row">
+            <h1 align="center"><b>SIHINCAN</b></h1>
+            <h1 align="center"><b>Reporte de la Consulta del Paciente: {{ detalle.paciente.get_full_name }}</b></h1>
+          </div>
+          <h2><b><u>1. Datos de la Consulta</u></b></h2>
+          <div class="row">
+            <div class="col-sm-6">
 
+              <span class="font-bold">Fecha:</span>
+              <span class="font-normal">{{ detalle.consulta.fecha }}</span>
+              <br/>
+              <span class="font-bold">Hora de Inicio:</span>
+              <span class="font-normal">{{ detalle.hora_inicio }}
+
+              </span>
+              <br/>
+
+            </div>
+            <div class="col-sm-6">
+
+              <span class="font-bold">Hora de Inicio:</span>
+              <span class="font-normal">{% if detalle.hora_fin %}{{ detalle.hora_fin }}
+              {% else %}Sin hora de finalización{% endif %}</span>
+              <br/>
+            </div>
+          </div>
             {% if detalle.estado.codigo == "C" %}
             <div class="row">
                 <div class="col-xs-4 col-md-2 col-lg-3">
@@ -73,27 +64,31 @@
 
             <div class="row">
                 <div class="col-sm-4">
-                    <b>Resumen de la anamnesis:</b>
+                    <h2><b><u>2. Resumen de la anamnesis:</u></b></h2>
                 </div>
-                <div class="col-sm-11 col-lg-11">
+                <div class="col-md-12">
+                    <ul type="circle">
                     {% for data in anamnesis %}
-                        {{ data.observacion|safe }}
+
+                      {{ data.observacion|safe }}
+
                     {% endfor %}
+                    </ul>
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                    <b>Resumen del diagnóstico:</b>
+                  <h2><b><u>3. Resumen del diagnóstico:</u></b></h2>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if diagnosticos %}
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Código CIE-10</th>
-                                <th>Nombre</th>
-                                <th>Observación</th>
+                              <th><b>Código CIE-10</b></th>
+                              <th><b>Nombre</b></th>
+                              <th><b>Observación</b></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,9 +109,10 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                    <b>Resumen de evolución del paciente:</b>
+                  <h2><b><u>4. Resumen de evolución del paciente:</u></b></h2>
                 </div>
-                <div class="col-sm-11 col-lg-11">
+                <div class="col-md-12">
+                    <ul>
                     {% if evoluciones %}
                         {% for data in evoluciones %}
                             {{ data.observaciones|safe }}
@@ -124,16 +120,17 @@
                     {% else %}
                         {{ "SIN ESPECIFICAR" }}
                     {% endif %}
+                    </ul>
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-sm-4 col-lg-11">
-                    <b>Resumen de la orden de estudio:</b>
+                    <h2><b><u>5. Resumen de la orden de estudio:</u></b></h2>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if ordenes %}
-                    <table class="table">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Estudio</th>
@@ -157,7 +154,8 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                    <b>Resumen de la prescripción:</b>
+
+                    <h2><b><u>6. Resumen de la prescripción:</u></b></h2>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if prescripciones %}
@@ -187,7 +185,8 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                    <b>Resumen del tratamiento:</b>
+
+                    <h2><b><u>7. Resumen del tratamiento:</u></b></h2>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if tratamientos %}
@@ -214,8 +213,9 @@
             </div>
         </div>
     </div>
-  </div>
+    </div>
+  </body>
 
-{% endblock %}
+</html>
 
 

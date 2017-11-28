@@ -58,7 +58,8 @@
                         href="{% url 'consultorios:consulta_historia_clinica_visualizar' consulta.pk %}" title="Ver">
                        <i class="fa fa-eye"></i>
                      </a>
-                     <a class="btn btn-default btn-xs" title="Descarga en PDF">
+                     <a class="btn btn-default btn-xs"
+                        href="{% url 'consultorios:consulta_historia_clinica_descargar' consulta.pk %}" target="_blank" title="Descarga en PDF">
                        <i class="fa fa-file-pdf-o"></i>
                      </a>
                    </td>

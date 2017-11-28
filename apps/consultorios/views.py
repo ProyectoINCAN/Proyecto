@@ -1350,9 +1350,9 @@ class ConsultaDetalleHistoriaClinica(LoginRequiredMixin, DetailView):
 class HistoriaClinicaPDF(View):
 
     def get(self, request, *args, **kwargs):
-        template = get_template('consultorios/consulta/consulta_resumen.html')
+        template = get_template('consultorios/consulta/consulta_resumen_pdf.html')
 
-        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['consulta_id'])
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
 
 
         # anamnesis del paciente
@@ -1384,7 +1384,7 @@ class HistoriaClinicaPDF(View):
         }
 
         html = template.render(context)
-        pdf = render_to_pdf('consultorios/consulta/consulta_resumen.html', context)
+        pdf = render_to_pdf('consultorios/consulta/consulta_resumen_pdf.html', context)
         if pdf:
             response = HttpResponse(pdf, content_type='application/pdf')
             filename = "Invoice_%s.pdf" % ("12341231")
