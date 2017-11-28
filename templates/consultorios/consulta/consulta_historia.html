@@ -54,7 +54,8 @@
                  <tr>
                    <td>{{ consulta.consulta.fecha|date:"SHORT_DATE_FORMAT" }}</td>
                    <td>
-                     <a class="btn btn-default btn-xs" title="Ver">
+                     <a class="btn btn-default btn-xs"
+                        href="{% url 'consultorios:consulta_historia_clinica_visualizar' consulta.pk %}" title="Ver">
                        <i class="fa fa-eye"></i>
                      </a>
                      <a class="btn btn-default btn-xs" title="Descarga en PDF">

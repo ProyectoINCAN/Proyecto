@@ -125,4 +125,7 @@ urlpatterns = [
     url(r'^test_pdf/$', views.GeneratePDF.as_view(),
         name='test_pdf'),
 
+    url(r'^consulta/historia/paciente/(?P<consulta_id>\d+)/detalles/$', views.ConsultaDetalleHistoriaClinica.as_view(),
+        name='consulta_historia_clinica_visualizar'),
+
 ]

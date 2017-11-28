@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
+from django.core import serializers
 from django.http.response import JsonResponse
 from django.db import connection
 import json
@@ -17,13 +18,12 @@ from django.shortcuts import render
 from django.db.models.deletion import ProtectedError
 
 # Create your views here.
+from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView, View
 
 import datetime
-
-from apps.agendamientos.functions import get_origen_url_agendamiento
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import *
 from apps.consultorios.models import *
@@ -33,7 +33,6 @@ from apps.internaciones.models import Diagnostico
 from django.utils.safestring import mark_safe
 from apps.consultorios.helpers import calculate_age
 from utils.generate_pdf import render_to_pdf
-
 
 
 class MedicoList(ListView):
@@ -502,7 +501,15 @@ class ConsultaCreate(LoginRequiredMixin, View):
                                            paciente=det.paciente, estado=EstadoConsultaDetalle.objects.get(codigo='P'))
         # return HttpResponseRedirect(reverse('agendamientos:agenda_especialidad_medico'))
 
-        origen_url = get_origen_url_agendamiento(origen)
+        if origen == str(1):
+            # redirige a agendar por fecha disponible
+            origen_url = '/agendamientos/agendas/'
+        elif origen == str(2):
+            # redirige a agendas por rango de fechas
+            origen_url = '/agendamientos/agenda_fecha/'
+        else:
+            # DEFAULT: redirige a agendar por fecha disponible
+            origen_url = '/agendamientos/agendas/'
 
         return JsonResponse(origen_url, safe=False)
 
@@ -1033,7 +1040,7 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
         lista_pacientes_especialidad = []
         max_ninhez = 12
         max_adolescencia = 18
-        max_juventud = 30
+        max_juventud = 4
         max_adultez = 65
 
         cant_ninhez = 0
@@ -1271,29 +1278,29 @@ class GeneratePDF(View):
     def get(self, request, *args, **kwargs):
         template = get_template('consultorios/consulta/consulta_resumen.html')
 
-        detalle = "asdlkfjadsñlf"
+        detalle = ConsultaDetalle.objects.get(pk=4)
         print("detalle id = ", detalle)
 
-        consulta = Consulta.objects.get(pk=12)
+        consulta = Consulta.objects.get(pk=3)
 
         # anamnesis del paciente
-        anamnesis = Anamnesis.objects.filter(paciente=222, consulta_detalle=30).order_by('-pk')
+        anamnesis = Anamnesis.objects.filter(paciente=4, consulta_detalle=4).order_by('-pk')
 
         # diagnosticos del paciente.
-        diagnosticos = Diagnostico.objects.filter(paciente=222,
-                                                  consulta_detalle=30).order_by('-pk')
+        diagnosticos = Diagnostico.objects.filter(paciente=4,
+                                                  consulta_detalle=4).order_by('-pk')
         # evoluciones del paciente
-        evoluciones = EvolucionPaciente.objects.filter(paciente=222,
-                                                       consulta_detalle=30).order_by('-pk')
+        evoluciones = EvolucionPaciente.objects.filter(paciente=4,
+                                                       consulta_detalle=4).order_by('-pk')
         # ordenes de estudio del paciente
-        ordenes = ConsultaOrdenEstudio.objects.filter(paciente=222,
-                                                      consulta_detalle=30).order_by('-pk')
+        ordenes = ConsultaOrdenEstudio.objects.filter(paciente=4,
+                                                      consulta_detalle=4).order_by('-pk')
         # prescripciones del paciente
-        prescripciones = ConsultaPrescripcion.objects.filter(paciente=222,
-                                                             consulta_detalle=30).order_by('-pk')
+        prescripciones = ConsultaPrescripcion.objects.filter(paciente=4,
+                                                             consulta_detalle=4).order_by('-pk')
         # tratamientos del paciente
-        tratamientos = Tratamiento.objects.filter(paciente=222,
-                                                  consulta_detalle=30).order_by('-pk')
+        tratamientos = Tratamiento.objects.filter(paciente=4,
+                                                  consulta_detalle=4).order_by('-pk')
 
         context = {
             'consulta': consulta,
@@ -1307,7 +1314,7 @@ class GeneratePDF(View):
         }
 
         html = template.render(context)
-        pdf = render_to_pdf('consultorios/test_pdf.html', context)
+        pdf = render_to_pdf('consultorios/consulta/consulta_resumen.html', context)
         if pdf:
             response = HttpResponse(pdf, content_type='application/pdf')
             filename = "Invoice_%s.pdf" % ("12341231")
@@ -1318,5 +1325,80 @@ class GeneratePDF(View):
             response['Content-Disposition'] = content
             return response
         return HttpResponse("Not found")
+
+
+class ConsultaDetalleHistoriaClinica(LoginRequiredMixin, DetailView):
+    model = ConsultaDetalle
+    template_name = "consultorios/detalle_consulta_medica.html"
+    pk_url_kwarg = "consulta_id"
+
+    def get_context_data(self, **kwargs):
+        context = super(ConsultaDetalleHistoriaClinica, self).get_context_data(**kwargs)
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['consulta_id'])
+        context.update({'detalle': detalle,
+                        'anamnesis': Anamnesis.objects.filter(consulta_detalle=detalle).order_by('-pk'),
+                        'diagnosticos': Diagnostico.objects.filter(consulta_detalle=detalle).order_by('-pk'),
+                        'evoluciones': EvolucionPaciente.objects.filter(consulta_detalle=detalle).order_by('-pk'),
+                        'tratamientos': Tratamiento.objects.filter(consulta_detalle=detalle).order_by('-pk'),
+                        'ordenes': ConsultaOrdenEstudio.objects.filter(consulta_detalle=detalle).order_by('-pk'),
+                        'prescripciones': ConsultaPrescripcion.objects.filter(paciente=detalle.paciente,
+                                                                              consulta_detalle=detalle.id).order_by('-pk')
+                        })
+        return context
+
+
+class HistoriaClinicaPDF(View):
+
+    def get(self, request, *args, **kwargs):
+        template = get_template('consultorios/consulta/consulta_resumen.html')
+
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['consulta_id'])
+
+
+        # anamnesis del paciente
+        anamnesis = Anamnesis.objects.filter(consulta_detalle=detalle).order_by('-pk')
+
+        # diagnosticos del paciente.
+        diagnosticos = Diagnostico.objects.filter(consulta_detalle=detalle).order_by('-pk')
+
+        # evoluciones del paciente
+        evoluciones = EvolucionPaciente.objects.filter(consulta_detalle=detalle).order_by('-pk')
+
+        # ordenes de estudio del paciente
+        ordenes = ConsultaOrdenEstudio.objects.filter(consulta_detalle=detalle).order_by('-pk')
+        # prescripciones del paciente
+        prescripciones = ConsultaPrescripcion.objects.filter(paciente=detalle.paciente,
+                                                             consulta_detalle=detalle.id).\
+            order_by('-pk')
+        # tratamientos del paciente
+        tratamientos = Tratamiento.objects.filter(consulta_detalle=detalle).order_by('-pk')
+
+        context = {
+            'detalle': detalle,
+            'diagnosticos': diagnosticos,
+            'evoluciones': evoluciones,
+            'ordenes': ordenes,
+            'prescripciones': prescripciones,
+            'tratamientos': tratamientos,
+            'anamnesis': anamnesis
+        }
+
+        html = template.render(context)
+        pdf = render_to_pdf('consultorios/consulta/consulta_resumen.html', context)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = "Invoice_%s.pdf" % ("12341231")
+            content = "inline; filename='%s'" % (filename)
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename='%s'" % (filename)
+            response['Content-Disposition'] = content
+            return response
+        return HttpResponse("Not found")
+
+
+
+
+
 
 
