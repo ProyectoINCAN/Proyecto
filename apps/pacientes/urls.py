@@ -13,7 +13,8 @@ urlpatterns = [
     url(r'^index/$', pacienteViews.DashboardAdministrativoView.as_view(), name='index'),
 
     url(r'^paciente/nuevo/$', login_required(PacienteCreate.as_view()), name='nuevo_paciente'),
-    url(r'^paciente/(?P<pk>[0-9]+)/editar$', login_required(PacienteUpdate.as_view()), name='paciente_editar'),
+    # url(r'^paciente/(?P<pk>\d+)/editar$', login_required(PacienteUpdate.as_view()), name='paciente_editar'),
+    url(r'^paciente/(?P<pk>\d+)/editar/$', PacienteUpdate.as_view(), name='paciente_editar'),
 
 
     #dos url para eliminar, estamos usando el de la funcion y no el de la clase

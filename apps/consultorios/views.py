@@ -907,7 +907,7 @@ class PacientePrescripcionCreate(LoginRequiredMixin, FormView):
         return context
 
     def form_valid(self, form):
-        """guardamos el diagnostico de la consulta del paciente(consulta detalle)"""
+        """guardamos la prescripción del paciente (consulta detalle)"""
         prescripcion = form.save(commit=False)
         consulta_detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
         prescripcion.paciente = consulta_detalle.paciente
@@ -1164,6 +1164,12 @@ class MedicamentoCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('consultorios:medicamentos')
+
+
+class MedicamentoNuevoView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        # TODO logica de guardado
+        pass
 
 
 class MedicamentoUpdateView(LoginRequiredMixin, UpdateView):

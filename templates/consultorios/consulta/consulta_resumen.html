@@ -18,7 +18,7 @@
             <div class="btn-group btn-group-sm pull-right">
                 <div class="col pull-right">
                     <a id="volver" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_detalle_dia' detalle.consulta.id  %}"> <i class="fa fa-list" aria-hidden="true"></i> Volver a la lista</a>
-                    <a id="pdf" type="button" class="btn btn-default" href="javascript:void(0)"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
+                    <a id="pdf" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_historia_clinica_descargar' detalle.id %}" target="_blank"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
                 </div>
             </div><p></p>
 
