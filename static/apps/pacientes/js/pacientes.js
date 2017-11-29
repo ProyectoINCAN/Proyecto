@@ -1,4 +1,13 @@
    console.log($("#id_nacionalidad").val())
+ console.log("entro")
+   $("#id_tipo_doc").change(function () {
+       console.log("entro")
+   }
+
+           $("input[name='tipo_doc']").focus(function(){
+        console.log("entro")
+this.select();
+});
    var nacionalidad = $("#id_nacionalidad").val()
         $.ajax({
         url: '/principal/nacionalidad/'+nacionalidad,

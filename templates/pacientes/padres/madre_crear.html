@@ -1,11 +1,11 @@
 {% extends "base/base2.html" %}
+{% load static %}
 
 {% block extrajs %}
 <script language="JavaScript">
-        document.getElementById("mySelect").value = "M";
+        document.getElementById("mySelect").value = "F";
     </script>
 {% endblock %}
-
 {% block content %}
 <div class="bg-light lter b-b wrapper-md">
     <h1 class="m-n font-thin h3">Ficha Clínica</h1>
@@ -14,23 +14,23 @@
     <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
     <li><a href="{% url 'pacientes:index' %}">Pacientes</a></li>
     <li><b>{{ paciente.get_name_nro_doc }}</b></li>
-    <li class="active">Datos del Padre</li>
+   <li class="active">Datos de la Madre</li>
   </ol><br>
 <div class="col-lg-12">
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                    <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" >Datos Básicos</a>{% endblock %}</li>
+                    <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
                     <li>{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a>{% endblock %}</li>
-                    <li class="active"><a href="{% url 'pacientes:padre_crear' id_paciente %}" data-toggle="tab3" aria-expanded="true">Datos del Padre</a></li>
-                    <li><a href="{% url 'pacientes:madre_crear' id_paciente %}" data-toggle="tab4" aria-expanded="false">Datos de la Madre</a></li>
-                    <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
-                </ul>
 
-            <!--</nav>-->
-            </div>
-                        {% include 'base/messages.html' %}
+                    <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+                    <li class="active"><a href="{% url 'pacientes:madre_crear' id_paciente %}" data-toggle="tab4" aria-expanded="true">Datos de la Madre</a></li>
+                    <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros</a></li>
+                </ul>
+                </div>
+
+            {% include 'base/messages.html' %}
                 <form class="form-horizontal" method="post">
                     {% csrf_token %}
                     <div class="form-group">
@@ -120,16 +120,11 @@
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-8">
                             <button class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
-                            <a href="{% url 'pacientes:paciente_padre_listar' id_paciente %}" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
+                            <a href="{% url 'pacientes:paciente_madre_listar' id_paciente %}" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
                         </div>
                     </div>
                 </form>
         </div>
-
-
-
-            </div>
-        </div>
     </div>
-
+</div>
 {% endblock %}

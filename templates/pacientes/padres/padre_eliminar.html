@@ -1,4 +1,4 @@
-<input id="url" type="hidden" value="{% url 'pacientes:paciente_seguro_medico_eliminar' object.pk %}">
+<input id="url" type="hidden" value="{% url 'pacientes:paciente_padre_eliminar' object.pk %}">
 <script>
 
 $( document ).ready(function() {
@@ -7,8 +7,8 @@ $( document ).ready(function() {
 
         BootstrapDialog.show({
         type: BootstrapDialog.TYPE_DANGER,
-        title: 'Eliminar Seguro Médico',
-        message: '¿Está seguro que desea eliminar el seguro médico seleccionado?',
+        title: 'Eliminar Padre',
+        message: '¿Está seguro de que desea eliminar el padre del paciente?',
         draggable: true,
         closable: false,
         buttons: [{

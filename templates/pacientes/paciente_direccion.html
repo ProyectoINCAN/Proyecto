@@ -70,7 +70,7 @@
                                 <th width="80">Barrio</th>
                                 <th width="30">Área</th>
                                 <th width="20">Referencia</th>
-                                <th class='text-center'>Eliminar</th>
+                                <th class='text-center'>Acción</th>
                               </tr>
                         </thead>
                         <tbody>
@@ -88,11 +88,9 @@
                                     onclick="return abrir_modal('{% url 'pacientes:paciente_direccion_editar' direccion.pk %}')">
                                     <i class="fa fa-pencil"></i>
                                   </a>
-                                  <a href="#myModal"
-                                     role="button" class="btn btnModal"
-                                     data-toggle="modal"
-                                      id="btnModalPopup"  data-name="{{ direccion.descripcion }}"
-                                      data-id="{{ direccion.pk }}"><i class='fa fa-times-circle'></i>
+                                    <a class="btn btn-xs" title="Eliminar"
+                                    onclick="return abrir_modal('{% url 'pacientes:paciente_direccion_eliminar' direccion.pk %}')">
+                                    <i class="fa fa-times-circle"></i>
                                   </a>
                                 </td>
                             </tr>
@@ -195,28 +193,4 @@
 
   </div>
 </div>
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"><b>Dirección</b></h4>
-          </div>
-          <div class="modal-body">
-             <p>¿Está seguro que desea eliminar los datos la dirección?</p>
-          </div>
-   <div class="modal-footer">
-     <form method="post" id="formEliminar">
-       {% csrf_token %}
-       <div class="controls pull-right">
-         <input type="hidden" value="" name="direccion_id" id="direccion_id">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Sí</button>
-         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-remove fa fa-fw fa-times"></i> No</button>
-       </div>
-     </form>
-   </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
 {% endblock %}

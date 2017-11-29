@@ -400,7 +400,7 @@ class PacientePadre(models.Model):
     padre = models.BooleanField(default=True, verbose_name="Padre")
     # TODO si es PADRE True, si es madre False # en el admin.py "exclude = ('padre',)" para que no se muestre el campo
     # validar según el sexo
-    otro = models.TextField(null=True, verbose_name="Otro, especificar")
+    otro = models.TextField(blank=True, null=True, verbose_name="Otro, especificar")
     paciente = models.ManyToManyField(Paciente)
 
     def get_full_name(self):

@@ -5,7 +5,7 @@ from apps.consultorios.views import MedicoUpdate
 from apps.pacientes.views import PacienteCreate, PacienteUpdate, PacienteCreate
 
 
-from apps.pacientes import views as pacienteViews
+from apps.pacientes import views as pacienteViews, views
 
 urlpatterns = [
 
@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^paciente/(?P<paciente_id>\d+)/direcciones/$',
         login_required(pacienteViews.PacienteDireccionView.as_view()), name='paciente_direccion'),
     url(r'^paciente/direccion/(?P<direccion_id>\d+)/eliminar$',
-        login_required(pacienteViews.PacienteDireccionDeleteView.as_view()), name='paciente_direccion_eliminar'),
+        login_required(pacienteViews.PacienteDireccionDelete.as_view()), name='paciente_direccion_eliminar'),
     #abre la url para agregar una nueva direccion
     url(r'^direccion/nuevo/(?P<paciente_id>\d+)$', login_required(pacienteViews.crear_direccion), name='crear_direccion'),
     url(r'^paciente/direccion/(?P<direccion_id>\d+)/editar/$',
@@ -57,7 +57,6 @@ urlpatterns = [
     url(r'^paciente/nivel_educativo/(?P<educacion_id>\d+)/eliminar/$',
         pacienteViews.PacienteNivelEducativoDelete.as_view(), name='paciente_nivel_educativo_eliminar'),
 
-
     url(r'^buscar/$', login_required(pacienteViews.PacienteBuscar.as_view()), name='buscar'),
     url(r'^autocomplete_nombres/$', login_required(pacienteViews.autocomplete_nombres), name='autocomplete_nombres'),
 
@@ -70,11 +69,24 @@ urlpatterns = [
     url(r'^paciente/padre/(?P<pk>[0-9]+)/editar/$',
         pacienteViews.PacientePadreUpdate.as_view(), name='paciente_padre_editar'),
 
+    url(r'^paciente/madre/(?P<pk>[0-9]+)/editar/$',
+        pacienteViews.PacienteMadreUpdate.as_view(), name='paciente_madre_editar'),
+
+    url(r'^paciente/(?P<id_paciente>\d+)/padre/list$',
+        pacienteViews.PacientePadreList.as_view(), name='paciente_padre_listar'),
+
+    url(r'^paciente/padre/(?P<padre_id>\d+)/eliminar$', views.PacientePadreDelete.as_view(),
+        name='paciente_padre_eliminar'),
+
+    url(r'^paciente/(?P<id_paciente>\d+)/madre/list$',
+        pacienteViews.PacienteMadreList.as_view(), name='paciente_madre_listar'),
+    url(r'^paciente/padre/(?P<madre_id>\d+)/eliminar$', views.PacienteMadreDelete.as_view(),
+        name='paciente_madre_eliminar'),
+
     url(r'^distrito/(?P<paciente_id>\d+)$', pacienteViews.distrito, name='distrito'),
 
     url(r'^agenda/(?P<agenda_id>\d+)/(?P<origen>\d+)/paciente/nuevo/$',
         pacienteViews.PacienteCreateByAgenda.as_view(), name='agenda_paciente_crear'),
 
-    url(r'^paciente/(?P<id_paciente>\d+)/padre/list$',
-        pacienteViews.PacientePadreList.as_view(), name='paciente_padre_listar'),
+
 ]

@@ -14,10 +14,8 @@
 </ol><br>
 <div class="wrapper-md">
     <div class="panel panel-default">
-     <!--<div class="panel-heading">Ficha Clínica</div>-->
      <div class="panel-body">
                  <div class="nav-tabs-custom">
-        <!--<nav class="navbar navbar-toggleable-md navbar-light bg-faded">-->
             <ul class="nav nav-tabs">
               <li class="">{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" data-toggle="tab" class="active" aria-expanded="true">Datos Básicos</a>{% endblock %}</li>
               <li><a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a></li>
@@ -26,13 +24,11 @@
               <li class="active">{% block nav-about %}<a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}" data-toggle="tab5" aria-expanded="false">Otros Datos</a>{% endblock %}</li>
 
             </ul>
-
-        <!--</nav>-->
             </div>
 
        <div class="row">
          <div class="tab-content" id="panel_tab">
-          <div class="tab-pane active" id="tab_informacion_personal">
+          <div class="tab-pane active" id="tab_seguro_medico">
            <div class="form-group" id="panel_seguro_form_group">
               <label class="control-label col-lg-2 col-sm-4">Seguro Médico:</label>
               <div id="panel_seguro" class="col-lg-8 col-sm-8">
@@ -53,6 +49,9 @@
                           {{ seguro.detalle }}{% endif %} </td>
                         <td>
                           <a class="btn btn-xs"
+                             onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_crear' id_paciente %}')"><span class="fa fa-plus"></span>
+                          </a>
+                          <a class="btn btn-xs"
                             onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_editar' seguro.id %}')">
                             <i class="fa fa-pencil"></i>
                           </a>
@@ -66,23 +65,22 @@
                     {% endif %}
                   </tbody>
                 </table>
-                <a onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_crear' id_paciente %}')"
-                   class="btn"><span class="fa fa-plus"></span>
-                </a>
+                {% if seguros.count == 0 %}
+                    <a class="btn btn-xs" onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_crear' id_paciente %}')"
+                       ><span class="fa fa-plus"></span>
+                    </a>
+               {% endif %}
             </div>
-
-
-
             </div>
           </div>
         </div>
         </div>
        <div class="row">
-         <div class="tab-content" id="panel_tab">
-          <div class="tab-pane active" id="tab_informacion_personal">
+         <div class="tab-content" id="panel_tab_situacion_laboral">
+          <div class="tab-pane active" id="tab_situacion_laboral">
            <div class="form-group" id="panel_direccion_form_group">
               <label class="control-label col-lg-2 col-sm-4">Situacion Laboral:</label>
-              <div id="panel_direcciones" class="col-lg-8 col-sm-8">
+              <div id="panel_situacion_laboral" class="col-lg-8 col-sm-8">
                 <table class="table table-striped responsive-table">
                   <thead>
                   <tr>
@@ -99,6 +97,9 @@
                         <td>{% if not ocupacion.profesion %}--------{% else %}
                           {{ ocupacion.profesion }}{% endif %} </td>
                         <td>
+                            <a onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_crear' id_paciente %}')"
+                           class="btn btn-xs"><span class="fa fa-plus"></span>
+                        </a>
                           <a class="btn btn-xs" title="Editar"
                             onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_editar' ocupacion.id %}')">
                             <i class="fa fa-pencil"></i>
@@ -113,20 +114,22 @@
                     {% endif %}
                   </tbody>
                 </table>
-                <a onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_crear' id_paciente %}')"
-                   class="btn"><span class="fa fa-plus"></span>
-                </a>
+                  {% if ocupaciones.count == 0 %}
+                    <a onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_crear' id_paciente %}')"
+                       class="btn btn-xs"><span class="fa fa-plus"></span>
+                    </a>
+                  {% endif %}
             </div>
             </div>
           </div>
         </div>
         </div>
        <div class="row">
-         <div class="tab-content" id="panel_tab">
-          <div class="tab-pane active" id="tab_informacion_personal">
-           <div class="form-group" id="panel_direccion_form_group">
+         <div class="tab-content" id="panel_tab_nivel_educativo">
+          <div class="tab-pane active" id="tab_nivel_educativo">
+           <div class="form-group" id="panel_nivel_educativo_form_group">
               <label class="control-label col-lg-2 col-sm-4">Nivel Educativo:</label>
-              <div id="panel_direcciones" class="col-lg-8 col-sm-8">
+              <div id="panel_nivel_educativo" class="col-lg-8 col-sm-8">
                 <table class="table table-striped responsive-table">
                   <thead>
                   <tr>
@@ -144,13 +147,17 @@
                         <td>{% if nivel.completo %}SI{% else %}NO{% endif %}</td>
                         <td>{% if nivel.anho_cursado %}{{ nivel.anho_cursado }}{% else %}--------{% endif %}</td>
                         <td>
-                          <a class="btn btn-default btn-xs" title="Editar"
+                          <a class="btn btn-xs"
+                             onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')">
+                             <span class="fa fa-plus"></span>
+                          </a>
+                          <a class="btn btn-xs" title="Editar"
                             onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_editar' nivel.id %}')">
                             <i class="fa fa-pencil"></i>
                           </a>
-                          <a class="btn btn-default btn-xs" title="Eliminar"
+                          <a class="btn btn-xs" title="Eliminar"
                             onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_eliminar' nivel.id %}')">
-                            <i class="fa fa-trash"></i>
+                            <i class="fa fa-times-circle"></i>
                           </a>
                         </td>
                       </tr>
@@ -159,8 +166,9 @@
                   </tbody>
                 </table>
                 {% if nivel_educativo.count == 0 %}
-                <a onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')"
-                   class="btn"><span class="fa fa-plus"></span>
+                <a class="btn btn-xs"
+                   onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')">
+                    <span class="fa fa-plus"></span>
                 </a>
                 {% endif %}
             </div>
@@ -168,6 +176,58 @@
           </div>
         </div>
         </div>
+       <!--<div class="row">-->
+         <!--<div class="tab-content" id="panel_tab_nivel_educativo">-->
+          <!--<div class="tab-pane active" id="tab_nivel_educativo">-->
+           <!--<div class="form-group" id="panel_nivel_educativo_form_group">-->
+              <!--<label class="control-label col-lg-2 col-sm-4">Nivel Educativo:</label>-->
+              <!--<div id="panel_nivel_educativo" class="col-lg-8 col-sm-8">-->
+                <!--<table class="table table-striped responsive-table">-->
+                  <!--<thead>-->
+                  <!--<tr>-->
+                    <!--<th>Nivel Educativo</th>-->
+                    <!--<th>Completo</th>-->
+                    <!--<th>Año Cursado</th>-->
+                    <!--<th>Acción</th>-->
+                  <!--</tr>-->
+                  <!--</thead>-->
+                  <!--<tbody>-->
+                  <!--{% if nivel_educativo %}-->
+                    <!--{% for nivel in nivel_educativo %}-->
+                      <!--<tr>-->
+                        <!--<td>{{ nivel.nivel_educativo }}</td>-->
+                        <!--<td>{% if nivel.completo %}SI{% else %}NO{% endif %}</td>-->
+                        <!--<td>{% if nivel.anho_cursado %}{{ nivel.anho_cursado }}{% else %}&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;{% endif %}</td>-->
+                        <!--<td>-->
+                          <!--<a class="btn btn-xs"-->
+                             <!--onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')">-->
+                             <!--<span class="fa fa-plus"></span>-->
+                          <!--</a>-->
+                          <!--<a class="btn btn-xs" title="Editar"-->
+                            <!--onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_editar' nivel.id %}')">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                          <!--</a>-->
+                          <!--<a class="btn btn-xs" title="Eliminar"-->
+                            <!--onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_eliminar' nivel.id %}')">-->
+                            <!--<i class="fa fa-times-circle"></i>-->
+                          <!--</a>-->
+                        <!--</td>-->
+                      <!--</tr>-->
+                    <!--{% endfor %}-->
+                    <!--{% endif %}-->
+                  <!--</tbody>-->
+                <!--</table>-->
+                <!--{% if nivel_educativo.count == 0 %}-->
+                <!--<a class="btn btn-xs"-->
+                   <!--onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')">-->
+                    <!--<span class="fa fa-plus"></span>-->
+                <!--</a>-->
+                <!--{% endif %}-->
+            <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
      </div>
 </div>
 <div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1"></div>
@@ -203,29 +263,5 @@
   </div>
 </div>
 </div>
-
-<div id="myModalDeleteSeguro" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"><b>Seguro Médico</b></h4>
-          </div>
-          <div class="modal-body">
-            <p>Desea eliminar los datos del Seguro Médico ?<span id="modal_name"></span></p>
-          </div>
-          <div class="modal-footer">
-            <form method="post" id="formEliminar" action="#">
-              {% csrf_token %}
-              <input type="hidden" value="" name="paciente_seguro" id="paciente_seguro">
-              <button type="submit" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i>Sí</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> No</button>
-            </form>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-
 
 {% endblock %}

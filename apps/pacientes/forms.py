@@ -1,3 +1,5 @@
+from distutils.command import register
+
 import django_select2
 from django import forms
 from django.db import models as django_models
@@ -56,10 +58,10 @@ class PacienteForm(forms.ModelForm):
              }
 
         widgets = {
-            'nombres': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required',}),
+            'nombres': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required'}),
             'apellidos': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;', 'required':'required',}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
-            'nro_doc': forms.TextInput(attrs ={'class': 'form-control','required':'required',}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required'}),
+            'nro_doc': forms.TextInput(attrs ={'class': 'form-control','required':'required','tabindex':"1"}),
             'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;','style':'width: 100%', 'required':'required',}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
             'distrito': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%', 'required':'required',}),
@@ -160,7 +162,7 @@ class PacienteSeguroMedicoForm(forms.ModelForm):
         }
         widgets = {
             'seguro_medico': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'detalle': forms.TextInput(attrs={'class': 'form-control'}),
+            'detalle': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
         }
 
 
@@ -272,8 +274,8 @@ class PacientePadreForm(forms.ModelForm):
         widgets = {
             'nombres': forms.TextInput(attrs={'class': 'form-control','style':'text-transform:uppercase;','required':'required',}),
             'apellidos': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required',}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
-            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required',}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required', 'autofocus': 'autofocus', 'id':'tipo_doc'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required', 'autofocus': 'autofocus', 'id':'nro_doc'}),
             'sexo': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required','id':'mySelect'}),
             'fecha_nacimiento': forms.DateInput(
                 attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
@@ -281,11 +283,15 @@ class PacientePadreForm(forms.ModelForm):
             'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
             'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
             'etnia': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
-            'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
+            'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%'}),
             'nivel_educativo': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
             'otro': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
             'asume_sustento':forms.RadioSelect(attrs={'class': 'form-control', 'style':'width: 100%'}),
         }
+
+        def __init__(self):
+            self.fields['tipo_doc'].widget.attrs.update({'autofocus': 'autofocus'})
+
 
 
 class PacienteNivelEducativoForm(forms.ModelForm):

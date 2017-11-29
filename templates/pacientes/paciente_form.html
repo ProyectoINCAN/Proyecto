@@ -1,7 +1,9 @@
 {% extends 'base/base2.html' %}
-
+{% load static %}
 {% block extrajs %}
-
+    <script src = "{% static 'apps/pacientes/js/paciente_call_center.js' %}"></script>});
+   <script>
+    </script>
 {% endblock %}
 
 
@@ -31,10 +33,8 @@ label { position: absolute; text-align:right; width:130px; }
 
 <div class="wrapper-md">
 <div class="panel panel-default">
-    <!--<div class="panel-heading">FICHA CLÍNICA</div>-->
 <div class="panel-body">
         <div class="nav-tabs-custom">
-        <!--<nav class="navbar navbar-toggleable-md navbar-light bg-faded">-->
             <ul class="nav nav-tabs">
               <li class="active">{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" data-toggle="tab" class="active" aria-expanded="true">Datos Básicos</a>{% endblock %}</li>
               <li class="">{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}" data-toggle="tab2" aria-expanded="false">Direcciones</a>{% endblock %}</li>
@@ -43,15 +43,13 @@ label { position: absolute; text-align:right; width:130px; }
               <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
               <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
             </ul>
-
-        <!--</nav>-->
             </div>
 
         <div class ="row">
 <form class="form-horizontal" method="POST">
         {% csrf_token %}
         <div class="form-group">
-         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.tipo_doc.label }}</label>
+         <label class="control-label col-lg-2 col-md-3 col-sm-2" >{{ form2.tipo_doc.label }}</label>
          <div class="col-lg-3 col-md-3 col-sm-4">
              {{form2.tipo_doc}}
          </div>
@@ -121,6 +119,7 @@ label { position: absolute; text-align:right; width:130px; }
 
     <div class="form-group">
 	 <div class="col-sm-offset-4 col-sm-8">
+                  <a href="" role="button" class="btn btn-default" id="editar"><i class="fa fa-pencil" id="id_editar"></i> Editar</a>
          <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
          <a href="{% url 'pacientes:index' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
      </div>
@@ -132,6 +131,4 @@ label { position: absolute; text-align:right; width:130px; }
 </form>
 </div>
     </div></div></div>
-
-
 {% endblock %}

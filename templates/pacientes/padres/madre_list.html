@@ -6,7 +6,7 @@
 </div>
 <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
   <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
-  <li class="active">Datos Padres / Paciente: <b>{{ paciente.get_name_nro_doc }}</b></li>
+  <li class="active">Datos Madre / Paciente: <b>{{ paciente.get_name_nro_doc }}</b></li>
 </ol><br>
 <div class="wrapper-md">
     <div class="panel panel-default">
@@ -15,8 +15,8 @@
             <ul class="nav nav-tabs">
                 <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
                 <li><a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a></li>
-                <li class="active">{% block nav-about %}<a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a>{% endblock %}</li>
-                <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
+                <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+                <li class="active">{% block nav-about %}<a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a>{% endblock %}</li>
                 <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
             </ul>
          </div>
@@ -43,12 +43,12 @@
                                 <td>{{ datos.tipo_doc }}</td>
                                 <td>{{ datos.nro_doc }}</td>
                                 <td>
-                                    <a class="btn btn-xs" title="Editar" href="{% url 'pacientes:paciente_padre_editar' datos.id %}">
+                                    <a class="btn btn-xs" title="Editar" href="{% url 'pacientes:paciente_madre_editar' datos.id %}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     <a class="btn btn-xs" title="Eliminar"
-                                        onclick="">
-                                        <i class='fa fa-times-circle'></i>
+                                       onclick="return abrir_modal('{% url 'pacientes:paciente_padre_eliminar' datos.id %}')">
+                                        <i class="fa fa-times-circle"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -62,4 +62,6 @@
          </div>
     </div>
 </div>
+  <div id="popup" class="modal fade"  aria-hidden="true"
+       role="dialog" tabindex="-1" style="height: auto;margin: auto; posicion:fixed;"></div>
 {% endblock %}
