@@ -471,7 +471,6 @@ class ConsultaDetalleDia(LoginRequiredMixin, TemplateView):
 
         detalle = ConsultaDetalle.objects.filter(consulta=consulta)
         existe_en_proceso = detalle.filter(estado=EstadoConsultaDetalle.objects.get(codigo='E')).exists()
-        print("existe_en_proceso", existe_en_proceso)
 
         context.update({'consulta': consulta,
                         'detalles': detalle,
@@ -522,6 +521,7 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        panel = request.GET.get('', )
 
         # obtenemos la consuta detalle
         detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
@@ -896,14 +896,17 @@ class PacienteOrdenEstudioDelete(LoginRequiredMixin, DeleteView):
 class PacientePrescripcionCreate(LoginRequiredMixin, FormView):
     """permite registrar el diagnostico al paciente"""
     model = ConsultaPrescripcion
+    second_model = Medicamento
     template_name = 'consultorios/consulta/prescripcion_form.html'
     pk_url_kwarg = "prescripcion_id"
     form_class = PrescripcionPacienteForm
+    second_form_class = MedicamentoForm
 
     def get_context_data(self, **kwargs):
         context = super(PacientePrescripcionCreate, self).get_context_data(**kwargs)
         detalle=ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
-        context.update({'detalle': detalle})
+        context.update({'detalle': detalle,
+                        'form2': self.second_form_class(self.request.GET)})
         return context
 
     def form_valid(self, form):
@@ -1168,8 +1171,17 @@ class MedicamentoCreateView(LoginRequiredMixin, CreateView):
 
 class MedicamentoNuevoView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        # TODO logica de guardado
-        pass
+        nombre = request.POST.get('nombre')
+        forma_farmaceutica = request.POST.get('forma_farmaceutica')
+        _tipificacion = request.POST.get('tipificacion')
+        tipificacion = TipoMedicamento.objects.get(pk=_tipificacion)
+        print(nombre, forma_farmaceutica, tipificacion)
+
+        medicamento = Medicamento(nombre=nombre, forma_farmaceutica=forma_farmaceutica, tipificacion=tipificacion,
+                                  cantidad=1)
+        medicamento.save()
+        return JsonResponse({'medicamento_id': medicamento.id,
+                             'medicamento_nombre': medicamento.nombre})
 
 
 class MedicamentoUpdateView(LoginRequiredMixin, UpdateView):

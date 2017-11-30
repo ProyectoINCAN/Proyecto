@@ -63,6 +63,14 @@ $( document ).ready(function() {
     }
     });
 
+    $(function(){
+        setTimeout(function() {
+            //$('#message').fadeOut('slow');
+            console.log("asdlfkja;sdf");
+        }, 500); // <-- tiempo en milisegundos, 1000 =  1 sec
+        $("#evolu").click();
+    })
+
 $('#finalizar').click(function() {
     var $this = this;
     var detalle_id = $("#detalle_id").val();

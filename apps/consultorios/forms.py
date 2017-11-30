@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.models import User
 
 from apps.consultorios.models import *
 from django_select2 import forms as select2form
@@ -28,27 +27,29 @@ class MedicoForm(forms.ModelForm):
             'especialidad': 'Especialidad'
         }
         widgets = {
-            'nombres': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
-            'apellidos': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
-            'nro_registro_profesional': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
-            'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'nombres': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'nro_registro_profesional': forms.TextInput(attrs={'class': 'form-control',
+                                                               'style': 'text-transform:uppercase;'}),
+            'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker',
                                                        'placeholder': 'dd/mm/aaaa'}),
-            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple', 'style':'width: 100%'})
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple',
+                                                                      'style': 'width: 100%'})
         }
 
 
 class EnfermeroForm(forms.ModelForm):
     class Meta:
         model = Enfermero
-        fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_profesional', 'sexo', 'fecha_nacimiento', 'lugar_nacimiento',
-                  'nacionalidad']
+        fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_profesional', 'sexo', 'fecha_nacimiento',
+                  'lugar_nacimiento', 'nacionalidad']
         labels = {
             'nombres': 'Nombres',
             'apellidos': 'Apellidos',
@@ -130,7 +131,7 @@ class EvolucionPacienteForm(forms.ModelForm):
             'observaciones': 'Observaciones',
         }
         widgets = {
-            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
         }
 
 
@@ -216,13 +217,13 @@ class OrdenEstudioPacienteForm(forms.ModelForm):
 
         labels = {
             'orden_estudio': 'Orden Estudio',
-            'observacion':'Observación',
+            'observacion': 'Observación',
         }
         widgets = {
-            'orden_estudio': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'orden_estudio': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'fecha_presentacion': forms.DateInput(attrs={'class': 'form-control datepicker',
-                                                       'placeholder': 'dd/mm/aaaa'}),
+                                                         'placeholder': 'dd/mm/aaaa'}),
         }
 
 
@@ -233,13 +234,14 @@ class PrescripcionPacienteForm(forms.ModelForm):
         exclude = ['paciente', 'consulta_detalle', 'fecha']
 
         labels = {
-            'medicamento':'Medicamento',
+            'medicamento': 'Medicamento',
             'posologia': 'Posología',
-            'cantidad':'Cantidad',
+            'cantidad': 'Cantidad',
         }
         widgets = {
-            'medicamento': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'posologia': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'medicamento': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'posologia': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,
+                                               'style': 'width: 100%; text-transform:uppercase;'}),
             'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
@@ -275,7 +277,7 @@ class MedicamentoForm(forms.ModelForm):
 
         labels = {
             'nombre': 'Nombre',
-            'forma_farmaceutica': 'Forma Farmaceutica',
+            'forma_farmaceutica': 'Forma Farmacéutica',
             'nro_lote': 'Número Lote',
             'cantidad': 'Cantidad',
             'fabricado': 'Fecha Fabricación',
@@ -283,7 +285,7 @@ class MedicamentoForm(forms.ModelForm):
         }
 
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control autofocus', 'style':'text-transform:uppercase;'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control autofocus', 'style': 'text-transform:uppercase;'}),
             'forma_farmaceutica': forms.Select(
                 attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'nro_lote': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -299,12 +301,12 @@ class MedicamentoForm(forms.ModelForm):
         if self.cleaned_data['cantidad'] <= 0:
             self.add_error('cantidad', 'La cantidad debe ser mayor a cero')
 
-        fecha_fabricacion =self.cleaned_data['fabricado']
+        fecha_fabricacion = self.cleaned_data['fabricado']
         fecha_venc = self.cleaned_data['vencimiento']
         if fecha_fabricacion > fecha_venc:
             self.add_error('fabricado', 'La fecha de fabricación no puede ser inferior a la fecha de vencimiento')
 
-    def __init__(self, *args, tipo= None, **kwargs):
+    def __init__(self, *args, tipo=None, **kwargs):
         super(MedicamentoForm, self).__init__(*args, **kwargs)
         self.fields['tipificacion'].queryset = TipoMedicamento.objects.filter(habilitado=True)
         if tipo:
@@ -323,8 +325,8 @@ class TipoMedicamentoForm(forms.ModelForm):
         }
 
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
-            'descripcion': forms.Textarea(attrs={'rows': 2, 'cols': 45, 'style':'text-transform:uppercase;'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'descripcion': forms.Textarea(attrs={'rows': 2, 'cols': 45, 'style': 'text-transform:uppercase;'}),
         }
 
 
@@ -336,7 +338,7 @@ class AnamnesisPacienteForm(forms.ModelForm):
             'observacion': 'Observaciones',
         }
         widgets = {
-            'observacion': forms.Textarea(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
         }
 
     def clean(self):

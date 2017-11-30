@@ -15,7 +15,7 @@
             <label for="{{ form.medicamento.name }}" class="col-sm-3 control-label">{{ form.medicamento.label }}:</label>
             <div class="col-sm-9">
               {{ form.medicamento }}
-              <a href="javascript:void(0)" class="btn" id="crearMedicamento" title="Agregar nuevo medicamento"><span class="fa fa-plus"></span></a>
+              <a href="javascript:void(0)" class="btn" id="crearMedicamento" title="Agregar nuevo medicamento"><span class="fa fa-plus"></span> Agregar nuevo medicamento</a>
             </div>
             <label for="{{ form.posologia.name }}" class="col-sm-3 control-label">{{ form.posologia.label }}:</label>
             <div class="col-sm-9">
@@ -56,6 +56,7 @@
                        if (data.success){
                            $('#popup').modal('hide');
                            location.reload();
+                           //$("#dataTables-example").append('<tr><td>333</td><td>POSOLOGIA DDDD </td><td>3 </td><td><a class="btn btn-default btn-xs" title="Editar" onclick="return abrir_modal('/consultorios/consulta/detalle/prescripcion/4/editar/')"><i class="fa fa-pencil"></i></a><a class="btn btn-default btn-xs" title="Eliminar" onclick="return abrir_modal('/consultorios/consulta/detalle/prescripcion/4/eliminar')"><i class="fa fa-trash"></i></a></td></tr>')
                        }else {
                            $('#eventoForm').html(data);
                        }
@@ -87,45 +88,61 @@
     <div class="modal-content" style="width: 700px;height: auto;
       position: absolute;left:37%;top: 32%; margin-left: -150px;
        margin-top: -150px;">
-      <!--<form role="form" id="eventoForm" action="{% url 'consultorios:consulta_prescripcion_crear' detalle.id %}" method="post">-->
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">x</button>
           <h3>Nuevo Medicamento</h3>
         </div>
         <div class="modal-body">
+          <div class="form-horizontal" id="form_direccion" >
           <div class="form-group">
-          <label class="col-sm-3 control-label">Nombre:</label>
+            <label for="{{ form2.nombre.name }}" class="col-sm-3 control-label">{{ form2.nombre.label }}:</label>
             <div class="col-sm-9">
-              <input class="form-control" id="nombre" name="nombre">
-            </div>
-            <label class="col-sm-3 control-label">Tipo:</label>
-            <div class="col-sm-9">
-              <input class="form-control" id="tipo" name="tipo">
+              {{ form2.nombre }}
             </div>
           </div>
+          <div class="form-group">
+            <label for="{{ form2.forma_farmaceutica.name }}" class="col-sm-3 control-label">{{ form2.forma_farmaceutica.label }}:</label>
+            <div class="col-sm-9">
+              {{ form2.forma_farmaceutica }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ form2.tipificacion.name }}" class="col-sm-3 control-label">{{ form2.tipificacion.label }}:</label>
+            <div class="col-sm-9">
+              {{ form2.tipificacion }}
+            </div>
+          </div>
+          </div>
         </div>
+
         <div class="modal-footer">
           <div class="col-lg-12 text-right">
             <a class="btn btn-primary" id="guardarMedicamento"> Guardar</a>
             <a class="btn btn-default" id="cancelar"> Cancelar</a>
           </div>
         </div>
+      </div>
       <!--</form>-->
       <script>
 
             $("#guardarMedicamento").click(function() {
+              var csrftoken = getCookie('csrftoken');
+              var $this = this;
               $.ajax({
                 type:"POST",
-                url:"/consultorios/consulta/detalle/finalizar/",
+                url:"{% url 'consultorios:medicamento_nuevo' %}",
                 data: {
-                  'consulta_det_id': detalle_id,
+                  'nombre': $("#id_nombre").val(),
+                  'forma_farmaceutica': $("#id_forma_farmaceutica").val(),
+                  'tipificacion': $("#id_tipificacion").val(),
                   'csrfmiddlewaretoken': csrftoken
                 },
                 success: function(data){
                   console.log("llega al success");
                   console.log("data", data );
-                  //this.modal("hide");
-                  //window.location="/consultorios/consulta/detalle/"+detalle_id+"/resumen/";
+                  $('#modalMedicamento').modal('hide');
+                  $('#id_medicamento').append('<option value="'+data.medicamento_id+'" selected="selected">'+data.medicamento_nombre.toUpperCase()+'</option>');
+
                  }
               })
             });

@@ -386,12 +386,14 @@ class Medicamento(models.Model):
         (AEROSOL, 'AEROSOL'),
     )
     nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
-    forma_farmaceutica = UpperCharField(max_length=2, choices=FORMA_FARMACEUTICA_CHOICES, blank=False, uppercase=True)
-    nro_lote = UpperCharField(max_length=100, blank=False, verbose_name="Número de Lote", uppercase=True)
+    forma_farmaceutica = UpperCharField(max_length=2, choices=FORMA_FARMACEUTICA_CHOICES, blank=False, uppercase=True,
+                                        verbose_name="Forma farmacéutica")
+    nro_lote = UpperCharField(max_length=100, blank=True, verbose_name="Número de Lote", uppercase=True)
     cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
-    fabricado = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fabricado")
-    vencimiento = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Vencimiento")
-    tipificacion = models.ForeignKey(TipoMedicamento, on_delete=models.CASCADE, blank=False, null=False,)
+    fabricado = models.DateField(auto_now=False, blank=True, null=True, verbose_name="Fecha fabricación")
+    vencimiento = models.DateField(auto_now=False, blank=True, null=True, verbose_name="Fecha vencimiento")
+    tipificacion = models.ForeignKey(TipoMedicamento, on_delete=models.CASCADE, blank=False, null=False,
+                                     verbose_name="Tipificación")
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
