@@ -283,7 +283,7 @@ class PacientePadreDelete(LoginRequiredMixin, DeleteView):
     context_object_name = 'padre'
 
     def post(self, request, *args, **kwargs):
-        paciente = Paciente.objects.get(pacientepadre__padre=kwargs['padre_id'])
+        paciente = Paciente.objects.get(pacientepadre__paciente__pacientepadre=self.kwargs['padre_id'])
         padre= PacientePadre.objects.get(pk=self.kwargs['padre_id'])
         padre.delete()
         return HttpResponseRedirect(reverse('pacientes:paciente_padre_crear',
