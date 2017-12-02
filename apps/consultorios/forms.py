@@ -7,11 +7,13 @@ from apps.internaciones.models import Diagnostico
 
 
 class MedicoForm(forms.ModelForm):
+    # habilitado=forms.BooleanField()
+
     class Meta:
         model = Medico
         fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_profesional', 'sexo', 'fecha_nacimiento',
                   'lugar_nacimiento', 'nacionalidad', 'estado_civil', 'etnia',  # 'fecha_ingreso',
-                  'especialidad']
+                  'especialidad', 'habilitado']
         labels = {
             'nombres': 'Nombres',
             'apellidos': 'Apellidos',
@@ -24,7 +26,8 @@ class MedicoForm(forms.ModelForm):
             'nacionalidad': 'Nacionalidad',
             'estado_civil': 'Estado Civil',
             'etnia': 'Etnia',
-            'especialidad': 'Especialidad'
+            'especialidad': 'Especialidad',
+            'habilitado': 'Habilitado'
         }
         widgets = {
             'nombres': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
@@ -41,7 +44,8 @@ class MedicoForm(forms.ModelForm):
             'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple',
-                                                                      'style': 'width: 100%'})
+                                                                      'style': 'width: 100%'}),
+            'habilitado': forms.CheckboxInput(),
         }
 
 

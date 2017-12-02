@@ -40,23 +40,8 @@ from utils.generate_pdf import render_to_pdf
 
 
 class MedicoList(ListView):
-    print("llegamos al list de medico")
     model = Medico
     template_name = 'consultorios/medico_list.html'
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(MedicoList, self).get_context_data(**kwargs)
-    #     pk = self.kwargs.get('pk', 3)
-    #     print("pk medico "+str(pk))
-    #     medico = self.model.objects.get(id=pk)
-    #     context['especialidad'] = Especialidad.objects.raw("""
-    #                                 select string_agg(e.nombre, ', ') as especialidades
-    #                                 from consultorios_medico m
-    #                                 join consultorios_medico_especialidad me on m.id = me.medico_id
-    #                                 join consultorios_especialidad e on me.especialidad_id = e.id
-    #                                 where m.id = %d
-    #                             """, medico.id)
-
 
 @transaction.atomic
 def medico_create(request):
@@ -80,9 +65,10 @@ def medico_update(request, pk):
     objeto = Medico.objects.get(id=pk)
     if request.method == 'POST':
         form = MedicoForm(request.POST, instance=objeto)
+        print("form.is_valid()", form.is_valid(), form.errors)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Datos actualizados correctamente.")
+            form.save(commit=True)
+            messages.success(request, "Se han actualizado los datos del médico.")
             return redirect("consultorios:medico_listar")
     else:
         form = MedicoForm(instance=objeto)

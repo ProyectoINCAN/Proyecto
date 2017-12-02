@@ -69,6 +69,8 @@ class Medico(models.Model):
     fecha_ingreso = models.DateField(auto_now=True, null=False)
     especialidad = models.ManyToManyField(Especialidad)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    habilitado = models.BooleanField(default=True)
+
 
     def __str__(self):
         return self.apellidos + ", " + self.nombres
