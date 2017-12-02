@@ -132,4 +132,8 @@ urlpatterns = [
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/descargar/$', views.HistoriaClinicaPDF.as_view(),
         name='consulta_historia_clinica_descargar'),
 
+    url(r'^historia_clinica/$', views.HistoriaClinicaConsultar.as_view(), name='historia_clinica'),
+    url(r'^ficha_clinica/paciente/(?P<paciente_id>\d+)/$', views.PacienteFichaClinicaView.as_view(),
+        name='ficha_clinica_paciente'),
+
 ]

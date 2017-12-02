@@ -215,6 +215,17 @@
 
         </li>
         {% endif %}
+        {% if user.groups.all.0.name == "Medico" %}
+        <li class="treeview">
+          <a href="{% url 'consultorios:historia_clinica' %}">
+            <i class="fa fa-book"></i><span>Historia Clinica</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+
+        </li>
+        {% endif %}
       </ul>
     </section>
     <!-- /.sidebar -->

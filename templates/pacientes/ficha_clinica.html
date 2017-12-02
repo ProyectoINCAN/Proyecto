@@ -1,0 +1,194 @@
+{% extends 'base/base2.html' %}
+{% block content %}
+  <div class="app-content-body">
+    <br>
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="{% url 'consultorios:historia_clinica' %}">Historia clínica</a></li>
+      <li>Ficha clínica: {{ paciente }}</li>
+    </ol>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b class="panel-title">Ficha clínica del paciente :{{ paciente }}</b>
+            <div class="btn-group btn-group-sm pull-right">
+                <div class="col pull-right">
+                    <a id="pdf" type="button" class="btn btn-default"
+                       href="{% url 'consultorios:consulta_historia_clinica_descargar' 1 %}" target="_blank">
+                      <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
+                </div>
+            </div><p></p>
+
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <h4><u><b>Datos básicos del paciente</b></u></h4>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+
+                <div class="form-group">
+                  <span class="font-bold">Nombres y Apellidos: &nbsp;&nbsp;&nbsp;</span>
+                  <span class="font-normal">{{ paciente.get_full_name }}</span>
+                </div>
+                <div class="form-group">
+                  <span class="font-bold">Tipo de documento: &nbsp;&nbsp;&nbsp;</span>
+                  <span class="font-normal">{{ paciente.tipo_doc }}</span>
+                </div>
+                <div class="form-group">
+                  <span class="font-bold">Número de documento: &nbsp;&nbsp;&nbsp;</span>
+                  <span class="font-normal">{{ paciente.nro_doc }}</span>
+                </div>
+                <div class="form-group">
+                  <span class="font-bold">Estado Civil: &nbsp;&nbsp;&nbsp;</span>
+                  <span class="font-normal">{% if paciente.estado_civil %}
+                    {{ paciente.estado_civil }}{% else %}Sin registros{% endif %}</span>
+                </div>
+                <div class="form-group">
+                  <span class="font-bold">Sexo: &nbsp;&nbsp;&nbsp;</span>
+                  <span class="font-normal">{% if paciente.sexo %}{{ paciente.sexo }}
+                  {% else %}Sin registros{% endif %}</span>
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <span class="font-bold">Nacionalidad:</span>
+                <span class="font-normal">{{ paciente.nacionalidad }}</span>
+              </div>
+              <div class="form-group">
+                <span class="font-bold">Lugar de nacimiento:</span>
+                <span class="font-normal">{% if paciente.lugar_nacimiento %}
+                  {{ paciente.lugar_nacimiento }}{% else %}Sin registros{% endif %}</span>
+              </div>
+              <div class="form-group">
+                <span class="font-bold">Fecha de nacimiento:</span>
+                <span class="font-normal">{% if paciente.fecha_nacimiento %}
+                  {{ paciente.fecha_nacimiento }}{% else %}Sin registros{% endif %}</span>
+              </div>
+              <div class="form-group">
+                <span class="font-bold">Tipo de télefono:</span>
+                <span class="font-normal">{{ telefono.tipo }}</span>
+              </div>
+              <div class="form-group">
+                <span class="font-bold">Número de télefono:</span>
+                <span class="font-normal">{{ telefono.numero }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <h4><u><b>Direcciones</b></u></h4>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              {% if direccciones %}
+                {% for direccion in direcciones %}
+                  <div class="form-group">
+                    <span class="font-bold">Dirección:</span>
+                    <span class="font-normal">{{ direccion.descripcion }}</span>
+                    <span class="font-bold">Nro Casa:</span>
+                    <span class="font-normal">{% if direccion.nro_casa %}
+                    {{ direccion.nro_casa }}{% else %}--{% endif %}</span>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <h5>Sin registros de direcciones</h5>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <h4><u><b>Datos de los padres</b></u></h4>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              {% if padres %}
+                {% for padre in padres %}
+                  {% if padre.padre %}
+                  <div class="form-group">
+                    <span class="font-bold">Nombre y apellido del padre:</span>
+                    <span class="font-normal">{{ padre.get_full_name }}</span>
+                    <span class="font-bold">Nro documento:</span>
+                    <span class="font-normal">{{ padre.nro_doc }}</span>
+                  </div>
+                  {% else %}
+                    <div class="form-group">
+                      <span class="font-bold">Nombre y apellido de la madre:</span>
+                      <span class="font-normal">{{ padre.get_full_name }}</span>
+                      <span class="font-bold">Nro documento:</span>
+                      <span class="font-normal">{{ padre.nro_doc }}</span>
+                  </div>
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <h5>Sin registros de direcciones</h5>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <h4><u><b>Seguro Médico</b></u></h4>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              {% if padres %}
+                {% for seguro in seguros %}
+                  <div class="form-group">
+                    <span class="font-bold">Seguro médico:</span>
+                    <span class="font-normal">{{ seguro.seguro_medico }}</span>
+                    <span class="font-bold">Detalle:</span>
+                    <span class="font-normal">{% if seguro.detalle %}
+                      {{ seguro.detalle }}{% else %}Sin detalle{% endif %}</span>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <h5>Sin registros de seguro médico</h5>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <h4><u><b>Situación Laboral</b></u></h4>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              {% if ocupaciones %}
+                {% for ocupacion in ocupaciones %}
+                  <div class="form-group">
+                    <span class="font-bold">Ocupación:</span>
+                    <span class="font-normal">{% if ocupacion.ocupacion %}
+                      {{ ocupacion.ocupacion }}{% else %}Sin registros{% endif %}</span>
+                    <span class="font-bold">Profesión:</span>
+                    <span class="font-normal">{% if ocupacion.profesion %}
+                      {{ ocupacion.profesion }}{% else %}Sin registros{% endif %}</span>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <h5>Sin registros de la situación laboral</h5>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <h4><u><b>Educación</b></u></h4>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              {% if educacion %}
+                <div class="form-group">
+                  <span class="font-bold">Nivel Educativo:</span>
+                  <span class="font-normal">{{ educacion.nivel_educativo }}</span>
+                  <span class="font-bold"> Cúlmino:</span>
+                  <span class="font-normal">{% if educacion.completo %}Si{% else %}No{% endif %}</span>
+                  {% if not educacion.completo %}
+                    <span class="font-bold">Año cursado:</span>
+                  <span class="font-normal">{{ educacion.anho_cursado }}</span>
+                  {% endif%}
+                </div>
+              {% else %}
+                <h5>Sin registros de seguro médico</h5>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+

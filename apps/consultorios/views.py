@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
+from django.db.models import Q
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.core import serializers
@@ -24,14 +25,17 @@ from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView, View
 
 import datetime
+
+from apps import pacientes
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import *
 from apps.consultorios.models import *
-from apps.pacientes.models import Paciente
+from apps.pacientes.models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.internaciones.models import Diagnostico
 from django.utils.safestring import mark_safe
 from apps.consultorios.helpers import calculate_age
+from apps.seguridad.management.commands import estadoConsultaDetalle
 from utils.generate_pdf import render_to_pdf
 
 
@@ -1443,8 +1447,69 @@ class HistoriaClinicaPDF(View):
         return HttpResponse("Not found")
 
 
+class HistoriaClinicaConsultar(LoginRequiredMixin, TemplateView):
+    """
+    permite consultar la historia clinica de los pacientes.
+    """
+    template_name = 'consultorios/consulta/consultar_historia_paciente.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        p_paciente = request.GET.get('paciente', None)
+
+        if not p_paciente:
+            paciente = Paciente.objects.all()
+        else:
+            paciente = Paciente.objects.filter(pk=p_paciente)
+            consultas = ConsultaDetalle.objects.filter(paciente=p_paciente)
+
+        context.update({
+            'paciente_select': Paciente.objects.get(pk=p_paciente) if p_paciente else None,
+            'pacientes_list': Paciente.objects.all(),
+            'pacientes': paciente
+
+        })
+
+        return super(TemplateView, self).render_to_response(context)
 
 
+class PacienteFichaClinicaView(LoginRequiredMixin, DetailView):
+    model = Paciente
+    template_name = 'pacientes/ficha_clinica.html'
+    context_object_name = 'paciente'
+    pk_url_kwarg = 'paciente_id'
 
+    def get_datos_basicos(self):
+        return Paciente.objects.get(pk=self.kwargs['paciente_id'])
 
+    def get_direcciones(self):
+        return Direccion.objects.filter(paciente__id=self.kwargs['paciente_id'])
 
+    def get_datos_padres(self):
+        return PacientePadre.objects.filter(paciente__id=self.kwargs['paciente_id'])
+
+    def get_educacion(self):
+        return PacienteNivelEducativo.objects.get(paciente__id=self.kwargs['paciente_id'])
+
+    def get_seguros_medicos(self):
+        return PacienteSeguroMedico.objects.filter(paciente__id=self.kwargs['paciente_id'])
+
+    def get_ocupaciones(self):
+        return PacienteOcupacion.objects.filter(paciente__id=self.kwargs['paciente_id'])
+
+    def get_telefono(self):
+        return Telefono.objects.get(paciente__id=self.kwargs['paciente_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteFichaClinicaView, self).get_context_data(**kwargs)
+        context.update({
+            'paciente': self.get_datos_basicos(),
+            'telefono': self.get_telefono(),
+            'direcciones': self.get_direcciones(),
+            'padres': self.get_datos_padres(),
+            'seguros': self.get_seguros_medicos(),
+            'educacion': self.get_educacion(),
+            'ocupaciones': self.get_ocupaciones()
+            })
+        return context
