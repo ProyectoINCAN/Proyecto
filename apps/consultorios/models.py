@@ -355,6 +355,7 @@ class EvolucionPaciente(models.Model):
 
 
 class TipoMedicamento(models.Model):
+    """Según su tipo de adquisición (VENTA LIBRE, CONTROLADO, PREPARADO)"""
     nombre = UpperCharField(max_length=50, blank=False, uppercase=True)
     descripcion = UpperCharField(max_length=100, blank=True, uppercase=True)
     habilitado = models.BooleanField(default=True)

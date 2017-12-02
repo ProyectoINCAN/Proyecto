@@ -300,14 +300,15 @@ class MedicamentoForm(forms.ModelForm):
         }
 
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control autofocus', 'style': 'text-transform:uppercase;'}),
-            'forma_farmaceutica': forms.Select(
-                attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control autofocus', 'style': 'text-transform:uppercase;',
+                                             'required': 'required'}),
+            'forma_farmaceutica': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
+                                                      'required': 'required'}),
             'nro_lote': forms.NumberInput(attrs={'class': 'form-control'}),
             'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
-            'fabricado': forms.DateInput(
-                attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'tipificacion': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'fabricado': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'tipificacion': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
+                                                'required': 'required'}),
             'vencimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
 
         }
