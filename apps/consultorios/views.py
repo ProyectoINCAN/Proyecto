@@ -1525,3 +1525,40 @@ class PacienteFichaClinicaView(LoginRequiredMixin, DetailView):
             'ocupaciones': self.get_ocupaciones()
             })
         return context
+
+
+class PacienteFichaClinicaPDF(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        template = get_template('pacientes/ficha_clinica_pdf.html')
+
+        paciente = Paciente.objects.get(pk=self.kwargs['paciente_id'])
+        telefono = Telefono.objects.get(pk=self.kwargs['paciente_id'])
+        direcciones = Direccion.objects.filter(paciente__id=self.kwargs['paciente_id'])
+        padres = PacientePadre.objects.filter(paciente__id=self.kwargs['paciente_id'])
+        seguros = PacienteSeguroMedico.objects.filter(paciente__id=self.kwargs['paciente_id'])
+        educacion = PacienteNivelEducativo.objects.get(paciente__id=self.kwargs['paciente_id'])
+        ocupaciones = PacienteOcupacion.objects.filter(paciente__id=self.kwargs['paciente_id'])
+
+        context = {
+            'paciente': paciente,
+            'telefono': telefono,
+            'direcciones': direcciones,
+            'padres': padres,
+            'seguros': seguros,
+            'educacion': educacion,
+            'ocupaciones': ocupaciones
+        }
+
+        html = template.render(context)
+        pdf = render_to_pdf('pacientes/ficha_clinica_pdf.html', context)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = "Invoice_%s.pdf" % ("12341231")
+            content = "inline; filename='%s'" % (filename)
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename='%s'" % (filename)
+            response['Content-Disposition'] = content
+            return response
+        return HttpResponse("Not found")

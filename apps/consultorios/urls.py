@@ -136,4 +136,7 @@ urlpatterns = [
     url(r'^ficha_clinica/paciente/(?P<paciente_id>\d+)/$', views.PacienteFichaClinicaView.as_view(),
         name='ficha_clinica_paciente'),
 
+    url(r'^ficha_clinica/paciente/(?P<paciente_id>\d+)/pdf/$', views.PacienteFichaClinicaPDF.as_view(),
+        name='ficha_clinica_paciente_pdf'),
+
 ]

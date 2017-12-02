@@ -1,21 +1,29 @@
-{% extends 'base/base2.html' %}
-{% block content %}
-  <div class="app-content-body">
-    <br>
-    <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="#">Inicio</a></li>
-      <li><a href="{% url 'consultorios:historia_clinica' %}">Historia clínica</a></li>
-      <li>Ficha clínica: {{ paciente }}</li>
-    </ol>
-    <div class="row">
-      <div class="col-lg-2 pull-right">
-        <p>
-        <a class="btn btn-default" href="{% url 'consultorios:ficha_clinica_paciente_pdf' paciente.pk %}"
-           target="_blank">
-          <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
-        </p>
-      </div>
-    </div>
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>Resumen de la Consulta</title>
+    <style type="text/css">
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+      table, th, td {
+    border: 1px solid black;
+}
+    </style>
+  </head>
+  <body>
     <div class="panel panel-default">
         <div class="panel-heading">
             <b class="panel-title">Ficha clínica del paciente :{{ paciente }}</b>
@@ -188,8 +196,8 @@
           </div>
         </div>
     </div>
-  </div>
+  </body>
 
-{% endblock %}
+</html>
 
 
