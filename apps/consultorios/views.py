@@ -1502,7 +1502,10 @@ class PacienteFichaClinicaView(LoginRequiredMixin, DetailView):
         return PacientePadre.objects.filter(paciente__id=self.kwargs['paciente_id'])
 
     def get_educacion(self):
-        return PacienteNivelEducativo.objects.get(paciente__id=self.kwargs['paciente_id'])
+        if PacienteNivelEducativo.objects.filter(paciente__id=self.kwargs['paciente_id']).exists():
+            return PacienteNivelEducativo.objects.get(paciente__id=self.kwargs['paciente_id'])
+        else:
+            return None
 
     def get_seguros_medicos(self):
         return PacienteSeguroMedico.objects.filter(paciente__id=self.kwargs['paciente_id'])
@@ -1537,7 +1540,11 @@ class PacienteFichaClinicaPDF(LoginRequiredMixin, View):
         direcciones = Direccion.objects.filter(paciente__id=self.kwargs['paciente_id'])
         padres = PacientePadre.objects.filter(paciente__id=self.kwargs['paciente_id'])
         seguros = PacienteSeguroMedico.objects.filter(paciente__id=self.kwargs['paciente_id'])
-        educacion = PacienteNivelEducativo.objects.get(paciente__id=self.kwargs['paciente_id'])
+
+        if PacienteNivelEducativo.objects.filter(paciente__id=self.kwargs['paciente_id']).exists():
+            educacion = PacienteNivelEducativo.objects.get(paciente__id=self.kwargs['paciente_id'])
+        else:
+            educacion =  None
         ocupaciones = PacienteOcupacion.objects.filter(paciente__id=self.kwargs['paciente_id'])
 
         context = {
