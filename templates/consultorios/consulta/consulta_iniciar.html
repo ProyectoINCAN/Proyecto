@@ -16,6 +16,7 @@
     </ol>
     <input type="hidden" id="detalle_id" name="detalle_id" value="{{ detalle.id }}">
     <input type="hidden" id="consulta_id" name="consulta_id" value="{{ detalle.consulta.pk }}">
+    <input type="hidden" id="ir_a_tab" name="ir_a_tab" value="{{ ir_a_tab }}">
     <div class="row">
       <div class="btn-group pull-right">
         <div class="col pull-right">
@@ -107,17 +108,17 @@
             <div class="col-sm-2">
                 <ul class="nav nav-pills brand-pills nav-stacked" role="tablist">
                     <li role="presentation" class="brand-nav active">
-                      <a href="#tab_datos_anamnesis" aria-controls="tab_datos_anamnesis" role="tab" data-toggle="tab">Anamnesis</a></li>
+                      <a id="a_anam" href="#tab_datos_anamnesis" aria-controls="tab_datos_anamnesis" role="tab" data-toggle="tab">Anamnesis</a></li>
                     <li role="presentation" class="brand-nav">
-                      <a href="#tab_diagnostico" aria-controls="tab_diagnostico" role="tab" data-toggle="tab">Diagnóstico</a></li>
+                      <a id="a_diag" href="#tab_diagnostico" aria-controls="tab_diagnostico" role="tab" data-toggle="tab">Diagnóstico</a></li>
                     <li role="presentation" class="brand-nav">
-                      <a href="#tab_evolucion" aria-controls="tab_evolucion" role="tab" data-toggle="tab">Evolución del Paciente</a></li>
+                      <a id="a_evol" href="#tab_evolucion" aria-controls="tab_evolucion" role="tab" data-toggle="tab">Evolución del Paciente</a></li>
                     <li role="presentation" class="brand-nav">
-                      <a href="#tab_orden_estudio" aria-controls="tab_orden_estudio" role="tab" data-toggle="tab">Orden de Estudio</a></li>
+                      <a id="a_orde" href="#tab_orden_estudio" aria-controls="tab_orden_estudio" role="tab" data-toggle="tab">Orden de Estudio</a></li>
                     <li role="presentation" class="brand-nav">
-                      <a href="#tab_prescripcion" aria-controls="tab_prescripcion" role="tab" data-toggle="tab">Prescripción</a></li>
+                      <a id="a_pres" href="#tab_prescripcion" aria-controls="tab_prescripcion" role="tab" data-toggle="tab">Prescripción</a></li>
                     <li role="presentation" class="brand-nav">
-                      <a href="#tab_tratamiento" aria-controls="tab_tratamiento" role="tab" data-toggle="tab">Tratamiento</a></li>
+                      <a id="a_trat" href="#tab_tratamiento" aria-controls="tab_tratamiento" role="tab" data-toggle="tab">Tratamiento</a></li>
                 </ul>
             </div>
             <div class="col-sm-10">
@@ -151,7 +152,7 @@
                                     <td>
                                       {% if anamne.consulta_detalle.id == detalle.id %}
                                       <a class="btn btn-default btn-xs" title="Editar"
-                                         onclick="return abrir_modal('{% url 'consultorios:anamnesis_paciente_editar' anamne.id %}')">
+                                         onclick="return abrir_modal('{% url 'consultorios:anamnesis_editar' anamne.id %}')">
                                         <i class="fa fa-pencil"></i>
                                       </a>
                                         <a class="btn btn-default btn-xs" title="Eliminar"
@@ -196,7 +197,7 @@
                                 {% for diagnostico in diagnosticos %}
                                   <tr>
                                     <td style="width: 40%">{{ diagnostico.cie10 }}</td>
-                                    <td style="width:40%;">{{ diagnostico.observacion }} </td>
+                                    <td style="width:40%;">{{ diagnostico.observacion|safe }} </td>
                                     <td>
                                       {% if diagnostico.consulta_detalle.id == detalle.id %}
                                       <a class="btn btn-default btn-xs" title="Editar"
@@ -273,10 +274,6 @@
                                     <td>{% autoescape off %}{{ evo.observaciones|safe }}{% endautoescape %} </td>
                                     <td>{{ evo.medico.get_dr_full_name }} </td>
                                     <td>
-                                      <a class="btn btn-default btn-xs" title="Ver"
-                                         onclick="return abrir_modal('{% url 'consultorios:evolucion_paciente_editar' evo.id %}')">
-                                        <i class="fa fa-eye"></i>
-                                      </a>
                                       {% if evo.consulta_detalle.id == detalle.id %}
                                       <a class="btn btn-default btn-xs" title="Editar"
                                          onclick="return abrir_modal('{% url 'consultorios:evolucion_paciente_editar' evo.id %}')">

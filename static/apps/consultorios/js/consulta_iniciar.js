@@ -65,10 +65,13 @@ $( document ).ready(function() {
 
     $(function(){
         setTimeout(function() {
-            //$('#message').fadeOut('slow');
-            console.log("asdlfkja;sdf");
-        }, 500); // <-- tiempo en milisegundos, 1000 =  1 sec
-        $("#evolu").click();
+            console.log("timeout");
+        }, 250 ); // <-- tiempo en milisegundos, 1000 =  1 sec
+        var toTab = $("#ir_a_tab").val();
+        console.log("toTab : ", toTab);
+        $(toTab).click();
+        /*window.history.replaceState({}, "", "/"+window.location.href.substring(window.location.href.lastIndexOf('/') + 1).split("?")[0]);*/
+        window.history.replaceState(null, null, window.location.pathname.split("?")[0]);
     })
 
 $('#finalizar').click(function() {

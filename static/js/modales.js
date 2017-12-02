@@ -16,3 +16,8 @@ function cerrar_modal()
         return false;
 }
 
+function reloadPaginaConsultaPaciente(id_detalle, id_tab)
+{
+    window.location = "/consultorios/consulta/detalle/"+id_detalle+"/?ir_a_tab="+id_tab;
+}
+

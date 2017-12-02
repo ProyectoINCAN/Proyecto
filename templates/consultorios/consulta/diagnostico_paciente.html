@@ -1,6 +1,9 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap3-wysihtml5.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
 
-<div class="modal-dialog">
+<div class="modal-dialog modal-lg">
     <div class="modal-content">
       <form role="form" id="diagnosticoForm"
         {% if not object.id %}
@@ -16,20 +19,21 @@
 		<div class="form-horizontal" >
           {% csrf_token %}
           <div class="form-group">
-                          {{ form.cie10.errors }}
-                  <label class="control-label col-sm-3">{{form.cie10.label}}</label>
-                  <div class="col-sm-8">
-                      {{ form.cie10 }}
-                  </div>
+              {{ form.cie10.errors }}
+              <label for="{{ form.cie10.name }}" class="col-sm-2 control-label">{{ form.cie10.label }}:</label>
+              <div class="col-sm-8">
+                  {% autoescape off %}
+                  {{ form.cie10|safe }}
+                  {% endautoescape %}
               </div>
+          </div>
           <div class="form-group">
-                          {{ form.observacion.errors }}
-                  <label class="control-label col-sm-3">{{form.observacion.label}}</label>
-                  <div class="col-sm-8">
-                      {{ form.observacion }}
-                  </div>
+              {{ form.observacion.errors }}
+              <div class="col-sm-12">
+                  {{ form.observacion }}
               </div>
-		</div>
+          </div>
+        </div>
 
 		  </div>
       <div class="modal-footer">
@@ -41,7 +45,17 @@
 
   </div>
 
-  <script language="JavaScript">
+<script src = "{% static 'js/jquery.min.js' %}"></script>
+<script src = "{% static 'js/bootstrap.min.js' %}"></script>
+<script src = "{% static 'js/bootstrap3-wysihtml5.all.min.js' %}"></script>
+<script src = "{% static 'js/select2.min.js' %}"></script>
+
+  <script>
+
+  $(function () {
+    $("#id_observacion").wysihtml5();
+    $('#id_cie10').select2({ placeholder:"Seleccione una opción", allowClear: true});
+  });
 
         $("#diagnosticoForm").submit(function(e) {
 
@@ -54,7 +68,9 @@
                    success: function(data, status) {
                        if (data.success){
                            $('#popup').modal('hide');
-                           location.reload();
+                           //location.reload();
+                           var detalle_id = {{ detalle.id }};
+                           reloadPaginaConsultaPaciente(detalle_id, "a_diag");
                        }else {
                            $('#diagnosticoForm').html(data);
                        }
@@ -74,4 +90,3 @@
 	      });
   </script>
 </div>
-

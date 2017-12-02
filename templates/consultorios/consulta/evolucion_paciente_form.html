@@ -4,13 +4,13 @@
 
 <div class="modal-dialog modal-lg" >
     <div class="modal-content">
-      <form role="form" id="evolucionForm"
-        {% if not object.id %}
-          action="{% url 'consultorios:evolucion_paciente_crear' detalle.id %}" method="post">
-        {% else %}
-          action="{% url 'consultorios:evolucion_paciente_editar' object.pk %}" method="post">
-        {% endif %}
-      <div class="modal-header">
+        <form role="form" id="evolucionForm"
+              {% if not object.id %}
+              action="{% url 'consultorios:evolucion_paciente_crear' detalle.id %}" method="post">
+            {% else %}
+            action="{% url 'consultorios:evolucion_paciente_editar' object.pk %}" method="post">
+            {% endif %}
+            <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4>Evolución del Paciente</h4>
       </div>
@@ -21,18 +21,14 @@
           <div class="box-header">
               <h3 class="box-title">Observación</h3>
           </div>
-
-
-
-
-          <div class="form-group">
-                          {{ form.observaciones.errors }}
+            <div class="form-group">
+                {{ form.observaciones.errors }}
                   <div class="col-sm-12">
                       {{ form.observaciones }}
                   </div>
               </div>
           <div class="form-group">
-                          {{ form.observacion.errors }}
+              {{ form.observacion.errors }}
                   <label class="control-label col-sm-3">{{form.observacion.label}}</label>
                   <div class="col-sm-8">
                       {{ form.observacion }}
@@ -46,6 +42,8 @@
         <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
         <button type="button" class="btn btn-default" onclick="return cerrar_modal()"><i class="fa fa-times"></i> Cancelar</button>
       </div>
+          </div>
+
 		</form>
     </div>
 
@@ -73,7 +71,9 @@
                    success: function(data, status) {
                        if (data.success){
                            $('#popup').modal('hide');
-                           location.reload();
+                           //location.reload();
+                           var detalle_id = {{ detalle.id }};
+                           reloadPaginaConsultaPaciente(detalle_id, "a_evol");
                        }else {
                            $('#diagnosticoForm').html(data);
                        }

@@ -36,7 +36,7 @@ $( document ).ready(function() {
                      success: function(data){
                         dialog.close();
                         cerrar_modal();
-                        location.reload();
+                        reloadPaginaConsultaPaciente({{ object.consulta_detalle.id }}, "a_evol");
                      }
                 });
                 return false;

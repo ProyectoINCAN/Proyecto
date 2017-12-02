@@ -2,7 +2,6 @@
 <script>
 
 $( document ).ready(function() {
-        console.log("llega a bootstrap dialog");
         var url = $("#url").val();
         console.log("url", url);
 
@@ -37,7 +36,7 @@ $( document ).ready(function() {
                      success: function(data){
                         dialog.close();
                         cerrar_modal();
-                        location.reload();
+                        reloadPaginaConsultaPaciente({{ object.consulta_detalle.id }}, "a_anam");
                      }
                 });
                 return false;

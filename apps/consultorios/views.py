@@ -521,7 +521,6 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        panel = request.GET.get('', )
 
         # obtenemos la consuta detalle
         detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
@@ -536,23 +535,35 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
         detalle.save()
 
         #anamnesis del paciente
-        anamnesis = Anamnesis.objects.filter(paciente=detalle.paciente).order_by('-pk')
+        anamnesis = Anamnesis.objects.filter(paciente=detalle.paciente, consulta_detalle=detalle).order_by('-pk')
 
         #diagnosticos del paciente.
-        diagnosticos = Diagnostico.objects.filter(paciente=detalle.paciente).order_by('-pk')
+        diagnosticos = Diagnostico.objects.filter(paciente=detalle.paciente, consulta_detalle=detalle).order_by('-pk')
 
         #evoluciones del paciente
-        evoluciones = EvolucionPaciente.objects.filter(paciente=detalle.paciente).order_by('-pk')
+        evoluciones = EvolucionPaciente.objects.filter(paciente=detalle.paciente,
+                                                       consulta_detalle=detalle).order_by('-pk')
 
         #ordenes de estudio del paciente
-        ordenes = ConsultaOrdenEstudio.objects.filter(paciente=detalle.paciente).order_by('-pk')
+        ordenes = ConsultaOrdenEstudio.objects.filter(paciente=detalle.paciente,
+                                                      consulta_detalle=detalle).order_by('-pk')
 
         # prescripciones del paciente
-        prescripciones = ConsultaPrescripcion.objects.filter(paciente=detalle.paciente).order_by('-pk')
+        prescripciones = ConsultaPrescripcion.objects.filter(paciente=detalle.paciente,
+                                                             consulta_detalle=detalle).order_by('-pk')
 
         # tratamientos del paciente
-        tratamientos = Tratamiento.objects.filter(paciente=detalle.paciente)
+        tratamientos = Tratamiento.objects.filter(paciente=detalle.paciente, consulta_detalle=detalle)
 
+        ir_a_tab = request.GET.get('ir_a_tab', None)
+        print("ir_a_tab:", ir_a_tab)
+
+        if not ir_a_tab:
+            ir_a_tab = "a_anam"  # por default va al tab de anamnesis
+
+        ir_a_tab = "#"+ir_a_tab
+
+        print("va a tab:", ir_a_tab)
 
         context.update({
             'consulta': detalle.consulta,
@@ -562,9 +573,11 @@ class ConsultaDetalleIniciar(LoginRequiredMixin, TemplateView):
             'ordenes': ordenes,
             'prescripciones': prescripciones,
             'tratamientos': tratamientos,
-            'anamnesis': anamnesis
+            'anamnesis': anamnesis,
+            'ir_a_tab': ir_a_tab
         })
-        return super(TemplateView, self).render_to_response(context)
+        # return super(TemplateView, self).render_to_response(context)
+        return render(request=request, template_name=self.template_name, context=context)
 
 
 class ConsultaDetalleContinuar(LoginRequiredMixin, TemplateView):
@@ -719,7 +732,7 @@ class EvolucionPacienteCreate(LoginRequiredMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(EvolucionPacienteCreate, self).get_context_data(**kwargs)
-        detalle=ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
         context.update({'detalle': detalle})
         return context
 
@@ -744,6 +757,11 @@ class EvolucionPacienteUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'consultorios/consulta/evolucion_paciente_form.html'
     pk_url_kwarg = 'evolucion_id'
     form_class = EvolucionPacienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(EvolucionPacienteUpdate, self).get_context_data(**kwargs)
+        context.update({'detalle': self.object.consulta_detalle})
+        return context
 
     def form_valid(self, form):
         evolucion = form.save(commit=False)
@@ -823,6 +841,11 @@ class PacienteDiagnosticoEditar(LoginRequiredMixin, UpdateView):
     template_name = 'consultorios/consulta/diagnostico_paciente.html'
     pk_url_kwarg = 'diagnostico_id'
     form_class = DiagnosticoPacienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteDiagnosticoEditar, self).get_context_data(**kwargs)
+        context.update({'detalle': self.object.consulta_detalle})
+        return context
 
     def form_valid(self, form):
         form.save()
@@ -1256,6 +1279,11 @@ class AnamnesisPacienteUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'consultorios/consulta/anamnesis/anamnesis_form.html'
     pk_url_kwarg = 'anamnesis_id'
     form_class = AnamnesisPacienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AnamnesisPacienteUpdate, self).get_context_data(**kwargs)
+        context.update({'detalle': self.object.consulta_detalle})
+        return context
 
     def form_valid(self, form):
         form.save()

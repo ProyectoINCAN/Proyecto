@@ -29,7 +29,10 @@ class CIE10(models.Model):
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.descripcion
+        return "({}) - {}".format(self.codigo, self.descripcion)
+
+    def get_cie10_formateado(self):
+        return "<b>({})</b> - {}".format(self.codigo, self.descripcion)
 
     class Meta:
         ordering = ["codigo"]
