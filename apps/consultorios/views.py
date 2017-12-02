@@ -877,12 +877,12 @@ class PacienteOrdenEstudioCreate(LoginRequiredMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(PacienteOrdenEstudioCreate, self).get_context_data(**kwargs)
-        detalle=ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
         context.update({'detalle': detalle})
         return context
 
     def form_valid(self, form):
-        """guardamos el diagnostico de la consulta del paciente(consulta detalle)"""
+        """guardamos la orden de estudio de la consulta del paciente(consulta detalle)"""
         orden_estudio = form.save(commit=False)
         consulta_detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
         orden_estudio.consulta_detalle = consulta_detalle
@@ -895,15 +895,16 @@ class PacienteOrdenEstudioCreate(LoginRequiredMixin, FormView):
 class PacienteOrdenEstudioUpdate(LoginRequiredMixin, UpdateView):
     model = ConsultaOrdenEstudio
     form_class = OrdenEstudioPacienteForm
-    template_name = 'consultorios/consulta/orden_estudio_editar.html'
+    template_name = 'consultorios/consulta/orden_estudio_form.html'
     pk_url_kwarg = 'orden_id'
-    context_object_name = 'orden'
+    # context_object_name = 'orden'
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteOrdenEstudioUpdate, self).get_context_data(**kwargs)
+        context.update({'detalle': self.object.consulta_detalle})
+        return context
 
     def form_valid(self, form):
-        print("entro")
-        """guardamos el diagnostico de la consulta del paciente(consulta detalle)"""
-        orden=form.save()
-        consulta=orden.consulta_detalle.consulta
         form.save()
         return JsonResponse({'success': True})
 
@@ -950,9 +951,14 @@ class PacientePrescripcionCreate(LoginRequiredMixin, FormView):
 class PacientePrescripcionUpdate(LoginRequiredMixin, UpdateView):
     model = ConsultaPrescripcion
     form_class = PrescripcionPacienteForm
-    template_name = 'consultorios/consulta/prescripcion_editar.html'
+    template_name = 'consultorios/consulta/prescripcion_form.html'
     pk_url_kwarg = 'prescripcion_id'
     context_object_name = 'prescripcion'
+
+    def get_context_data(self, **kwargs):
+        context = super(PacientePrescripcionUpdate, self).get_context_data(**kwargs)
+        context.update({'detalle': self.object.consulta_detalle})
+        return context
 
     def form_valid(self, form):
         """guardamos la prescripcion de la consulta del paciente(consulta detalle)"""
@@ -1010,10 +1016,15 @@ class PacienteTratamientoDelete(LoginRequiredMixin, DeleteView):
 
 class PacienteTratamientoUpdate(LoginRequiredMixin, UpdateView):
     model = Tratamiento
-    template_name = 'consultorios/consulta/tratamiento/tratamiento_paciente_editar.html'
+    template_name = 'consultorios/consulta/tratamiento/tratamiento_paciente_form.html'
     pk_url_kwarg = 'tratamiento_id'
-    context_object_name = 'tratamiento'
+    # context_object_name = 'tratamiento'
     form_class = TratamientoPacienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteTratamientoUpdate, self).get_context_data(**kwargs)
+        context.update({'detalle': self.object.consulta_detalle})
+        return context
 
     def form_valid(self, form):
         form.save()
@@ -1323,6 +1334,7 @@ class HistoriaClinicaList(LoginRequiredMixin, TemplateView):
 
 
 class GeneratePDF(View):
+    """Clase solo de prueba de pdf."""
     pk_url_kwarg = "detalle_id"
 
     def get(self, request, *args, **kwargs):

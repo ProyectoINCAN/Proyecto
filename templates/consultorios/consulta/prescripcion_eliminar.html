@@ -1,55 +1,49 @@
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-   <div class="modal-header">
-     <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
-     <div id="modal-title">
-       <h3>Eliminar Prescripción</h3>
-     </div>
-   </div>
-   <div class="modal-body">
-     <p>Está seguro que desea eliminar la prescripción seleccionada?</p>
-   </div>
-   <div class="modal-footer">
-     <form action="{% url 'consultorios:consulta_prescripcion_eliminar' object.pk %}" method="post" id="eventoForm">
-       {% csrf_token %}
-       <div class="controls pull-right">
-         <button type="submit" class="btn btn-danger">Eliminar</button>
-         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-       </div>
-     </form>
-   </div>
-  </div>
-  <script language="JavaScript">
+<input id="url" type="hidden" value="{% url 'consultorios:consulta_prescripcion_eliminar' object.pk %}">
+<script>
 
-        $("#eventoForm").submit(function(e) {
+$( document ).ready(function() {
+        var url = $("#url").val();
+        console.log("url", url);
 
-            var url = this.action; // the script where you handle the form input.
-            console.log(url)
-            $.ajax({
-                   type: "POST",
-                   url: url,
-                   data: $("#eventoForm").serialize(), // serializes the form's elements.
-                   success: function(data, status) {
-                       if (data.success){
-                           $('#popup').modal('hide');
-                           location.reload();
-                       }else {
-                           $('#eventoForm').html(data);
-                       }
+        BootstrapDialog.show({
+        type: BootstrapDialog.TYPE_DANGER,
+        title: 'Eliminar detalle',
+        message: '¿Está seguro de que desea eliminar la prescripción del paciente?',
+        draggable: true,
+        closable: false,
+        buttons: [{
+            label: 'Cancelar',
+            //cssClass: 'btn-primary',
+            icon: 'fa fa-times',
+              action: function(dialog){
+                dialog.close();
+                cerrar_modal();
+                return false;
+            }
+        }, {
+            label: 'Eliminar',
+            cssClass: 'btn-danger',
+            icon: 'fa fa-trash',
+            action: function(dialog){
+                dialog.close();
+                var csrftoken = getCookie('csrftoken');
+                $.ajax({
+                     type:"POST",
+                     url:url,
+                     data: {
+                            'csrfmiddlewaretoken': csrftoken
+                            },
+                     success: function(data){
+                        dialog.close();
+                        cerrar_modal();
+                        reloadPaginaConsultaPaciente({{ object.consulta_detalle.id }}, "a_pres");
+                     }
+                });
+                return false;
+            }
+        }, ]
+        });
+    }
+);
 
-                   },
-                error: function(ajaxContext) {
-
-                   alert(ajaxContext.responseText);
-
-                },
-                done: function (response) {
-                    $('#popup').modal('hide');
-                }
-            });
-            e.preventDefault(); // avoid to execute the actual submit of the form.
-
-	      });
-  </script>
-</div>
+</script>

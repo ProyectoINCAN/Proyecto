@@ -7,6 +7,7 @@ function abrir_modal(url)
      {
             $(this).modal('show');
      });
+     $('#popup').removeAttr('tabindex');
         return false;
 }
 

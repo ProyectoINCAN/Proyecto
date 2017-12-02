@@ -18,13 +18,12 @@
     <input type="hidden" id="consulta_id" name="consulta_id" value="{{ detalle.consulta.pk }}">
     <input type="hidden" id="ir_a_tab" name="ir_a_tab" value="{{ ir_a_tab }}">
     <div class="row">
-      <div class="btn-group pull-right">
+      <div class="col-lg-12 pull-right">
         <div class="col pull-right">
           <a id="volver" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_detalle_dia' consulta.id  %}"> <i class="fa fa-list" aria-hidden="true"></i> Volver a la lista</a>
           <a id="cancelar" type="button" class="btn btn-danger" href="javascript:void(0)"> <i class="fa fa-ban" aria-hidden="true"></i> Cancelar consulta</a>
           <a id="finalizar" type="button" class="btn btn-success" href="javascript:void(0)"> <i class="fa fa-check-square-o" aria-hidden="true"></i> Finalizar consulta</a>
         </div>
-
       </div>
     </div><p>
     <div class="box">
@@ -92,16 +91,22 @@
         </div>
     </div>
     <div class="row">
-
-      <div class="col-lg-2 pull-right">
+      <!--<div class="col-lg-12 pull-right">
         <p>
-        <a class="btn btn-block btn-primary"
+        <a class="btn btn-primary"
                 onclick="window.location.href='{% url 'consultorios:consulta_historia_clinica' detalle.paciente.pk %}'">
+          <i class="fa fa-book" aria-hidden="true"></i>
           Historia Clínica</a>
         </p>
+      </div>-->
+      <div class="col-lg-12 pull-right">
+        <div class="col pull-right">
+          <a class="btn btn-primary" type="button" onclick="window.location.href='{% url 'consultorios:consulta_historia_clinica' detalle.paciente.pk %}'"><i class="fa fa-book" aria-hidden="true"></i> Historia Clínica</a>
+        </div>
       </div>
 
     </div>
+    <p></p>
 
 	  <div class="row">
       <div role="tabpanel">
@@ -184,7 +189,7 @@
                               </div><p></p>
                             </div>
                             <div class="panel-body">
-                              <table class="table table-striped table-bordered table-hover table-responsive datatable display"
+                              <table class="table table-striped table-bordered table-hover table-responsive datatable"
                                      id="dataTables-example" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
@@ -218,25 +223,6 @@
                           </div>
                         </div>
                       </div>
-                      <!--<div class="box">-->
-            <!--<div class="box-header">-->
-              <!--<h3 class="box-title">Bootstrap WYSIHTML5-->
-                <!--<small>Simple and fast</small>-->
-              <!--</h3>-->
-              <!--&lt;!&ndash; tools box &ndash;&gt;-->
-              <!--<div class="pull-right box-tools">-->
-                <!--<button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse">-->
-                  <!--<i class="fa fa-minus"></i></button>-->
-              <!--</div>-->
-              <!--&lt;!&ndash; /. tools &ndash;&gt;-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.box-header &ndash;&gt;-->
-            <!--<div class="box-body pad">-->
-              <!--<form>-->
-                <!--<textarea class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>-->
-              <!--</form>-->
-            <!--</div>-->
-          <!--</div>-->
                     </div>
 
                   <div role="tabpanel" class="tab-pane" id="tab_evolucion">
@@ -260,7 +246,6 @@
                                   <th>Fecha</th>
                                   <th>Hora</th>
                                   <th style="width:50%;">Observaciones</th>
-                                  <!--<th>Observaciones</th>-->
                                   <th>Firma</th>
                                   <th>Acción</th>
                                 </tr>
@@ -270,7 +255,6 @@
                                   <tr>
                                     <td>{{ evo.fecha|date:"SHORT_DATE_FORMAT" }}</td>
                                     <td>{{ evo.hora }} </td>
-                                    <!--<td>{{ evo.observaciones }} </td>-->
                                     <td>{% autoescape off %}{{ evo.observaciones|safe }}{% endautoescape %} </td>
                                     <td>{{ evo.medico.get_dr_full_name }} </td>
                                     <td>
@@ -309,35 +293,36 @@
                               </div><p></p>
                             </div>
                             <div class="panel-body">
-                              <table class="table table-striped table-bordered table-hover table-responsive datatable display"
+                              <table class="table table-striped table-bordered table-hover table-responsive datatable"
                                      id="dataTables-example" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
-                                  <th>Orden de Estudio</th>
-                                  <th>Fecha de Solicitud</th>
-                                  <th>Acción</th>
+                                    <th style="width:20%;">Orden de Estudio</th>
+                                    <th style="width:10%;">Fecha de Solicitud</th>
+                                    <th style="width:60%;">Observación</th>
+                                    <th style="width:10%;">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for orden in ordenes %}
-                                  <tr>
-                                    <td style="width: 40%">{{ orden.orden_estudio }}</td>
-                                    <td style="width:40%;">{{ orden.fecha_solicitud }} </td>
+                                <tr>
+                                    <td>{{ orden.orden_estudio }}</td>
+                                    <td>{{ orden.fecha_solicitud|date:"SHORT_DATE_FORMAT" }} </td>
+                                    <td>{% autoescape off %}{{ orden.observacion|safe }}{% endautoescape %}</td>
                                     <td>
-                                      {% if orden.consulta_detalle.id == detalle.id %}
-                                      <a class="btn btn-default btn-xs" title="Eliminar"
-                                         onclick="return abrir_modal('{% url 'consultorios:consulta_orden_estudio_editar' orden.id %}')">
-                                        <i class="fa fa-pencil"></i>
-                                      </a>
-                                      </a>
+                                        {% if orden.consulta_detalle.id == detalle.id %}
                                         <a class="btn btn-default btn-xs" title="Eliminar"
-                                         onclick="return abrir_modal('{% url 'consultorios:consulta_orden_estudio_eliminar' orden.id %}')">
-                                        <i class="fa fa-trash"></i>
-                                      </a>
-
-                                      {% endif %}
+                                           onclick="return abrir_modal('{% url 'consultorios:consulta_orden_estudio_editar' orden.id %}')">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                        </a>
+                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                           onclick="return abrir_modal('{% url 'consultorios:consulta_orden_estudio_eliminar' orden.id %}')">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                        {% endif %}
                                     </td>
-                                  </tr>
+                                </tr>
                                 {% endfor %}
                                 </tbody>
                               </table>
@@ -374,7 +359,7 @@
                                 {% for prescripcion in prescripciones %}
                                   <tr>
                                     <td>{{ prescripcion.medicamento }}</td>
-                                    <td>{{ prescripcion.posologia }} </td>
+                                    <td>{{ prescripcion.posologia|safe }} </td>
                                     <td>{{ prescripcion.cantidad }} </td>
                                     <td>
                                       {% if prescripcion.consulta_detalle.id == detalle.id %}
@@ -411,20 +396,20 @@
                               </div><p></p>
                             </div>
                             <div class="panel-body">
-                              <table class="table table-striped table-bordered table-hover table-responsive datatable display"
+                              <table class="table table-striped table-bordered table-hover table-responsive datatable"
                                      id="dataTables-example3" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
-                                  <th>Descripción</th>
+                                  <th style="width:30%;">Descripción</th>
                                   <th>Observación</th>
-                                  <th>Acción</th>
+                                  <th style="width:10%;">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for tratamiento in tratamientos %}
                                   <tr>
                                     <td>{{ tratamiento.descripcion }}</td>
-                                    <td>{{ tratamiento.observacion }} </td>
+                                    <td>{% autoescape off %}{{ tratamiento.observacion|safe }}{% endautoescape %} </td>
                                     <td>
                                       {% if tratamiento.consulta_detalle.id == detalle.id %}
                                       <a class="btn btn-default btn-xs" title="Editar"

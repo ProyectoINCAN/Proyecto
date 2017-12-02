@@ -1,52 +1,73 @@
-<div class="modal-content" style="width: 700px;height: auto;
-  position: absolute;left:35%;top: 37%; margin-left: -150px;
-   margin-top: -140px;">
-  <form role="form" id="diagnosticoForm"
-          action="{% url 'consultorios:consulta_tratamiento_crear' detalle.id %}" method="post">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">x</button>
-      <h3>Crear Diagnóstico</h3>
-    </div>
-    <div class="modal-body">
-      {% csrf_token %}
-      <div class="panel-body">
-        {% csrf_token %}
-        {% for field in form %}
-          <div class="form-group">
-              {{ field.errors }}
-              <label for="{{ field.name }}" class="col-sm-3 control-label">{{ field.label }}:</label>
-              <div class="col-sm-9">
-                {{ field }}
-              </div>
-          </div><br/>
-           {% endfor %}
-      </div>
-    </div>
-    <div class="modal-footer">
-      <div class="col-lg-12 text-right">
-        <input type="submit" class="btn btn-primary" name="submit" value="Guardar">
-        <button type="button" class="btn btn-default" onclick="return cerrar_modal()">
-          Cancelar
-        </button>
-      </div>
-    </div>
-  </form>
-  <script language="JavaScript">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap3-wysihtml5.min.css' %}">
 
-        $("#diagnosticoForm").submit(function(e) {
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form role="form" id="id_form"
+        {% if not object.id %}
+          action="{% url 'consultorios:consulta_tratamiento_crear' detalle.id  %}" method="post">
+        {% else %}
+          action="{% url 'consultorios:consulta_tratamiento_editar' object.pk %}" method="post">
+        {% endif %}
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">Tratamiento</h4>
+      </div>
+      <div class="modal-body" style="overflow:hidden;">
+		<div class="form-horizontal" >
+          {% csrf_token %}
+          <div class="form-group">
+              {{ form.descripcion.errors }}
+              <label for="{{ form.descripcion.name }}" class="col-sm-2 control-label">{{ form.descripcion.label }}:</label>
+              <div class="col-sm-8">
+                  {{ form.descripcion }}
+              </div>
+          </div>
+          <div class="form-group">
+              {{ form.observacion.errors }}
+              <div class="col-sm-12">
+                  {{ form.observacion }}
+              </div>
+          </div>
+        </div>
+
+		  </div>
+      <div class="modal-footer">
+        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
+        <button type="button" class="btn btn-default" onclick="return cerrar_modal()"><i class="fa fa-times"></i> Cancelar</button>
+      </div>
+		</form>
+    </div>
+
+  </div>
+
+<script src = "{% static 'js/jquery.min.js' %}"></script>
+<script src = "{% static 'js/bootstrap.min.js' %}"></script>
+<script src = "{% static 'js/bootstrap3-wysihtml5.all.min.js' %}"></script>
+
+  <script>
+
+  $(function () {
+    $("#id_observacion").wysihtml5();
+    $("#id_descripcion").focusin();
+  });
+
+        $("#id_form").submit(function(e) {
 
             var url = this.action; // the script where you handle the form input.
             console.log(url)
             $.ajax({
                    type: "POST",
                    url: url,
-                   data: $("#diagnosticoForm").serialize(), // serializes the form's elements.
+                   data: $("#id_form").serialize(), // serializes the form's elements.
                    success: function(data, status) {
                        if (data.success){
                            $('#popup').modal('hide');
-                           location.reload();
+                           var detalle_id = {{ detalle.id }};
+                           reloadPaginaConsultaPaciente(detalle_id, "a_trat");
                        }else {
-                           $('#diagnosticoForm').html(data);
+                           $('#id_form').html(data);
                        }
 
                    },

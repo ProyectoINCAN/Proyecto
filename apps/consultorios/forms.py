@@ -131,8 +131,7 @@ class EvolucionPacienteForm(forms.ModelForm):
             'observaciones': 'Observaciones',
         }
         widgets = {
-            'observaciones': forms.Textarea(attrs={'class': 'form-control',
-                                                   'required': 'required',
+            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'required': 'required',
                                                    'style': 'text-transform:uppercase; width: 100%'}),
         }
 
@@ -190,7 +189,7 @@ class OrdenEstudioDetalleForm(forms.ModelForm):
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-            'observacion': forms.Textarea(attrs={'class': 'form-control',
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'required': 'required',
                                                  'style': 'text-transform:uppercase;width: 100%'}),
         }
 
@@ -207,7 +206,7 @@ class DiagnosticoPacienteForm(forms.ModelForm):
         }
         widgets = {
             'cie10': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
-                                         'required': 'required'}),
+                                         'required': 'required', 'autofocus': 'autofocus'}),
             'observacion': forms.Textarea(attrs={'class': 'form-control',
                                                  'required': 'required',
                                                  'style': 'text-transform:uppercase; width: 100%'}),
@@ -221,12 +220,13 @@ class OrdenEstudioPacienteForm(forms.ModelForm):
         exclude = ['paciente', 'consulta_detalle', 'fecha_solicitud', 'interpretacion', 'fecha_presentacion']
 
         labels = {
-            'orden_estudio': 'Orden Estudio',
+            'orden_estudio': 'Estudio',
             'observacion': 'Observación',
         }
         widgets = {
-            'orden_estudio': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
-            'observacion': forms.Textarea(attrs={'class': 'form-control',
+            'orden_estudio': forms.Select(attrs={'class': 'form-control selectsearch', 'required': 'required',
+                                                 'style': 'width: 100%'}),
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'required': 'required',
                                                  'style': 'text-transform:uppercase; width: 100%'}),
             'fecha_presentacion': forms.DateInput(attrs={'class': 'form-control datepicker',
                                                          'placeholder': 'dd/mm/aaaa'}),
@@ -245,10 +245,12 @@ class PrescripcionPacienteForm(forms.ModelForm):
             'cantidad': 'Cantidad',
         }
         widgets = {
-            'medicamento': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'posologia': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,
-                                               'style': 'width: 100%; text-transform:uppercase;'}),
-            'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
+            'medicamento': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
+                                               'required': 'required', 'autofocus': 'autofocus'}),
+            'posologia': forms.Textarea(attrs={'class': 'form-control', 'required': 'required',
+                                               'style': 'text-transform:uppercase; width: 100%'}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required',
+                                                 'style': 'width: 100%'}),
         }
 
 
@@ -261,11 +263,14 @@ class TratamientoPacienteForm(forms.ModelForm):
 
         labels = {
             'descripcion': 'Descripción',
-            'observacion': 'Observacion',
+            'observacion': 'Observación',
         }
         widgets = {
-            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
-            'observacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control', 'required': 'required',
+                                                  'style': 'text-transform:uppercase; width: 100%',
+                                                  'autofocus': 'autofocus'}),
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'required': 'required',
+                                                 'style': 'text-transform:uppercase; width: 100%'}),
         }
 
     def clean(self):
@@ -344,8 +349,8 @@ class AnamnesisPacienteForm(forms.ModelForm):
             'observacion': 'Observaciones',
         }
         widgets = {
-            'observacion': forms.Textarea(attrs={'class': 'form-control',
-                                                 'required': 'required',
+            'observacion': forms.Textarea(attrs={'class': 'form-control', 'required': 'required',
+                                                 'autofocus': 'autofocus',
                                                  'style': 'text-transform:uppercase;'}),
         }
 
