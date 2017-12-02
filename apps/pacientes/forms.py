@@ -59,13 +59,13 @@ class PacienteForm(forms.ModelForm):
 
         widgets = {
             'nombres': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required'}),
-            'apellidos': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;', 'required':'required',}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required'}),
-            'nro_doc': forms.TextInput(attrs ={'class': 'form-control','required':'required','tabindex':"1"}),
+            'apellidos': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;', 'required':'required'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control', 'style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required'}),
+            'nro_doc': forms.TextInput(attrs ={'class': 'form-control','required':'required'}),
             'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;','style':'width: 100%', 'required':'required',}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
             'distrito': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%', 'required':'required',}),
-            'nacionalidad':  forms.Select(attrs={'class':'form-control selectsearch', 'style':'width: 100%', 'required':'required',}),
+            'nacionalidad':  forms.Select(attrs={'class':'form-control', 'style':'width: 100%', 'required':'required'}),
             'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;', 'style':'width: 100%','required':'required',}),
             'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
             'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;', 'style':'width: 100%','required':'required',}),

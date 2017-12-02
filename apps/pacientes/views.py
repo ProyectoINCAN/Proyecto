@@ -195,6 +195,7 @@ def paciente_padre_crear(request, paciente_id):
     :return:
     """
     paciente = Paciente.objects.get(pk=paciente_id)
+    print("entro en este", paciente)
     if request.method == 'POST':
         form = PacientePadreForm(request.POST, paciente_id)
         if form.is_valid():
@@ -207,6 +208,7 @@ def paciente_padre_crear(request, paciente_id):
             return HttpResponseRedirect(reverse('pacientes:paciente_padre_listar',
                                                 kwargs={'id_paciente': paciente_id }))
     else:
+        print("entro en este1111", paciente)
         paciente_padre = PacientePadre.objects.filter(paciente=paciente_id).filter(padre='on')
         if paciente_padre.exists():
             context = {
@@ -235,8 +237,14 @@ class PacientePadreUpdate(LoginRequiredMixin, UpdateView):
         padre = PacientePadre.objects.get(pk=self.kwargs['pk'])
         print("entro1", padre)
         paciente = Paciente.objects.get(pacientepadre__padre=padre)
+            # Paciente.objects.get(pacientepadre__paciente__pacientepadre=padre)
         print("entro2", paciente.id)
         return paciente.id
+    #
+    # def get_paciente(self):
+    #     padre = PacientePadre.objects.get(pk=self.kwargs['pk'])
+    #     paciente = Paciente.objects.get(pacientepadre__padre=padre)
+    #     return paciente
 
     def get_context_data(self, **kwargs):
         context = super(PacientePadreUpdate, self).get_context_data(**kwargs)
@@ -262,8 +270,8 @@ class PacientePadreList(ListView):
         return paciente_padres
 
     def get_paciente(self):
-        padre = PacientePadre.objects.get(pk=self.get_padre())
-        paciente = Paciente.objects.get(pacientepadre__padre=padre)
+        # padre = PacientePadre.objects.get(pk=self.get_padre())
+        paciente = Paciente.objects.get(pk=self.kwargs["id_paciente"])
         return paciente
 
     def get_context_data(self, **kwargs):
@@ -281,14 +289,13 @@ class PacientePadreDelete(LoginRequiredMixin, DeleteView):
     template_name = "pacientes/padres/padre_eliminar.html"
     pk_url_kwarg = 'padre_id'
     context_object_name = 'padre'
+    # success_url =
 
     def post(self, request, *args, **kwargs):
         paciente = Paciente.objects.get(pacientepadre__paciente__pacientepadre=self.kwargs['padre_id'])
         padre= PacientePadre.objects.get(pk=self.kwargs['padre_id'])
         padre.delete()
-        return HttpResponseRedirect(reverse('pacientes:paciente_padre_crear',
-                                            kwargs={'id_paciente': paciente.id}))
-
+        return HttpResponseRedirect(reverse_lazy('pacientes:padre_crear',kwargs={'paciente_id': paciente.id}))
 
 class PacienteMadreList(ListView):
     template_name = 'pacientes/padres/madre_list.html'
@@ -298,9 +305,18 @@ class PacienteMadreList(ListView):
         paciente_padres=PacientePadre.objects.filter(padre=False, paciente=Paciente.objects.get(pk=self.kwargs["id_paciente"]))
         return paciente_padres
 
+    # def get_paciente(self):
+    #     padre = PacientePadre.objects.get(pk=self.get_padre())
+    #     paciente = Paciente.objects.get(pacientepadre__paciente__pacientepadre=padre)
+    #     return paciente
+
+    # def get_padre(self):
+    #     paciente_padres=PacientePadre.objects.filter(padre=True, paciente=Paciente.objects.get(pk=self.kwargs["id_paciente"]))
+    #     return paciente_padres
+    #
     def get_paciente(self):
-        padre = PacientePadre.objects.get(pk=self.get_padre())
-        paciente = Paciente.objects.get(pacientepadre__padre=padre)
+        # padre = PacientePadre.objects.get(pk=self.get_padre())
+        paciente = Paciente.objects.get(pk=self.kwargs["id_paciente"])
         return paciente
 
     def get_context_data(self, **kwargs):

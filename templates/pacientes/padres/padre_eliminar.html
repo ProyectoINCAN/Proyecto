@@ -4,11 +4,12 @@
 $( document ).ready(function() {
         var url = $("#url").val();
         console.log("url", url);
+        console.log("local",  {{ paciente_id }})
 
         BootstrapDialog.show({
         type: BootstrapDialog.TYPE_DANGER,
         title: 'Eliminar Padre',
-        message: '¿Está seguro de que desea eliminar el padre del paciente?',
+        message: '¿Está seguro de que desea eliminar el dato padre del paciente?',
         draggable: true,
         closable: false,
         buttons: [{
@@ -36,7 +37,7 @@ $( document ).ready(function() {
                      success: function(data){
                         dialog.close();
                         cerrar_modal();
-                        location.reload();
+                        <!--window.location.href = '/pacientes/paciente/17/padre/crear'-->
                      }
                 });
                 return false;
