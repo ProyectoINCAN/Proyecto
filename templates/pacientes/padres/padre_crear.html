@@ -1,24 +1,9 @@
 {% extends "base/base2.html" %}
 {% load static %}
 {% block extrajs %}
-    <script src = "{% static 'apps/pacientes/js/pacientes_padres_crear.js' %}"></script>;
+<script src = "{% static 'apps/pacientes/js/pacientes_padres_crear.js' %}"></script>;
 <script language="JavaScript">
     document.getElementById("mySelect").value = "M";
-       <!--$(document).ready(function() {-->
-       <!--$('#tipo_doc').change(function(){-->
-            <!--console.log("entro")-->
-                <!--document.getElementById("nro_doc").focus();-->
-
-            <!--window.onload = function() {-->
-                <!--document.getElementById("nro_doc").focus();-->
-            <!--};-->
-       <!--})-->
-       <!--})-->
-                   window.onload = function() {
-                document.getElementById("tipo_doc").focus();
-            };
-
-       $('tipo_doc').select2({}).focus(function () { $(this).select2('focus'); });
 
 </script>
 {% endblock %}

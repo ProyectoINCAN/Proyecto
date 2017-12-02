@@ -101,6 +101,7 @@
      </form>
 </div>
 </div>
+          {% include 'base/messages.html' %}
   <div class="row">
     <div class="col-xs-12 col-md-12 col-lg-12">
     <div class="panel panel-default">
@@ -121,9 +122,7 @@
                   <th>Apellidos</th>
                   <th>Sexo</th>
                   <th>Fecha Nacimiento</th>
-                  <th>Lugar Nacimiento</th>
-                  <th>Nacionalidad</th>
-                  <th>Estado Civil</th>
+                  <th>Ciudad</th>
 
             </tr>
           </thead>
@@ -139,9 +138,7 @@
                 <td>{{ paciente.apellidos }} </td>
                 <td>{{ paciente.sexo }} </td>
                 <td>{{ paciente.fecha_nacimiento }}</td>
-                <td>{{ paciente.lugar_nacimiento }}</td>
-                <td>{{ paciente.nacionalidad }}</td>
-                <td>{{ paciente.estado_civil }}</td>
+                <td>{{ paciente.distrito }}</td>
               </tr>
             {% endfor %}
           </tbody>

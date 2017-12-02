@@ -13,11 +13,12 @@
   <li class="active">Otros Datos / Paciente: <b>{{ paciente.get_name_nro_doc }}</b></li>
 </ol><br>
 <div class="wrapper-md">
+    {% include 'base/messages.html' %}
     <div class="panel panel-default">
      <div class="panel-body">
                  <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="">{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" data-toggle="tab" class="active" aria-expanded="true">Datos Básicos</a>{% endblock %}</li>
+              <li><a href="{% url 'pacientes:paciente_editar' id_paciente %}">Datos Básicos</a></li>
               <li><a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a></li>
               <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
               <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
@@ -45,7 +46,7 @@
                     {% for seguro in seguros %}
                       <tr>
                         <td>{{ seguro.seguro_medico }}</td>
-                        <td>{% if not seguro.detalle %}--------{% else %}
+                        <td>{% if not seguro.detalle %}Sin Observación{% else %}
                           {{ seguro.detalle }}{% endif %} </td>
                         <td>
                           <a class="btn btn-xs"
@@ -84,8 +85,9 @@
                 <table class="table table-striped responsive-table">
                   <thead>
                   <tr>
-                    <th>Ocupación</th>
+                    <th>Trabaja</th>
                     <th>Profesión</th>
+                    <th>Ocupación</th>
                     <th>Acción</th>
                   </tr>
                   </thead>
@@ -93,8 +95,11 @@
                   {% if ocupaciones %}
                     {% for ocupacion in ocupaciones %}
                       <tr>
-                        <td>{{ ocupacion.ocupacion }}</td>
-                        <td>{% if not ocupacion.profesion %}--------{% else %}
+                        <td>{{ ocupacion.situacion_laboral_id }}</td>
+                        <td>{% if not ocupacion.ocupacion %}Sin Ocupación{% else %}
+                          {{ ocupacion.ocupacion }}{% endif %} </td>
+                        <td>
+                        <td>{% if not ocupacion.profesion %}Sin Profesión{% else %}
                           {{ ocupacion.profesion }}{% endif %} </td>
                         <td>
                             <a onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_crear' id_paciente %}')"
@@ -176,58 +181,6 @@
           </div>
         </div>
         </div>
-       <!--<div class="row">-->
-         <!--<div class="tab-content" id="panel_tab_nivel_educativo">-->
-          <!--<div class="tab-pane active" id="tab_nivel_educativo">-->
-           <!--<div class="form-group" id="panel_nivel_educativo_form_group">-->
-              <!--<label class="control-label col-lg-2 col-sm-4">Nivel Educativo:</label>-->
-              <!--<div id="panel_nivel_educativo" class="col-lg-8 col-sm-8">-->
-                <!--<table class="table table-striped responsive-table">-->
-                  <!--<thead>-->
-                  <!--<tr>-->
-                    <!--<th>Nivel Educativo</th>-->
-                    <!--<th>Completo</th>-->
-                    <!--<th>Año Cursado</th>-->
-                    <!--<th>Acción</th>-->
-                  <!--</tr>-->
-                  <!--</thead>-->
-                  <!--<tbody>-->
-                  <!--{% if nivel_educativo %}-->
-                    <!--{% for nivel in nivel_educativo %}-->
-                      <!--<tr>-->
-                        <!--<td>{{ nivel.nivel_educativo }}</td>-->
-                        <!--<td>{% if nivel.completo %}SI{% else %}NO{% endif %}</td>-->
-                        <!--<td>{% if nivel.anho_cursado %}{{ nivel.anho_cursado }}{% else %}&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;{% endif %}</td>-->
-                        <!--<td>-->
-                          <!--<a class="btn btn-xs"-->
-                             <!--onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')">-->
-                             <!--<span class="fa fa-plus"></span>-->
-                          <!--</a>-->
-                          <!--<a class="btn btn-xs" title="Editar"-->
-                            <!--onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_editar' nivel.id %}')">-->
-                            <!--<i class="fa fa-pencil"></i>-->
-                          <!--</a>-->
-                          <!--<a class="btn btn-xs" title="Eliminar"-->
-                            <!--onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_eliminar' nivel.id %}')">-->
-                            <!--<i class="fa fa-times-circle"></i>-->
-                          <!--</a>-->
-                        <!--</td>-->
-                      <!--</tr>-->
-                    <!--{% endfor %}-->
-                    <!--{% endif %}-->
-                  <!--</tbody>-->
-                <!--</table>-->
-                <!--{% if nivel_educativo.count == 0 %}-->
-                <!--<a class="btn btn-xs"-->
-                   <!--onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')">-->
-                    <!--<span class="fa fa-plus"></span>-->
-                <!--</a>-->
-                <!--{% endif %}-->
-            <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
      </div>
 </div>
 <div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1"></div>

@@ -15,14 +15,15 @@
             <ul class="nav nav-tabs">
                 <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
                 <li><a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a></li>
-                <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+                <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Madre</a></li>
                 <li class="active">{% block nav-about %}<a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a>{% endblock %}</li>
                 <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
             </ul>
          </div>
+                 {% include 'base/messages.html' %}
         <div class="panel panel-default">
             <div class="panel-heading">
-            Datos del Padre
+            Datos del Madre
             </div>
             <div class="panel-body">
                 <table class="table table-hover table-condensed table-bordered">
@@ -47,7 +48,7 @@
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     <a class="btn btn-xs" title="Eliminar"
-                                       onclick="return abrir_modal('{% url 'pacientes:paciente_padre_eliminar' datos.id %}')">
+                                       onclick="return abrir_modal('{% url 'pacientes:paciente_madre_eliminar' datos.id %}')">
                                         <i class="fa fa-times-circle"></i>
                                     </a>
                                 </td>

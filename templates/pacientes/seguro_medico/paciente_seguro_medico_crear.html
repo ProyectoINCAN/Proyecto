@@ -1,4 +1,8 @@
- <div class="modal-dialog">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+
+<div class="modal-dialog">
     <div class="modal-content">
       <form role="form" id="eventoForm"
           action="{% url 'pacientes:paciente_seguro_medico_crear' paciente.id %}" method="post">
@@ -34,23 +38,17 @@
     </div>
 
   </div>
+<script src = "{% static 'js/jquery.min.js' %}"></script>
+<script src = "{% static 'js/bootstrap.min.js' %}"></script>
+<script src = "{% static 'js/select2.min.js' %}"></script>
 
 
   <script language="JavaScript">
-        detalle = document.getElementById('detalle')
 
-        detalle.style.display = 'none';
-        $("#id_seguro_medico").change(function(){
-            valor = $("#id_seguro_medico").val()
-            console.log('valor=', valor);
-            if(valor == 0) {
-                detalle.style.display = 'block';
-                document.getElementById('id_detalle').focus();
-            }else{
-                detalle.style.display = 'none';
-            }
+  $(function () {
+    $('#id_seguro_medico').select2({ placeholder:"Seleccione una opción", allowClear: true});
+  });
 
-	      });
         $("#eventoForm").submit(function(e) {
 
             var url = this.action; // the script where you handle the form input.

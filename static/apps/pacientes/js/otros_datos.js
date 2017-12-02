@@ -1,3 +1,5 @@
+
+
  $(document).ready(function() {
      var valor;
      $("#id_seguro_medico").change(function(){

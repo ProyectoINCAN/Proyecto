@@ -60,7 +60,7 @@ class PacienteForm(forms.ModelForm):
         widgets = {
             'nombres': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required'}),
             'apellidos': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;', 'required':'required'}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control', 'style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control', 'style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required', 'id':'id_tipo_doc'}),
             'nro_doc': forms.TextInput(attrs ={'class': 'form-control','required':'required'}),
             'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;','style':'width: 100%', 'required':'required',}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
@@ -161,7 +161,7 @@ class PacienteSeguroMedicoForm(forms.ModelForm):
             'detalle': 'Observación'
         }
         widgets = {
-            'seguro_medico': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'seguro_medico': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
             'detalle': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
         }
 
@@ -204,7 +204,7 @@ class SituacionLaboralForm(forms.ModelForm):
         }
 
         widgets = {
-            'descripcion': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'descripcion': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
         }
 
 
@@ -219,7 +219,7 @@ class OcupacionForm(forms.ModelForm):
         labels= { 'descripcion': 'Ocupación',}
 
         widgets = {
-            'descripcion': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'descripcion': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
         }
 
 
@@ -240,11 +240,10 @@ class PacienteOcupacionForm(forms.ModelForm):
             'profesion': 'Profesion',
         }
         widgets = {
-            'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'situacion_laboral_id': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'profesion': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'situacion_laboral_id': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'profesion': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
         }
-
 
 
 class PacientePadreForm(forms.ModelForm):
@@ -274,8 +273,8 @@ class PacientePadreForm(forms.ModelForm):
         widgets = {
             'nombres': forms.TextInput(attrs={'class': 'form-control','style':'text-transform:uppercase;','required':'required',}),
             'apellidos': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required',}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required', 'autofocus': 'autofocus', 'id':'tipo_doc'}),
-            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required', 'autofocus': 'autofocus', 'id':'nro_doc'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required', 'id':'id_tipo_doc'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required','id':'nro_doc'}),
             'sexo': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required','id':'mySelect'}),
             'fecha_nacimiento': forms.DateInput(
                 attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
@@ -288,10 +287,6 @@ class PacientePadreForm(forms.ModelForm):
             'otro': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
             'asume_sustento':forms.RadioSelect(attrs={'class': 'form-control', 'style':'width: 100%'}),
         }
-
-        def __init__(self):
-            self.fields['tipo_doc'].widget.attrs.update({'autofocus': 'autofocus'})
-
 
 
 class PacienteNivelEducativoForm(forms.ModelForm):

@@ -28,6 +28,8 @@ label { position: absolute; text-align:right; width:130px; }
       <li><a href="#">Pacientes</a></li>
       <li class="active">Nuevo</li>
     </ol>
+    {% include 'base/messages.html' %}
+
   <div class="wrapper-md">
         <div class ="row">
 <form id="paciente_form" class="form-horizontal" method="POST">
@@ -81,7 +83,7 @@ label { position: absolute; text-align:right; width:130px; }
 
     <div class="form-group">
 	 <div class="col-sm-offset-4 col-sm-8">
-         <button class="btn btn-primary" id="submit" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i>Guardar</button>
+         <button class="btn btn-primary" id="submit" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
          <a href="{% url 'pacientes:index' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
      </div>
     </div>

@@ -81,7 +81,7 @@ urlpatterns = [
 
     url(r'^paciente/(?P<id_paciente>\d+)/madre/list$',
         pacienteViews.PacienteMadreList.as_view(), name='paciente_madre_listar'),
-    url(r'^paciente/padre/(?P<madre_id>\d+)/eliminar$', views.PacienteMadreDelete.as_view(),
+    url(r'^paciente/madre/(?P<madre_id>\d+)/eliminar$', views.PacienteMadreDelete.as_view(),
         name='paciente_madre_eliminar'),
 
     url(r'^distrito/(?P<paciente_id>\d+)$', pacienteViews.distrito, name='distrito'),
