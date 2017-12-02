@@ -1298,20 +1298,28 @@ class HistoriaClinicaList(LoginRequiredMixin, TemplateView):
         context = self.get_context_data(**kwargs)
         hoy = datetime.datetime.now()
 
-        p_desde = request.GET.get('desde', None)
+        p_fechas = request.GET.get('fechas', None)
 
-        p_hasta = request.GET.get('hasta', None)
-
-        if not p_desde or not p_hasta:
-            p_desde = hoy
-            p_hasta = hoy
+        if p_fechas:
+            fechas = p_fechas.split("-")
+            p_desde = fechas[0]
+            p_hasta = fechas[1].split(" ")[1]
+            desde = p_desde.split(" ")
+            p_desde = desde[0]
+            fecha_desde = datetime.datetime.strptime(p_desde, '%d/%m/%Y')
+            fecha_hasta = datetime.datetime.strptime(p_hasta, '%d/%m/%Y')
+        else:
+            fecha_desde = hoy
+            fecha_hasta = hoy
 
         consultas = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id'],
-                                                   consulta__fecha__range=[p_desde, p_hasta])
+                                                   consulta__fecha__range=[fecha_desde, fecha_hasta])
+
         #la ultima consulta corresponde a la consulta actual
         ultima_consulta = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id']).last()
 
         context.update({
+            'fecha_input': p_fechas if p_fechas else None,
             'detalle': ultima_consulta,
             'consultas': consultas
         })
@@ -1530,7 +1538,7 @@ class PacienteFichaClinicaPDF(LoginRequiredMixin, View):
         if PacienteNivelEducativo.objects.filter(paciente__id=self.kwargs['paciente_id']).exists():
             educacion = PacienteNivelEducativo.objects.get(paciente__id=self.kwargs['paciente_id'])
         else:
-            educacion =  None
+            educacion = None
         ocupaciones = PacienteOcupacion.objects.filter(paciente__id=self.kwargs['paciente_id'])
 
         context = {
