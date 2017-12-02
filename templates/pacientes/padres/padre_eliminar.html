@@ -37,7 +37,7 @@ $( document ).ready(function() {
                      success: function(data){
                         dialog.close();
                         cerrar_modal();
-                        <!--window.location.href = '/pacientes/paciente/17/padre/crear'-->
+                        window.location.href = '/pacientes/paciente/'+ data.paciente +'/padre/crear'
                      }
                 });
                 return false;

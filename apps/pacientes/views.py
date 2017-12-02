@@ -208,7 +208,6 @@ def paciente_padre_crear(request, paciente_id):
             return HttpResponseRedirect(reverse('pacientes:paciente_padre_listar',
                                                 kwargs={'id_paciente': paciente_id }))
     else:
-        print("entro en este1111", paciente)
         paciente_padre = PacientePadre.objects.filter(paciente=paciente_id).filter(padre='on')
         if paciente_padre.exists():
             context = {
@@ -292,10 +291,12 @@ class PacientePadreDelete(LoginRequiredMixin, DeleteView):
     # success_url =
 
     def post(self, request, *args, **kwargs):
-        paciente = Paciente.objects.get(pacientepadre__paciente__pacientepadre=self.kwargs['padre_id'])
+        paciente = Paciente.objects.get(pacientepadre=PacientePadre.objects.get(pk=self.kwargs['padre_id']))
         padre= PacientePadre.objects.get(pk=self.kwargs['padre_id'])
         padre.delete()
-        return HttpResponseRedirect(reverse_lazy('pacientes:padre_crear',kwargs={'paciente_id': paciente.id}))
+        messages.info(request, 'Se ha eliminado datos del padre de paciente {}'.format(paciente.get_full_name()))
+        return JsonResponse({'paciente': paciente.id })
+        #return HttpResponseRedirect(reverse_lazy('pacientes:padre_crear', kwargs={'paciente_id': paciente.id}))
 
 class PacienteMadreList(ListView):
     template_name = 'pacientes/padres/madre_list.html'

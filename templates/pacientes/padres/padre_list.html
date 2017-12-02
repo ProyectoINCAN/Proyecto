@@ -20,10 +20,12 @@
                 <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
             </ul>
          </div>
+        {% include 'base/messages.html' %}
         <div class="panel panel-default">
             <div class="panel-heading">
             Datos del Padre
             </div>
+
             <div class="panel-body">
                 <table class="table table-hover table-condensed table-bordered">
                         <thead>
