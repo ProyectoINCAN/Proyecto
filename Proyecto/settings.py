@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #apps terceros
-    'font_awesome', #pip install django-font-awesome
-    #mis apps
+    # apps terceros
+    # 'font_awesome', #pip install django-font-awesome
+    # mis apps
     'apps.pacientes',
     'apps.seguridad',
     'apps.internaciones',

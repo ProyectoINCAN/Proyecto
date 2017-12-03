@@ -3,54 +3,56 @@
 <link rel="stylesheet" href="{% static 'css/bootstrap3-wysihtml5.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
 
-    <div class="modal-dialog modal-lg">
+<!--<div class="modal fade" id="modalPacientePrescripcion" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+    <div class="modal-dialog modal-lg" >
         <div class="modal-content">
-          <form role="form" id="id_form"
-            {% if not object.id %}
-              action="{% url 'consultorios:consulta_prescripcion_crear' detalle.id  %}" method="post">
-            {% else %}
-              action="{% url 'consultorios:consulta_prescripcion_editar' object.pk %}" method="post">
-            {% endif %}
-          <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Prescripción</h4>
+            <form role="form" id="id_form"
+                  {% if not object.id %}
+                  action="{% url 'consultorios:consulta_prescripcion_crear' detalle.id  %}" method="post">
+                {% else %}
+                action="{% url 'consultorios:consulta_prescripcion_editar' object.pk %}" method="post">
+                {% endif %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">Prescripción</h4>
           </div>
-          <div class="modal-body" style="overflow:hidden;">
-            <div class="form-horizontal" >
-                {% csrf_token %}
-                <div class="form-group">
-                    {{ form.medicamento.errors }}
-                    <label for="{{ form.medicamento.name }}" class="col-sm-2 control-label">{{ form.medicamento.label }}:</label>
-                    <div class="col-sm-8">
-                        {{ form.medicamento }}
+              <div class="modal-body" style="overflow:hidden;">
+                  <div class="form-horizontal" >
+                      {% csrf_token %}
+                      <div class="form-group">
+                          {{ form.medicamento.errors }}
+                          <label for="{{ form.medicamento.name }}" class="col-sm-2 control-label">{{ form.medicamento.label }}:</label>
+                          <div class="col-sm-8">
+                              {{ form.medicamento }}
 
-                        <a href="javascript:void(0)" class="btn" id="crearMedicamento" title="Agregar nuevo medicamento"><span class="fa fa-plus"></span> Agregar nuevo medicamento</a>
+                              <a href="javascript:void(0)" class="btn" id="crearMedicamento" title="Agregar nuevo medicamento"><span class="fa fa-plus"></span> Agregar nuevo medicamento</a>
 
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.posologia.name }}" class="col-sm-2 control-label">{{ form.posologia.label }}:</label>
-                    {{ form.posologia.errors }}
-                    <div class="col-sm-12">
-                        {{ form.posologia }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    {{ form.cantidad.errors }}
-                  <label for="{{ form.cantidad.name }}" class="col-sm-2 control-label">{{ form.cantidad.label }}:</label>
-                  <div class="col-sm-8">
-                      {{ form.cantidad }}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{ form.cantidad.errors }}
+                          <label for="{{ form.cantidad.name }}" class="col-sm-2 control-label">{{ form.cantidad.label }}:</label>
+                          <div class="col-sm-8">
+                              {{ form.cantidad }}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label for="{{ form.posologia.name }}" class="col-sm-2 control-label">{{ form.posologia.label }}:</label>
+                          {{ form.posologia.errors }}
+                          <div class="col-sm-12">
+                              {{ form.posologia }}
+                          </div>
+                      </div>
                   </div>
               </div>
-            </div>
-          </div>
-            <div class="modal-footer">
-              <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
-              <button type="button" class="btn btn-default" onclick="return cerrar_modal()"><i class="fa fa-times"></i> Cancelar</button>
-            </div>
+              <div class="modal-footer">
+                  <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
+                  <button type="button" class="btn btn-default" onclick="return cerrar_modal()"><i class="fa fa-times"></i> Cancelar</button>
+              </div>
           </form>
         </div>
     </div>
+<!--</div>-->
 
 <script src = "{% static 'js/jquery.min.js' %}"></script>
 <script src = "{% static 'js/bootstrap.min.js' %}"></script>
@@ -63,11 +65,23 @@
     $('#id_medicamento').select2({ placeholder:"Seleccione una opción", allowClear: true});
   });
 
-  $("#crearMedicamento").click(function(e) {
+  /*$("#crearMedicamento").click(function(e) {
     console.log("llega a abrir el modal");
     //$("#popup").modal("hide");
     $("#modalMedicamento").modal("show");
-  });
+  });*/
+
+  //set button id on click to hide first modal
+  /*$("#crearMedicamento").on( "click", function() {
+    console.log("clic crearMedicamento HIDE");
+    $('#popup').modal('hide');
+  });*/
+
+    //trigger next modal
+    $("#crearMedicamento").on( "click", function() {
+        console.log("clic crearMedicamento SHOW");
+        $('#modalMedicamento').modal('show');
+    });
 
         $("#id_form").submit(function(e) {
 
@@ -102,12 +116,12 @@
 
 </script>
 
-
-<div class="modal-dialog" id="modalMedicamento" >
+<div class="modal fade" id="modalMedicamento" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog" id="modalDialogMedicamento">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">x</button>
-            <h3>Nuevo Medicamento</h3>
+            <h4 class="modal-title" id="myModalLabel" >Nuevo Medicamento</h4>
         </div>
         <div class="modal-body">
             <div class="form-horizontal" id="form_direccion" >
@@ -134,11 +148,31 @@
         <div class="modal-footer">
             <div class="col-lg-12 text-right">
                 <a class="btn btn-primary" id="guardarMedicamento"> Guardar</a>
-                <a class="btn btn-default" id="cancelar"> Cancelar</a>
+                <a class="btn btn-default" id="btn_cancelar" > Cancelar</a>
             </div>
         </div>
     </div>
     <script>
+
+    /*$("#cancelar").on( "click", function() {
+        console.log("clic cancelar HIDE MODAL MEDICAMENTO");
+        $('#modalMedicamento').modal('hide');
+        $('#modalPacientePrescripcion').modal('hide');
+    });*/
+
+    $('#btn_cancelar').click(function() {
+        console.log("clic cancelar HIDE MODAL MEDICAMENTO");
+        $('#modalMedicamento').modal('hide');
+    });
+
+    $(function () {
+
+        $('select').select2({ placeholder:"Seleccione una opción", allowClear: true});
+        $('#id_forma_farmaceutica').removeAttr('tabindex').attr('tabindex', 1);
+        $('#id_tipificacion').removeAttr('tabindex').attr('tabindex', 2);
+
+
+    });
 
             $("#guardarMedicamento").click(function() {
               var csrftoken = getCookie('csrftoken');
@@ -163,5 +197,5 @@
             });
     </script>
 </div>
-
+</div>
 <!--</div>-->

@@ -940,10 +940,12 @@ class PacientePrescripcionUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'consultorios/consulta/prescripcion_form.html'
     pk_url_kwarg = 'prescripcion_id'
     context_object_name = 'prescripcion'
+    second_form_class = MedicamentoForm
 
     def get_context_data(self, **kwargs):
         context = super(PacientePrescripcionUpdate, self).get_context_data(**kwargs)
-        context.update({'detalle': self.object.consulta_detalle})
+        context.update({'detalle': self.object.consulta_detalle,
+                        'form2': self.second_form_class(self.request.GET)})
         return context
 
     def form_valid(self, form):
