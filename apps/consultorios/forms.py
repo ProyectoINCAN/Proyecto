@@ -45,7 +45,7 @@ class MedicoForm(forms.ModelForm):
             'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple',
                                                                       'style': 'width: 100%'}),
-            'habilitado': forms.CheckboxInput(),
+            'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
 
@@ -77,7 +77,7 @@ class EnfermeroForm(forms.ModelForm):
                                                        'placeholder': 'dd/mm/aaaa'}),
             'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
-            'habilitado': forms.CheckboxInput(),
+            'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
 
@@ -85,7 +85,7 @@ class AdministrativoForm(forms.ModelForm):
     class Meta:
         model = Administrativo
         fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'sexo', 'fecha_nacimiento', 'lugar_nacimiento',
-                  'nacionalidad']
+                  'nacionalidad', 'habilitado']
         labels = {
             'nombres': 'Nombres',
             'apellidos': 'Apellidos',
@@ -95,17 +95,21 @@ class AdministrativoForm(forms.ModelForm):
             'fecha_nacimiento': 'Fecha de nacimiento',
             'lugar_nacimiento': 'Lugar de nacimiento',
             'nacionalidad': 'Nacionalidad',
+            'habilitado': 'Habilitado'
         }
         widgets = {
-            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
-            'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
-            'sexo': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nombres': forms.TextInput(attrs={'class': 'form-control','style': 'text-transform:uppercase;',
+                                             'required': 'required'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control','style': 'text-transform:uppercase;',
+                                             'required': 'required'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch','style': 'width: 100%','required': 'required'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control','required': 'required'}),
+            'sexo': forms.Select(attrs={'class': 'form-control selectsearch','style': 'width: 100%', 'required': 'required'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker',
-                                                       'placeholder': 'dd/mm/aaaa'}),
-            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch'}),
+                                                       'placeholder': 'dd/mm/aaaa','required': 'required'}),
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch','style': 'width: 100%', 'required': 'required'}),
+            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%', 'required': 'required'}),
+            'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
 

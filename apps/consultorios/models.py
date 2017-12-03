@@ -136,8 +136,7 @@ class Enfermero(models.Model):
 class Administrativo(models.Model):
     nombres = UpperCharField(max_length=100, blank=False, uppercase=True)
     apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
-    tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento",
-                                 default="CI")
+    tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de documento")
     nro_doc = UpperCharField(max_length=50, blank=False, null=False, verbose_name="Número de documento", unique=True,
                              uppercase=True)
     nro_registro_profesional = UpperCharField(max_length=50, blank=False, null=False, uppercase=True,
@@ -149,6 +148,7 @@ class Administrativo(models.Model):
     nacionalidad = models.ForeignKey(Nacionalidad, models.DO_NOTHING, blank=False, null=False, default=1)
     fecha_ingreso = models.DateField(auto_now=True, null=False)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    habilitado = models.BooleanField(default=True)
 
     def __str__(self):
         return self.apellidos + ", " + self.nombres

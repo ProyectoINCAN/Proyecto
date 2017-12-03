@@ -32,9 +32,9 @@ $( document ).ready(function() {
 label.div_center {
 text-align:center;
 }
+.big-checkbox {width: 30px; height: 30px;}
 
 </style>
-
 <style>
 label { position: absolute; text-align:center; width:130px; }
 </style>
@@ -49,86 +49,90 @@ label { position: absolute; text-align:center; width:130px; }
 </ol><br>
 <div class="wrapper-md">
     {% include 'base/messages.html' %}
-<div class="row">
-<form class="form-horizontal" method="POST">
-        {% csrf_token %}
-		 <div class="form-group">
-             <label for="{{ form.tipo_doc.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.tipo_doc.label }}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{ form.tipo_doc }}
-             </div>
-             <label for="{{ form.nro_doc.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.nro_doc.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{ form.nro_doc }}
-             </div>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="row">
+                <form class="form-horizontal" method="POST">
+                    {% csrf_token %}
+                     <div class="form-group">
+                         <label for="{{ form.tipo_doc.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.tipo_doc.label }}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{ form.tipo_doc }}
+                         </div>
+                         <label for="{{ form.nro_doc.name }}" class="control-label col-lg-2 col-md-2 col-sm-2">{{ form.nro_doc.label}}</label>
+                         <div class="col-lg-3 col-md-3 col-sm-3">
+                             {{ form.nro_doc }}
+                         </div>
+                    </div>
+                    <div class="form-group">
+                     <label for="{{ form.nombres.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.nombres.label }}</label>
+                     <div class="col-lg-4 col-md-3 col-sm-4">
+                         {{ form.nombres }}
+                     </div>
+                     <label for="{{ form.apellidos.name }}" class="control-label col-lg-2 col-md-2 col-sm-2">{{ form.apellidos.label }}</label>
+                     <div class="col-lg-3 col-md-3 col-sm-3">
+                         {{ form.apellidos }}
+                     </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.nro_registro_profesional.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.nro_registro_profesional.label }}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{form.nro_registro_profesional}}
+                         </div>
+                         <label for="{{ form.sexo.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{form.sexo.label}}</label>
+                         <div class="col-lg-3 col-md-3 col-sm-3">
+                             {{form.sexo}}
+                         </div>
+                     </div>
+
+                    <div class="form-group">
+                         <label for="{{ form.nacionalidad.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{form.nacionalidad.label}}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{form.nacionalidad}}
+                         </div>
+                         <label for="{{ form.fecha_nacimiento.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.fecha_nacimiento.label }}</label>
+                         <div class="col-lg-3 col-md-3 col-sm-3">
+                             {{form.fecha_nacimiento}}
+                         </div>
+                     </div>
+
+                     <div class="form-group">
+                        <label 	for="{{ form.lugar_nacimiento.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.lugar_nacimiento.label }}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{form.lugar_nacimiento}}
+                         </div>
+                         <label for="{{ form.estado_civil.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{form.estado_civil.label}}</label>
+                         <div class="col-lg-3 col-md-3 col-sm-3">
+                             {{form.estado_civil}}
+                         </div>
+                     </div>
+
+                     <div class="form-group">
+                         <label for="{{ form.especialidad.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.especialidad.label }}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{form.especialidad}}
+                         </div>
+                         <label for="{{ form.etnia.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.etnia.label }}</label>
+                         <div class="col-lg-3 col-md-3 col-sm-3">
+                             {{form.etnia}}
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label for="{{ form.habilitado.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.habilitado.label }}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{form.habilitado}}
+                         </div>
+                     </div>
+                <div class="form-group">
+                 <div class="col-sm-offset-4 col-sm-8">
+                     <a href="javascript:void(0)" role="button" class="btn btn-default" id="editar"><i class="fa fa-pencil"></i> Editar</a>
+                     <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
+                     <a href="{% url 'consultorios:medico_listar' %}" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
+                 </div>
+                </div>
+            </form>
+            </div>
         </div>
-        <div class="form-group">
-         <label for="{{ form.nombres.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.nombres.label }}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{ form.nombres }}
-         </div>
-         <label for="{{ form.apellidos.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.apellidos.label }}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{ form.apellidos }}
-         </div>
-        </div>
-        <div class="form-group">
-            <label for="{{ form.nro_registro_profesional.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.nro_registro_profesional.label }}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{form.nro_registro_profesional}}
-             </div>
-             <label for="{{ form.sexo.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{form.sexo.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{form.sexo}}
-             </div>
-         </div>
-
-		<div class="form-group">
-			 <label for="{{ form.nacionalidad.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{form.nacionalidad.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{form.nacionalidad}}
-             </div>
-             <label for="{{ form.fecha_nacimiento.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.fecha_nacimiento.label }}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{form.fecha_nacimiento}}
-             </div>
-         </div>
-
-	     <div class="form-group">
-            <label 	for="{{ form.lugar_nacimiento.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.lugar_nacimiento.label }}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{form.lugar_nacimiento}}
-             </div>
-			 <label for="{{ form.estado_civil.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{form.estado_civil.label}}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{form.estado_civil}}
-             </div>
-         </div>
-
-	     <div class="form-group">
-			 <label for="{{ form.etnia.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.etnia.label }}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{form.etnia}}
-             </div>
-             <label for="{{ form.especialidad.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.especialidad.label }}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{form.especialidad}}
-             </div>
-         </div>
-         <div class="form-group">
-			 <label for="{{ form.habilitado.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.habilitado.label }}</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{form.habilitado}}
-             </div>
-         </div>
-    <div class="form-group">
-	 <div class="col-sm-offset-4 col-sm-8">
-         <a href="javascript:void(0)" role="button" class="btn btn-default" id="editar"><i class="fa fa-pencil"></i> Editar</a>
-         <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
-         <a href="{% url 'consultorios:medico_listar' %}" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
-     </div>
     </div>
-</form>
 </div>
-    </div>
 {% endblock %}

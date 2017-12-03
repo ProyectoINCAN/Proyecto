@@ -2,7 +2,14 @@
 {% load static%}
 
 {%block content %}
-<br>
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">Lista de Horarios Médicos</h1>
+</div>
+<ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
+  <li><a href="">Inicio</a></li>
+  <li class="active">Lista de Horarios Médicos</b></li>
+</ol><br>
+        {% include 'base/messages.html' %}
 <div class="panel panel-default">
         <div class="panel-heading">
             Horarios de médicos
