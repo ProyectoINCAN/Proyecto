@@ -1,26 +1,19 @@
 {% extends 'base/base2.html' %}
 
-{#{% block extra_top_items %}#}
-{#    <a class="btn no-shadow navbar-btn pull-left" href="{% url 'crear_sucursal' %}">#}
-{#        <i class="fa fa-plus"></i> Nueva Sucursal#}
-{#    </a>#}
-{#{% endblock %}#}
-
-
 {% block content %}
   <div class="app-content-body">
 
     <div class="bg-light lter b-b wrapper-md">
-      <h1 class="m-n font-thin h3">Detalle - Órden de Estudio</h1>
+      <h1 class="m-n font-thin h3">Orden de Estudio - Detalle </h1>
     </div>
 
     <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li><a href="#">Inicio</a></li>
       <li><a href="{% url 'consultorios:ordenes_estudio' %}">Listado de Órdenes de Estudio</a></li>
-      <li><b>Órden de Estudio= {{ orden.nombre }}</b></li>
+      <li><b>Orden de Estudio: {{ orden.nombre }}</b></li>
     </ol>
+                {% include 'base/messages.html' %}
     <div class="wrapper-md">
-
       <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-12">
           <div class="panel panel-default">
@@ -35,8 +28,7 @@
               </div><p></p>
             </div>
               <div class="panel-body">
-                <table class="table table-striped table-bordered table-hover table-responsive datatable"
-                id="dataTables-example" cellspacing="0" width="100%">
+                <table class="table table-hover table-condensed table-bordered" width="100%">
                   <thead>
                   <tr>
                     <th>Nombre</th>
@@ -47,18 +39,16 @@
                 <tbody>
                 {% for detalle in orden_detalle %}
                   <tr>
-
-                    <td style="width: 40%">{{ detalle.nombre }}</td>
-                    <td style="width:40%;">{{ detalle.observacion }} </td>
-
-                    <td>
-                      <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_detalle_editar' detalle.id %}')">
+                    <td width='50'>{{ detalle.nombre }}</td>
+                    <td width='50'>{{ detalle.observacion }} </td>
+                    <td width='50' align='center'>
+                      <a class="btn btn-xs" title="Editar"
+                        onclick="return abrir_modal('{% url 'consultorios:orden_estudio_detalle_editar' detalle.id %}')">
                         <i class="fa fa-pencil"></i>
                       </a>
-                      <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_detalle_eliminar' detalle.id %}')">
-                        <i class="fa fa-trash"></i>
+                        <a class="btn btn-xs" title="Eliminar"
+                        onclick="return abrir_modal('{% url 'consultorios:orden_estudio_detalle_eliminar' detalle.id %}')">
+                        <i class="fa fa-times-circle"></i>
                       </a>
                     </td>
                   </tr>

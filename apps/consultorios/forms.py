@@ -183,8 +183,10 @@ class OrdenEstudioForm(forms.ModelForm):
             'descripcion': 'Descripción'
         }
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'required': 'required',
+                                                 'style': 'text-transform:uppercase;width: 100%'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control', 'required': 'required',
+                                                 'style': 'text-transform:uppercase;width: 100%'}),
         }
 
 
@@ -198,7 +200,8 @@ class OrdenEstudioDetalleForm(forms.ModelForm):
             'observacion': 'Observación'
         }
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'required': 'required',
+                                                 'style': 'text-transform:uppercase;'}),
             'observacion': forms.Textarea(attrs={'class': 'form-control', 'required': 'required',
                                                  'style': 'text-transform:uppercase;width: 100%'}),
         }
@@ -294,7 +297,7 @@ class MedicamentoForm(forms.ModelForm):
         model = Medicamento
 
         fields = ['nombre', 'tipificacion', 'forma_farmaceutica',
-                  'nro_lote', 'cantidad', 'fabricado', 'vencimiento']
+                  'nro_lote', 'cantidad', 'fabricado', 'vencimiento', 'habilitado']
 
         labels = {
             'nombre': 'Nombre',
@@ -303,6 +306,7 @@ class MedicamentoForm(forms.ModelForm):
             'cantidad': 'Cantidad',
             'fabricado': 'Fecha Fabricación',
             'vencimiento': 'Fecha Venc.',
+            'habilitado':'Habilitado',
         }
 
         widgets = {
@@ -312,10 +316,11 @@ class MedicamentoForm(forms.ModelForm):
                                                       'required': 'required'}),
             'nro_lote': forms.NumberInput(attrs={'class': 'form-control'}),
             'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
-            'fabricado': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'fabricado': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa', 'required': 'required'}),
             'tipificacion': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
                                                 'required': 'required'}),
-            'vencimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'vencimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa','required': 'required'}),
+            'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
 
         }
 
@@ -348,7 +353,9 @@ class TipoMedicamentoForm(forms.ModelForm):
 
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
-            'descripcion': forms.Textarea(attrs={'rows': 2, 'cols': 45, 'style': 'text-transform:uppercase;'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'required': 'required',
+                                                 'autofocus': 'autofocus',
+                                                 'style': 'text-transform:uppercase;'}),
         }
 
 

@@ -1,10 +1,4 @@
 {% extends 'base/base2.html' %}
-
-{#{% block extra_top_items %}#}
-{#    <a class="btn no-shadow navbar-btn pull-left" href="{% url 'crear_sucursal' %}">#}
-{#        <i class="fa fa-plus"></i> Nueva Sucursal#}
-{#    </a>#}
-{#{% endblock %}#}
 {% block extrajs %}
   <script>
 
@@ -27,9 +21,8 @@ jQuery(document).ready(function($) {
       <li><a href="#">Inicio</a></li>
       <li class="active">Listado de Medicamentos</li>
     </ol>
+        {% include 'base/messages.html' %}
     <div class="wrapper-md">
-
-
       <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-12">
           <div class="panel panel-default">
@@ -58,18 +51,19 @@ jQuery(document).ready(function($) {
                 <tbody>
                 {% for med in medicamentos %}
                   <tr>
-                    <td>{{ med.nombre }}</td>
-                    <td >{{ med.tipificacion}} </td>
-                    <td>{{ med.nro_lote }}</td>
-                    <td>{{ med.cantidad }}</td>
-                    <td>{{ med.vencimiento }}</td>
-                    <td>
-                      <a class="btn btn-default btn-xs" href="{% url 'consultorios:medicamento_editar' med.id %}">
+                    <td width='50'>{{ med.nombre }}</td>
+                    <td width='50'>{{ med.tipificacion}} </td>
+                    <td width='50'>{{ med.nro_lote }}</td>
+                    <td width='50'>{{ med.cantidad }}</td>
+                    <td width='50'>{{ med.vencimiento }}</td>
+                    <td width='50' align='center'>
+                      <a class="btn btn-xs" title="Editar"
+                        onclick="return abrir_modal('{% url 'consultorios:medicamento_editar' med.id %}')">
                         <i class="fa fa-pencil"></i>
                       </a>
-                      <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'consultorios:medicamento_eliminar' med.id %}')">
-                        <i class="fa fa-trash"></i>
+                        <a class="btn btn-xs" title="Eliminar"
+                        onclick="return abrir_modal('{% url 'consultorios:medicamento_eliminar' med.id %}')">
+                        <i class="fa fa-times-circle"></i>
                       </a>
                     </td>
                   </tr>

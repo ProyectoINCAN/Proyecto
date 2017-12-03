@@ -1,23 +1,48 @@
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-   <div class="modal-header">
-     <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
-     <div id="modal-title">
-       <h3>Eliminar Tipo Medicamento</h3>
-     </div>
-   </div>
-   <div class="modal-body">
-     <p>Está seguro que desea eliminar el tipo de medicamento seleccionado?</p>
-   </div>
-   <div class="modal-footer">
-     <form action="{% url 'consultorios:tipo_medicamento_eliminar' tipo.id %}" method="post" id=>
-       {% csrf_token %}
-       <div class="controls pull-right">
-         <button type="submit" class="btn btn-danger">Eliminar</button>
-         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-       </div>
-     </form>
-   </div>
-  </div>
-</div>
+<input id="url" type="hidden" value="{% url 'consultorios:tipo_medicamento_eliminar' object.pk %}">
+<script>
+
+$( document ).ready(function() {
+        var url = $("#url").val();
+        console.log("url", url);
+        BootstrapDialog.show({
+        type: BootstrapDialog.TYPE_DANGER,
+        title: 'Eliminar Tipo de Medicamento',
+        message: '¿Está seguro de que desea eliminar los datos de tipo medicamento?',
+        draggable: true,
+        closable: false,
+        buttons: [{
+            label: 'Cancelar',
+            //cssClass: 'btn-primary',
+            icon: 'fa fa-times',
+              action: function(dialog){
+                dialog.close();
+                cerrar_modal();
+                return false;
+            }
+        }, {
+            label: 'Eliminar',
+            cssClass: 'btn-danger',
+            icon: 'fa fa-trash',
+            action: function(dialog){
+                dialog.close();
+                var csrftoken = getCookie('csrftoken');
+                $.ajax({
+                     type:"POST",
+                     url:url,
+                     data: {
+                            'csrfmiddlewaretoken': csrftoken
+                            },
+                     success: function(data){
+                        dialog.close();
+                        cerrar_modal();
+                        location.reload();
+                     }
+                });
+                return false;
+            }
+        }, ]
+        });
+    }
+);
+
+</script>

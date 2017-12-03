@@ -52,7 +52,7 @@ urlpatterns = [
         name='orden_estudio_detalle_list'),
     url(r'^ordenes_estudio/(?P<orden_id>\d+)/detalle/crear/$', views.OrdenEstudioDetalleCreate.as_view(),
         name='orden_estudio_detalle_crear'),
-    url(r'^ordenes_estudio/detalle/(?P<detalle_id>\d+)/eliminar$', views.OrdenEstudioDetalleDeleteGlobal.as_view(),
+    url(r'^ordenes_estudio/detalle/(?P<detalle_id>\d+)/eliminar/$', views.OrdenEstudioDetalleDeleteGlobal.as_view(),
         name='orden_estudio_detalle_eliminar'),
     url(r'^ordenes_estudio/detalle/(?P<detalle_id>\d+)/editar$', views.OrdenEstudioDetalleUpdateGlobal.as_view(),
         name='orden_estudio_detalle_editar'),

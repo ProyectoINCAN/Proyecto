@@ -51,7 +51,6 @@ label { position: absolute; text-align:center; width:130px; }
     {% include 'base/messages.html' %}
     <div class="box box-primary">
         <div class="box-header with-border">
-            <div class="row">
                 <form class="form-horizontal" method="POST">
                     {% csrf_token %}
                      <div class="form-group">
@@ -60,7 +59,7 @@ label { position: absolute; text-align:center; width:130px; }
                              {{ form.tipo_doc }}
                          </div>
                          <label for="{{ form.nro_doc.name }}" class="control-label col-lg-2 col-md-2 col-sm-2">{{ form.nro_doc.label}}</label>
-                         <div class="col-lg-3 col-md-3 col-sm-3">
+                         <div class="col-lg-4 col-md-3 col-sm-4">
                              {{ form.nro_doc }}
                          </div>
                     </div>
@@ -70,7 +69,7 @@ label { position: absolute; text-align:center; width:130px; }
                          {{ form.nombres }}
                      </div>
                      <label for="{{ form.apellidos.name }}" class="control-label col-lg-2 col-md-2 col-sm-2">{{ form.apellidos.label }}</label>
-                     <div class="col-lg-3 col-md-3 col-sm-3">
+                     <div class="col-lg-4 col-md-3 col-sm-4">
                          {{ form.apellidos }}
                      </div>
                     </div>
@@ -80,7 +79,7 @@ label { position: absolute; text-align:center; width:130px; }
                              {{form.nro_registro_profesional}}
                          </div>
                          <label for="{{ form.sexo.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{form.sexo.label}}</label>
-                         <div class="col-lg-3 col-md-3 col-sm-3">
+                         <div class="col-lg-4 col-md-3 col-sm-4">
                              {{form.sexo}}
                          </div>
                      </div>
@@ -91,7 +90,7 @@ label { position: absolute; text-align:center; width:130px; }
                              {{form.nacionalidad}}
                          </div>
                          <label for="{{ form.fecha_nacimiento.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.fecha_nacimiento.label }}</label>
-                         <div class="col-lg-3 col-md-3 col-sm-3">
+                         <div class="col-lg-4 col-md-3 col-sm-4">
                              {{form.fecha_nacimiento}}
                          </div>
                      </div>
@@ -102,7 +101,7 @@ label { position: absolute; text-align:center; width:130px; }
                              {{form.lugar_nacimiento}}
                          </div>
                          <label for="{{ form.estado_civil.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{form.estado_civil.label}}</label>
-                         <div class="col-lg-3 col-md-3 col-sm-3">
+                         <div class="col-lg-4 col-md-3 col-sm-4">
                              {{form.estado_civil}}
                          </div>
                      </div>
@@ -113,7 +112,7 @@ label { position: absolute; text-align:center; width:130px; }
                              {{form.especialidad}}
                          </div>
                          <label for="{{ form.etnia.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.etnia.label }}</label>
-                         <div class="col-lg-3 col-md-3 col-sm-3">
+                         <div class="col-lg-4 col-md-3 col-sm-4">
                              {{form.etnia}}
                          </div>
                      </div>
@@ -134,5 +133,4 @@ label { position: absolute; text-align:center; width:130px; }
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

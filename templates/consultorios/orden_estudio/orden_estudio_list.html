@@ -11,6 +11,7 @@
       <li><a href="#">Inicio</a></li>
       <li class="active">Listado de Órdenes de Estudio</li>
     </ol>
+      {% include 'base/messages.html' %}
     <div class="wrapper-md">
       <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-12">
@@ -38,23 +39,20 @@
                 <tbody>
                 {% for orden in ordenes %}
                   <tr>
-
-                    <td style="width: 40%">{{ orden.nombre }}</td>
-                    <td style="width:40%;">{{ orden.descripcion }} </td>
-
-                    <td>
-                      <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_editar' orden.id %}')">
+                    <td>{{ orden.nombre }}</td>
+                    <td >{{ orden.descripcion }} </td>
+                    <td align='center'>
+                      <a class="btn btn-xs" title="Editar"
+                        onclick="return abrir_modal('{% url 'consultorios:orden_estudio_editar' orden.id %}')">
                         <i class="fa fa-pencil"></i>
                       </a>
-                      <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_eliminar' orden.id %}')">
-                        <i class="fa fa-trash"></i>
+                        <a class="btn btn-xs" title="Eliminar"
+                        onclick="return abrir_modal('{% url 'consultorios:orden_estudio_eliminar' orden.id %}')">
+                        <i class="fa fa-times-circle"></i>
                       </a>
                       <a href="{% url 'consultorios:orden_estudio_detalle_list' orden.id %}">
-                       <button class="btn btn-bitbucket"></i> Detalle
-                       </button>
-                     </a>
+                        <button class="btn btn-bitbucket"></i> Detalle</button>
+                      </a>
                     </td>
                   </tr>
                 {% endfor %}

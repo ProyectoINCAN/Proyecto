@@ -9,7 +9,7 @@ class MedicamentoForm(forms.ModelForm):
         model = Medicamento
 
         fields = ['nombre', 'tipificacion', 'forma_farmaceutica',
-                  'nro_lote', 'cantidad', 'fabricado', 'vencimiento']
+                  'nro_lote', 'cantidad', 'fabricado', 'vencimiento', 'habilitado']
 
         labels = {
             'nombre': 'Nombre',
@@ -18,6 +18,7 @@ class MedicamentoForm(forms.ModelForm):
             'cantidad': 'Cantidad',
             'fabricado': 'Fecha Fabricación',
             'vencimiento': 'Fecha Venc.',
+            'habilitaado': 'Habilitado',
         }
 
         widgets = {
@@ -29,6 +30,7 @@ class MedicamentoForm(forms.ModelForm):
                 attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
             'tipificacion': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'vencimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
 
         }
 

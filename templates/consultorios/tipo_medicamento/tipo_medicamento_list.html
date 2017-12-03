@@ -27,10 +27,9 @@ jQuery(document).ready(function($) {
       <li><a href="#">Inicio</a></li>
       <li class="active">Listado de Tipos de Medicamentos</li>
     </ol>
+            {% include 'base/messages.html' %}
     <div class="wrapper-md">
-
-
-      <div class="row">
+        <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-12">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -56,16 +55,16 @@ jQuery(document).ready(function($) {
                 <tbody>
                 {% for tipo in tipos %}
                   <tr>
-                    <td style="width:30%">{{ tipo.nombre }}</td>
-                    <td style="width:30%">{{ tipo.descripcion }} </td>
-                    <td>
-                      <a class="btn btn-default btn-xs"
-                         onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_editar' tipo.id %}')">
+                    <td width='50'>{{ tipo.nombre }}</td>
+                    <td width='50'>{{ tipo.descripcion }} </td>
+                    <td width='50' align='center'>
+                      <a class="btn btn-xs" title="Editar"
+                        onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_editar' tipo.id %}')">
                         <i class="fa fa-pencil"></i>
                       </a>
-                      <a class="btn btn-default btn-xs" title="Eliminar"
-                         onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_eliminar' tipo.id %}')">
-                        <i class="fa fa-trash"></i>
+                        <a class="btn btn-xs" title="Eliminar"
+                        onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_eliminar' tipo.id %}')">
+                        <i class="fa fa-times-circle"></i>
                       </a>
                     </td>
                   </tr>

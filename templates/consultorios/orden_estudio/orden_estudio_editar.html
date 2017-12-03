@@ -1,41 +1,37 @@
-<div class="modal-content" style="width: 700px;height: auto;
-  position: absolute;left:37%;top: 32%; margin-left: -150px;
-   margin-top: -150px;">
-   <div class="modal-header">
+<div class="modal-dialog">
+<div class="modal-content" >
+    <form  role="form" id="eventoForm"
+       action="{% url 'consultorios:orden_estudio_editar' object.pk %}" method="post">
+    <div class="modal-header">
      <button type="button" class="close" data-dismiss="modal"
                     aria-label="Close"><span aria-hidden="true">&times;</span></button>
      <div id="modal-title">
-       <h3>Órden de Estudio</h3>
+       <h4>Orden de Estudio</h4>
      </div>
-   </div>
-   <div class="modal-body">
-     <form  role="form" id="eventoForm"
-       action="{% url 'consultorios:orden_estudio_editar' object.pk %}" method="post">
+    </div>
+    <div class="modal-body">
+       <div class="form-horizontal" >
        {% csrf_token %}
        {% for field in form %}
-         <div class="row" id="{{ field.name }}">
          <div class="form-group">
-           <div class="col-md-10 ">
              {{ field.errors }}
-             <label for="{{ field.name }}" class="col-sm-2 control-label">{{ field.label }}:</label>
+             <label for="{{ field.name }}" class="control-label col-sm-3">{{ field.label }}:</label>
              <div class="col-sm-8">
                {{ field }}
              </div>
-           </div>
-         </div>
          </div>
        {% endfor %}
+           </div>
         <div class="modal-footer">
-        <div class="col-lg-12 text-right">
-          <input type="submit" class="btn btn-primary" name="submit" value="Guardar">
-          <button type="button" class="btn btn-default" onclick="return cerrar_modal()">
-            Cancelar
-          </button>
+          <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
+          <button type="button" class="btn btn-default" onclick="return cerrar_modal()"><i class="fa fa-times"></i> Cancelar</button>
         </div>
-      </div>
-
+    </div>
      </form>
    </div>
+</div>
+
+</script>
    <script language="JavaScript">
 
         $("#eventoForm").submit(function(e) {

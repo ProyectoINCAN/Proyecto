@@ -246,6 +246,7 @@ class MedicoUpdate(UpdateView):
             print("son válidos")
             form.save()
             form2.save()
+            messages.success(self.request, "Se ha creado el médico.")
             return HttpResponseRedirect(self.get_success_url())
         else:
             print("NO son válidos")
@@ -275,6 +276,7 @@ class HorarioMedicoCreate(CreateView):
         if form.is_valid():
             data = form.save(commit=False)
             data.save()
+            messages.success(self.request, "Se ha creado el horario médico.")
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data(form=form))
@@ -289,7 +291,6 @@ class HorarioMedicoUpdate(UpdateView):
 
 def medico_especialidad(request, id_medico):
     especialidad = Especialidad.objects.filter(medico=id_medico).order_by('id')
-    # print('especialidad', especialidad)
     data = serializers.serialize('json', especialidad)
     return JsonResponse(data, safe=False)
 
@@ -318,12 +319,6 @@ def consulta_paciente_list(request, consulta_id):
     print("llega a consulta paciente list. consulta_id: ", consulta_id, "request: ", request)
     consulta = Consulta.objects.get(pk=consulta_id)
     consulta_detalle = ConsultaDetalle.objects.filter(consulta=consulta_id)
-    # if request.method == 'GET':
-    #
-    # else:
-    #     # form = ConsultaForm(request.POST, instance=consulta)
-    #     if form.is_valid():
-    #         form.save()
     contexto = {'consulta': consulta, 'consulta_detalle': consulta_detalle}
     return render(request, 'consultorios/consulta_detalle_list.html', contexto)
 
@@ -339,8 +334,15 @@ class OrdenEstudioCreateGlobal(LoginRequiredMixin, CreateView):
     form_class=OrdenEstudioForm
     template_name = 'consultorios/orden_estudio/orden_estudio_form.html'
 
-    def get_success_url(self):
-        return reverse('consultorios:ordenes_estudio')
+    def form_valid(self, form):
+        orden = form.save(commit=False)
+        obs = orden.observacion
+        if obs:
+            obs = obs.replace(' src="', ' class="img-responsive" src="')
+        orden.observacion = obs
+        orden.save()
+        messages.success(self.request, "Se ha creado la orden de estudio.")
+        return JsonResponse({'success': True})
 
 
 class OrdenEstudioDeleteGlobal(LoginRequiredMixin, DeleteView):
@@ -353,13 +355,12 @@ class OrdenEstudioDeleteGlobal(LoginRequiredMixin, DeleteView):
         try:
             return self.delete(request, *args, **kwargs)
         except ProtectedError:
-            # render the template with your message in the context
-            # or you can use the messages framework to send the message
             print('Estado: PROTEGIDO')
             messages.error(request, 'No se puede borrar ' + self.object.nombre)
             return HttpResponseRedirect(reverse('consultorios:ordenes_estudio'))
 
     def get_success_url(self):
+        messages.success(self.request, "Se ha eliminado la orden de estudio.")
         return reverse('consultorios:ordenes_estudio')
 
 
@@ -369,8 +370,20 @@ class OrdenEstudioUpdateGlobal(LoginRequiredMixin, UpdateView):
     template_name = 'consultorios/orden_estudio/orden_estudio_editar.html'
     pk_url_kwarg = 'orden_id'
 
-    def get_success_url(self):
-        return reverse('consultorios:ordenes_estudio')
+    def form_valid(self, form):
+        orden = form.save(commit=False)
+        obs = orden.observacion
+        if obs:
+            obs = obs.replace(' src="', ' class="img-responsive" src="')
+        orden.observacion = obs
+        orden.save()
+        messages.success(self.request, "Se han actualizado los datos de orden de estudio.")
+        return JsonResponse({'success': True})
+    #
+    # def form_valid(self, form):
+    #     form.save()
+    #     messages.success(self.request, "Se han actualizado los datos de orden de estudio.")
+    #     return JsonResponse({'success': True})
 
 
 class OrdenEstudioDetalleListGlobal(LoginRequiredMixin, ListView):
@@ -396,7 +409,8 @@ class OrdenEstudioDetalleUpdateGlobal(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         orden_detail = OrdenEstudioDetalle.objects.get(pk=self.kwargs['detalle_id'])
         orden=OrdenEstudio.objects.get(pk=orden_detail.orden_estudio.id)
-        return reverse('consultorios:orden_estudio_detalle_list', kwargs={'orden_id': orden.id})
+        messages.success(self.request, "Se han actualizado los datos de orden de estudio.")
+        return reverse('consultorios:orden_estudio_detalle_list', kwargs={'orden_id': orden.id })
 
 
 class OrdenEstudioDetalleCreate(LoginRequiredMixin, CreateView):
@@ -417,11 +431,12 @@ class OrdenEstudioDetalleCreate(LoginRequiredMixin, CreateView):
         orden=OrdenEstudio.objects.get(pk=self.kwargs['orden_id'])
         detalle.orden_estudio = orden
         detalle.save()
+        messages.success(self.request, "Se ha creado la orden de estudio.")
         return redirect(self.get_success_url())
 
 
 class OrdenEstudioDetalleDeleteGlobal(LoginRequiredMixin, DeleteView):
-    model = OrdenEstudio
+    model = OrdenEstudioDetalle
     template_name = "consultorios/orden_estudio_detalle/orden_estudio_detalle_eliminar.html"
     pk_url_kwarg = 'detalle_id'
     context_object_name = 'detalle'
@@ -429,7 +444,10 @@ class OrdenEstudioDetalleDeleteGlobal(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         orden_detail=OrdenEstudioDetalle.objects.get(pk=kwargs['detalle_id'])
         orden=OrdenEstudio.objects.get(pk=orden_detail.orden_estudio.id)
+        print("orden", orden.pk)
+        print("orden", orden_detail.pk)
         orden_detail.delete()
+        messages.success(self.request, "Se ha eliminado la orden de estudio.")
         return HttpResponseRedirect(reverse('consultorios:orden_estudio_detalle_list', kwargs={'orden_id': orden.id}))
 
 
@@ -815,9 +833,6 @@ class EvolucionPacienteList(LoginRequiredMixin, ListView):
     context_object_name = 'evoluciones'
     template_name = 'consultorios/consulta_iniciar.html'
 
-    # def get_queryset(self):
-    #     return EvolucionPaciente.objects.filter(paciente=detalle.paciente).order_by('-consulta_detalle')
-
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         # obtenemos el detalle actual
@@ -1183,9 +1198,21 @@ class TipoMedicamentoCreateView(LoginRequiredMixin, CreateView):
     form_class = TipoMedicamentoForm
     template_name = 'consultorios/tipo_medicamento/tipo_medicamento_crear.html'
 
-    def get_success_url(self):
-        return reverse('consultorios:tipo_medicamento')
+    def form_valid(self, form):
+        tipo_medicamento = form.save(commit=False)
+        descripcion = tipo_medicamento.descripcion
+        if descripcion:
+            descripcion = descripcion.replace(' src="', ' class="img-responsive" src="')
+        tipo_medicamento.descripcion = descripcion
+        tipo_medicamento.save()
+        messages.success(self.request, "Se ha creado el tipo medicamento.")
+        return JsonResponse({'success': True})
 
+    #
+    # def get_success_url(self):
+    #     messages.success(self.request, "Se ha creado el tipo medicamento.")
+    #     return reverse('consultorios:tipo_medicamento')
+    #
 
 class TipoMedicamentoUpdateView(LoginRequiredMixin, UpdateView):
     model = TipoMedicamento
@@ -1194,7 +1221,13 @@ class TipoMedicamentoUpdateView(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = 'tipo_id'
 
     def form_valid(self, form):
-        form.save()
+        tipo_medicamento = form.save(commit=False)
+        desc = tipo_medicamento.descripcion
+        if desc:
+            desc = desc.replace(' src="', ' class="img-responsive" src="')
+        tipo_medicamento.descripcion = desc
+        tipo_medicamento.save()
+        messages.success(self.request, "Se han actualizado los datos de tipo medicamento.")
         return JsonResponse({'success': True})
 
 
@@ -1208,6 +1241,7 @@ class TipoMedicamentoDelete(LoginRequiredMixin, DeleteView):
         tipo = TipoMedicamento.objects.get(pk=kwargs['tipo_id'])
         tipo.habilitado = False
         tipo.save()
+        messages.success(self.request, "Se ha eliminado el tipo medicamento.")
         return HttpResponseRedirect(reverse('consultorios:tipo_medicamento'))
 
 
@@ -1226,6 +1260,7 @@ class MedicamentoCreateView(LoginRequiredMixin, CreateView):
     template_name = 'consultorios/medicamentos/medicamentos_form.html'
 
     def get_success_url(self):
+        messages.success(self.request, "Se ha creado el medicamento.")
         return reverse('consultorios:medicamentos')
 
 
@@ -1259,6 +1294,7 @@ class MedicamentoUpdateView(LoginRequiredMixin, UpdateView):
         return kwargs
 
     def get_success_url(self):
+        messages.success(self.request, "Se han actualizado los datos de medicamento.")
         return reverse('consultorios:medicamentos')
 
 
@@ -1272,6 +1308,7 @@ class MedicamentoDeleteView(LoginRequiredMixin, DeleteView):
         medicamento = Medicamento.objects.get(pk=kwargs['medicamento_id'])
         medicamento.habilitado = False
         medicamento.save()
+        messages.success(self.request, "Se ha eliminado el medicamento.")
         return HttpResponseRedirect(reverse('consultorios:medicamentos'))
 
 
