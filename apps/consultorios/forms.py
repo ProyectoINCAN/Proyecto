@@ -53,7 +53,7 @@ class EnfermeroForm(forms.ModelForm):
     class Meta:
         model = Enfermero
         fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_profesional', 'sexo', 'fecha_nacimiento',
-                  'lugar_nacimiento', 'nacionalidad']
+                  'lugar_nacimiento', 'nacionalidad','habilitado']
         labels = {
             'nombres': 'Nombres',
             'apellidos': 'Apellidos',
@@ -64,18 +64,20 @@ class EnfermeroForm(forms.ModelForm):
             'fecha_nacimiento': 'Fecha de nacimiento',
             'lugar_nacimiento': 'Lugar de nacimiento',
             'nacionalidad': 'Nacionalidad',
+            'habilitado':'Habilitado'
         }
         widgets = {
-            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
-            'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'nombres': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'nro_doc': forms.TextInput(attrs={'class': 'form-control'}),
             'nro_registro_profesional': forms.TextInput(attrs={'class': 'form-control'}),
-            'sexo': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker',
                                                        'placeholder': 'dd/mm/aaaa'}),
-            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'habilitado': forms.CheckboxInput(),
         }
 
 
@@ -163,7 +165,7 @@ class HorarioMedicoModelForm(forms.ModelForm):
             'dia_semana': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'turno': forms.Select(attrs={'class': 'form-control selectsearch'}),
             'cantidad': forms.TextInput(attrs={'class': 'form-control'}),
-            'habilitado': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'habilitado': forms.CheckboxInput(),
         }
 
 

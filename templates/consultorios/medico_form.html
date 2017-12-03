@@ -44,7 +44,8 @@ label { position: absolute; text-align:center; width:130px; }
 </div>
 <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
   <li><a href="">Inicio</a></li>
-  <li class="active">Lista de Médicos / Nuevo</li>
+        <li class="active"><a href="{% url 'consultorios:medico_listar' %}">Lista de Médicos</a></li>
+    <li>Nuevo</a></li>
 </ol><br>
 <div class="wrapper-md">
     {% include 'base/messages.html' %}

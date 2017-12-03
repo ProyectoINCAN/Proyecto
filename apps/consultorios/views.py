@@ -49,7 +49,7 @@ def medico_create(request):
         form = MedicoForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Datos guardados correctamente.")
+            messages.success(request, "Se ha creado el médico.")
             return redirect('consultorios:medico_listar')
         else:
             messages.error(request, "Ha ocurrido un error. Datos no guardados.")
@@ -87,7 +87,7 @@ def enfermero_create(request):
         form = EnfermeroForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Datos guardados correctamente.")
+            messages.success(request, "Se ha creado el enfermero.")
             return redirect('consultorios:enfermero_listar')
         else:
             messages.error(request, "Ha ocurrido un error. Datos no guardados.")
@@ -105,7 +105,7 @@ def enfermero_update(request, pk):
         form = EnfermeroForm(request.POST, instance=objeto)
         if form.is_valid():
             form.save()
-            messages.success(request, "Datos actualizados correctamente.")
+            messages.success(request, "Se han actualizado los datos del enfermero.")
             return redirect("consultorios:enfermero_listar")
     else:
         form = EnfermeroForm(instance=objeto)
@@ -124,7 +124,7 @@ def administrativo_create(request):
         form = AdministrativoForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Datos guardados correctamente.")
+            messages.success(request, "Se ha creado el administrativo.")
             return redirect('consultorios:administrativo_listar')
         else:
             messages.error(request, "Ha ocurrido un error. Datos no guardados.")
@@ -142,7 +142,7 @@ def administrativo_update(request, pk):
         form = AdministrativoForm(request.POST, instance=objeto)
         if form.is_valid():
             form.save()
-            messages.success(request, "Datos actualizados correctamente.")
+            messages.success(request, "Se han actualizado los datos del administrativo.")
             return redirect("consultorios:administrativo_listar")
     else:
         form = AdministrativoForm(instance=objeto)

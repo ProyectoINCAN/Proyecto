@@ -247,7 +247,7 @@ class PacienteOcupacionForm(forms.ModelForm):
 
 
 class PacientePadreForm(forms.ModelForm):
-    asume_sustento=forms.BooleanField(initial=True)
+    # asume_sustento=forms.BooleanField(initial=True)
 
     class Meta:
         model = PacientePadre
@@ -285,7 +285,7 @@ class PacientePadreForm(forms.ModelForm):
             'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%'}),
             'nivel_educativo': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
             'otro': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
-            'asume_sustento':forms.RadioSelect(attrs={'class': 'form-control', 'style':'width: 100%'}),
+            'asume_sustento':forms.CheckboxInput(),
         }
 
 
