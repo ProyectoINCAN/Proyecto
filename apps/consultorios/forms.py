@@ -161,11 +161,11 @@ class HorarioMedicoModelForm(forms.ModelForm):
             'medico': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'hora_inicio': forms.TimeInput(attrs={'class': 'form-control timepicker text-center'}),
             'hora_fin': forms.TimeInput(attrs={'class': 'form-control timepicker text-center'}),
-            'cod_departamento': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'dia_semana': forms.Select(attrs={'class': 'form-control selectsearch'}),
-            'turno': forms.Select(attrs={'class': 'form-control selectsearch'}),
+            'cod_departamento': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'dia_semana': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'turno': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'cantidad': forms.TextInput(attrs={'class': 'form-control'}),
-            'habilitado': forms.CheckboxInput(),
+            'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
 

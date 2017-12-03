@@ -66,7 +66,7 @@ $( document ).ready(function() {
     $(function(){
         setTimeout(function() {
             console.log("timeout");
-        }, 250 ); // <-- tiempo en milisegundos, 1000 =  1 sec
+        }, 100 ); // <-- tiempo en milisegundos, 1000 =  1 sec
         var toTab = $("#ir_a_tab").val();
         console.log("toTab : ", toTab);
         $(toTab).click();

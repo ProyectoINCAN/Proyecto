@@ -14,6 +14,8 @@ label.div_center {
 text-align:center;
 }
 
+.big-checkbox {width: 30px; height: 30px;}
+
 </style>
 
 <style>
@@ -43,16 +45,7 @@ label { position: absolute; text-align:center; width:130px; }
                  {{ form.cod_departamento }}
              </div>
         </div>
-        <div class="form-group">
-         <label for="{{ form.hora_inicio.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.hora_inicio.label }}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{ form.hora_inicio }}
-         </div>
-         <label for="{{ form.hora_fin.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.hora_fin.label }}</label>
-         <div class="col-lg-4 col-md-3 col-sm-4">
-             {{ form.hora_fin }}
-         </div>
-        </div>
+
         <div class="form-group">
             <label for="{{ form.dia_semana.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.dia_semana.label }}</label>
              <div class="col-lg-4 col-md-3 col-sm-4">
@@ -64,6 +57,16 @@ label { position: absolute; text-align:center; width:130px; }
              </div>
          </div>
 
+        <div class="form-group">
+         <label for="{{ form.hora_inicio.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.hora_inicio.label }}</label>
+         <div class="col-lg-4 col-md-3 col-sm-4">
+             {{ form.hora_inicio }}
+         </div>
+         <label for="{{ form.hora_fin.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.hora_fin.label }}</label>
+         <div class="col-lg-4 col-md-3 col-sm-4">
+             {{ form.hora_fin }}
+         </div>
+        </div>
          <div class="form-group">
              <label for="{{ form.cantidad.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.cantidad.label }}</label>
              <div class="col-lg-4 col-md-3 col-sm-4">
