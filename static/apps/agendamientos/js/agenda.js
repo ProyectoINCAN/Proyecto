@@ -71,13 +71,12 @@
 
 
     $('#consultas').click(function() {
-        console.log("llega a consulta")
-            var agenda_id = $("#agenda_id").val();
-            var origen = $("#origen").val();
+        var agenda_id = $("#agenda_id").val();
+        var origen = $("#origen").val();
 
-            console.log(agenda_id, origen);
+        console.log(agenda_id, origen);
 
-            BootstrapDialog.show({
+        BootstrapDialog.show({
             title: 'Pasar agenda a Consultorio',
             message: '¿Está seguro de que desea pasar la agenda a consultorio?',
             draggable: true,

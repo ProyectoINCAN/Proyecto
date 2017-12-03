@@ -76,7 +76,7 @@
                 </div>
                 <div class="col-sm-11 col-lg-11">
                     {% for data in anamnesis %}
-                        {{ data.observacion|safe }}
+                    <div class="container-fluid">{{ data.observacion|safe }}</div>
                     {% endfor %}
                 </div>
             </div>
@@ -100,7 +100,7 @@
                             <tr>
                                 <td>{{ data.cie10.codigo }}</td>
                                 <td>{{ data.cie10.descripcion }}</td>
-                                <td>{{ data.observacion|safe }}</td>
+                                <td><div class="container-fluid">{{ data.observacion|safe }}</div></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -118,7 +118,7 @@
                 <div class="col-sm-11 col-lg-11">
                     {% if evoluciones %}
                         {% for data in evoluciones %}
-                            {{ data.observaciones|safe }}
+                    <div class="container-fluid">{{ data.observaciones|safe }}</div>
                         {% endfor %}
                     {% else %}
                         {{ "SIN ESPECIFICAR" }}
@@ -143,7 +143,7 @@
                             {% for data in ordenes %}
                             <tr>
                                 <td>{{ data.orden_estudio }}</td>
-                                <td>{{ data.observacion|safe }}</td>
+                                <td><div class="container-fluid">{{ data.observacion|safe }}</div></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -172,7 +172,7 @@
                             {% for data in prescripciones %}
                             <tr>
                                 <td>{{ data.medicamento }}</td>
-                                <td>{{ data.posologia|safe }}</td>
+                                <td><div class="container-fluid">{{ data.posologia|safe }}</div></td>
                                 <td class="text-center">{{ data.cantidad }}</td>
                             </tr>
                             {% endfor %}
@@ -201,7 +201,7 @@
                             {% for data in tratamientos %}
                             <tr>
                                 <td>{{ data.descripcion }}</td>
-                                <td>{{ data.observacion|safe }}</td>
+                                <td><div class="container-fluid">{{ data.observacion|safe }}</div></td>
                             </tr>
                             {% endfor %}
                         </tbody>

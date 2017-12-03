@@ -9,7 +9,6 @@ def set_detalle_a_agenda(agenda, agenda_detalles):
     for detalle in agenda_detalles:
         nuevo_detalle = AgendaDetalle(agenda=agenda, paciente=detalle.paciente, orden=detalle.orden,
                                       observacion=detalle.observacion, confirmado=False)
-        print("detalle procesado: ", detalle, " nuevo_detalle.agenda.id:", nuevo_detalle.agenda.id, "agenda.id:",agenda.id)
         nuevo_detalle.save()
 
 
@@ -48,7 +47,8 @@ def cancelar_agenda(agenda_id, tipo):
         # a la siguiente fecha disponible
         agenda = Agenda.objects.get(pk=agenda_id)
         agendas = Agenda.objects.filter(medico=agenda.medico, especialidad=agenda.especialidad, turno=agenda.turno,
-                                        fecha__gte=agenda.fecha, estado=agenda.estado).exclude(fecha=agenda.fecha).order_by('fecha')
+                                        fecha__gte=agenda.fecha, estado=agenda.estado).exclude(
+                                        fecha=agenda.fecha).order_by('fecha')
 
         print(agendas)
         # cambio de fecha las agendas posteriores

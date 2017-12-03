@@ -208,8 +208,10 @@ class HorarioMedico(models.Model):
     medico = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False, verbose_name="Médico")
     hora_inicio = models.TimeField(blank=False, null=False)
     hora_fin = models.TimeField(blank=False, null=False)
-    cod_departamento = models.ForeignKey(Departamento, models.DO_NOTHING, blank=False, null=False, verbose_name="Departamento")
-    dia_semana = models.ForeignKey(DiasSemana, models.DO_NOTHING, blank=False, null=False, verbose_name="Día de la semana")
+    cod_departamento = models.ForeignKey(Departamento, models.DO_NOTHING, blank=False, null=False,
+                                         verbose_name="Departamento")
+    dia_semana = models.ForeignKey(DiasSemana, models.DO_NOTHING, blank=False, null=False,
+                                   verbose_name="Día de la semana")
     turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False, verbose_name="Turno")
     cantidad = models.IntegerField(default=20)
     habilitado = models.BooleanField(default=True)
@@ -277,7 +279,7 @@ class EstadoConsultaDetalle(models.Model):
 class Consulta(models.Model):
     fecha = models.DateField(auto_now=True, blank=False, null=False, verbose_name="Fecha de consulta")
     estado = models.ForeignKey(EstadoConsulta, on_delete=DO_NOTHING, blank=False, null=False)
-    especialidad =models.ForeignKey(Especialidad, on_delete=models.CASCADE, blank=True, null=True)
+    especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE, blank=True, null=True)
     medico = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False)
     turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False)
     # hora_inicio = models.TimeField(auto_now=True)

@@ -205,11 +205,12 @@ def agenda_detalle_crear2(request, agenda_id, paciente_id, origen):
     if dia_semana == 8:
         dia_semana = 1
     dia_horario = dias.filter(id=dia_semana)[0]
-    print("medico:", agenda_actual.medico, "dia_semana:", dia_horario, "turno: ", agenda_actual.turno) # borrar
     try:
-        horario_medico = HorarioMedico.objects.get(medico=agenda_actual.medico, dia_semana=dia_horario, turno=agenda_actual.turno)
+        horario_medico = HorarioMedico.objects.get(medico=agenda_actual.medico, dia_semana=dia_horario,
+                                                   turno=agenda_actual.turno)
     except ObjectDoesNotExist:
-        messages.error(request, "No se encuentra Horario Médico para el Dr. %s. (Día: %s. Turno: %s) " % (agenda_actual.medico, dia_horario, agenda_actual.turno))
+        messages.error(request, "No se encuentra Horario Médico para el Dr. %s. (Día: %s. Turno: %s) " %
+                       (agenda_actual.medico, dia_horario, agenda_actual.turno))
         return redirect('agendamientos:agenda_detalle_paciente_list', agenda_actual.id, origen)
 
     if orden > horario_medico.cantidad:
@@ -361,18 +362,7 @@ def agenda_detalle_list(request, agenda_id, origen):
         if form.is_valid():
             form.save()
 
-    # dependiendo del valor de 'origen' redirige a tal o cual url de donde se solicitó
-    # TODO: agregar más si fuera necesario
     origen_url = get_origen_url_agendamiento(origen)
-    # if origen == str(1):
-    #     # redirige a agendar por fecha disponible
-    #     origen_url = '/agendamientos/agendas/'
-    # elif origen == str(2):
-    #     # redirige a agendas por rango de fechas
-    #     origen_url = '/agendamientos/agenda_fecha/'
-    # else:
-    #     # DEFAULT: redirige a agendar por fecha disponible
-    #     origen_url = '/agendamientos/agendas/'
 
     contexto = {'agenda': agenda, 'agenda_detalle': agenda_detalle, 'origen': origen, 'origen_url': origen_url,
                 'form': form}
@@ -449,8 +439,3 @@ class PacienteByAgenda(LoginRequiredMixin, ListView):
         origen = self.kwargs['origen']
         context.update({'agenda': Agenda.objects.get(pk=self.kwargs['agenda_id']), 'origen': origen})
         return context
-
-
-
-
-

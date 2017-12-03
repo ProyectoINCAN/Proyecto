@@ -6,7 +6,7 @@ from apps.consultorios.views import MedicoList, \
     HorarioMedicoList, HorarioMedicoCreate, HorarioMedicoUpdate, medico_update, \
     medico_create, cambio_password, EnfermeroList, enfermero_create, enfermero_update, AdministrativoList, \
     administrativo_create, administrativo_update, consulta_paciente_list, ConsultaCreate, \
-    ConsultaDetalleContinuar, PacienteDiagnosticoCreate, TipoMedicamentoListView, TipoMedicamentoCreateView, \
+    PacienteDiagnosticoCreate, TipoMedicamentoListView, TipoMedicamentoCreateView, \
     TipoMedicamentoUpdateView, TipoMedicamentoDelete, MedicamentoListView, MedicamentoCreateView, MedicamentoUpdateView, \
     MedicamentoDeleteView
 
@@ -68,6 +68,11 @@ urlpatterns = [
     url(r'^consulta/detalle/finalizar/$', views.ConsultaDetalleFinalizar.as_view(), name='consulta_detalle_finalizar'),
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/resumen/$', views.ConsultaDetalleResumen.as_view(),
         name='consulta_detalle_resumen'),
+
+    url(r'^consulta/(?P<consulta_id>\d+)/detalles/pacientes$', views.ConsultorioPacienteList.as_view(),
+        name='consultorio_paciente_listar'),
+    url(r'^consulta/(?P<consulta_id>\d+)/detalles/agregar/$', views.ConsultorioPacienteAgregar.as_view(),
+        name='consultorio_paciente_agregar'),
 
     # url(r'^consulta/detalle/(?P<detalle_id>\d+)/diagnostico/list/$', views.ConsultaDetalleDiagnosticoList.as_view(),
     #     name='consulta_diagnostico_crear'),

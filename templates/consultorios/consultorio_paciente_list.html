@@ -1,0 +1,82 @@
+{% extends 'base/base2.html' %}
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'apps/pacientes/css/index.css' %}">
+{% endblock %}
+
+{% block extrajs %}
+<script src = "{% static 'apps/pacientes/js/index.js' %}"></script>
+<script src = "{% static 'apps/consultorios/js/consultorio_paciente.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">Agregar paciente</h1>
+</div>
+
+<section class="content-header">
+  <div class="bg-light lter b-b wrapper-md">
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Dia</a></li>
+      <li><a href="{% url 'consultorios:consulta_detalle_dia' consulta.id %}">{{ consulta.medico.get_dr_full_name }}</a></li>
+      <li class="active">Listado de Pacientes</li>
+    </ol>
+  </div>
+</section>
+<input id="consulta_id" type="hidden" value="{{consulta.id}}">
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Listado de Pacientes
+        </div>
+        <div class="panel-body">
+          <table class="table table-striped table-bordered table-hover table-responsive"
+                 id="dataTables-example" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+              <th>Ficha</th>
+              <th>Nº Documento</th>
+              <th>Nombres</th>
+              <th>Apellidos</th>
+              <th>Fecha Nacimiento</th>
+              <th>Ciudad</th>
+              <th>Agregar</th>
+            </tr>
+            </thead>
+            <tbody>
+
+              {% for paciente in pacientes %}
+              <tr>
+                <td>
+                  {{ paciente.nro_doc }}
+                </td>
+                <td>
+                  {{ paciente.nro_doc }}
+                </td>
+                <td>{{ paciente.nombres }}</td>
+                <td>{{ paciente.apellidos }} </td>
+                <td>{{ paciente.fecha_nacimiento|date:"SHORT_DATE_FORMAT" }}</td>
+                <td>{{ paciente.distrito }}</td>
+                <td>
+                  <button class="btn btn-primary" value="{{ paciente.id }}" type="submit">
+                    <i class="fa fa-plus" aria-hidden="true"></i>  Agregar
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

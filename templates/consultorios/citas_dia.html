@@ -5,7 +5,7 @@
     <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li><a href="#">Inicio</a></li>
       <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Dia</a></li>
-      <li class="active">Especialidad:{{ consulta.especialidad }}</li>
+      <li class="active">Especialidad: {{ consulta.especialidad }}</li>
     </ol>
     <div class="box">
         <div class="box-header with-border">
@@ -64,7 +64,7 @@
             <div class="panel-heading">
               <b>Listado de Agendados</b>
               <div class="btn-group pull-right">
-                <a href="{% url 'pacientes:nuevo_paciente' %}" id="create" class="btn btn-default btn-sm">
+                <a href="{% url 'consultorios:consultorio_paciente_listar' consulta.pk %}" id="create" class="btn btn-default btn-sm">
                   <i class="fa fa-plus-square" aria-hidden="true"></i>  Agregar Paciente</a>
               </div><p></p>
 
@@ -75,6 +75,7 @@
                   <tr>
                     <th>Orden</th>
                     <th>Paciente</th>
+                    <th class="text-center">Confirmado</th>
                     <th>Estado consulta</th>
                     <th>Acción</th>
 
@@ -85,26 +86,33 @@
                   <tr>
 
                     <td>{{ detalle.orden }}</td>
-                    <td>{{ detalle.paciente.get_full_name }}</td>
+                    <td>{{ detalle.paciente.get_name_nro_doc }}</td>
+                    <td class="text-center">
+                      {% if detalle.confirmado %}
+                      Sí
+                      {% else %}
+                      No
+                      {% endif %}
+                    </td>
                     <td>{{ detalle.estado.nombre }}</td>
                     <td>
                       {% if not existe_en_proceso %}
                       {% if detalle.estado.codigo == "P" %}
-                        <a href="{% url 'consultorios:consulta_detalle_iniciar' detalle.id %}" class="btn btn-success btn-sm">
+                        <a href="{% url 'consultorios:consulta_detalle_iniciar' detalle.id %}" class="btn btn-success btn-sm" style="width:131px">
                           <i class="fa fa-play" aria-hidden="true"></i> Iniciar Consulta</a>
                       {% else %}
-                        <a href="{% url 'consultorios:consulta_detalle_resumen' detalle.id %}" class="btn btn-default btn-sm">
+                        <a href="{% url 'consultorios:consulta_detalle_resumen' detalle.id %}" class="btn btn-default btn-sm" style="width:131px">
                             <i class="fa fa-file-text-o" aria-hidden="true"></i> Ver Resumen</a>
                       {% endif %}
                       {% else %}
                         {% if detalle.estado.codigo == "E" %}
-                          <a href="{% url 'consultorios:consulta_detalle_continuar' detalle.id %}" class="btn btn-default btn-sm">
+                          <a href="{% url 'consultorios:consulta_detalle_continuar' detalle.id %}" class="btn btn-default btn-sm" style="width:131px">
                             <i class="fa fa-pause" aria-hidden="true"></i> Continuar Consulta</a>
                         {% elif detalle.estado.codigo == "F" or detalle.estado.codigo == "C"%}
-                          <a href="{% url 'consultorios:consulta_detalle_resumen' detalle.id %}" class="btn btn-default btn-sm">
+                          <a href="{% url 'consultorios:consulta_detalle_resumen' detalle.id %}" class="btn btn-default btn-sm" style="width:131px">
                             <i class="fa fa-file-text-o" aria-hidden="true"></i> Ver Resumen</a>
                         {% else %}
-                          <a href="#" class="btn btn-success btn-sm" disabled>
+                          <a href="#" class="btn btn-success btn-sm" disabled style="width:131px">
                             <i class="fa fa-play" aria-hidden="true"></i> Iniciar Consulta</a>
                         {% endif %}
                       {% endif %}

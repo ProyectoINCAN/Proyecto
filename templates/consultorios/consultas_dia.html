@@ -9,7 +9,7 @@
         <div class="col-xs-12 col-md-12 col-lg-12">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <b>Listado de Consultas del día</b>
+              <b>Listado de Consultas. Fecha: {{fecha|date:"SHORT_DATE_FORMAT"}}</b>
 
             </div>
               <div class="panel-body">
@@ -18,7 +18,6 @@
                   <tr>
                     <th>Especialidad</th>
                     <th>Turno</th>
-                    <th>Hora de Inicio</th>
                     <th>Estado</th>
 
                   </tr>
@@ -30,7 +29,6 @@
                     <td>
                       <a href="{% url 'consultorios:consulta_detalle_dia' consulta.id %}">{{ consulta.especialidad }}</a></td>
                     <td>{{ consulta.turno }}</td>
-                    <td>{{ consulta.hora_inicio }}</td>
                     <td>{{ consulta.estado }}</td>
 
 

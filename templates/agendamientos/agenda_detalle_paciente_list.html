@@ -68,10 +68,11 @@
                 </td>
                 <td>{{ paciente.nombres }}</td>
                 <td>{{ paciente.apellidos }} </td>
-                <td>{{ paciente.fecha_nacimiento }}</td>
-                <td>{{ paciente.distrito}}</td>
-                <td>  <a href="{% url 'agendamientos:agenda_detalle_crear' agenda.id paciente.id origen %}"
-                     class="btn btn-primary">Agregar</a>
+                <td>{{ paciente.fecha_nacimiento|date:"SHORT_DATE_FORMAT" }}</td>
+                <td>{{ paciente.distrito }}</td>
+                <td>
+                  <a href="{% url 'agendamientos:agenda_detalle_crear' agenda.id paciente.id origen %}"
+                     class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i>  Agregar</a>
                 </td>
               </tr>
             {% endfor %}

@@ -153,7 +153,7 @@
                                 <tbody>
                                 {% for anamne in anamnesis %}
                                   <tr>
-                                    <td>{{ anamne.observacion|safe }}</td>
+                                    <td><div class="container-fluid">{{ anamne.observacion|safe }}</div></td>
                                     <td>
                                       {% if anamne.consulta_detalle.id == detalle.id %}
                                       <a class="btn btn-default btn-xs" title="Editar"
@@ -202,7 +202,7 @@
                                 {% for diagnostico in diagnosticos %}
                                   <tr>
                                     <td style="width: 40%">{{ diagnostico.cie10 }}</td>
-                                    <td style="width:40%;">{{ diagnostico.observacion|safe }} </td>
+                                    <td style="width:40%;"><div class="container-fluid">{{ diagnostico.observacion|safe }}</div></td>
                                     <td>
                                       {% if diagnostico.consulta_detalle.id == detalle.id %}
                                       <a class="btn btn-default btn-xs" title="Editar"
@@ -255,7 +255,7 @@
                                   <tr>
                                     <td>{{ evo.fecha|date:"SHORT_DATE_FORMAT" }}</td>
                                     <td>{{ evo.hora }} </td>
-                                    <td>{% autoescape off %}{{ evo.observaciones|safe }}{% endautoescape %} </td>
+                                    <td><div class="container-fluid">{% autoescape off %}{{ evo.observaciones|safe }}{% endautoescape %}</div></td>
                                     <td>{{ evo.medico.get_dr_full_name }} </td>
                                     <td>
                                       {% if evo.consulta_detalle.id == detalle.id %}
@@ -308,7 +308,7 @@
                                 <tr>
                                     <td>{{ orden.orden_estudio }}</td>
                                     <td>{{ orden.fecha_solicitud|date:"SHORT_DATE_FORMAT" }} </td>
-                                    <td>{% autoescape off %}{{ orden.observacion|safe }}{% endautoescape %}</td>
+                                  <td><div class="container-fluid">{% autoescape off %}{{ orden.observacion|safe }}{% endautoescape %}</div></td>
                                     <td>
                                         {% if orden.consulta_detalle.id == detalle.id %}
                                         <a class="btn btn-default btn-xs" title="Eliminar"
@@ -359,7 +359,7 @@
                                 {% for prescripcion in prescripciones %}
                                   <tr>
                                     <td>{{ prescripcion.medicamento }}</td>
-                                    <td>{{ prescripcion.posologia|safe }} </td>
+                                    <td><div class="container-fluid">{{ prescripcion.posologia|safe }}</div></td>
                                     <td>{{ prescripcion.cantidad }} </td>
                                     <td>
                                       {% if prescripcion.consulta_detalle.id == detalle.id %}
@@ -409,7 +409,7 @@
                                 {% for tratamiento in tratamientos %}
                                   <tr>
                                     <td>{{ tratamiento.descripcion }}</td>
-                                    <td>{% autoescape off %}{{ tratamiento.observacion|safe }}{% endautoescape %} </td>
+                                    <td><div class="container-fluid">{% autoescape off %}{{ tratamiento.observacion|safe }}{% endautoescape %}</div></td>
                                     <td>
                                       {% if tratamiento.consulta_detalle.id == detalle.id %}
                                       <a class="btn btn-default btn-xs" title="Editar"
