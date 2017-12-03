@@ -48,12 +48,11 @@ class UserForm(forms.ModelForm):
         labels = {
             'first_name': 'Nombres',
             'last_name': 'Apellidos',
-            'is_active': 'Activo',
         }
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control','required':'required'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control','style':'text-transform:uppercase;','required':'required'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control','style':'text-transform:uppercase;','required':'required'}),
 
         }
 
@@ -115,6 +114,12 @@ class UserEditForm(forms.ModelForm):
                     'class': class_css,
                     'placeholder': self.fields[field_name].label,
                 })
+            if field_name == 'is_active':
+                self.fields[field_name].widget.attrs.update({
+                    'class': 'big-checkbox',
+                    'type': 'checkbox'
+                })
+
 
 
 class UserPasswordChangeForm(AdminPasswordChangeForm):

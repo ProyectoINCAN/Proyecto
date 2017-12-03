@@ -1,25 +1,76 @@
 
-  <div class="modal-content" style="width: 700px;height: auto;
-  position: absolute;left:40%;top: 50%; margin-left: -150px;
-   margin-top: -150px;">
-   <div class="modal-header">
-     <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
-     <div id="modal-title">
-       <h3>Eliminar Usuario</h3>
-     </div>
-   </div>
-   <div class="modal-body">
-     <p>Está seguro que desea eliminar el usuario: {{ usuario.username }}?</p>
-   </div>
-   <div class="modal-footer">
+  <!--<div class="modal-content" style="width: 700px;height: auto;-->
+  <!--position: absolute;left:40%;top: 50%; margin-left: -150px;-->
+   <!--margin-top: -150px;">-->
+   <!--<div class="modal-header">-->
+     <!--<button type="button" class="close" data-dismiss="modal"-->
+                    <!--aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+     <!--<div id="modal-title">-->
+       <!--<h3>Eliminar Usuario</h3>-->
+     <!--</div>-->
+   <!--</div>-->
+   <!--<div class="modal-body">-->
+     <!--<p>Está seguro que desea eliminar el usuario: {{ usuario.username }}?</p>-->
+   <!--</div>-->
+   <!--<div class="modal-footer">-->
 
-    <form action="{% url 'principal:user_delete_global' usuario.id %}" method="post" id=>
-       {% csrf_token %}
-       <div class="controls pull-right">
-         <button type="submit" class="btn btn-danger">Eliminar</button>
-         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-       </div>
-     </form>
-   </div>
-  </div>
+    <!--<form action="{% url 'principal:user_delete_global' usuario.id %}" method="post" id=>-->
+       <!--{% csrf_token %}-->
+       <!--<div class="controls pull-right">-->
+         <!--<button type="submit" class="btn btn-danger">Eliminar</button>-->
+         <!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>-->
+       <!--</div>-->
+     <!--</form>-->
+   <!--</div>-->
+  <!--</div>-->
+
+
+  <input id="url" type="hidden" value="{% url 'principal:user_delete_global' object.pk %}">
+<script>
+
+$( document ).ready(function() {
+        var url = $("#url").val();
+        console.log("url", url);
+
+        BootstrapDialog.show({
+        type: BootstrapDialog.TYPE_DANGER,
+        title: 'Eliminar Usuario',
+        message: '¿Está seguro que desea eliminar el usuario: {{ usuario.username }}?',
+        draggable: true,
+        closable: false,
+        buttons: [{
+            label: 'Cancelar',
+            //cssClass: 'btn-primary',
+            icon: 'fa fa-times',
+              action: function(dialog){
+                dialog.close();
+                cerrar_modal();
+                return false;
+            }
+        }, {
+            label: 'Eliminar',
+            cssClass: 'btn-danger',
+            icon: 'fa fa-trash',
+            action: function(dialog){
+                dialog.close();
+                var csrftoken = getCookie('csrftoken');
+                $.ajax({
+                     type:"POST",
+                     url:url,
+                     data: {
+                            'csrfmiddlewaretoken': csrftoken
+                            },
+                     success: function(data){
+                        dialog.close();
+                        cerrar_modal();
+                        window.location.href = '/principal/usuarios/'
+                     }
+                });
+                return false;
+            }
+        }, ]
+        });
+    }
+);
+
+</script>
