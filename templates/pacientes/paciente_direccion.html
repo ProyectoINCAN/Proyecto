@@ -29,7 +29,6 @@
 
 <div class="wrapper-md">
   <div class="panel panel-default">
-    <!--<div class="panel-heading">Ficha Clínica</div>-->
     <div class="panel-body">
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
@@ -37,7 +36,9 @@
                 <li class="active">{% block nav-about %}<a href="{% url 'pacientes:paciente_direccion' id_paciente %}" data-toggle="tab" class="active" aria-expanded="true">Direcciones</a>{% endblock %}</li>
                 <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
                 <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
+                <li><a href="{% url 'pacientes:paciente_acompanhante' id_paciente %}">Acompañante</a></li>
                 <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
+                <li><a href="{% url 'pacientes:paciente_antedecentes_socio_economicos' id_paciente %}">Antecedentes Socio-Económicos</a></li>
             </ul>
             </div>
         <div class="panel panel-default">

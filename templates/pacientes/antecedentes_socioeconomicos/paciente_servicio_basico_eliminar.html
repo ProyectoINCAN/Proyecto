@@ -1,0 +1,49 @@
+<input id="url" type="hidden" value="{% url 'pacientes:paciente_servicios_basicos_eliminar' object.pk %}">
+<script>
+
+$( document ).ready(function() {
+        var url = $("#url").val();
+        console.log("url", url);
+
+        BootstrapDialog.show({
+        type: BootstrapDialog.TYPE_DANGER,
+        title: 'Eliminar Servicios Básicos',
+        message: '¿Está seguro que desea eliminar los servicios básicos seleccionado?',
+        draggable: true,
+        closable: false,
+        buttons: [{
+            label: 'Cancelar',
+            //cssClass: 'btn-primary',
+            icon: 'fa fa-times',
+              action: function(dialog){
+                dialog.close();
+                cerrar_modal();
+                return false;
+            }
+        }, {
+            label: 'Eliminar',
+            cssClass: 'btn-danger',
+            icon: 'fa fa-trash',
+            action: function(dialog){
+                dialog.close();
+                var csrftoken = getCookie('csrftoken');
+                $.ajax({
+                     type:"POST",
+                     url:url,
+                     data: {
+                            'csrfmiddlewaretoken': csrftoken
+                            },
+                     success: function(data){
+                        dialog.close();
+                        cerrar_modal();
+                        location.reload();
+                     }
+                });
+                return false;
+            }
+        }, ]
+        });
+    }
+);
+
+</script>

@@ -41,7 +41,9 @@ label { position: absolute; text-align:right; width:130px; }
 
               <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
               <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
+              <li><a href="{% url 'pacientes:paciente_acompanhante' id_paciente %}">Acompañante</a></li>
               <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
+              <li><a href="{% url 'pacientes:paciente_antedecentes_socio_economicos' id_paciente %}">Antecedentes Socio-Económicos</a></li>
             </ul>
             </div>
 

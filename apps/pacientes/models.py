@@ -281,7 +281,7 @@ class Paciente(models.Model):
             self.nro_doc_alternativo = self.nro_doc.upper()
         #
         # self.nombres = paciente_utils.capitalizar(self.nombres)
-        # self.apellidos = paciente_utils.capitalizar(self.apellidos)
+        # self.apellidos = paciente_utils.capitalizar(self.apellidos
         self.nro_doc = paciente_utils.limpiar_nro_doc(self.nro_doc)
         super(Paciente, self).save()
 
@@ -438,10 +438,12 @@ class Vinculo(models.Model):
 
 class Acompanhante(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
+    tipo_doc =models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False)
     nombres = UpperCharField(max_length=100, blank=False, uppercase=True)
     apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
     nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
-    telefono = models.ForeignKey(Telefono, models.DO_NOTHING, blank=False, null=False)
+    tipo_telefono = models.ForeignKey(TipoTelefono, models.DO_NOTHING, blank=False, null=False)
+    numero=UpperCharField(max_length=80, blank=False, null=False, uppercase=True)
     vinculo = models.ForeignKey(Vinculo, on_delete=DO_NOTHING, blank=False, null=False)
 
     def __str__(self):
@@ -632,9 +634,10 @@ class Vivienda(models.Model):
     pared = models.ForeignKey(Pared, models.DO_NOTHING, blank=False, null=False)
     techo = models.ForeignKey(Techo, models.DO_NOTHING, blank=False, null=False)
     piso = models.ForeignKey(Piso, models.DO_NOTHING, blank=False, null=False)
-    dependencia = models.ForeignKey(Dependencia, models.DO_NOTHING, blank=False, null=False)
+    dependencia = models.ManyToManyField(Dependencia)
     hacinamiento = models.BooleanField(default=True)
     nro_personas_hogar = models.IntegerField(blank=False, verbose_name="Nro. de Personas en el Hogar")
+    nro_dormitorio = models.IntegerField(blank=False, verbose_name="Nro. de Dormitorios")
     comparte_cama = models.BooleanField(default=True)
 
     def __str__(self):
@@ -665,7 +668,7 @@ class ServicioBasicos(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     luz_electrica = models.BooleanField(default=True)
     telefono_linea_baja = models.BooleanField(default=True)
-    telefono_linea_ceular = models.BooleanField(default=True)
+    telefono_linea_celular = models.BooleanField(default=True)
     heladera = models.BooleanField(default=True)
     televisor = models.BooleanField(default=True)
     otros = models.BooleanField(default=True)

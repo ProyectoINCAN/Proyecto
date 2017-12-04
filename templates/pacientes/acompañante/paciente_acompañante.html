@@ -1,0 +1,86 @@
+{% extends 'base/base2.html' %}
+{% load static %}
+{% block extrajs %}
+{% endblock %}
+
+
+{% block content %}
+ <div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">Ficha Clínica</h1>
+ </div>
+  <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
+    <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+    <li><a href="{% url 'pacientes:index' %}">Pacientes</a></li>
+    <li><b>{{ paciente.get_name_nro_doc }}</b></li>
+    <li class="active">Acompañante</li>
+  </ol><br>
+    {% include 'base/messages.html' %}
+
+<div class="wrapper-md">
+  <div class="panel panel-default">
+    <div class="panel-body">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
+                <li><a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a></li>
+                <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+                <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
+                <li class="active">{% block nav-about %}<a href="{% url 'pacientes:paciente_acompanhante' id_paciente %}" data-toggle="tab" class="active" aria-expanded="true">Acompañante</a>{% endblock %}</li>
+                <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
+                <li><a href="{% url 'pacientes:paciente_antedecentes_socio_economicos' id_paciente %}">Antecedentes Socio-Económicos</a></li>
+            </ul>
+            </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Acompañante</b>
+                <div class="btn-group pull-right">
+                <a onclick="return abrir_modal('{% url 'pacientes:paciente_acompanhante_crear' id_paciente %}')"
+                class="btn btn-default btn-sm"><i class="fa fa-plus-square" aria-hidden="true"></i>  Nuevo</a>
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-condensed table-bordered">
+
+                        <thead>
+                              <tr>
+                                <th>Documento</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Vinculo</th>
+                                <th>Teléfono</th>
+                                <th class='text-center'>Acción</th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                            {% for acomp in acompanhante %}
+                            <tr>
+                                <td>{{ acomp.tipo_doc.codigo }}: {{ acomp.nro_doc }}</td>
+                                <td>{{ acomp.nombres }}</td>
+                                <td>{{ acomp.apellidos }} </td>
+                                <td>{{ acomp.vinculo }}</td>
+                                <td>{{ acomp.tipo_telefono }}: {{ acomp.numero }} </td>
+                                <td align='center'>
+                                  <a class="btn btn-xs" title="Editar"
+                                    onclick="return abrir_modal('{% url 'pacientes:paciente_acompanhante_editar' acomp.pk %}')">
+                                    <i class="fa fa-pencil"></i>
+                                  </a>
+                                    <a class="btn btn-xs" title="Eliminar"
+                                    onclick="return abrir_modal('{% url 'pacientes:paciente_acompanhante_eliminar' acomp.pk %}')">
+                                    <i class="fa fa-times-circle"></i>
+                                  </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+<div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1"></div>
+
+{% endblock %}

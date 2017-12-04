@@ -1,0 +1,186 @@
+{% extends "base/base2.html" %}
+{% load static %}
+{% block extrajs %}
+{% endblock %}
+
+{% block content %}
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">Ficha Clínica</h1>
+</div>
+<ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
+  <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+  <li class="active">Antecedentes Socio-Económicos / Paciente: <b>{{ paciente.get_name_nro_doc }}</b></li>
+</ol><br>
+<div class="wrapper-md">
+    {% include 'base/messages.html' %}
+    <div class="panel panel-default">
+     <div class="panel-body">
+                 <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li><a href="{% url 'pacientes:paciente_editar' id_paciente %}">Datos Básicos</a></li>
+              <li><a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a></li>
+              <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+              <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
+              <li><a href="{% url 'pacientes:paciente_acompanhante' id_paciente %}">Acompañante</a></li>
+              <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
+              <li class="active">{% block nav-about %}<a href="{% url 'pacientes:paciente_antedecentes_socio_economicos' id_paciente %}" data-toggle="tab5" aria-expanded="false">Antecedentes Socio-Económicos</a>{% endblock %}</li>
+            </ul>
+            </div>
+
+       <div class="row">
+         <div class="tab-content" id="panel_tab">
+          <div class="tab-pane active" id="tab_vivienta">
+           <div class="form-group" id="panel_vivienda_form_group">
+              <label class="control-label col-lg-2 col-sm-4">Vivienda:</label>
+              <div id="panel_seguro" class="col-lg-10 col-sm-10">
+                <table class="table table-striped responsive-table">
+                  <thead>
+                  <tr>
+                    <th>Pared</th>
+                    <th>Techo</th>
+                    <th>Piso</th>
+                    <th>Dependencias</th>
+                    <th>Acción</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% if vivienda %}
+                    {% for objeto in vivienda %}
+                      <tr>
+                        <td>{{ objeto.pared }}</td>
+                        <td>{{ objeto.techo }}</td>
+                        <td>{{ objeto.piso }}</td>
+                        <td>{{ objeto.nro_personas_hogar }}</td>
+                        <td>
+                          <a class="btn btn-xs"
+                            onclick="return abrir_modal('{% url 'pacientes:paciente_vivienda_editar' objeto.id %}')">
+                            <i class="fa fa-pencil"></i>
+                          </a>
+                          <a class="btn btn-xs" title="Eliminar"
+                            onclick="return abrir_modal('{% url 'pacientes:paciente_vivienda_eliminar' objeto.id %}')">
+                            <i class='fa fa-times-circle'></i>
+                          </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    {% endif %}
+                  </tbody>
+                </table>
+                  {% if vivienda.count == 0 %}
+                    <a class="btn btn-xs" onclick="return abrir_modal('{% url 'pacientes:paciente_vivienda_crear' id_paciente %}')"
+                       ><span class="fa fa-plus"></span>
+                    </a>
+                  {% endif %}
+            </div>
+            </div>
+          </div>
+        </div>
+        </div>
+       <div class="row">
+         <div class="tab-content" id="panel_tab_servicios_sanitarios">
+          <div class="tab-pane active" id="tab_servicios_sanitarios">
+           <div class="form-group" id="panel_servicios_sanitarios_form_group">
+              <label class="control-label col-lg-2 col-sm-4">Servicios Sanitarios:</label>
+              <div id="panel_situacion_laboral" class="col-lg-8 col-sm-8">
+                <table class="table table-striped responsive-table">
+                  <thead>
+                  <tr>
+                    <th>Agua</th>
+                    <th>Eliminación Basura</th>
+                    <th>Desagua</th>
+                    <th>Acción</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% if servicio %}
+                    {% for ser in servicio %}
+                      <tr>
+                        <td>{{ ser.agua }}</td>
+                        <td>{{ ser.eliminacion_basura }}</td>
+                        <td>{{ ser.desagua }}</td>
+                        <td>
+                          <a class="btn btn-xs"
+                            onclick="return abrir_modal('{% url 'pacientes:paciente_servicio_sanitario_editar' ser.id %}')">
+                            <i class="fa fa-pencil"></i>
+                          </a>
+                          <a class="btn btn-xs" title="Eliminar"
+                            onclick="return abrir_modal('{% url 'pacientes:paciente_servicio_sanitario_eliminar' ser.id %}')">
+                            <i class='fa fa-times-circle'></i>
+                          </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+
+                    {% endif %}
+
+                  </tbody>
+                </table>
+                  {% if servicio.count == 0 %}
+                    <a onclick="return abrir_modal('{% url 'pacientes:paciente_servicio_sanitario_crear' id_paciente %}')"
+                       class="btn btn-xs"><span class="fa fa-plus"></span>
+                    </a>
+                  {% endif %}
+            </div>
+            </div>
+          </div>
+        </div>
+        </div>
+       <div class="row">
+         <div class="tab-content" id="panel_tab_servicios_basicos">
+          <div class="tab-pane active" id="tab_servicios_basicos">
+           <div class="form-group" id="panel_servicios_basicos_form_group">
+              <label class="control-label col-lg-2 col-sm-4">Servicios Básicos:</label>
+              <div id="panel_nivel_educativo" class="col-lg-8 col-sm-8">
+                <table class="table table-striped responsive-table">
+                  <thead>
+                  <tr>
+                    <th>Luz Eléctrica</th>
+                    <th>Línea Baja</th>
+                    <th>Celular</th>
+                    <th>Heladera</th>
+                    <th>Televisor</th>
+                    <th>Otros</th>
+                    <th>Acción</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% if servicio_basico %}
+                    {% for ser_bas in servicio_basico %}
+                      <tr>
+                        <td>{% if ser_bas.luz_electrica %}SI{% else %}NO{% endif %}</td>
+                        <td>{% if ser_bas.telefono_linea_baja %}SI{% else %}NO{% endif %}</td>
+                        <td>{% if ser_bas.telefono_linea_celular %}SI{% else %}NO{% endif %}</td>
+                        <td>{% if ser_bas.heladera %}SI{% else %}NO{% endif %}</td>
+                        <td>{% if ser_bas.televisor %}SI{% else %}NO{% endif %}</td>
+                        <td>{% if ser_bas.otros %}SI{% else %}NO{% endif %}</td>
+                        <td>
+                          <a class="btn btn-xs"
+                            onclick="return abrir_modal('{% url 'pacientes:paciente_servicios_basicos_editar' ser_bas.id %}')">
+                            <i class="fa fa-pencil"></i>
+                          </a>
+                          <a class="btn btn-xs" title="Eliminar"
+                            onclick="return abrir_modal('{% url 'pacientes:paciente_servicios_basicos_eliminar' ser_bas.id %}')">
+                            <i class='fa fa-times-circle'></i>
+                          </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    {% endif %}
+                  </tbody>
+                </table>
+                  {% if servicio_basico.count == 0 %}
+                    <a class="btn btn-xs"
+                       onclick="return abrir_modal('{% url 'pacientes:paciente_servicios_basicos_crear' id_paciente %}')">
+                        <span class="fa fa-plus"></span>
+                    </a>
+                  {% endif %}
+            </div>
+            </div>
+          </div>
+        </div>
+        </div>
+     </div>
+</div>
+<div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1"></div>
+</div>
+{% endblock %}

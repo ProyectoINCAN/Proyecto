@@ -89,5 +89,39 @@ urlpatterns = [
     url(r'^agenda/(?P<agenda_id>\d+)/(?P<origen>\d+)/paciente/nuevo/$',
         pacienteViews.PacienteCreateByAgenda.as_view(), name='agenda_paciente_crear'),
 
+    # # vivienda del paciente
+    url(r'^paciente/(?P<paciente_id>\d+)/antedecentes_socio_economicos/$',
+        pacienteViews.PacienteAntecedentesView.as_view(), name='paciente_antedecentes_socio_economicos'),
+
+    url(r'^paciente/(?P<paciente_id>\d+)/vivienda/nuevo$',
+        pacienteViews.PacienteViviendaCreate.as_view(), name='paciente_vivienda_crear'),
+
+    url(r'^paciente/vivienda/(?P<vivienda_id>\d+)/editar/$',
+        pacienteViews.PacienteViviendaUpdate.as_view(), name='paciente_vivienda_editar'),
+    url(r'^paciente/vivienda/(?P<vivienda_id>\d+)/eliminar/$',
+        pacienteViews.PacienteViviendaDelete.as_view(), name='paciente_vivienda_eliminar'),
+
+    url(r'^paciente/(?P<paciente_id>\d+)/servicio_sanitario/nuevo$',
+        pacienteViews.PacienteServiciosSanitariosCreate.as_view(), name='paciente_servicio_sanitario_crear'),
+    url(r'^paciente/servicio_sanitario/(?P<servicio_id>\d+)/editar/$',
+        pacienteViews.PacienteServiciosSanitariosUpdate.as_view(), name='paciente_servicio_sanitario_editar'),
+    url(r'^paciente/servicio_sanitario/(?P<servicio_id>\d+)/eliminar/$',
+        pacienteViews.PacienteServiciosSanitarioDelete.as_view(), name='paciente_servicio_sanitario_eliminar'),
+
+    url(r'^paciente/(?P<paciente_id>\d+)/servicios_basicos/nuevo$',
+        pacienteViews.PacienteServiciosBasicosCreate.as_view(), name='paciente_servicios_basicos_crear'),
+    url(r'^paciente/servicios_basicos/(?P<servicio_id>\d+)/editar/$',
+        pacienteViews.PacienteServiciosBasicosUpdate.as_view(), name='paciente_servicios_basicos_editar'),
+    url(r'^paciente/servicios_basicos/(?P<servicio_id>\d+)/eliminar/$',
+        pacienteViews.PacienteServiciosBasicosDelete.as_view(), name='paciente_servicios_basicos_eliminar'),
+
+    url(r'^paciente/(?P<paciente_id>\d+)/acompanhante/$',
+        pacienteViews.PacienteAcompanhanteView.as_view(), name='paciente_acompanhante'),
+    url(r'^paciente/(?P<paciente_id>\d+)/acompanhante/nuevo$',
+        pacienteViews.PacienteAcompañanteCreate.as_view(), name='paciente_acompanhante_crear'),
+    url(r'^paciente/acompanhante/(?P<acompanhante_id>\d+)/editar/$',
+        pacienteViews.PacienteAcompanhanteUpdate.as_view(), name='paciente_acompanhante_editar'),
+    url(r'^paciente/acompanhante/(?P<acompanhante_id>\d+)/eliminar/$',
+        pacienteViews.PacienteAcompañanteDelete.as_view(), name='paciente_acompanhante_eliminar'),
 
 ]

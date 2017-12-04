@@ -1,0 +1,112 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+<style type="text/css">
+  .big-checkbox {width: 20px; height: 20px;}
+</style>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+      <form role="form" id="eventoForm"
+          {% if not object.id %}
+              action="{% url 'pacientes:paciente_servicios_basicos_crear' paciente.id %}" method="post">
+            {% else %}
+            action="{% url 'pacientes:paciente_servicios_basicos_editar' object.pk %}" method="post">
+            {% endif %}
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">Servicios Básicos</h4>
+      </div>
+      <div class="modal-body">
+		<div class="form-horizontal" >
+          {% csrf_token %}
+          <div class="form-group">
+            {{ form.luz_electrica.errors }}
+            <label class="control-label col-sm-3">{{form.luz_electrica.label}}</label>
+            <div class="col-sm-3">
+                {{ form.luz_electrica }}
+            </div>
+                {{ form.telefono_linea_baja.errors }}
+            <label class="control-label col-sm-3">{{form.telefono_linea_baja.label}}</label>
+            <div class="col-sm-3">
+                {{ form.telefono_linea_baja }}
+            </div>
+           </div>
+           <div class="form-group">
+              {{ form.telefono_linea_celular.errors }}
+              <label class="control-label col-sm-3">{{form.telefono_linea_celular.label}}</label>
+              <div class="col-sm-3">
+                  {{ form.telefono_linea_celular }}
+              </div>
+              {{ form.heladera.errors }}
+              <label class="control-label col-sm-3">{{form.heladera.label}}</label>
+              <div class="col-sm-3">
+                  {{ form.heladera }}
+              </div>
+          </div>
+          <div class="form-group">
+              {{ form.televisor.errors }}
+              <label class="control-label col-sm-3">{{form.televisor.label}}</label>
+              <div class="col-sm-3">
+                  {{ form.televisor }}
+              </div>
+              {{ form.otros.errors }}
+              <label class="control-label col-sm-3">{{form.otros.label}}</label>
+              <div class="col-sm-3">
+                  {{ form.otros }}
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
+        <button type="button" class="btn btn-default" onclick="return cerrar_modal()"><i class="fa fa-times"></i> Cancelar</button>
+      </div>
+		</form>
+    </div>
+
+  </div>
+<script src = "{% static 'js/jquery.min.js' %}"></script>
+<script src = "{% static 'js/bootstrap.min.js' %}"></script>
+<script src = "{% static 'js/select2.min.js' %}"></script>
+
+
+  <script language="JavaScript">
+
+
+  $(function () {
+    $('#id_seguro_medico').select2({ placeholder:"Seleccione una opción", allowClear: true});
+  });
+
+        $("#eventoForm").submit(function(e) {
+
+            var url = this.action; // the script where you handle the form input.
+            console.log(url)
+            $.ajax({
+                   type: "POST",
+                   url: url,
+                   data: $("#eventoForm").serialize(), // serializes the form's elements.
+                   success: function(data, status) {
+                       if (data.success){
+                           $('#popup').modal('hide');
+                           location.reload();
+                       }else {
+                           $('#eventoForm').html(data);
+                       }
+
+                   },
+                error: function(ajaxContext) {
+
+                   alert(ajaxContext.responseText);
+
+                },
+                done: function (response) {
+                    $('#popup').modal('hide');
+                    $('#popup').modal('hide');
+                }
+            });
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+	      });
+    </script>

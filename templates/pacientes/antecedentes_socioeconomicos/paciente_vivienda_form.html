@@ -1,0 +1,124 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+
+<style type="text/css">
+  .big-checkbox {width: 30px; height: 30px;}
+</style>
+<div class="modal-dialog">
+    <div class="modal-content">
+      <form role="form" id="eventoForm"
+          {% if not object.id %}
+              action="{% url 'pacientes:paciente_vivienda_crear' paciente.id %}" method="post">
+            {% else %}
+            action="{% url 'pacientes:paciente_vivienda_editar' object.pk %}" method="post">
+            {% endif %}
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">Vivienda</h4>
+      </div>
+      <div class="modal-body">
+		<div class="form-horizontal" >
+          {% csrf_token %}
+          <div class="form-group">
+              {{ form.pared.errors }}
+              <label class="control-label col-sm-3">{{form.pared.label}}</label>
+              <div class="col-sm-8">
+                  {{ form.pared }}
+              </div>
+          </div>
+          <div class="form-group">
+              {{ form.techo.errors }}
+              <label class="control-label col-sm-3">{{form.techo.label}}</label>
+              <div class="col-sm-8">
+                  {{ form.techo }}
+              </div>
+          </div>
+          <div class="form-group">
+              {{ form.piso.errors }}
+              <label class="control-label col-sm-3">{{form.piso.label}}</label>
+              <div class="col-sm-8">
+                  {{ form.piso }}
+              </div>
+          </div>
+          <div class="form-group">
+              {{ form.dependencia.errors }}
+              <label class="control-label col-sm-3">{{form.dependencia.label}}</label>
+              <div class="col-sm-8">
+                  {{ form.dependencia }}
+              </div>
+          </div>
+            <div class="form-group">
+                {{ form.nro_dormitorio.errors }}
+				<label class="control-label col-sm-3">{{form.nro_dormitorio.label}}</label>
+				<div class="col-sm-2">
+					{{ form.nro_dormitorio }}
+				</div>
+              {{ form.nro_personas_hogar.errors }}
+				<label class="control-label col-sm-4">{{form.nro_personas_hogar.label}}</label>
+				<div class="col-sm-2">
+					{{ form.nro_personas_hogar }}
+				</div>
+			</div>
+          <div class="form-group">
+                            {{ form.comparte_cama.errors }}
+            <label class="control-label col-sm-3">{{form.hacinamiento.label}}</label>
+            <div class="col-sm-3">
+                {{ form.hacinamiento }}
+            </div>
+              {{ form.comparte_cama.errors }}
+            <label class="control-label col-sm-3">{{form.comparte_cama.label}}</label>
+            <div class="col-sm-3">
+                {{ form.comparte_cama }}
+            </div>
+          </div>
+
+		</div>
+
+		  </div>
+      <div class="modal-footer">
+        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
+        <button type="button" class="btn btn-default" onclick="return cerrar_modal()"><i class="fa fa-times"></i> Cancelar</button>
+      </div>
+		</form>
+    </div>
+
+  </div>
+<script src = "{% static 'js/jquery.min.js' %}"></script>
+<script src = "{% static 'js/bootstrap.min.js' %}"></script>
+<script src = "{% static 'js/select2.min.js' %}"></script>
+
+
+  <script language="JavaScript">
+
+        $("#eventoForm").submit(function(e) {
+
+            var url = this.action; // the script where you handle the form input.
+            console.log(url)
+            $.ajax({
+                   type: "POST",
+                   url: url,
+                   data: $("#eventoForm").serialize(), // serializes the form's elements.
+                   success: function(data, status) {
+                       if (data.success){
+                           $('#popup').modal('hide');
+                           location.reload();
+                       }else {
+                           $('#eventoForm').html(data);
+                       }
+
+                   },
+                error: function(ajaxContext) {
+
+                   alert(ajaxContext.responseText);
+
+                },
+                done: function (response) {
+                    $('#modalSeguro').modal('hide');
+                    $('#popup').modal('hide');
+                }
+            });
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+	      });
+    </script>

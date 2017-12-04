@@ -16,6 +16,7 @@
                 <li>{% block nav-home %}<a href="{% url 'pacientes:paciente_editar' id_paciente %}" class="active">Datos Básicos</a>{% endblock %}</li>
                 <li><a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a></li>
                 <li class="active">{% block nav-about %}<a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a>{% endblock %}</li>
+                <li><a href="{% url 'pacientes:paciente_acompanhante' id_paciente %}">Acompañante</a></li>
                 <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
                 <li><a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}">Otros Datos</a></li>
             </ul>
