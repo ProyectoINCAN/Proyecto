@@ -97,7 +97,9 @@
                    <td>
                      <a href="{% url 'consultorios:ficha_clinica_paciente' paciente.pk %}">
                        <span class="label label-primary">Ficha</span></a>
-                     <span class="label label-success">Historia Clinica</span>
+                     <a href="{% url 'consultorios:historia_by_paciente' paciente.pk %}">
+                       <span class="label label-success">Historia Clinica</span>
+                     </a>
                    </td>
                  </tr>
                {% endfor %}

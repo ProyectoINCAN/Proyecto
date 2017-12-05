@@ -24,12 +24,12 @@ jQuery(document).ready(function($) {
     </div>
 
     <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="#">Inicio</a></li>
+      <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
       <li class="active">Listado de Usuarios</li>
     </ol>
     <div class="wrapper-md">
 
-
+      {% include 'base/messages.html' %}
       <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-12">
           <div class="panel panel-default">
@@ -48,7 +48,9 @@ jQuery(document).ready(function($) {
                     <th style="width:5%">Usuario</th>
                     <th style="width:30%">Nombres y apellidos</th>
 
-                    <th style="width:30%">Activo</th>
+                    <th>Tipo de usuario</th>
+
+                    <th>Activo</th>
                   </tr>
                   </thead>
                 <tbody>
@@ -56,8 +58,8 @@ jQuery(document).ready(function($) {
                   <tr class="clickable-row" data-href="{% url 'principal:user_update_global' usuario.id %}">
                     <td style="width:5%">{{ usuario.username }}</td>
                     <td style="width:30%">{{ usuario.first_name }} {{ usuario.last_name }}</td>
-
-                    <td style="width:30%">{% if usuario.is_active %}Si{% else %}No{% endif %}</td>
+                    <td>{{ usuario.grupo }}</td>
+                    <td style="width:30%">{% if usuario.activo %}Si{% else %}No{% endif %}</td>
                   </tr>
                 {% endfor %}
                 </tbody>

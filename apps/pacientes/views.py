@@ -22,6 +22,7 @@ import datetime
 import calendar
 from apps.agendamientos.models import Agenda
 
+
 def paciente_delete(request, id_paciente):
     paciente = Paciente.objects.get(id=id_paciente)
     paciente_direccion = None
@@ -58,7 +59,6 @@ class PacienteOtrosDatosView(ListView):
 
     def get_antecedentes(self):
         return Vivienda.objects.filter(paciente=self.kwargs['paciente_id'])
-
 
     def get_context_data(self, **kwargs):
         context = super(PacienteOtrosDatosView, self).get_context_data(**kwargs)

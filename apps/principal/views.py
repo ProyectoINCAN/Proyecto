@@ -11,13 +11,9 @@ from apps.pacientes.models import Distrito, Nacionalidad, Departamento, Barrio
 import json
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
-from django.contrib.auth.forms import UserCreationForm
-from django.core.urlresolvers import reverse_lazy
-from django.contrib.auth.models import Group
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
-from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 
 
@@ -74,28 +70,41 @@ def barrio(request, id_distrito):
     data = serializers.serialize('json', barrio)
     return JsonResponse(data, safe=False)
 
+
 class UsuarioList(LoginRequiredMixin, ListView):
     model = User
     context_object_name = 'usuarios'
     template_name = 'principal/usuarios/usuario_list.html'
 
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            return User.objects.all()
-        else:
-            return User.objects.filter(is_superuser=False)
+    def get_usuarios(self):
+        usuarios = User.objects.filter(is_superuser=False)
+        listado_usuarios = []
+        for usu in usuarios:
+            grupo = usu.groups.all()
+            listado_usuarios.append({
+                'id': usu.id,
+                'username': usu.username,
+                'last_name': usu.last_name,
+                'first_name': usu.first_name,
+                'activo': usu.is_active,
+                'grupo': grupo.values()[0]['name']
+            })
+        return listado_usuarios
+
+    def get_context_data(self, **kwargs):
+        context = super(UsuarioList, self).get_context_data(**kwargs)
+        context.update({'usuarios': self.get_usuarios()})
+        return context
 
 
 class UsuarioCreateView(CreateView):
     model = User
     template_name = 'principal/usuarios/usuario_form.html'
     form_class = UserForm
-    success_url = reverse_lazy('pacientes:index')
 
     def get_success_url(self):
+        messages.success(self.request, "Se ha creado un nuevo usuario.")
         return reverse('principal:user_list_global')
-
-
 
 
 def user_update_view(request, user_id):
@@ -131,14 +140,13 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = 'usuario'
 
     def post(self, request, *args, **kwargs):
-        try:
-            return self.delete(request, *args, **kwargs)
-        except ProtectedError:
-            # render the template with your message in the context
-            # or you can use the messages framework to send the message
-            print('Estado: PROTEGIDO')
-            messages.error(request, 'No se puede borrar el usuario: ' + self.object.username)
-            return HttpResponseRedirect(reverse('principal:user_list_global'))
+        """desactivamos al usuario"""
+        user = User.objects.get(pk=self.kwargs['user_id'])
+        user.is_active = False
+        user.save()
+        messages.info(self.request, 'Se ha desactivado al usuario {}'.format(user.username))
+
+        return HttpResponseRedirect(reverse('principal:user_list_global'))
 
     def get_success_url(self):
         return reverse('principal:user_list_global')

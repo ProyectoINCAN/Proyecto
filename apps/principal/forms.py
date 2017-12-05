@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User, Group
 from django import forms
+from django.contrib import messages
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AdminPasswordChangeForm
+from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 from apps.consultorios.models import Medico, Enfermero, Administrativo
-
 
 
 class UserForm(forms.ModelForm):
@@ -17,9 +18,8 @@ class UserForm(forms.ModelForm):
                                             attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}))
 
     administrativo = forms.ModelChoiceField(queryset=Administrativo.objects.all(), required=False,
-                                        widget=forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}))
-
-
+                                            widget=forms.Select(attrs={'class': 'form-control selectsearch',
+                                                                       'style': 'width: 100%'}))
     MEDICO = 1
     ENFERMERO = 2
     ADMINISTRATIVO = 3
@@ -42,7 +42,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'password1', 'password2',
+        fields = ('username', 'password1', 'password2',
                   'tipos', 'medicos', 'enfermeros', 'administrativo')
 
         labels = {
@@ -51,9 +51,6 @@ class UserForm(forms.ModelForm):
         }
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control','required':'required'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control','style':'text-transform:uppercase;','required':'required'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control','style':'text-transform:uppercase;','required':'required'}),
-
         }
 
     def __init__(self, *args, **kwargs):
@@ -72,33 +69,50 @@ class UserForm(forms.ModelForm):
         return password2
 
     def clean(self):
-        if int(self.cleaned_data.get('tipos'))== 1:
+        # tipo 1 corresponde a los medicos, 2 corresponde a los administrativo y 3 corresponde a enfermeros.
+        if int(self.cleaned_data.get('tipos')) == 1:
             if not self.cleaned_data.get('medicos'):
                 self.add_error('medicos', 'Debe seleccionar el médico')
-        elif int(self.cleaned_data.get('tipos'))== 2:
-            if not self.self.cleaned_data.get('enfermero'):
+        elif int(self.cleaned_data.get('tipos')) == 2:
+            if not self.data.get('enfermeros'):
                 self.add_error('enfermero', 'Debe seleccionar el enfermero')
-        elif int(self.cleaned_data.get('tipos'))== 3:
-            if not self.self.cleaned_data.get('administrativo'):
+        elif int(self.cleaned_data.get('tipos')) == 3:
+            if not self.data.get('administrativo'):
                 self.add_error('administrativo', 'Debe seleccionar un administrativo')
 
-    def save(self, commit=True):
-        user = super(UserForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        user.is_active = True
-        user.save()
-        grupo = Group.objects.get(pk=self.cleaned_data['tipos'])
-        grupo.user_set.add(user)
+        # validar el nombre de usuario
+        usuario = self.cleaned_data.get('username')
+        if User.objects.filter(username=usuario).exists():
+            self.add_error('username', 'Ya existe un usuario con el nombre {}'.format(usuario))
 
-        if int(self.cleaned_data.get('tipos'))== 1:
-            medico = self.cleaned_data.get('medicos')
-            medico.usuario = user
-            medico.save()
-        return user
+    def save(self, commit=True):
+        with transaction.atomic():
+            user = super(UserForm, self).save(commit=False)
+            user.set_password(self.cleaned_data["password1"])
+            user.is_active = True
+            user.save()
+            grupo = Group.objects.get(pk=self.cleaned_data['tipos'])
+            grupo.user_set.add(user)
+
+            if int(self.cleaned_data.get('tipos'))== 1:
+                medico = self.cleaned_data.get('medicos')
+                medico.usuario = user
+                medico.save()
+            elif int(self.cleaned_data.get('tipos')) == 2:
+                enfermero = self.cleaned_data.get('enfermeros')
+                enfermero.usuario = user
+                enfermero.save()
+            # administrativo
+            elif int(self.cleaned_data.get('tipos')) == 3:
+                administrativo = self.cleaned_data.get('administrativos')
+                administrativo.usuario = user
+                administrativo.save()
+
+            return user
 
 
 class UserEditForm(forms.ModelForm):
-    #password = ReadOnlyPasswordHashField(label=_("Password"))
+    # password = ReadOnlyPasswordHashField(label=_("Password"))
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'is_active')

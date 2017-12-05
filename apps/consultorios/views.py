@@ -1087,16 +1087,16 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
         context = self.get_context_data(**kwargs)
 
         medico = Medico.objects.get(usuario=request.user)
-        #obtenemos las especialidades del médico
+        # Obtenemos las especialidades del médico
         especialidades = medico.especialidad.all()
 
-        #obtenemos las consultas relacionadas al médico
-        #consultas = Consulta.objects.filter(medico=medico)
+        # Obtenemos las consultas relacionadas al médico
+        # Consultas = Consulta.objects.filter(medico=medico)
         detalles = ConsultaDetalle.objects.filter(consulta__medico=medico)
 
-
         consultas_realizadas = ConsultaDetalle.objects.filter(consulta__medico=medico,
-                                       estado=EstadoConsultaDetalle.objects.get(codigo='F')).count()
+                                                              estado=EstadoConsultaDetalle.objects.get(codigo='F')).\
+            count()
 
         consultas_canceladas = ConsultaDetalle.objects.filter(consulta__medico=medico,
                                                               estado=EstadoConsultaDetalle.objects.get(
@@ -1160,7 +1160,7 @@ class DashboardMedico(LoginRequiredMixin, TemplateView):
 
             genero_femenino.append(consulta_femenina.count())
 
-            #obtenemos la cantidad de pacientes que se agendaron en una especialidad
+            # obtenemos la cantidad de pacientes que se agendaron en una especialidad
             paciente_by_especialidad = ConsultaDetalle.objects.filter(consulta__especialidad=especialidad).\
                 values('paciente').distinct().count()
 
@@ -1637,3 +1637,49 @@ class PacienteFichaClinicaPDF(LoginRequiredMixin, View):
             response['Content-Disposition'] = content
             return response
         return HttpResponse("Not found")
+
+
+class ConsultaHistoriaByPacienteView(LoginRequiredMixin, TemplateView):
+    """
+    permite obtener la historia clinica completa del paciente.
+    """
+    template_name = 'consultorios/consulta/consulta_historia_paciente.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        pacientes = Paciente.objects.get(pk=self.kwargs['paciente_id'])
+
+        # obtenemos la consuta detalle
+        #detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+
+        # actualizamos el estado del detalle de la consulta a "en proceso"
+
+
+        anamnesis = Anamnesis.objects.filter(paciente__id=self.kwargs['paciente_id']).order_by('pk')
+
+        diagnosticos = Diagnostico.objects.filter(paciente__id=self.kwargs['paciente_id']).order_by('pk')
+
+        evoluciones = EvolucionPaciente.objects.filter(paciente__id=self.kwargs['paciente_id']).order_by('pk')
+
+        ordenes = ConsultaOrdenEstudio.objects.filter(paciente__id=self.kwargs['paciente_id']).order_by('pk')
+
+        prescripciones = ConsultaPrescripcion.objects.filter(paciente__id=self.kwargs['paciente_id']).order_by('pk')
+
+        tratamientos = Tratamiento.objects.filter(paciente__id=self.kwargs['paciente_id']).order_by('pk')
+
+        context.update({
+            'diagnosticos': diagnosticos,
+            'evoluciones': evoluciones,
+            'ordenes': ordenes,
+            'prescripciones': prescripciones,
+            'tratamientos': tratamientos,
+            'anamnesis': anamnesis,
+        })
+
+        # return super(TemplateView, self).render_to_response(context)
+        return render(request=request, template_name=self.template_name, context=context)
+
+
+
+
