@@ -658,6 +658,8 @@ class ConsultaDetalleVolver(LoginRequiredMixin, View):
         consulta_det.hora_inicio = None
         consulta_det.save()
 
+        verificar_estado_consulta(consulta_det.consulta)
+
         return JsonResponse({'success': True})
 
 

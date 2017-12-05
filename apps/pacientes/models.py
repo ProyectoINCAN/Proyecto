@@ -438,12 +438,12 @@ class Vinculo(models.Model):
 
 class Acompanhante(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
-    tipo_doc =models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False)
+    tipo_doc = models.ForeignKey(TipoDoc, models.DO_NOTHING, blank=False, null=False, default='CI')
     nombres = UpperCharField(max_length=100, blank=False, uppercase=True)
     apellidos = UpperCharField(max_length=100, blank=False, uppercase=True)
-    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento", unique=True)
-    tipo_telefono = models.ForeignKey(TipoTelefono, models.DO_NOTHING, blank=False, null=False)
-    numero=UpperCharField(max_length=80, blank=False, null=False, uppercase=True)
+    nro_doc = UpperCharField(max_length=15, blank=False, null=False, verbose_name="Número de documento")
+    tipo_telefono = models.ForeignKey(TipoTelefono, models.DO_NOTHING, blank=False, null=False, default='M')
+    numero = UpperCharField(max_length=80, blank=False, null=False, uppercase=True, default='')
     vinculo = models.ForeignKey(Vinculo, on_delete=DO_NOTHING, blank=False, null=False)
 
     def __str__(self):
@@ -630,15 +630,15 @@ class ServicioBasico(models.Model):
 
 
 class Vivienda(models.Model):
-    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
-    pared = models.ForeignKey(Pared, models.DO_NOTHING, blank=False, null=False)
-    techo = models.ForeignKey(Techo, models.DO_NOTHING, blank=False, null=False)
-    piso = models.ForeignKey(Piso, models.DO_NOTHING, blank=False, null=False)
+    paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=True, null=True)
+    pared = models.ForeignKey(Pared, models.DO_NOTHING, blank=True, null=True)
+    techo = models.ForeignKey(Techo, models.DO_NOTHING, blank=True, null=True)
+    piso = models.ForeignKey(Piso, models.DO_NOTHING, blank=True, null=True)
     dependencia = models.ManyToManyField(Dependencia)
-    hacinamiento = models.BooleanField(default=True)
-    nro_personas_hogar = models.IntegerField(blank=False, verbose_name="Nro. de Personas en el Hogar")
-    nro_dormitorio = models.IntegerField(blank=False, verbose_name="Nro. de Dormitorios")
-    comparte_cama = models.BooleanField(default=True)
+    hacinamiento = models.BooleanField(default=False)
+    nro_personas_hogar = models.IntegerField(blank=True, verbose_name="Nro. de Personas en el Hogar")
+    nro_dormitorio = models.IntegerField(blank=True, default=0, verbose_name="Nro. de Dormitorio")
+    comparte_cama = models.BooleanField(default=False)
 
     def __str__(self):
         return self.id
