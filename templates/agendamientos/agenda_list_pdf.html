@@ -1,0 +1,101 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>Resumen de la Consulta</title>
+    <style type="text/css">
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+      table, th, td {
+    border: 1px solid black;
+}
+    </style>
+  </head>
+  <body>
+    <div class="app-content-body">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row">
+            <h1 align="center"><b>SIHINCAN</b></h1>
+            <h1 align="center"><b>Agenda: {{ agenda.get_dr_full_name }}</b></h1>
+          </div>
+          <h2><b><u>1. Datos de la agenda</u></b></h2>
+          <div class="row">
+            <div class="col-sm-6">
+
+              <span class="font-bold">Fecha:</span>
+              <span class="font-normal">{{ agenda.fecha }}</span>
+              <br/>
+              <span class="font-bold">Especialidad:</span>
+              <span class="font-normal">{{ agenda.especialidad }}
+
+              </span>
+              <br/>
+
+            </div>
+            </div>
+
+
+            <br>
+            <div class="row">
+                <div class="col-sm-4">
+                  <h2><b><u>Detalles:</u></b></h2>
+                </div>
+                <div class="col-sm-4 col-lg-11">
+                    {% if detalles %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th><b>Nro.</b></th>
+                                <th><b>Ficha</b></th>
+                                <th><b>Nombre y apellido</b></th>
+                                <th><b>Edad</b></th>
+                                <th><b>Ciudad</b></th>
+                                <th><b>Teléfono</b></th>
+                                <th><b>Confirmado</b></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in detalles %}
+                            <tr>
+                                <td>{{ data.orden }}</td>
+                                <td>{{ data.paciente.nro_doc }}</td>
+                                <td>{{ data.paciente.get_full_name }}</td>
+                                <td>{{ data.paciente.get_edad }}</td>
+                                <td>{{ data.paciente.distrito }}</td>
+                                <td>{{ "Establecer teléfono" }}</td>
+                                <td>{{ data.confirmado }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        {{ "SIN ESPECIFICAR" }}
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+
+
+
+        </div>
+    </div>
+    </div>
+  </body>
+
+</html>
+
+

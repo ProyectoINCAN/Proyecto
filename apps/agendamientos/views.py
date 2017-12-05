@@ -5,8 +5,9 @@ from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import get_template
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -31,6 +32,7 @@ from apps.pacientes.models import Paciente
 # def index(request):
 #     # form = AgendaForm()
 #     return render(request, 'agendamientos/index.html')
+from utils.generate_pdf import render_to_pdf
 
 
 def agenda_nuevo(request, origen):
@@ -143,7 +145,6 @@ class AgendaByFechaList(LoginRequiredMixin, TemplateView):
                         })
 
         return super(TemplateView, self).render_to_response(context)
-
 
 
 # def agenda_edit(request, agenda_id):
@@ -367,6 +368,32 @@ def agenda_detalle_list(request, agenda_id, origen):
     contexto = {'agenda': agenda, 'agenda_detalle': agenda_detalle, 'origen': origen, 'origen_url': origen_url,
                 'form': form}
     return render(request, 'agendamientos/agenda_detalle_by_agenda.html', contexto)
+
+
+class AgendaDetalleListPDF(View):
+
+    def get(self, request, *args, **kwargs):
+        template = get_template('agendamientos/agenda_list_pdf.html')
+        agenda = Agenda.objects.get(pk=self.kwargs['agenda_id'])
+        detalles = AgendaDetalle.objects.filter(agenda=agenda)
+
+        context = {
+            'agenda': agenda,
+            'detalles': detalles
+        }
+
+        html = template.render(context)
+        pdf = render_to_pdf('agendamientos/agenda_list_pdf.html', context)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = "Agenda-%s-%s-%s.pdf" % (agenda.especialidad, agenda.medico.get_dr_full_name(), agenda.fecha)
+            content = "inline; filename='%s'" % filename
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename='%s'" % filename
+            response['Content-Disposition'] = content
+            return response
+        return HttpResponse("Not found")
 
 
 class AgendaDetalleCreateView(CreateView):

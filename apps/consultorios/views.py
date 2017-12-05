@@ -1485,7 +1485,6 @@ class HistoriaClinicaPDF(View):
 
         detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
 
-
         # anamnesis del paciente
         anamnesis = Anamnesis.objects.filter(consulta_detalle=detalle).order_by('-pk')
 
@@ -1605,7 +1604,7 @@ class PacienteFichaClinicaPDF(LoginRequiredMixin, View):
         template = get_template('pacientes/ficha_clinica_pdf.html')
 
         paciente = Paciente.objects.get(pk=self.kwargs['paciente_id'])
-        telefono = Telefono.objects.get(pk=self.kwargs['paciente_id'])
+        telefono = Telefono.objects.get(paciente__id=self.kwargs['paciente_id'])
         direcciones = Direccion.objects.filter(paciente__id=self.kwargs['paciente_id'])
         padres = PacientePadre.objects.filter(paciente__id=self.kwargs['paciente_id'])
         seguros = PacienteSeguroMedico.objects.filter(paciente__id=self.kwargs['paciente_id'])
