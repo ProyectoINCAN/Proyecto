@@ -598,52 +598,11 @@ class PacienteUpdate(UpdateView):
                         'form2': self.form_class(instance=paciente),
                         'id_paciente': self.kwargs['pk']})
         return context
-    """
-    def get_context_data(self, **kwargs):
-        context = super(PacienteUpdate, self).get_context_data(**kwargs)
-        pk_paciente = self.kwargs.get('pk', 0)
-        query = (
-            '''
-            SELECT MAX(id)
-            FROM pacientes_telefono
-            WHERE paciente_id =''' + pk_paciente + '''
-                                            '''
-        )
-        print("query ", query)
-        cursor = connection.cursor()
-        cursor.execute(query)
-        results = cursor.fetchall()
-        for r in results:
-            codigo_telefono = r[0]
-        print("codigo tel", codigo_telefono)
-        telefono = self.model.objects.get(id=codigo_telefono)
-        paciente = self.second_model.objects.get(id=telefono.paciente_id)
-        if 'form' not in context:
-            context['form'] = self.form_class(instance=telefono)
-        if 'form2' not in context:
-            context['form2'] = self.second_form_class(instance=paciente)
-            context['form'] = self.form_class(instance=telefono)
-        context['id'] = codigo_telefono
-        context['id_paciente'] = pk_paciente
-        return context
-    """
+
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        id_paciente = kwargs['pk']
-        query = (
-            '''
-            SELECT MAX(id)
-            FROM pacientes_telefono
-            WHERE paciente_id =''' + id_paciente + '''
-                                                    '''
-        )
-        cursor = connection.cursor()
-        cursor.execute(query)
-        results = cursor.fetchall()
-        for r in results:
-            id_telefono = r[0]
-        telefono = self.model.objects.get(id = id_telefono)
-        paciente = self.second_model.objects.get(id=telefono.paciente_id)
+        paciente = Paciente.objects.get(pk=self.kwargs['pk'])
+        telefono = Telefono.objects.get(paciente=paciente)
+
         form = self.form_class(request.POST, instance=telefono)
         form2 = self.second_form_class(request.POST, instance=paciente)
         if form.is_valid() and form2.is_valid():
@@ -651,7 +610,7 @@ class PacienteUpdate(UpdateView):
             form2.save()
         messages.success(request, "Se ha actualizado correctamente!!!")
         return HttpResponseRedirect(reverse('pacientes:paciente_editar',
-                                            kwargs={'pk': id_paciente}))
+                                            kwargs={'pk': paciente.pk}))
 
 
 class PacienteDireccionDelete(LoginRequiredMixin, DeleteView):
