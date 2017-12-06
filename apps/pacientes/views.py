@@ -281,6 +281,7 @@ class PacientePadreDelete(LoginRequiredMixin, DeleteView):
         messages.success(request, 'Se ha eliminado los datos del padre de paciente {}'.format(paciente.get_full_name()))
         return JsonResponse({'paciente': paciente.id })
 
+
 class PacienteMadreList(ListView):
     template_name = 'pacientes/padres/madre_list.html'
     model = PacientePadre
@@ -360,7 +361,6 @@ class PacienteMadreUpdate(LoginRequiredMixin, UpdateView):
                         'paciente': self.get_paciente(),
                         })
         return context
-
 
     def form_valid(self, form):
         form.save()

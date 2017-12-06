@@ -42,17 +42,30 @@ def agenda_nuevo(request, origen):
             data = form.save()  # guarda
             messages.success(request, 'Datos guardados')
             return redirect('agendamientos:agenda_detalle', data.id, origen)
+        else:
+            form = AgendaForm(request.POST)
+            origen_url = get_origen_url_agendamiento(origen)
+            return render(request, 'agendamientos/agenda_form.html', {'form': form, 'origen_url': origen_url})
     else:
-        print("metodo noes POST")
         form = AgendaForm()
     origen_url = get_origen_url_agendamiento(origen)
     return render(request, 'agendamientos/agenda_form.html', {'form': form, 'origen_url': origen_url})
 
 
-# def agenda_list(request):
-#     agenda = Agenda.objects.all().order_by('id')
-#     contexto = {'agendas':agenda}
-#     return render(request, 'agendamientos/agenda_list.html', contexto)
+class AgendaNuevaCreateView(LoginRequiredMixin, CreateView):
+    model = Agenda
+    form_class = AgendaForm
+    template_name = 'agendamientos/agenda_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AgendaNuevaCreateView, self).get_context_data(**kwargs)
+        context.update({'origen_url': get_origen_url_agendamiento(self.kwargs['origen'])})
+        return context
+
+    def form_valid(self, form):
+        data = form.save()
+        messages.success(self.request, 'Datos guardados')
+        return redirect('agendamientos:agenda_detalle', data.id, self.kwargs['origen'])
 
 
 class AgendaList(TemplateView):

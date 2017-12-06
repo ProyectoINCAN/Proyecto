@@ -33,12 +33,12 @@ label { position: absolute; text-align:right; width:130px; }
         <form class="form-horizontal" method="POST">
             {% csrf_token %}
             <div class="form-group">
-             {{ form.medico.error }}
+             {{ form.medico.errors }}
              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.medico.label }}:</label>
              <div class="col-lg-4 col-md-3 col-sm-4">
                  {{form.medico}}
              </div>
-             {{ form.especialidad.error }}
+             {{ form.especialidad.errors }}
              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.especialidad.label }}:</label>
              <div class="col-lg-4 col-md-3 col-sm-4">
                  {{form.especialidad}}
@@ -46,12 +46,12 @@ label { position: absolute; text-align:right; width:130px; }
             </div>
 
             <div class="form-group">
-                {{ form.fecha.error }}
+                {{ form.fecha.errors }}
                  <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.fecha.label}}</label>
                  <div class="col-lg-4 col-md-3 col-sm-4">
                      {{form.fecha}}
                  </div>
-                {{ form.turno.error }}
+                {{ form.turno.errors }}
                  <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.turno.label}}</label>
                  <div class="col-lg-4 col-md-3 col-sm-4">
                      {{ form.turno }}
@@ -59,12 +59,12 @@ label { position: absolute; text-align:right; width:130px; }
             </div>
 
             <div class="form-group">
-                  {{ form.cantidad.error }}
+                  {{ form.cantidad.errors }}
                  <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.cantidad.label}}</label>
                  <div class="col-lg-4 col-md-3 col-sm-4">
                      {{form.cantidad}}
                  </div>
-                 {{ form.estado.error }}
+                 {{ form.estado.errors }}
                  <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.estado.label}}</label>
                  <div class="col-lg-4 col-md-3 col-sm-4">
                      {{ form.estado }}

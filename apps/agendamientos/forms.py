@@ -1,9 +1,13 @@
+import datetime
+
 from django import forms
 
 
 from apps.agendamientos.models import Agenda, AgendaDetalle
 #from django_select2 import forms as select2form
 from django_select2 import forms as select2form
+
+from apps.consultorios.models import HorarioMedico, DiasSemana
 
 
 class AgendaForm(forms.ModelForm):
@@ -38,6 +42,28 @@ class AgendaForm(forms.ModelForm):
             'estado': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
         }
 
+    def clean(self):
+
+        fecha = self.data.get('fecha')
+        if fecha:
+
+            dia = datetime.datetime.strptime(fecha, '%d/%m/%Y').weekday()
+            # sumamos dos dia a los dias para basarnos en la tabla dias de la semana
+            # en caso de ser (6) domingo se setea a uno(1)
+            if dia == 6:
+                dia = 1
+            else:
+                dia += 2
+            medico = self.cleaned_data.get('medico')
+            turno = self.cleaned_data.get('turno')
+            if not HorarioMedico.objects.filter(medico=medico, dia_semana__id=dia, turno=turno).exists():
+                dias = HorarioMedico.objects.filter(medico=medico)
+                d = ' '
+                for dia in dias:
+                    d += dia.dia_semana.nombre + ' Turno:' + dia.turno.nombre + ' '
+                self.add_error('fecha', 'Los días de atención son  {}'.format(d))
+        else:
+            pass
 
 class AgendaDetalleForm(forms.ModelForm):
     confirmado=forms.BooleanField(initial=True)
