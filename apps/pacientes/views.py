@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import TemplateView, View
 from django.views.generic.list import ListView
 
+from apps import pacientes
 from apps.consultorios.models import Administrativo
 from apps.pacientes.forms import *
 from apps.pacientes.models import *
@@ -582,13 +583,22 @@ class PacienteCreateByAgenda(LoginRequiredMixin, CreateView):
 
 
 class PacienteUpdate(UpdateView):
-    second_model = Paciente
-    model = Telefono
+    model = Paciente
+    second_model = Telefono
     template_name = 'pacientes/paciente_form.html'
-    form_class = TelefonoForm
-    second_form_class = PacienteForm
+    second_form_class = TelefonoForm
+    form_class = PacienteForm
     success_url = reverse_lazy('pacientes:index')
 
+    def get_context_data(self, **kwargs):
+        context = super(PacienteUpdate, self).get_context_data(**kwargs)
+        telefono = Telefono.objects.get(paciente__id=self.kwargs['pk'])
+        paciente = Paciente.objects.get(pk=self.kwargs['pk'])
+        context.update({'form': self.second_form_class(instance=telefono),
+                        'form2': self.form_class(instance=paciente),
+                        'id_paciente': self.kwargs['pk']})
+        return context
+    """
     def get_context_data(self, **kwargs):
         context = super(PacienteUpdate, self).get_context_data(**kwargs)
         pk_paciente = self.kwargs.get('pk', 0)
@@ -616,7 +626,7 @@ class PacienteUpdate(UpdateView):
         context['id'] = codigo_telefono
         context['id_paciente'] = pk_paciente
         return context
-
+    """
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         id_paciente = kwargs['pk']
