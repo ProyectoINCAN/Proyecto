@@ -4,7 +4,7 @@
     <br>
     <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li><a href="#">Inicio</a></li>
-      <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Dia</a></li>
+      <li>Consulta del Día</li>
     </ol>
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -50,7 +50,6 @@
                 </div>
             </div>
 
-
             {% if detalle.estado.codigo == "C" %}
             <div class="row">
                 <div class="col-xs-4 col-md-2 col-lg-3">
@@ -59,10 +58,10 @@
                 {{ detalle.estado.nombre }}
             </div>
             {% endif %}
-
+            <hr>
             <div class="row">
                 <div class="col-sm-4">
-                    <b>Resumen de la anamnesis:</b>
+                    <b><u>ANAMNESIS:</u></b>
                 </div>
                 <div class="col-sm-11 col-lg-11">
                     {% for data in anamnesis %}
@@ -73,7 +72,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                    <b>Resumen del diagnóstico:</b>
+                    <b><u>DIAGNÓSITCO:</u></b>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if diagnosticos %}
@@ -103,7 +102,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                    <b>Resumen de evolución del paciente:</b>
+                    <b><u>EVOLUCIÓN:</u></b>
                 </div>
                 <div class="col-sm-11 col-lg-11">
                     {% if evoluciones %}
@@ -118,7 +117,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4 col-lg-11">
-                    <b>Resumen de la orden de estudio:</b>
+                    <b><u>ORDEN DE ESTUDIO:</u></b>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if ordenes %}
@@ -146,7 +145,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                    <b>Resumen de la prescripción:</b>
+                    <b><u>PRESCRIPCIÓN:</u></b>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if prescripciones %}
@@ -176,7 +175,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                    <b>Resumen del tratamiento:</b>
+                    <b><u>TRATAMIENTO:</u></b>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if tratamientos %}
