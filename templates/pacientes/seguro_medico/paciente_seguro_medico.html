@@ -27,7 +27,6 @@
               <li><a href="{% url 'pacientes:paciente_antedecentes_socio_economicos' id_paciente %}">Antecedentes Socio-Económicos</a></li>
             </ul>
             </div>
-
        <div class="row">
          <div class="tab-content" id="panel_tab">
           <div class="tab-pane active" id="tab_seguro_medico">
@@ -76,7 +75,55 @@
             </div>
           </div>
         </div>
+       </div>
+       <div class="row">
+         <div class="tab-content" id="panel_tab_correo">
+          <div class="tab-pane active" id="tab_correo">
+           <div class="form-group" id="panel_correo_form_group">
+              <label class="control-label col-lg-2 col-sm-4">Correo Electrónico:</label>
+              <div id="panel_correo" class="col-lg-8 col-sm-8">
+                <table class="table table-striped responsive-table">
+                  <thead>
+                  <tr>
+                    <th>Tipo</th>
+                    <th>Direcci&oacute;n</th>
+                    <th>Acción</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% if correos %}
+                    {% for correo in correos %}
+                      <tr>
+                        <td>{{ correo.tipo }}</td>
+                        <td>{{ correo.direccion }}</td>
+                        <td>
+                          <a class="btn btn-xs"
+                             onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_crear' id_paciente %}')"><span class="fa fa-plus"></span>
+                          </a>
+                          <a class="btn btn-xs"
+                            onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_editar' correo.id %}')">
+                            <i class="fa fa-pencil"></i>
+                          </a>
+                          <a class="btn btn-xs" title="Eliminar"
+                            onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_eliminar' correo.id %}')">
+                            <i class='fa fa-times-circle'></i>
+                          </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    {% endif %}
+                  </tbody>
+                </table>
+                {% if correos.count == 0 %}
+                    <a class="btn btn-xs" onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_crear' id_paciente %}')"
+                       ><span class="fa fa-plus"></span>
+                    </a>
+               {% endif %}
+            </div>
+            </div>
+          </div>
         </div>
+       </div>
        <div class="row">
          <div class="tab-content" id="panel_tab_situacion_laboral">
           <div class="tab-pane active" id="tab_situacion_laboral">

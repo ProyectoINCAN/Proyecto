@@ -1,203 +1,365 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% load staticfiles %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-  <head>
-    <title>Resumen de la Consulta</title>
-    <style type="text/css">
-      table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-      }
+    <head>
+        <title>FICHA CLÍNICA</title>
+        <style type="text/css">
+            #contenedor{
+            text-align: left;
+            width: 750px;
+            margin: auto;}
+            #lateral{
+            width: 180px;  /*Este será el ancho que tendrá tu columna*/
+            background-color: #CCCCCC;  /*Aquí pon el color del fondo que quieras para este lateral*/
+            float:left; /*Aqui determinas de lado quieres quede esta "columna" */
+            border:#000000 1px solid; /*ponemos un dorde para que se vea bonito*/
+            font-weight:bold;
+            text-align: center;
+            font-size: 15px;
+            line-height: 18px;
+            }
+            P { text-align: center }
+            td {
+            font-size: 12px;
+            line-height: 20px;
+            padding: 0 0px;
+            text-align: left;
+            vertical-align: top;
+            width: 50%;
+            }
+            #direccion{
+            font-size: 12px;
+            line-height: 20px;
+            padding: 0 0px;
+            text-align: left;
+            vertical-align: top;
+            }
+        </style>
+    </head>
+    <body>
+        <p style="font-weight:bold; font-size: 15px; text-align:center;">FICHA CLINICA</p>
 
-      td, th {
-          border: 1px solid #dddddd;
-          text-align: left;
-          padding: 8px;
-      }
+        <img class="img-responsive" src="{% static 'media/img/logo_incan.png' %}"/>
 
-      tr:nth-child(even) {
-          background-color: #dddddd;
-      }
-      table, th, td {
-    border: 1px solid black;
-}
-    </style>
-  </head>
-  <body>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <b class="panel-title">Ficha clínica del paciente :{{ paciente }}</b>
+        <div id="lateral">
+                <p>I PARTE: DATOS DEL/LA PACIENTE</p>
         </div>
-        <div class="panel-body">
-          <div class="form-group">
-            <h4><u><b>Datos básicos del paciente</b></u></h4>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
+        <div id="contenedor">
+            <body>
+                <table>
+                    <tr>
+                        <td class="first">
+                            <div><strong>Documento de Identificación: </strong> {{ paciente.tipo_doc }}</div>
+                            <div><strong>Apellido(s) y Nombre(s): </strong> {{ paciente.apellidos }}, {{ paciente.nombres }}</div>
+                            <div><strong>Fecha de Nacimiento: </strong> {{ paciente.fecha_nacimiento }}</div>
+                            <div><strong>Sexo: </strong>{% if paciente.sexo %} {{ paciente.sexo }} {% else %} SIN REGISTRO {% endif%}</div>
+                            <div><strong>Nacionalidad: </strong>{% if paciente.nacionalidad %} {{ paciente.nacionalidad }} {% else %} SIN REGISTRO {% endif%}</div>
+                            <div><strong>Estado Civil: </strong>{% if paciente.estado_civil %} {{ paciente.estado_civil }} {% else %} SIN REGISTRO {% endif%}</div>
+                        </td>
+                        <td class="second">
+                            <div><strong>Nº de Documento: </strong>{{ paciente.nro_doc }}</div>
+                            <div><strong>Lugar de Nacimiento: </strong>{% if paciente.lugar_nacimiento %} {{ paciente.lugar_nacimiento }} {% else %} SIN REGISTRO {% endif%} </div>
+                            <div><strong>Edad: </strong>{{ paciente.get_edad}} </div>
+                            <div><strong>Etnia: </strong>{% if paciente.etnia %} {{ paciente.etnia }} {% else %} SIN REGISTRO {% endif%}</div>
+                        </td>
+                    </tr>
+                </table>
+            </body>
 
-                <div class="form-group">
-                  <span class="font-bold">Nombres y Apellidos: &nbsp;&nbsp;&nbsp;</span>
-                  <span class="font-normal">{{ paciente.get_full_name }}</span>
-                </div>
-                <div class="form-group">
-                  <span class="font-bold">Tipo de documento: &nbsp;&nbsp;&nbsp;</span>
-                  <span class="font-normal">{{ paciente.tipo_doc }}</span>
-                </div>
-                <div class="form-group">
-                  <span class="font-bold">Número de documento: &nbsp;&nbsp;&nbsp;</span>
-                  <span class="font-normal">{{ paciente.nro_doc }}</span>
-                </div>
-                <div class="form-group">
-                  <span class="font-bold">Estado Civil: &nbsp;&nbsp;&nbsp;</span>
-                  <span class="font-normal">{% if paciente.estado_civil %}
-                    {{ paciente.estado_civil }}{% else %}Sin registros{% endif %}</span>
-                </div>
-                <div class="form-group">
-                  <span class="font-bold">Sexo: &nbsp;&nbsp;&nbsp;</span>
-                  <span class="font-normal">{% if paciente.sexo %}{{ paciente.sexo }}
-                  {% else %}Sin registros{% endif %}</span>
-                </div>
+            <!-- POR ACA ESTA EL ERROR -->
+            <!--ACA NO ES 1-->
 
+            <body>
+
+            <div style="font-weight:bold; font-size: 12px;"><u>DIRECCIONES: </u></div>
+            {% if direcciones %}
+            {% for direccion in direcciones %}
+            <div>
+                <span style="font-weight:bold; font-size: 12px;">Lugar de Residencia Habitual del/la paciente: </span>
+                <span style="font-weight:normal; font-size: 12px;">{% if direccion.departamento %}
+                    <span style="font-weight:bold; font-size: 12px;">Departamento </span>{{ direccion.departamento }}{% else %}SIN REGISTRO{% endif %}</span>
+                <span style="font-weight:normal; font-size: 12px;">{% if direccion.distrito %}<span style="font-weight:bold;">Distrito </span>{{ direccion.distrito }}{% else %}SIN REGISTRO{% endif %}</span>
+                <span style="font-weight:normal; font-size: 12px;">{% if direccion.barrio %}
+                    <span style="font-weight:bold; font-size: 12px;">Barrio/Compañía/Asentamiento </span>{{ direccion.barrio }}{% else %}SIN REGISTRO{% endif %}</span>
             </div>
-            <div class="col-sm-6">
-              <div class="form-group">
-                <span class="font-bold">Nacionalidad:</span>
-                <span class="font-normal">{{ paciente.nacionalidad }}</span>
-              </div>
-              <div class="form-group">
-                <span class="font-bold">Lugar de nacimiento:</span>
-                <span class="font-normal">{% if paciente.lugar_nacimiento %}
-                  {{ paciente.lugar_nacimiento }}{% else %}Sin registros{% endif %}</span>
-              </div>
-              <div class="form-group">
-                <span class="font-bold">Fecha de nacimiento:</span>
-                <span class="font-normal">{% if paciente.fecha_nacimiento %}
-                  {{ paciente.fecha_nacimiento }}{% else %}Sin registros{% endif %}</span>
-              </div>
-              <div class="form-group">
-                <span class="font-bold">Tipo de télefono:</span>
-                <span class="font-normal">{{ telefono.tipo }}</span>
-              </div>
-              <div class="form-group">
-                <span class="font-bold">Número de télefono:</span>
-                <span class="font-normal">{{ telefono.numero }}</span>
-              </div>
+            <div class="form-group">
+                <span style="font-weight:bold; font-size: 12px;">Área: </span>
+                <span style="font-weight:normal; font-size: 12px;">{% if direccion.area %}{{ direccion.area }}{% else %}SIN REGISTRO{% endif %}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:normal; font-size: 12px;"><span style="font-weight:bold;">Sector: </span>{% if direccion.sector %}{{ direccion.sector }}{% else %}SIN REGISTRO{% endif %}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:normal; font-size: 12px;"><span style="font-weight:bold; font-size: 12px;">Manzana: </span>{% if direccion.manzana %}
+                {{ direccion.manzana }}{% else %}SIN REGISTRO{% endif %}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:normal; font-size: 12px;"><span style="font-weight:bold; font-size: 12px;">Residencia Ocasional: </span>{% if direccion.residencia_ocasional %}
+                {{ direccion.residencia_ocasional }}{% else %}SIN REGISTRO{% endif %}</span>
             </div>
-          </div>
-          <div class="form-group">
-            <h4><u><b>Direcciones</b></u></h4>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              {% if direccciones %}
-                {% for direccion in direcciones %}
-                  <div class="form-group">
-                    <span class="font-bold">Dirección:</span>
-                    <span class="font-normal">{{ direccion.descripcion }}</span>
-                    <span class="font-bold">Nro Casa:</span>
-                    <span class="font-normal">{% if direccion.nro_casa %}
-                    {{ direccion.nro_casa }}{% else %}--{% endif %}</span>
-                  </div>
-                {% endfor %}
-              {% else %}
-                <h5>Sin registros de direcciones</h5>
-              {% endif %}
+            <div class="form-group">
+                <span style="font-weight:normal; font-size: 12px;"><span style="font-weight:bold; font-size: 12px;">Referencia: </span>{% if direccion.referencia %}
+                    {{ direccion.referencia }}{% else %}SIN REGISTRO{% endif %}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:bold; font-size: 12px;">Dirección:</span>
+                <span style="font-weight:normal; font-size: 12px;">{{ direccion.descripcion }}</span>
+                &nbsp;&nbsp;<span style="font-weight:bold; font-size: 12px;">Nro Casa:</span>
+                <span style="font-weight:normal; font-size: 12px;">{% if direccion.nro_casa %}
+                    {{ direccion.nro_casa }}{% else %}SIN REGISTRO{% endif %}</span>
             </div>
-          </div>
-          <div class="form-group">
-            <h4><u><b>Datos de los padres</b></u></h4>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              {% if padres %}
-                {% for padre in padres %}
-                  {% if padre.padre %}
-                  <div class="form-group">
-                    <span class="font-bold">Nombre y apellido del padre:</span>
-                    <span class="font-normal">{{ padre.get_full_name }}</span>
-                    <span class="font-bold">Nro documento:</span>
-                    <span class="font-normal">{{ padre.nro_doc }}</span>
-                  </div>
-                  {% else %}
-                    <div class="form-group">
-                      <span class="font-bold">Nombre y apellido de la madre:</span>
-                      <span class="font-normal">{{ padre.get_full_name }}</span>
-                      <span class="font-bold">Nro documento:</span>
-                      <span class="font-normal">{{ padre.nro_doc }}</span>
-                  </div>
-                  {% endif %}
-                {% endfor %}
-              {% else %}
-                <h5>Sin registros de direcciones</h5>
-              {% endif %}
-            </div>
-          </div>
-          <div class="form-group">
-            <h4><u><b>Seguro Médico</b></u></h4>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              {% if padres %}
-                {% for seguro in seguros %}
-                  <div class="form-group">
-                    <span class="font-bold">Seguro médico:</span>
-                    <span class="font-normal">{{ seguro.seguro_medico }}</span>
-                    <span class="font-bold">Detalle:</span>
-                    <span class="font-normal">{% if seguro.detalle %}
-                      {{ seguro.detalle }}{% else %}Sin detalle{% endif %}</span>
-                  </div>
-                {% endfor %}
-              {% else %}
-                <h5>Sin registros de seguro médico</h5>
-              {% endif %}
-            </div>
-          </div>
-          <div class="form-group">
-            <h4><u><b>Situación Laboral</b></u></h4>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              {% if ocupaciones %}
-                {% for ocupacion in ocupaciones %}
-                  <div class="form-group">
-                    <span class="font-bold">Ocupación:</span>
-                    <span class="font-normal">{% if ocupacion.ocupacion %}
-                      {{ ocupacion.ocupacion }}{% else %}Sin registros{% endif %}</span>
-                    <span class="font-bold">Profesión:</span>
-                    <span class="font-normal">{% if ocupacion.profesion %}
-                      {{ ocupacion.profesion }}{% else %}Sin registros{% endif %}</span>
-                  </div>
-                {% endfor %}
-              {% else %}
-                <h5>Sin registros de la situación laboral</h5>
-              {% endif %}
-            </div>
-          </div>
-          <div class="form-group">
-            <h4><u><b>Educación</b></u></h4>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              {% if educacion %}
-                <div class="form-group">
-                  <span class="font-bold">Nivel Educativo:</span>
-                  <span class="font-normal">{{ educacion.nivel_educativo }}</span>
-                  <span class="font-bold"> Cúlmino:</span>
-                  <span class="font-normal">{% if educacion.completo %}Si{% else %}No{% endif %}</span>
-                  {% if not educacion.completo %}
-                    <span class="font-bold">Año cursado:</span>
-                  <span class="font-normal">{{ educacion.anho_cursado }}</span>
-                  {% endif%}
-                </div>
-              {% else %}
-                <h5>Sin registros de seguro médico</h5>
-              {% endif %}
-            </div>
-          </div>
+            <div class="form-group"></div>
+            {% endfor %}
+            {% else %}
+            <span style="font-weight:normal; font-size: 12px;">SIN REGISTRO</span>
+            {% endif %}
+            </body>
+
+            <!--FIN DE ACA NO ES 1-->
+
+
+            <!--ACA NO ES 2-->
+            <body>
+            <table>
+                <tr>
+                    <td class="first">
+                        <div><strong><u>TELÉFONO:</u> </strong></div>
+                        <div><strong>{{ telefono.tipo }}: </strong>{{telefono.numero }}</div>
+                    </td>
+                    <td class="second">
+                        <div><strong><u>CORREO ELECTRÓNICO: </u></strong></div>
+                        {% if correos %}
+                        {% for correo in correos %}
+                        {% if correo.tipo %}
+                        <div><strong>{{ correo.tipo }}: </strong>{{ correo.direccion }}</div>
+                        {% else %}
+                        <span style="font-weight:normal; font-size: 12px;">SIN REGISTRO</span>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        <span style="font-weight:normal; font-size: 12px;">SIN REGISTRO</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            </body>
+            <!--FIN DE ACA NO ES 2-->
+
+            <!--ACA NO ES 3-->
+
+            <body>
+            <table>
+                <tr>
+                    <td class="first">
+                        <div><strong><u>NIVEL EDUCATIVO: </u></strong></div>
+                        {% if educacion.nivel_educativo %}
+                        <div><strong>Nivel Educativo: </strong>{{ educacion.nivel_educativo }} <strong>{% if educacion.completo %}COMPLETO{% else %}INCOMPLETO{% endif %}</strong></div>
+                        {% else %}
+                        <div>SIN REGISTRO</div>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            </body>
+
+            <!--FIN DE ACA NO ES 3-->
+
+
+            <!--ACA NO ES 4-->
+
+            <body>
+            <table>
+                <tr>
+                    <td class="first">
+                        <div><strong><u>SEGURO MÉDICO: </u></strong></div>
+                        {% if seguros %}
+                        {% for seguro in seguros %}
+                        {% if seguro.seguro_medico %}
+                        <div><strong>Seguro médico: </strong>{{ seguro.seguro_medico }} <strong>Observación:</strong> {% if seguro.detalle %}
+                            {{ seguro.detalle }}{% else %}Sin detalle{% endif %}</div>
+                        {% else %}
+                        <div>SIN REGISTRO</div>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        <div>SIN REGISTRO</div>
+                        {% endif %}
+                    </td>
+                    <td class="second">
+                        <div><strong><u>SITUACIÓN LABORAL: </u></strong></div>
+                        {% if ocupaciones %}
+                        {% for ocupacion in ocupaciones %}
+                        <div><strong>Trabaja: </strong>{% if ocupacion.situacion_laboral_id %}
+                            {{ ocupacion.situacion_laboral_id }}{% else %}SIN REGISTROS{% endif %}
+                            <strong>Ocupación: </strong>{% if ocupacion.ocupacion %}
+                            {{ ocupacion.ocupacion }}{% else %}Sin registros{% endif %}
+                            <strong>Profesión: </strong>{% if ocupacion.profesion %}
+                            {{ ocupacion.profesion }}{% else %}SIN REGISTROS{% endif %}
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div>SIN REGISTRO</div>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            </body>
+
+            <!--FIN DE ACA NO ES 4-->
+
+
+            <!--ACA NO ES 5-->
+
+            <body>
+            <table>
+                <tr>
+                    <td class="first">
+
+                        {% if padres %}
+                        {% for padre in padres %}
+                        {% if padre.padre %}
+                        <div><strong><u>DATOS DEL PADRE: </u></strong></div>
+                        <div><strong>Apellido(s) y Nombre(s): </strong>{% if padre.apellidos %}
+                             {{ padre.apellidos }}, {{ padre.nombres }}{% else %}SIN REGISTROS{% endif %} </div>
+                        <div><strong>N° de Documento: </strong> {% if padre.nro_doc %}
+                             {{ padre.nro_doc }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Edad: </strong> {% if padre.get_edad %}
+                             {{ padre.get_edad }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Nacionalidad: </strong>{% if paciente.nacionalidad %}
+                             {{ paciente.nacionalidad }}{% else %}SIN REGISTROS{% endif %} </div>
+                        <div><strong>Etnia: </strong>{% if padre.etnia %}
+                             {{ padre.etnia }}{% else %}SIN REGISTROS{% endif %} </div>
+                        <div><strong>Asumen de sustento de la familia: </strong>
+                            {% if padre.asume_sustento %}
+                             {% if padre.asume_sustento %}SI{% else %}NO{% endif %}{% else %}SIN REGISTROS{% endif %}
+                        </div>
+                    </td>
+                    <td class="second">
+                        <br>
+                        <div><strong>Documento de Identificación: </strong> {% if padre.tipo_doc %}
+                             {{ padre.tipo_doc }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Fecha de Nacimiento: </strong> {% if padre.fecha_nacimiento %}
+                             {{ padre.fecha_nacimiento }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Sexo: </strong> {% if padre.sexo %}
+                             {{ padre.sexo }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Estado Civil: </strong> {% if paciente.estado_civil %}
+                             {{ paciente.estado_civil }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Escolaridad: </strong>{% if padre.nivel_educativo %}
+                             {{ padre.nivel_educativo }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Oupación: </strong>{% if padre.ocupacion %}
+                             {{ padre.ocupacion }}{% else %}SIN REGISTROS{% endif %}
+                            <strong>Otro, especificar: </strong>{% if  padre.otro %}
+                             {{  padre.otro }}{% else %}SIN REGISTROS{% endif %}</div>
+                    </td>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                        <div><strong><u>DATOS DEL PADRE</u></strong></div>
+                        <div>SIN REGISTRO</div>
+                    {% endif %}
+                </tr>
+            </table>
+            </body>
+
+            <!-- FIN DE ACA NO ES 5 -->
+
+            <body>
+            <table>
+                <tr>
+                    <td class="first">
+                        {% if padres %}
+                        {% for padre in padres %}
+                        {% if padre.padre %}
+                        {% else %}
+                        <div><strong><u>DATOS DE LA MADRE</u></strong></div>
+                        <div><strong>Apellido(s) y Nombre(s): </strong> {% if padre.apellidos %}
+                             {{ padre.apellidos }}, {{ padre.nombres }}{% else %}SIN REGISTRO{% endif %} </div>
+                        <div><strong>N° de Documento: </strong> {% if padre.nro_doc %}
+                             {{ padre.nro_doc }}{% else %}SIN REGISTRO{% endif %}</div>
+                        <div><strong>Edad: </strong>{% if padre.get_edad %}
+                             {{ padre.get_edad }}{% else %}SIN REGISTRO{% endif %} </div>
+                        <div><strong>Nacionalidad: </strong>{% if paciente.nacionalidad %}
+                             {{ paciente.nacionalidad }}{% else %}SIN REGISTRO{% endif %} </div>
+                        <div><strong>Etnia: </strong>{% if padre.etnia %}
+                             {{ padre.etnia }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Asumen de sustento de la familia: </strong>{% if padre.asume_sustento %}
+                             {% if padre.asume_sustento %}SI{% else %}NO{% endif %}{% else %}SIN REGISTROS{% endif %}
+                        </div>
+                    </td>
+
+                    <td class="second">
+                        <br>
+                        <div><strong>Documento de Identificación: </strong> {% if padre.tipo_doc %}
+                             {{ padre.tipo_doc }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Fecha de Nacimiento: </strong> {% if padre.fecha_nacimiento %}
+                             {{ padre.fecha_nacimiento }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Sexo: </strong> {% if padre.sexo %}
+                             {{ padre.sexo }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Estado Civil: </strong>{% if paciente.estado_civil %}
+                             {{ paciente.estado_civil }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Escolaridad: </strong>{% if padre.nivel_educativo %}
+                             {{ padre.nivel_educativo }}{% else %}SIN REGISTROS{% endif %}</div>
+                        <div><strong>Oupación: </strong>
+                            {% if padre.ocupacion %} {{ padre.ocupacion }}{% else %}SIN REGISTROS{% endif %}
+                            <strong>Otro, especificar:</strong>{% if padre.otro %} {{padre.otro}}{% else %}SIN REGISTROS
+                            {% endif %}
+                        </div>
+                    </td>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                        <div><strong><u>DATOS DE LA MADRE</u></strong></div>
+                        <div>SIN REGISTRO</div>
+                    {% endif %}
+                </tr>
+            </table>
+            </body>
+    </div>
+
+            <!-- FIN DE POR ACA ESTA EL ERROR-->
+
+
+    <div id="contenedor">
+        <div id="lateral">
+            <p>II PARTE: ANTECEDENTES</p>
         </div>
     </div>
-  </body>
+    <div class="panel-body">
+        <div style="font-weight:bold; font-size: 12px;"><strong><u>ANTECEDENTES SOCIOECONÓMICOS</u></strong></div>
+        <body>
+            <table>
+                <tr>
+                    <td class="first">
+                        <div><strong><u>VIVIENDA: </u></strong></div>
+                        <div><strong>Pared: </strong>{% if vivienda.pared %}{{vivienda.pared}}{% else %}SIN REGISTRO{% endif %}</div>
+                        <div><strong>Techo: </strong>{% if vivienda.techo %}{{vivienda.techo}}{% else %}SIN REGISTRO{% endif %}</div>
+                        <div><strong>Piso: </strong>{% if vivienda.piso %}{{vivienda.piso}}{% else %}SIN REGISTRO{% endif %}</div>
+                        <div>
+                            <strong>Dependencias: </strong>{% if vivienda.dependencia %}
+                            {% for dep in vivienda.dependencia.all %}
+                            <li>{{ dep.nombre }}</li>
+                            {% endfor %}
+                            {% else %}
+                            SIN REGISTRO
+                            {% endif %}
+                        </div>
+                        <div><strong>Nº de Personas en el Hogar: </strong>{% if vivienda.nro_personas_hogar %}{{vivienda.nro_personas_hogar}}{% else %}SIN REGISTRO{% endif %}</div>
+                        <div><strong>Hacinamiento: </strong> {% if vivienda.pared %}{% if vivienda.hacinamiento %}SI{% else %}NO{% endif%}{% else %}SIN REGISTRO{% endif %}</div>
+                        <div><strong>Comparte cama:: </strong> {% if vivienda.pared %}{% if vivienda.comparte_cama %}SI{% else %}NO{% endif%}{% else %}SIN REGISTRO{% endif %}</div>
+                    </td>
+                    <td class="second">
+                        <div><strong><u>SERVICIOS SANITARIOS: </u></strong></div>
 
+                        <div><strong>Agua: </strong>{% if servicio_sanitario.agua %}{{servicio_sanitario.agua}}{% else %}SIN REGISTRO{% endif %}</div>
+                        <div><strong>Eliminación de Basura: </strong> {% if servicio_sanitario.eliminacion_basura %}{{servicio_sanitario.eliminacion_basura}}{% else %}SIN REGISTRO{% endif %}</div>
+                        <div><strong>El baño desagua en: </strong>{% if servicio_sanitario.desagua %}{{servicio_sanitario.desagua}}{% else %}SIN REGISTRO{% endif %}</div>
+                        <div><strong><u>SERVICIOS BÁSICOS: </u></strong></div>
+                        {% if servicio_basico %}
+                        <div><strong>Luz Eléctrica: </strong>{% if servicio_basico.luz_electrica %}SI{% else %}NO{% endif %} <strong>Teléf. Línea Baja: </strong>{% if servicio_basico.telefono_linea_baja %}SI{% else %}NO{% endif %} <strong>Teléf. Celular: </strong>{% if servicio_basico.telefono_linea_celular %}SI{% else %}NO{% endif %}</div>
+                        <div><strong>Heladera: </strong>{% if servicio_basico.heladera %}SI{% else %}NO{% endif %} <strong>Televisor: </strong>{% if servicio_basico.televisor %}SI{% else %}NO{% endif %} <strong>Otros: </strong> {% if servicio_basico.otros %}SI{% else %}NO{% endif %}</div>
+                        {% else %}
+                        <div>SIN REGISTRO</div>
+
+                        {% endif %}
+
+                    </td>
+                </tr>
+            </table>
+        </body>
+    </div>
+    </div>
+    </body>
 </html>
-
-

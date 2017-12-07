@@ -61,6 +61,13 @@ urlpatterns = [
     url(r'^buscar/$', login_required(pacienteViews.PacienteBuscar.as_view()), name='buscar'),
     url(r'^autocomplete_nombres/$', login_required(pacienteViews.autocomplete_nombres), name='autocomplete_nombres'),
 
+    url(r'^paciente/(?P<paciente_id>\d+)/correo_electronico/nuevo$',
+        pacienteViews.PacienteCorreoElectronicoCreate.as_view(), name='paciente_correo_electronico_crear'),
+    url(r'^paciente/correo_electronico/(?P<correo_id>\d+)/editar/$',
+        pacienteViews.PacienteCorreoElectronicoUpdate.as_view(), name='paciente_correo_electronico_editar'),
+    url(r'^paciente/correo_electronico/(?P<correo_id>\d+)/eliminar/$',
+        pacienteViews.PacienteCorreoElectronicoDelete.as_view(), name='paciente_correo_electronico_eliminar'),
+
 
 
     url(r'^paciente/(?P<paciente_id>\d+)/padre/crear$', pacienteViews.paciente_padre_crear,
@@ -123,5 +130,7 @@ urlpatterns = [
         pacienteViews.PacienteAcompanhanteUpdate.as_view(), name='paciente_acompanhante_editar'),
     url(r'^paciente/acompanhante/(?P<acompanhante_id>\d+)/eliminar/$',
         pacienteViews.PacienteAcompañanteDelete.as_view(), name='paciente_acompanhante_eliminar'),
+
+
 
 ]

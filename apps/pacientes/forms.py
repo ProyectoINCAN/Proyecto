@@ -353,8 +353,8 @@ class ViviendaForm(forms.ModelForm):
             'piso': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'nro_personas_hogar':forms.NumberInput(attrs={'class': 'form-control'}),
             'nro_dormitorio': forms.NumberInput(attrs={'class': 'form-control'}),
-            'dependencia': select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple',
-                                                                      'style': 'width: 100%'}),
+            'dependencia': forms.SelectMultiple(attrs={'class': 'form-control selectsearch-multiple',
+                                                                    'style': 'width: 100%'}),
             'hacinamiento': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
             'comparte_cama': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
 
@@ -451,6 +451,25 @@ class AcompañanteForm(forms.ModelForm):
                        'required': 'required',}),
             'numero':forms.TextInput(attrs={'class': 'form-control'}),
             'vinculo':forms.Select(
+                        attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
+                       'required': 'required',}),
+        }
+
+class CorreoElectronicoForm(forms.ModelForm):
+    class Meta:
+        model = CorreoElectronico
+
+        fields = [
+            'tipo',
+            'direccion',
+        ]
+        labels = {
+            'tipo':'Tipo Correo Electrónico',
+            'direccion':'Correo',
+        }
+        widgets = {
+            'direccion':forms.EmailInput(attrs={'class': 'form-control'}),
+            'tipo':forms.Select(
                         attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
                        'required': 'required',}),
         }

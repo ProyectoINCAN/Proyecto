@@ -660,6 +660,9 @@ class PacienteOtrosDatosView(ListView):
     def get_datos_laborales(self):
         return PacienteOcupacion.objects.filter(paciente=self.kwargs['paciente_id'])
 
+    def get_correo_electronico(self):
+        return CorreoElectronico.objects.filter(paciente=self.kwargs['paciente_id'])
+
     def get_nivel_educativo(self):
         return PacienteNivelEducativo.objects.filter(paciente=self.kwargs['paciente_id'])
 
@@ -673,6 +676,7 @@ class PacienteOtrosDatosView(ListView):
                         'nivel_educativo': self.get_nivel_educativo(),
                         'paciente': self.get_paciente(),
                         'id_paciente': self.kwargs['paciente_id'],
+                        'correos':self.get_correo_electronico(),
                         'form': seguro
         })
         return context
@@ -862,6 +866,56 @@ class PacienteNivelEducativoUpdate(LoginRequiredMixin, UpdateView):
         messages.success(self.request, "Se han actualizado los datos de nivel educativo.")
         return JsonResponse({'success': True})
 
+
+class PacienteCorreoElectronicoCreate(LoginRequiredMixin, CreateView):
+    template_name = 'pacientes/paciente_correo_electronico_form.html'
+    model = CorreoElectronico
+    form_class = CorreoElectronicoForm
+
+    def get_success_url(self):
+        return reverse('pacientes:paciente_seguro_medico', kwargs=self.kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteCorreoElectronicoCreate, self).get_context_data(**kwargs)
+        paciente = Paciente.objects.get(pk=self.kwargs['paciente_id'])
+        context.update({
+            'paciente': paciente
+        })
+        return context
+
+    def form_valid(self, form):
+        correo = form.save(commit=False)
+        print("entro")
+        correo.paciente_id = self.kwargs['paciente_id']
+        correo.save()
+        messages.success(self.request, "Se ha creado el correo electrónico.")
+        return JsonResponse({'success': True})
+
+
+class PacienteCorreoElectronicoUpdate(LoginRequiredMixin, UpdateView):
+    model = CorreoElectronico
+    form_class = CorreoElectronicoForm
+    template_name = 'pacientes/paciente_correo_electronico_form.html'
+    pk_url_kwarg = 'correo_id'
+
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, "Se han actualizado los datos del correo electrónico.")
+        return JsonResponse({'success': True})
+
+
+class PacienteCorreoElectronicoDelete(LoginRequiredMixin, DeleteView):
+    model = CorreoElectronico
+    template_name = "pacientes/paciente_correo_electronico_eliminar.html"
+    pk_url_kwarg = 'correo_id'
+    context_object_name = 'correo'
+
+    def post(self, request, *args, **kwargs):
+        paciente = Paciente.objects.get(correoelectronico=kwargs['correo_id'])
+        correo = CorreoElectronico.objects.get(pk=kwargs['correo_id'])
+        correo.delete()
+        messages.success(self.request, "Se ha eliminado el correo electrónico.")
+        return JsonResponse({'paciente': paciente.id })
 
 class PacienteAntecedentesView(ListView):
     model = Vivienda

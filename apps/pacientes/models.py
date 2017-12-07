@@ -409,6 +409,14 @@ class PacientePadre(models.Model):
     def __str__(self):
         return self.apellidos + ", " + self.nombres
 
+    def get_edad(self):
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute(""" select extract(year from age(fecha_nacimiento)) edad
+                    from pacientes_pacientepadre where id = %s""", [self.pk])
+            edad = cursor.fetchone()[0]
+        return int(edad)
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         # self.nombres = paciente_utils.capitalizar(self.nombres)
@@ -630,6 +638,7 @@ class ServicioBasico(models.Model):
 
 
 class Vivienda(models.Model):
+
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=True, null=True)
     pared = models.ForeignKey(Pared, models.DO_NOTHING, blank=True, null=True)
     techo = models.ForeignKey(Techo, models.DO_NOTHING, blank=True, null=True)
@@ -641,7 +650,7 @@ class Vivienda(models.Model):
     comparte_cama = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     class Meta:
         ordering = ["pared"]
@@ -666,12 +675,12 @@ class ServicioSanitario(models.Model):
 
 class ServicioBasicos(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
-    luz_electrica = models.BooleanField(default=True)
-    telefono_linea_baja = models.BooleanField(default=True)
-    telefono_linea_celular = models.BooleanField(default=True)
-    heladera = models.BooleanField(default=True)
-    televisor = models.BooleanField(default=True)
-    otros = models.BooleanField(default=True)
+    luz_electrica = models.BooleanField()
+    telefono_linea_baja = models.BooleanField()
+    telefono_linea_celular = models.BooleanField()
+    heladera = models.BooleanField()
+    televisor = models.BooleanField()
+    otros = models.BooleanField()
 
     def __str__(self):
         return self.paciente

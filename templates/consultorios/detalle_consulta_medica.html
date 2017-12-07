@@ -8,7 +8,7 @@
     </ol>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <b class="panel-title">Resumen de la atención ambulatoria</b>
+            <b class="panel-title">HISTORIA CLÍNICA</b>
             <div class="btn-group btn-group-sm pull-right">
                 <div class="col pull-right">
                     <a id="volver" type="button" class="btn btn-default"
@@ -26,41 +26,30 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Fecha de la consulta:</b>
+                <div class="col-sm-6">
+                    <b>Paciente: </b> {{ detalle.paciente.get_name_nro_doc }}
                 </div>
-                {{ detalle.consulta.fecha }}
+                <div class="col-sm-6">
+                    <b>Fecha de la consulta: </b>{{ detalle.consulta.fecha }}
+                </div>
             </div>
             <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Hora de inicio:</b>
+                <div class="col-sm-6">
+                    <b>Especialidad: </b>{{ detalle.consulta.especialidad }}
                 </div>
-                {{ detalle.hora_inicio }}
+                <div class="col-sm-6">
+                    <b>Médico: </b>{{ detalle.consulta.medico.get_dr_full_name }}
+                </div>
             </div>
             <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Hora de finalización:</b>
+                <div class="col-sm-6">
+                    <b>Hora de inicio: </b>{{ detalle.hora_inicio }}
                 </div>
-                {{ detalle.hora_fin }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Dependencia:</b>
+                <div class="col-sm-6">
+                    <b>Hora de finalización: </b>{% if detalle.hora_fin %}{{ detalle.hora_fin }}{% else%}--{% endif %}
                 </div>
-                {{ detalle.consulta.especialidad }}
             </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Médico:</b>
-                </div>
-                {{ detalle.consulta.medico.get_dr_full_name }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Paciente:</b>
-                </div>
-                {{ detalle.paciente.get_name_nro_doc }}
-            </div>
+
 
             {% if detalle.estado.codigo == "C" %}
             <div class="row">

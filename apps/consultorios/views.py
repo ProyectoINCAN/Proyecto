@@ -1,7 +1,9 @@
 import calendar
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
 from django.db.models import Q
@@ -27,6 +29,7 @@ from django.views.generic.base import TemplateView, View
 
 import datetime
 
+from Proyecto import settings
 from apps import pacientes
 from apps.agendamientos.functions import get_origen_url_agendamiento
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
@@ -1584,6 +1587,30 @@ class PacienteFichaClinicaView(LoginRequiredMixin, DetailView):
     def get_telefono(self):
         return Telefono.objects.get(paciente__id=self.kwargs['paciente_id'])
 
+    def get_correo_electronico(self):
+        if CorreoElectronico.objects.filter(paciente__id=self.kwargs['paciente_id']).exists():
+            return CorreoElectronico.objects.filter(paciente__id=self.kwargs['paciente_id'])[0]
+        else:
+            return None
+
+    def get_vivienda(self):
+        if Vivienda.objects.filter(paciente__id=self.kwargs['paciente_id']).exists():
+            return Vivienda.objects.filter(paciente__id=self.kwargs['paciente_id'])[0]
+        else:
+            return None
+
+    def get_servicio_sanitario(self):
+        if ServicioSanitario.objects.filter(paciente__id=self.kwargs['paciente_id']).exists():
+            return ServicioSanitario.objects.filter(paciente__id=self.kwargs['paciente_id'])[0]
+        else:
+            return None
+
+    def get_servicio_basico(self):
+        if ServicioBasicos.objects.filter(paciente__id=self.kwargs['paciente_id']).exists():
+            return ServicioBasicos.objects.filter(paciente__id=self.kwargs['paciente_id'])[0]
+        else:
+            return None
+
     def get_context_data(self, **kwargs):
         context = super(PacienteFichaClinicaView, self).get_context_data(**kwargs)
         context.update({
@@ -1593,7 +1620,11 @@ class PacienteFichaClinicaView(LoginRequiredMixin, DetailView):
             'padres': self.get_datos_padres(),
             'seguros': self.get_seguros_medicos(),
             'educacion': self.get_educacion(),
-            'ocupaciones': self.get_ocupaciones()
+            'ocupaciones': self.get_ocupaciones(),
+            'vivienda':self.get_vivienda(),
+            'servicio_sanitario':self.get_servicio_sanitario(),
+            'servicio_basico':self.get_servicio_basico(),
+            'correo':self.get_correo_electronico(),
             })
         return context
 
@@ -1607,13 +1638,38 @@ class PacienteFichaClinicaPDF(LoginRequiredMixin, View):
         telefono = Telefono.objects.get(paciente__id=self.kwargs['paciente_id'])
         direcciones = Direccion.objects.filter(paciente__id=self.kwargs['paciente_id'])
         padres = PacientePadre.objects.filter(paciente__id=self.kwargs['paciente_id'])
-        seguros = PacienteSeguroMedico.objects.filter(paciente__id=self.kwargs['paciente_id'])
+
+        if PacienteSeguroMedico.objects.filter(paciente=paciente).exists():
+            seguros = PacienteSeguroMedico.objects.filter(paciente__id=self.kwargs['paciente_id'])
+        else:
+            seguros = ['']
 
         if PacienteNivelEducativo.objects.filter(paciente__id=self.kwargs['paciente_id']).exists():
             educacion = PacienteNivelEducativo.objects.get(paciente__id=self.kwargs['paciente_id'])
         else:
-            educacion = None
+            educacion = ['']
         ocupaciones = PacienteOcupacion.objects.filter(paciente__id=self.kwargs['paciente_id'])
+
+        if Vivienda.objects.filter(paciente=paciente).exists():
+            vivienda = Vivienda.objects.filter(paciente__id=self.kwargs['paciente_id'])[0]
+        else:
+            vivienda = ['']
+
+        if CorreoElectronico.objects.filter(paciente=paciente).exists():
+            correos = CorreoElectronico.objects.filter(paciente__id=self.kwargs['paciente_id'])
+        else:
+            correos = ['']
+
+        if ServicioSanitario.objects.filter(paciente=paciente).exists():
+            servicio_sanitario = ServicioSanitario.objects.filter(paciente__id=self.kwargs['paciente_id'])[0]
+        else:
+            servicio_sanitario = ['']
+
+        if ServicioBasicos.objects.filter(paciente=paciente).exists():
+            servicio_basico = ServicioBasicos.objects.filter(paciente__id=self.kwargs['paciente_id'])
+        else:
+            servicio_basico = ['']
+
 
         context = {
             'paciente': paciente,
@@ -1622,7 +1678,11 @@ class PacienteFichaClinicaPDF(LoginRequiredMixin, View):
             'padres': padres,
             'seguros': seguros,
             'educacion': educacion,
-            'ocupaciones': ocupaciones
+            'ocupaciones': ocupaciones,
+            'correos':correos,
+            'vivienda':vivienda,
+            'servicio_sanitario':servicio_sanitario,
+            'servicio_basico':servicio_basico,
         }
 
         html = template.render(context)
