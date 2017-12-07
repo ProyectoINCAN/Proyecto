@@ -29,11 +29,13 @@
     <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Datos Básicos del Paciente</h3>
-
-          <div class="box-tools pull-right">
+          <div class="col pull-right">
+            <a class="btn btn-primary" type="button"
+               onclick="window.location.href='{% url 'consultorios:consulta_historia_clinica' detalle.paciente.pk %}'">
+              <i class="fa fa-book" aria-hidden="true"></i> Historia Clínica</a>
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
               <i class="fa fa-minus"></i></button>
-          </div>
+            </div>
         </div>
         <div class="box-body">
           <div class="col-sm-6">
@@ -97,22 +99,9 @@
         </div>
     </div>
     <div class="row">
-      <!--<div class="col-lg-12 pull-right">
-        <p>
-        <a class="btn btn-primary"
-                onclick="window.location.href='{% url 'consultorios:consulta_historia_clinica' detalle.paciente.pk %}'">
-          <i class="fa fa-book" aria-hidden="true"></i>
-          Historia Clínica</a>
-        </p>
-      </div>-->
-      <div class="col-lg-12 pull-right">
-        <div class="col pull-right">
-          <a class="btn btn-primary" type="button" onclick="window.location.href='{% url 'consultorios:consulta_historia_clinica' detalle.paciente.pk %}'"><i class="fa fa-book" aria-hidden="true"></i> Historia Clínica</a>
-        </div>
-      </div>
-
     </div>
     <p></p>
+    {% include 'base/messages.html' %}
 
 	  <div class="row">
       <div role="tabpanel">
@@ -162,13 +151,13 @@
                                     <td><div class="container-fluid">{{ anamne.observacion|safe }}</div></td>
                                     <td>
                                       {% if anamne.consulta_detalle.id == detalle.id %}
-                                      <a class="btn btn-default btn-xs" title="Editar"
+                                      <a class="btn btn-xs" title="Editar"
                                          onclick="return abrir_modal('{% url 'consultorios:anamnesis_editar' anamne.id %}')">
                                         <i class="fa fa-pencil"></i>
                                       </a>
-                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                      <a class="btn btn-xs" title="Eliminar"
                                          onclick="return abrir_modal('{% url 'consultorios:anamnesis_paciente_eliminar' anamne.id %}')">
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-times-circle"></i>
                                       </a>
                                       {% endif %}
                                     </td>
@@ -211,13 +200,13 @@
                                     <td style="width:40%;"><div class="container-fluid">{{ diagnostico.observacion|safe }}</div></td>
                                     <td>
                                       {% if diagnostico.consulta_detalle.id == detalle.id %}
-                                      <a class="btn btn-default btn-xs" title="Editar"
+                                      <a class="btn btn-xs" title="Editar"
                                          onclick="return abrir_modal('{% url 'consultorios:consulta_diagnostico_editar' diagnostico.id %}')">
                                         <i class="fa fa-pencil"></i>
                                       </a>
-                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                        <a class="btn btn-xs" title="Eliminar"
                                          onclick="return abrir_modal('{% url 'consultorios:consulta_diagnostico_eliminar' diagnostico.id %}')">
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-times-circle"></i>
                                       </a>
                                       {% endif %}
                                     </td>
@@ -265,13 +254,13 @@
                                     <td>{{ evo.medico.get_dr_full_name }} </td>
                                     <td>
                                       {% if evo.consulta_detalle.id == detalle.id %}
-                                      <a class="btn btn-default btn-xs" title="Editar"
+                                      <a class="btn btn-xs" title="Editar"
                                          onclick="return abrir_modal('{% url 'consultorios:evolucion_paciente_editar' evo.id %}')">
                                         <i class="fa fa-pencil"></i>
                                       </a>
-                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                        <a class="btn btn-xs" title="Eliminar"
                                          onclick="return abrir_modal('{% url 'consultorios:evolucion_paciente_eliminar' evo.id %}')">
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-times-circle"></i>
                                       </a>
                                       {% endif %}
                                     </td>
@@ -317,14 +306,14 @@
                                   <td><div class="container-fluid">{% autoescape off %}{{ orden.observacion|safe }}{% endautoescape %}</div></td>
                                     <td>
                                         {% if orden.consulta_detalle.id == detalle.id %}
-                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                        <a class="btn btn-xs" title="Eliminar"
                                            onclick="return abrir_modal('{% url 'consultorios:consulta_orden_estudio_editar' orden.id %}')">
                                             <i class="fa fa-pencil"></i>
                                         </a>
                                         </a>
-                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                        <a class="btn btn-xs" title="Eliminar"
                                            onclick="return abrir_modal('{% url 'consultorios:consulta_orden_estudio_eliminar' orden.id %}')">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-times-circle"></i>
                                         </a>
                                         {% endif %}
                                     </td>
@@ -369,13 +358,13 @@
                                     <td>{{ prescripcion.cantidad }} </td>
                                     <td>
                                       {% if prescripcion.consulta_detalle.id == detalle.id %}
-                                      <a class="btn btn-default btn-xs" title="Editar"
+                                      <a class="btn btn-xs" title="Editar"
                                          onclick="return abrir_modal('{% url 'consultorios:consulta_prescripcion_editar' prescripcion.id %}')">
                                         <i class="fa fa-pencil"></i>
                                       </a>
-                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                        <a class="btn btn-xs" title="Eliminar"
                                          onclick="return abrir_modal('{% url 'consultorios:consulta_prescripcion_eliminar' prescripcion.id %}')">
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-times-circle"></i>
                                       </a>
                                       {% endif %}
                                     </td>
@@ -418,13 +407,13 @@
                                     <td><div class="container-fluid">{% autoescape off %}{{ tratamiento.observacion|safe }}{% endautoescape %}</div></td>
                                     <td>
                                       {% if tratamiento.consulta_detalle.id == detalle.id %}
-                                      <a class="btn btn-default btn-xs" title="Editar"
+                                      <a class="btn btn-xs" title="Editar"
                                          onclick="return abrir_modal('{% url 'consultorios:consulta_tratamiento_editar' tratamiento.id %}')">
                                         <i class="fa fa-pencil"></i>
                                       </a>
-                                        <a class="btn btn-default btn-xs" title="Eliminar"
+                                        <a class="btn btn-xs" title="Eliminar"
                                          onclick="return abrir_modal('{% url 'consultorios:consulta_tratamiento_eliminar' tratamiento.id %}')">
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-times-circle"></i>
                                       </a>
                                       {% endif %}
                                     </td>

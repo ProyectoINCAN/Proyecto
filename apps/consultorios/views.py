@@ -382,12 +382,6 @@ class OrdenEstudioUpdateGlobal(LoginRequiredMixin, UpdateView):
         orden.save()
         messages.success(self.request, "Se han actualizado los datos de orden de estudio.")
         return JsonResponse({'success': True})
-    #
-    # def form_valid(self, form):
-    #     form.save()
-    #     messages.success(self.request, "Se han actualizado los datos de orden de estudio.")
-    #     return JsonResponse({'success': True})
-
 
 class OrdenEstudioDetalleListGlobal(LoginRequiredMixin, ListView):
     model = OrdenEstudioDetalle
@@ -482,7 +476,7 @@ class ConsultorioPacienteAgregar(LoginRequiredMixin, View):
         nuevo_detalle.save()
 
         verificar_estado_consulta(consulta)
-
+        messages.success(self.request, "Se ha agregado el paciente.")
         return JsonResponse({'success': True})
 
 
@@ -795,7 +789,7 @@ class EvolucionPacienteCreate(LoginRequiredMixin, FormView):
         evolucion.paciente = consulta_detalle.paciente
         evolucion.medico = consulta.medico
         evolucion.save()
-
+        messages.success(self.request, "Se ha creado la evolución.")
         return JsonResponse({'success': True})
 
 
@@ -817,6 +811,7 @@ class EvolucionPacienteUpdate(LoginRequiredMixin, UpdateView):
             obs = obs.replace(' src="', ' class="img-responsive" src="')
         evolucion.observaciones = obs
         evolucion.save()
+        messages.success(self.request, "Se han actualizado los datos de la evolución.")
         return JsonResponse({'success': True})
 
 
@@ -851,6 +846,7 @@ class EvolucionPacienteList(LoginRequiredMixin, ListView):
             'detalle': detalle,
             'evoluciones': evoluciones,
         })
+        messages.success(self.request, "Se ha eliminado la evolución.")
         return super(TemplateView, self).render_to_response(context)
 
 
@@ -876,7 +872,7 @@ class PacienteDiagnosticoCreate(LoginRequiredMixin, FormView):
         diagnostico.paciente = detalle.paciente
         diagnostico.medico = consulta.medico
         diagnostico.save()
-
+        messages.success(self.request, "Se ha creado el diagnóstico.")
         return JsonResponse({'success': True})
 
 
@@ -893,6 +889,7 @@ class PacienteDiagnosticoEditar(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save()
+        messages.success(self.request, "Se han actualizado los datos del diagnóstico.")
         return JsonResponse({'success': True})
 
 
@@ -905,6 +902,7 @@ class PacienteDiagnosticoEliminar(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         diagnostico = Diagnostico.objects.get(pk=self.kwargs['diagnostico_id'])
         diagnostico.delete()
+        messages.success(self.request, "Se ha eliminado el diagnóstico")
         return JsonResponse({'success': True})
 
 
@@ -928,7 +926,7 @@ class PacienteOrdenEstudioCreate(LoginRequiredMixin, FormView):
         orden_estudio.consulta_detalle = consulta_detalle
         orden_estudio.paciente = consulta_detalle.paciente
         orden_estudio.save()
-
+        messages.success(self.request, "Se ha creado la orden de estudio.")
         return JsonResponse({'success': True})
 
 
@@ -946,6 +944,7 @@ class PacienteOrdenEstudioUpdate(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save()
+        messages.success(self.request, "Se han actualizado los datos de la orden de estudio.")
         return JsonResponse({'success': True})
 
 
@@ -958,6 +957,7 @@ class PacienteOrdenEstudioDelete(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         orden = ConsultaOrdenEstudio.objects.get(pk=self.kwargs['orden_id'])
         orden.delete()
+        messages.success(self.request, "Se ha eliminado la orden de estudio.")
         return JsonResponse({'success': True})
 
 
@@ -984,7 +984,7 @@ class PacientePrescripcionCreate(LoginRequiredMixin, FormView):
         prescripcion.paciente = consulta_detalle.paciente
         prescripcion.consulta_detalle = consulta_detalle
         prescripcion.save()
-
+        messages.success(self.request, "Se ha creado la prescripción médica.")
         return JsonResponse({'success': True})
 
 
@@ -1005,6 +1005,7 @@ class PacientePrescripcionUpdate(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         """guardamos la prescripcion de la consulta del paciente(consulta detalle)"""
         form.save()
+        messages.success(self.request, "Se han actualizado los datos de prescripción médica.")
         return JsonResponse({'success': True})
 
 
@@ -1017,6 +1018,7 @@ class PacientePrescripcionDelete(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         orden = ConsultaPrescripcion.objects.get(pk=self.kwargs['prescripcion_id'])
         orden.delete()
+        messages.success(self.request, "Se ha eliminado la prescripción médica.")
         return JsonResponse({'success': True})
 
 
@@ -1040,7 +1042,7 @@ class PacienteTratamientoCreate(LoginRequiredMixin, FormView):
         tratamiento.consulta_detalle = detalle
         tratamiento.paciente = detalle.paciente
         tratamiento.save()
-
+        messages.success(self.request, "Se ha creado el tratamiento.")
         return JsonResponse({'success': True})
 
 
@@ -1053,6 +1055,7 @@ class PacienteTratamientoDelete(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         diagnostico = Tratamiento.objects.get(pk=self.kwargs['tratamiento_id'])
         diagnostico.delete()
+        messages.success(self.request, "Se ha eliminado el tratamiento.")
         return JsonResponse({'success': True})
 
 
@@ -1060,7 +1063,6 @@ class PacienteTratamientoUpdate(LoginRequiredMixin, UpdateView):
     model = Tratamiento
     template_name = 'consultorios/consulta/tratamiento/tratamiento_paciente_form.html'
     pk_url_kwarg = 'tratamiento_id'
-    # context_object_name = 'tratamiento'
     form_class = TratamientoPacienteForm
 
     def get_context_data(self, **kwargs):
@@ -1070,6 +1072,7 @@ class PacienteTratamientoUpdate(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save()
+        messages.success(self.request, "Se han actualizado los datos de tratamiento.")
         return JsonResponse({'success': True})
 
 
@@ -1337,7 +1340,7 @@ class AnamnesisPacienteCreate(LoginRequiredMixin, FormView):
         anamnesis.consulta_detalle = consulta_detalle
         anamnesis.paciente = consulta_detalle.paciente
         anamnesis.save()
-
+        messages.success(self.request, "Se ha creado la anamnesis.")
         return JsonResponse({'success': True})
 
 
@@ -1350,6 +1353,7 @@ class AnamnesisPacienteDetele(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         anamnesis = Anamnesis.objects.get(pk=self.kwargs['anamnesis_id'])
         anamnesis.delete()
+        messages.success(self.request, "Se ha eliminado los datos de anamnesis.")
         return JsonResponse({'success': True})
 
 
@@ -1366,6 +1370,7 @@ class AnamnesisPacienteUpdate(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save()
+        messages.success(self.request, "Se han actualizado los datos de anamnesis.")
         return JsonResponse({'success': True})
 
 

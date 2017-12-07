@@ -608,7 +608,7 @@ class PacienteUpdate(UpdateView):
         if form.is_valid() and form2.is_valid():
             form.save()
             form2.save()
-        messages.success(request, "Se ha actualizado correctamente!!!")
+        messages.success(request, "Se han actualizado los datos del paciente")
         return HttpResponseRedirect(reverse('pacientes:paciente_editar',
                                             kwargs={'pk': paciente.pk}))
 
