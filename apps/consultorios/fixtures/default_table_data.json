@@ -1,3 +1,0 @@
-[
-  {"model": "consultorios.tipomedicamento", "pk": 2, "fields": {"nombre": "CONTROLADO", "descripcion": "MEDICAMENTOS CONTROLADOS. SE REQUIERE RECETA CUADRUPLICADA", "habilitado": true}}, {"model": "consultorios.tipomedicamento", "pk": 3, "fields": {"nombre": "PREPARADO", "descripcion": "MEDICAMENTOS PREPARADOS SEG\u00daN RECETA M\u00c9DICA", "habilitado": true}}, {"model": "consultorios.tipomedicamento", "pk": 1, "fields": {"nombre": "VENTA LIBRE", "descripcion": "VENTA LIBRE EN FARMACIAS", "habilitado": true}}
-]

@@ -8,7 +8,7 @@ def limpiar_nro_doc(nro_doc):
 
 def get_nrodoc_alternativo(paciente):
     """"Genera el número de documento alternativo para pacientes que no posean documento de identidad"""
-    from apps.seguridad.models import ParametroSistema
+    from apps.principal.models import ParametroSistema
     fecha_nacimiento = str(paciente.fecha_nacimiento.__format__('%d-%m-%Y'))
     sys = ParametroSistema.objects.get(id=1)
     print("system", sys.secuencia)

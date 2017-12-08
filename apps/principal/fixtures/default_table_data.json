@@ -1,0 +1,24 @@
+[
+  {"model": "principal.establecimiento",
+    "pk": 1,
+    "fields": {
+      "nombre": "INSTITUTO NACIONAL DEL CÁNCER",
+      "telefono": "0228600000",
+      "habilitado": true
+    }
+  },
+  {"model": "principal.parametrosistema",
+    "pk": 1,
+    "fields": {
+      "nombre": "INSTITUTO NACIONAL DEL CÁNCER",
+      "region_sanitaria": "XI",
+      "establecimiento": 1,
+      "distrito": 181,
+      "area": "UR",
+      "telefono": "0228600000",
+      "correo_electronico": "incan@incan.com.py",
+      "direccion": "RUTA RAMAL AREGUA",
+      "secuencia": 0
+    }
+  }
+]

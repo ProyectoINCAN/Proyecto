@@ -1,6 +1,11 @@
+import os
+
 from django.core import serializers
 from django.http.response import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
+
+from apps.agendamientos.models import EstadoAgenda
+from apps.consultorios.models import DiasSemana, Especialidad
 from apps.principal.forms import *
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
@@ -15,6 +20,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
 from django.shortcuts import render, redirect
+
+from utils.generate_json import generar_json_pacientes, generar_json_agendamientos, generar_json_consultorios
 
 
 def distrito(request, id_departamento):
@@ -60,7 +67,6 @@ def departamento(request, pais_codigo):
     cursor = connection.cursor()
     cursor.execute(query)
     distrito = cursor.fetchall()
-        # Distrito.objects.filter(departamento__in=departamento).order_by("departamento_id", "nombre").value_list('departamento.nombre')
     data = distrito
     return JsonResponse(json.dumps(data), safe=False)
 
@@ -174,6 +180,32 @@ class UserUpdatePasswordView(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+def generar_json(request, value):
+    """
+    funcion para generar json via url
+    :param request:
+    :param value: debe ser un string con el nombre del módulo de cual se quiere generar el json. Ejemplo: 'consultorios'
+    :return:
+    """
 
+    print("value", value)
+    j = {}
+    if value:
+        if value == "agendamientos":
+            generar_json_agendamientos()
 
+        elif value == "pacientes":
+            generar_json_pacientes()
 
+        elif value == "consultorios":
+            generar_json_consultorios()
+
+        else:
+            raise Exception("NO SE RECONOCE NOMBRE DEL MÓDULO")
+
+        j['respuesta'] = "ARCHIVO GENERADO EN EL DIRECTORIO DEL PROYECTO"
+
+    else:
+        raise Exception("NO SE RECONOCE NOMBRE DEL MÓDULO")
+
+    return JsonResponse(j, safe=False, json_dumps_params={'indent': 2})

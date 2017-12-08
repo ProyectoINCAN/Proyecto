@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^usuarios/(?P<user_id>\d+)/editar/cambiar-pass/$', views.UserUpdatePasswordView.as_view(),
         name='user_update_pass_global'),
 
+    url(r'^json_default_data/(?P<value>[\w\-]+)/$', views.generar_json, name='json'),
 ]

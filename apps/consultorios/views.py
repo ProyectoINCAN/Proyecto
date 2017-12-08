@@ -2,22 +2,19 @@ import calendar
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
-from django.db.models import Q
 from django.db.models.aggregates import Max
 from django.http.response import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect
-from django.core import serializers
+from django.shortcuts import redirect
 from django.http.response import JsonResponse
 from django.db import connection
 import json
 from django.core import serializers
 from django.template.loader import get_template
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import requires_csrf_token, csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.db.models.deletion import ProtectedError
 
@@ -41,13 +38,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.internaciones.models import Diagnostico
 from django.utils.safestring import mark_safe
 from apps.consultorios.helpers import calculate_age
-from apps.seguridad.management.commands import estadoConsultaDetalle
 from utils.generate_pdf import render_to_pdf
 
 
 class MedicoList(ListView):
     model = Medico
     template_name = 'consultorios/medico_list.html'
+
 
 @transaction.atomic
 def medico_create(request):

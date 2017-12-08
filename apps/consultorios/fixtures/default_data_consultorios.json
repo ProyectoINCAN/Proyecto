@@ -1,0 +1,1838 @@
+[
+{
+ "model": "consultorios.departamento",
+ "pk": "GIN",
+ "fields": {
+  "nombre": "Ginecolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.departamento",
+ "pk": "INT",
+ "fields": {
+  "nombre": "Internados",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.departamento",
+ "pk": "ONC",
+ "fields": {
+  "nombre": "Oncolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.departamento",
+ "pk": "PED",
+ "fields": {
+  "nombre": "Pediatr\u00eda",
+  "habilitado": true
+ }
+}
+
+,
+{
+ "model": "consultorios.diassemana",
+ "pk": 1,
+ "fields": {
+  "nombre": "DOMINGO"
+ }
+},
+{
+ "model": "consultorios.diassemana",
+ "pk": 2,
+ "fields": {
+  "nombre": "LUNES"
+ }
+},
+{
+ "model": "consultorios.diassemana",
+ "pk": 3,
+ "fields": {
+  "nombre": "MARTES"
+ }
+},
+{
+ "model": "consultorios.diassemana",
+ "pk": 4,
+ "fields": {
+  "nombre": "MIERCOLES"
+ }
+},
+{
+ "model": "consultorios.diassemana",
+ "pk": 5,
+ "fields": {
+  "nombre": "JUEVES"
+ }
+},
+{
+ "model": "consultorios.diassemana",
+ "pk": 6,
+ "fields": {
+  "nombre": "VIERNES"
+ }
+},
+{
+ "model": "consultorios.diassemana",
+ "pk": 7,
+ "fields": {
+  "nombre": "SABADO"
+ }
+}
+
+,
+{
+ "model": "consultorios.especialidad",
+ "pk": 1,
+ "fields": {
+  "nombre": "Anatom\u00eda Patol\u00f3gica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 3,
+ "fields": {
+  "nombre": "Anestesiolog\u00eda Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 2,
+ "fields": {
+  "nombre": "Anestesiolog\u00eda y Recuperaci\u00f3n",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 4,
+ "fields": {
+  "nombre": "Cardiolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 5,
+ "fields": {
+  "nombre": "Cardiolog\u00eda Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 10,
+ "fields": {
+  "nombre": "Cirug\u00eda Cardiovascular Tor\u00e1cica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 6,
+ "fields": {
+  "nombre": "Cirug\u00eda General",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 7,
+ "fields": {
+  "nombre": "Cirug\u00eda Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 8,
+ "fields": {
+  "nombre": "Cirug\u00eda Pl\u00e1stica y Reconstructiva",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 9,
+ "fields": {
+  "nombre": "Cirug\u00eda Tor\u00e1cica General",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 11,
+ "fields": {
+  "nombre": "Dermatolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 12,
+ "fields": {
+  "nombre": "Endocrinolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 13,
+ "fields": {
+  "nombre": "Gastroenterolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 14,
+ "fields": {
+  "nombre": "Geriatr\u00eda y Gerontolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 16,
+ "fields": {
+  "nombre": "Ginecolog\u00eda Oncol\u00f3gica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 15,
+ "fields": {
+  "nombre": "Ginecolog\u00eda y Obstetricia",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 17,
+ "fields": {
+  "nombre": "Hematolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 18,
+ "fields": {
+  "nombre": "Hematolog\u00eda Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 19,
+ "fields": {
+  "nombre": "Infectolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 20,
+ "fields": {
+  "nombre": "Infectolog\u00eda Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 21,
+ "fields": {
+  "nombre": "Inmunolog\u00eda Cl\u00ednica M\u00e9dica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 22,
+ "fields": {
+  "nombre": "Medicina Cr\u00edtica Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 23,
+ "fields": {
+  "nombre": "Medicina Cr\u00edtica y Terapia Intensiva",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 24,
+ "fields": {
+  "nombre": "Medicina de Emergencias",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 26,
+ "fields": {
+  "nombre": "Medicina Familiar y Comunitaria",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 27,
+ "fields": {
+  "nombre": "Medicina F\u00edsica y Rehabilitaci\u00f3n",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 25,
+ "fields": {
+  "nombre": "Medicina Interna",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 28,
+ "fields": {
+  "nombre": "Medicina Materno Fetal",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 29,
+ "fields": {
+  "nombre": "Medicina Paliativa",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 30,
+ "fields": {
+  "nombre": "Nefrolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 31,
+ "fields": {
+  "nombre": "Nefrolog\u00eda Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 32,
+ "fields": {
+  "nombre": "Neonatolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 33,
+ "fields": {
+  "nombre": "Neumolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 34,
+ "fields": {
+  "nombre": "Neumolog\u00eda Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 35,
+ "fields": {
+  "nombre": "Neurocirug\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 36,
+ "fields": {
+  "nombre": "Neurolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 37,
+ "fields": {
+  "nombre": "Oftalmolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 38,
+ "fields": {
+  "nombre": "Oftalmolog\u00eda Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 39,
+ "fields": {
+  "nombre": "Oncolog\u00eda M\u00e9dica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 40,
+ "fields": {
+  "nombre": "Oncolog\u00eda Quir\u00fargica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 42,
+ "fields": {
+  "nombre": "Ortopedia y Traumatolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 41,
+ "fields": {
+  "nombre": "Ortopedia y Traumatolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 43,
+ "fields": {
+  "nombre": "Otorrinolaringolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 44,
+ "fields": {
+  "nombre": "Patolog\u00eda Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 45,
+ "fields": {
+  "nombre": "Pediatr\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 46,
+ "fields": {
+  "nombre": "Psicolog\u00eda Cl\u00ednica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 47,
+ "fields": {
+  "nombre": "Psiquiatr\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 48,
+ "fields": {
+  "nombre": "Radiolog\u00eda e Im\u00e1genes M\u00e9dicas",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 49,
+ "fields": {
+  "nombre": "Radioterapia",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 50,
+ "fields": {
+  "nombre": "Reumatolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 51,
+ "fields": {
+  "nombre": "Urolog\u00eda",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 52,
+ "fields": {
+  "nombre": "Urolog\u00eda Pedi\u00e1trica",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.especialidad",
+ "pk": 53,
+ "fields": {
+  "nombre": "Vascular Perif\u00e9rico",
+  "habilitado": true
+ }
+}
+
+,
+{
+ "model": "consultorios.estadoconsulta",
+ "pk": "C",
+ "fields": {
+  "nombre": "CANCELADO"
+ }
+},
+{
+ "model": "consultorios.estadoconsulta",
+ "pk": "F",
+ "fields": {
+  "nombre": "FINALIZADO"
+ }
+},
+{
+ "model": "consultorios.estadoconsulta",
+ "pk": "P",
+ "fields": {
+  "nombre": "PENDIENTE"
+ }
+},
+{
+ "model": "consultorios.estadoconsulta",
+ "pk": "V",
+ "fields": {
+  "nombre": "VIGENTE"
+ }
+}
+
+,
+{
+ "model": "consultorios.estadoconsultadetalle",
+ "pk": "C",
+ "fields": {
+  "nombre": "CANCELADO"
+ }
+},
+{
+ "model": "consultorios.estadoconsultadetalle",
+ "pk": "E",
+ "fields": {
+  "nombre": "EN PROCESO"
+ }
+},
+{
+ "model": "consultorios.estadoconsultadetalle",
+ "pk": "F",
+ "fields": {
+  "nombre": "FINALIZADO"
+ }
+},
+{
+ "model": "consultorios.estadoconsultadetalle",
+ "pk": "P",
+ "fields": {
+  "nombre": "PENDIENTE"
+ }
+}
+
+,
+{
+ "model": "consultorios.grupoatencion",
+ "pk": "CO",
+ "fields": {
+  "nombre": "CONTROL"
+ }
+},
+{
+ "model": "consultorios.grupoatencion",
+ "pk": "PV",
+ "fields": {
+  "nombre": "PRIMERA VEZ"
+ }
+}
+
+,
+{
+ "model": "consultorios.tipomedicamento",
+ "pk": 2,
+ "fields": {
+  "nombre": "CONTROLADO",
+  "descripcion": "MEDICAMENTOS CONTROLADOS. SE REQUIERE RECETA CUADRUPLICADA",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.tipomedicamento",
+ "pk": 3,
+ "fields": {
+  "nombre": "PREPARADO",
+  "descripcion": "MEDICAMENTOS PREPARADOS SEG\u00daN RECETA M\u00c9DICA",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.tipomedicamento",
+ "pk": 1,
+ "fields": {
+  "nombre": "VENTA LIBRE",
+  "descripcion": "VENTA LIBRE EN FARMACIAS",
+  "habilitado": true
+ }
+}
+
+,
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 16,
+ "fields": {
+  "nombre": "Angiografia Tomografia coronaria no invasiva",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 22,
+ "fields": {
+  "nombre": "Angitomografias en general",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 58,
+ "fields": {
+  "nombre": "Articulaci\u00f3n temporomandibular, tres posiciones, comparativas. B",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 17,
+ "fields": {
+  "nombre": "Artrotomografia",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 23,
+ "fields": {
+  "nombre": "Bloqueo radicular selectivo bajo Tac",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 18,
+ "fields": {
+  "nombre": "Broncoscopia virtual",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 85,
+ "fields": {
+  "nombre": "Capacidad vital lenta",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 95,
+ "fields": {
+  "nombre": "Centellograma Glandulas Salivales",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 102,
+ "fields": {
+  "nombre": "Centellograma Infecton",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 96,
+ "fields": {
+  "nombre": "Centellograma \u00d3seo",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 103,
+ "fields": {
+  "nombre": "Centellograma Paratiroides",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 97,
+ "fields": {
+  "nombre": "Centellograma Renal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 104,
+ "fields": {
+  "nombre": "Centellograma Tiroideo I 131",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 91,
+ "fields": {
+  "nombre": "Centellograma Tiroideo Tc99m",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 98,
+ "fields": {
+  "nombre": "Centellograma Ventilacion/Perfusion Pulmonar",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 105,
+ "fields": {
+  "nombre": "Centellograma Vias Linfaticas",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 40,
+ "fields": {
+  "nombre": "Cistouretrograf\u00eda",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 30,
+ "fields": {
+  "nombre": "Cistouretrograf\u00eda",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 7,
+ "fields": {
+  "nombre": "Colangioresonancia",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 44,
+ "fields": {
+  "nombre": "Colon por enema c/Novonil",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 34,
+ "fields": {
+  "nombre": "Colon por enema c/Novonil",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 31,
+ "fields": {
+  "nombre": "Colon por enema c/Tractoclin",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 41,
+ "fields": {
+  "nombre": "Colon por enema c/Tractoclin",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 24,
+ "fields": {
+  "nombre": "Colonoscopia Virtual c/Novonil",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 13,
+ "fields": {
+  "nombre": "Colonoscopia Virtual c/Tractoclin",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 88,
+ "fields": {
+  "nombre": "Difusi\u00f3n de monoxido de carbono (DLCO)",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 132,
+ "fields": {
+  "nombre": "Doppler abdominal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 140,
+ "fields": {
+  "nombre": "Doppler arterial y venoso de ambos miembros (superiores o inferiores)",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 133,
+ "fields": {
+  "nombre": "Doppler de arterias renales",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 141,
+ "fields": {
+  "nombre": "Doppler de cordones espermaticos",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 134,
+ "fields": {
+  "nombre": "Doppler de partes blandas",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 142,
+ "fields": {
+  "nombre": "Doppler de Vasos Abdominales",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 127,
+ "fields": {
+  "nombre": "Doppler ginecologico",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 135,
+ "fields": {
+  "nombre": "Doppler Mamario",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 143,
+ "fields": {
+  "nombre": "Doppler Obstetrico",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 128,
+ "fields": {
+  "nombre": "Doppler Peneano y Testicular",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 136,
+ "fields": {
+  "nombre": "Doppler Tiroideo",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 144,
+ "fields": {
+  "nombre": "Doppler Transrectal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 129,
+ "fields": {
+  "nombre": "Doppler Transvaginal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 137,
+ "fields": {
+  "nombre": "Eco Doppler card\u00edaco",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 145,
+ "fields": {
+  "nombre": "Eco Doppler card\u00edaco 3D",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 130,
+ "fields": {
+  "nombre": "Eco Doppler card\u00edaco pedi\u00e1trico",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 138,
+ "fields": {
+  "nombre": "Eco Doppler card\u00edaco transesof\u00e1gico",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 146,
+ "fields": {
+  "nombre": "Eco Doppler de aorta",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 131,
+ "fields": {
+  "nombre": "Eco Doppler de vasos de cuello",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 139,
+ "fields": {
+  "nombre": "Eco Estr\u00e9s con ejercicio",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 1,
+ "fields": {
+  "nombre": "ECOGRAFIA",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 113,
+ "fields": {
+  "nombre": "Ecograf\u00eda abdominal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 120,
+ "fields": {
+  "nombre": "Ecografia de aorta abdominal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 114,
+ "fields": {
+  "nombre": "Ecograf\u00eda de otros organos, caderas, articulares, partes blandas",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 121,
+ "fields": {
+  "nombre": "Ecografia de vejiga o prostata",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 115,
+ "fields": {
+  "nombre": "Ecografia hepato biliar/pancre\u00e1tica/esplenica",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 122,
+ "fields": {
+  "nombre": "Ecografia intrarrectal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 109,
+ "fields": {
+  "nombre": "Ecograf\u00eda Intravaginal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 116,
+ "fields": {
+  "nombre": "Ecografia mamaria",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 123,
+ "fields": {
+  "nombre": "Ecograf\u00eda monitoreo ambulatorio ginecol\u00f3gica",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 110,
+ "fields": {
+  "nombre": "Ecografia Obstetrica",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 117,
+ "fields": {
+  "nombre": "Ecografia obst\u00e9trica con TN (Translucencia nucal)",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 124,
+ "fields": {
+  "nombre": "Ecografia obst\u00e9trica con TN Plus (Translucencia nucal Plus)",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 111,
+ "fields": {
+  "nombre": "Ecograf\u00eda Peneana",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 118,
+ "fields": {
+  "nombre": "Ecograf\u00eda renal bilateral",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 125,
+ "fields": {
+  "nombre": "Ecograf\u00eda Testicular",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 112,
+ "fields": {
+  "nombre": "Ecograf\u00eda tiroidea",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 119,
+ "fields": {
+  "nombre": "Ecografia vesical",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 126,
+ "fields": {
+  "nombre": "Egografia tocoginecologica-pelviana",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 4,
+ "fields": {
+  "nombre": "ELECTROCARDIOGRAMA",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 10,
+ "fields": {
+  "nombre": "Entero resonancia c/Novonil",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 8,
+ "fields": {
+  "nombre": "Entero resonancia c/Tractoclin",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 19,
+ "fields": {
+  "nombre": "Enterotomografia c/Novonil",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 25,
+ "fields": {
+  "nombre": "Enterotomografia c/Tractoclin",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 5,
+ "fields": {
+  "nombre": "ERGOMETRIA",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 71,
+ "fields": {
+  "nombre": "Espinograma (1era exposici\u00f3n)",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 59,
+ "fields": {
+  "nombre": "Espinograma (2da exposici\u00f3n)",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 72,
+ "fields": {
+  "nombre": "Espinograma Digitalizado (1era exposici\u00f3n)",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 60,
+ "fields": {
+  "nombre": "Espinograma Digitalizado (2da exposici\u00f3n)",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 86,
+ "fields": {
+  "nombre": "Espirometria computarizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 89,
+ "fields": {
+  "nombre": "Espirometria computarizada con y sin broncodilatadores",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 35,
+ "fields": {
+  "nombre": "Histerosalpingograf\u00eda",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 45,
+ "fields": {
+  "nombre": "Histerosalpingograf\u00eda",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 73,
+ "fields": {
+  "nombre": "Hueso temporal o agujeros \u00f3pticos, comparativos, por incidencia y por par. B",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 108,
+ "fields": {
+  "nombre": "Mamograf\u00eda / Mamografia Digital",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 87,
+ "fields": {
+  "nombre": "Maxima ventilaci\u00f3n voluntaria",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 48,
+ "fields": {
+  "nombre": "Medici\u00f3n comparativa de miembros inferiores (Ortorradiograf\u00eda) por estudio. B.",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 11,
+ "fields": {
+  "nombre": "Otras Resonancias",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 83,
+ "fields": {
+  "nombre": "PET-TC",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 90,
+ "fields": {
+  "nombre": "Presiones inspiratorias y espiratorias m\u00e1ximas",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 61,
+ "fields": {
+  "nombre": "Radiogradia de Raquis SUB - Digitalizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 74,
+ "fields": {
+  "nombre": "Radiografdia de Torax (1era exp - Digitalizada)",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 3,
+ "fields": {
+  "nombre": "RADIOGRAFIA",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 49,
+ "fields": {
+  "nombre": "Radiograf\u00eda de codo, antebrazo, mu\u00f1eca, mano, dedos, rodilla, pierna, tobillo y pie",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 62,
+ "fields": {
+  "nombre": "Radiograf\u00eda de codo, antebrazo, mu\u00f1eca, mano, dedos, rodilla, pierna, tobillo y pie.",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 75,
+ "fields": {
+  "nombre": "Radiograf\u00eda de craneo, cara, senos paranasales Digitalizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 50,
+ "fields": {
+  "nombre": "Radiograf\u00eda de craneo, cara, senos paranasales Subsiguiente Digitalizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 63,
+ "fields": {
+  "nombre": "Radiograf\u00eda de hombro, humero, pelvis, cadera y femur 1era exp - Digitalizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 76,
+ "fields": {
+  "nombre": "Radiograf\u00eda de hombro, humero, pelvis, cadera y femur 1era exp. A.",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 51,
+ "fields": {
+  "nombre": "Radiograf\u00eda de hombro, humero, pelvis, cadera y femur Sub - Digitalizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 64,
+ "fields": {
+  "nombre": "Radiograf\u00eda de manos y mu\u00f1eca frente y oblicuas",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 77,
+ "fields": {
+  "nombre": "Radiograf\u00eda de Raquis (columna) primera exposici\u00f3n. B.",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 52,
+ "fields": {
+  "nombre": "Radiograf\u00eda de Raquis 1era exp - Digitalizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 65,
+ "fields": {
+  "nombre": "Radiograf\u00eda de Torax exp sub - Digitalizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 78,
+ "fields": {
+  "nombre": "Radiograf\u00eda del craneo, cara, senos paranasales o cavum, primera exposici\u00f3n. B.",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 53,
+ "fields": {
+  "nombre": "Radiograf\u00eda o Telerradiograf\u00eda de Torax",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 66,
+ "fields": {
+  "nombre": "Radiograf\u00eda posici\u00f3n de Marchand para rotula",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 79,
+ "fields": {
+  "nombre": "Radiograf\u00eda simple de abdomen 1era exp - Digitalizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 54,
+ "fields": {
+  "nombre": "Radiograf\u00eda simple de abdomen sub - Digitalizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 67,
+ "fields": {
+  "nombre": "Radiograf\u00eda simple de abdomen, primera exposici\u00f3n. A",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 80,
+ "fields": {
+  "nombre": "Radiograf\u00eda simple de arbol urinario - Digitalizada",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 55,
+ "fields": {
+  "nombre": "Radiograf\u00eda simple de arbol urinario. B",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 92,
+ "fields": {
+  "nombre": "ReflujoGastroesofagico",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 9,
+ "fields": {
+  "nombre": "Resonancia de pelvis y prostata",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 12,
+ "fields": {
+  "nombre": "Resonancia de pr\u00f3stata dirigida con difusi\u00f3n",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 6,
+ "fields": {
+  "nombre": "Resonancias de pelvis y recto",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 99,
+ "fields": {
+  "nombre": "RRG Basal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 106,
+ "fields": {
+  "nombre": "RRG Captopril",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 93,
+ "fields": {
+  "nombre": "RRG Furosemida",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 68,
+ "fields": {
+  "nombre": "RX extremidades inferiores AP, Inc cadera a rodilla",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 81,
+ "fields": {
+  "nombre": "RX extremidades superiores AP, Inc hombro-codo",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 32,
+ "fields": {
+  "nombre": "Seriada Esofagogastroduodenal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 42,
+ "fields": {
+  "nombre": "Seriada Esofagogastroduodenal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 36,
+ "fields": {
+  "nombre": "Sialografia",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 46,
+ "fields": {
+  "nombre": "Sialografia",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 100,
+ "fields": {
+  "nombre": "Spect Cardiaco",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 107,
+ "fields": {
+  "nombre": "Spect Cerebral",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 94,
+ "fields": {
+  "nombre": "Spect \u00d3seo",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 56,
+ "fields": {
+  "nombre": "Telerradiograf\u00eda de craneo y/o perfil facial con cefalostato - 1era exp. G",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 2,
+ "fields": {
+  "nombre": "TOMOGRAFIA",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 14,
+ "fields": {
+  "nombre": "Tomografia de pelvis",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 20,
+ "fields": {
+  "nombre": "Tomografia de vejiga y pr\u00f3stata",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 26,
+ "fields": {
+  "nombre": "Tomografia ginecol\u00f3gica",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 15,
+ "fields": {
+  "nombre": "Tomografia hepatobiliar espl\u00e9nica pancre\u00e1tica",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 69,
+ "fields": {
+  "nombre": "Tomograf\u00eda lineal",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 21,
+ "fields": {
+  "nombre": "Tomografias de abdomen",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 82,
+ "fields": {
+  "nombre": "Transito colonico con marcadores radio opacos",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 38,
+ "fields": {
+  "nombre": "Transito colonico con marcadores Radiopacos",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 28,
+ "fields": {
+  "nombre": "Transito colonico con marcadores Radiopacos",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 33,
+ "fields": {
+  "nombre": "Transito de intestino delgado simple y con doble contraste c/Novonil",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 43,
+ "fields": {
+  "nombre": "Transito de intestino delgado simple y con doble contraste c/Novonil",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 37,
+ "fields": {
+  "nombre": "Transito de intestino delgado simple y con doble contraste c/Tractoclin",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 47,
+ "fields": {
+  "nombre": "Transito de intestino delgado simple y con doble contraste c/Tractoclin",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 57,
+ "fields": {
+  "nombre": "Urograma excretor con estudio vesical, pre y post miccional",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 70,
+ "fields": {
+  "nombre": "Urograma excretor pielograf\u00eda descendente",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 27,
+ "fields": {
+  "nombre": "Urotomografia",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 101,
+ "fields": {
+  "nombre": "Vaciamiento Gastrico",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 39,
+ "fields": {
+  "nombre": "Videodegluci\u00f3n",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 29,
+ "fields": {
+  "nombre": "Videodegluci\u00f3n",
+  "descripcion": ""
+ }
+},
+{
+ "model": "consultorios.ordenestudio",
+ "pk": 84,
+ "fields": {
+  "nombre": "Volumenes pulmonares por plestimografia",
+  "descripcion": ""
+ }
+}
+
+,
+{
+ "model": "consultorios.turno",
+ "pk": "M",
+ "fields": {
+  "nombre": "MA\u00d1ANA",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.turno",
+ "pk": "N",
+ "fields": {
+  "nombre": "NOCHE",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.turno",
+ "pk": "T",
+ "fields": {
+  "nombre": "TARDE",
+  "habilitado": true
+ }
+}
+
+,
+{
+ "model": "consultorios.turno",
+ "pk": "M",
+ "fields": {
+  "nombre": "MA\u00d1ANA",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.turno",
+ "pk": "N",
+ "fields": {
+  "nombre": "NOCHE",
+  "habilitado": true
+ }
+},
+{
+ "model": "consultorios.turno",
+ "pk": "T",
+ "fields": {
+  "nombre": "TARDE",
+  "habilitado": true
+ }
+}
+]

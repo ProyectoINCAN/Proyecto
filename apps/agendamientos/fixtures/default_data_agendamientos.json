@@ -1,0 +1,23 @@
+[
+{
+ "model": "agendamientos.estadoagenda",
+ "pk": "C",
+ "fields": {
+  "nombre": "CANCELADO"
+ }
+},
+{
+ "model": "agendamientos.estadoagenda",
+ "pk": "P",
+ "fields": {
+  "nombre": "PENDIENTE"
+ }
+},
+{
+ "model": "agendamientos.estadoagenda",
+ "pk": "V",
+ "fields": {
+  "nombre": "VIGENTE"
+ }
+}
+]

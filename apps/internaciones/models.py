@@ -5,7 +5,7 @@ from django.db.models.deletion import DO_NOTHING
 
 from apps.consultorios.models import Medico, ConsultaDetalle, Medicamento
 from apps.pacientes.models import Paciente
-from apps.seguridad.models import Establecimiento
+from apps.principal.models import Establecimiento
 from utils.upperField import UpperCharField, UpperTextField
 
 
@@ -70,7 +70,8 @@ class Egreso(models.Model):
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     fecha = models.DateField(auto_now=False, blank=False, null=False, verbose_name="Fecha de egreso")
     tipo = models.ForeignKey(TipoEgreso, models.DO_NOTHING, blank=False, null=False, verbose_name="Tipo de egreso")
-    condicion_egreso = models.ForeignKey(CondicionEgreso, models.DO_NOTHING, blank=False, null=False, verbose_name="Condición al egreso")
+    condicion_egreso = models.ForeignKey(CondicionEgreso, models.DO_NOTHING, blank=False, null=False,
+                                         verbose_name="Condición al egreso")
     dias_internacion = models.IntegerField(blank=False, verbose_name="Días de interanción")
     nro_certificado_defuncion = models.IntegerField(blank=False, verbose_name="Nº del Certificado de Defunción")
 
@@ -176,10 +177,11 @@ class Internado(models.Model):
     tipo_ingreso = UpperCharField(max_length=100, blank=False, uppercase=True)
     puesto = UpperCharField(max_length=100, blank=False, uppercase=True)
     motivo = UpperCharField(max_length=100, blank=False, uppercase=True)
-    medico_solicitante = models.ForeignKey(Medico, models.SET_NULL, blank= True, null=True, related_name ="medicosolicitantec")
-    medico_cabecera = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False,related_name ="medicos")
+    medico_solicitante = models.ForeignKey(Medico, models.SET_NULL, blank=True, null=True,
+                                           related_name="medicosolicitantec")
+    medico_cabecera = models.ForeignKey(Medico, models.DO_NOTHING, blank=False, null=False, related_name="medicos")
     forma_ingreso = UpperCharField(max_length=150, blank=False, uppercase=True)
-    servicio =  models.ForeignKey(Servicio, models.DO_NOTHING, blank=False, null=False)
+    servicio = models.ForeignKey(Servicio, models.DO_NOTHING, blank=False, null=False)
     observacion = UpperCharField(max_length=300, blank=False, uppercase=True)
 
     def __str__(self):
