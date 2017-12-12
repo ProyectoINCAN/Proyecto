@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,7 +26,6 @@ urlpatterns = [
     url(r'^agendamientos/', include('apps.agendamientos.urls', namespace="agendamientos")),
     url(r'^consultorios/', include('apps.consultorios.urls', namespace="consultorios")),
     url(r'^principal/', include('apps.principal.urls', namespace="principal")),
-    url(r'^select2/', include('django_select2.urls')),
     url(r'', include('apps.seguridad.urls')),
     url(r'^internaciones/', include('apps.internaciones.urls', namespace="internaciones")),
 

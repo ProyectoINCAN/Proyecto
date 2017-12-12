@@ -48,15 +48,9 @@
                 <td>{{detalle.paciente.distrito.nombre}}</td>
                 <td>{{detalle.paciente.telefono.numero}}</td>
                 <td>{{detalle.confirmado}}</td>
-
-
             </tr>
-        {% endfor %}
-
-        {% else %}
-        <h1>No hay registros de agendamientos</h1>
-
-        {% endif %}
+            {% endfor %}
+            {% endif %}
             </tbody>
         </table>
     </div>

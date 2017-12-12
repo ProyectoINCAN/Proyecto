@@ -50,8 +50,8 @@
                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_eliminar' orden.id %}')">
                         <i class="fa fa-times-circle"></i>
                       </a>
-                      <a href="{% url 'consultorios:orden_estudio_detalle_list' orden.id %}">
-                        <button class="btn btn-bitbucket"></i> Detalle</button>
+                      <a class="btn btn-xs"  title="Detalles" href="{% url 'consultorios:orden_estudio_detalle_list' orden.id %}">
+                        <i class="fa fa-list-ul" aria-hidden="true"></i>
                       </a>
                     </td>
                   </tr>

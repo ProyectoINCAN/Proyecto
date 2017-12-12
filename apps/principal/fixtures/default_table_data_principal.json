@@ -1,0 +1,341 @@
+[
+{
+ "model": "principal.establecimiento",
+ "pk": 1,
+ "fields": {
+  "nombre": "INSTITUTO NACIONAL DEL CANCER",
+  "telefono": " 0228-632900",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 2,
+ "fields": {
+  "nombre": "Centro M\u00e9dico La Costa Asunci\u00f3n  ",
+  "telefono": " 021-202900 (R.A.)",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 3,
+ "fields": {
+  "nombre": "Hospital Nacional ",
+  "telefono": " 0294-21450/4",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 4,
+ "fields": {
+  "nombre": "Hospital De Barrio Obrero ",
+  "telefono": " 372-989",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 5,
+ "fields": {
+  "nombre": "Hospital Universitario  ",
+  "telefono": " 602-565",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 6,
+ "fields": {
+  "nombre": "Hospital De Cl\u00ednicas ",
+  "telefono": " 420-981/4",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 7,
+ "fields": {
+  "nombre": "Hospital De Policia ",
+  "telefono": " 204-850",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 8,
+ "fields": {
+  "nombre": "Hospital Bautista ",
+  "telefono": " 600-172",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 9,
+ "fields": {
+  "nombre": "Hospital Franc\u00e9s  ",
+  "telefono": " 295-250/2",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 10,
+ "fields": {
+  "nombre": "Hospital San Lucas  ",
+  "telefono": " 553-914",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 11,
+ "fields": {
+  "nombre": "Hospital Samaritano  ",
+  "telefono": "  550-121/2",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 12,
+ "fields": {
+  "nombre": "Hospital Militar ",
+  "telefono": " 451-470/6",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 13,
+ "fields": {
+  "nombre": "Hospital Central Dr. Emilio Cubas, del IPS",
+  "telefono": "",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 14,
+ "fields": {
+  "nombre": "Hospital Neurosiqui\u00e1trico ",
+  "telefono": " 290-101",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 15,
+ "fields": {
+  "nombre": "Maternidad Nacional ",
+  "telefono": " 683-930/2",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 16,
+ "fields": {
+  "nombre": "Hospital Del Coraz\u00f3n ",
+  "telefono": " 900-197/9",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 17,
+ "fields": {
+  "nombre": "Policl\u00ednico San Benigno ",
+  "telefono": " 447-307",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 18,
+ "fields": {
+  "nombre": "Sanatorio Santa Barbara  ",
+  "telefono": " 595 21 299 388",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 19,
+ "fields": {
+  "nombre": "Organizaci\u00f3n Panamericana de la Salud (OPS)",
+  "telefono": "",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 20,
+ "fields": {
+  "nombre": "Cruz Roja Paraguaya ",
+  "telefono": " 204-900",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 21,
+ "fields": {
+  "nombre": "Cruz Blanca ",
+  "telefono": "  490-763/5",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 22,
+ "fields": {
+  "nombre": "Cl\u00ednica Boquer\u00f3n ",
+  "telefono": " 205-380",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 23,
+ "fields": {
+  "nombre": "Cl\u00ednica 12 De Junio ",
+  "telefono": " 332-140",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 24,
+ "fields": {
+  "nombre": "Cl\u00ednica San Jorge ",
+  "telefono": " 294-444",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 25,
+ "fields": {
+  "nombre": "Isla Po I Zeballos Cu\u00e9 ",
+  "telefono": "  290-154",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 26,
+ "fields": {
+  "nombre": "Instituto de Medicina Tropical ",
+  "telefono": " 292-653/4",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 27,
+ "fields": {
+  "nombre": "Instituto De Previsi\u00f3n Social ",
+  "telefono": " 290-136/9",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 28,
+ "fields": {
+  "nombre": "Instituto Privado Del Ni\u00f1o ",
+  "telefono": "  212-888",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 29,
+ "fields": {
+  "nombre": "Sanatorio Italiano  ",
+  "telefono": " 214-260",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 30,
+ "fields": {
+  "nombre": "Sanatorio San Roque  ",
+  "telefono": "  212-499",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 31,
+ "fields": {
+  "nombre": "Sanatorio Espa\u00f1ol  ",
+  "telefono": "  422-879",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 32,
+ "fields": {
+  "nombre": "Sanatorio Americano  ",
+  "telefono": "  200-225",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 33,
+ "fields": {
+  "nombre": "Sanatorio Adventista  ",
+  "telefono": "  200-916",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 34,
+ "fields": {
+  "nombre": "Sanatorio Santa Clara  ",
+  "telefono": "  491-493",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 35,
+ "fields": {
+  "nombre": "Sanatorio San Mart\u00edn ",
+  "telefono": "  550-982",
+  "habilitado": true
+ }
+},
+{
+ "model": "principal.establecimiento",
+ "pk": 36,
+ "fields": {
+  "nombre": "Emergencias Eme",
+  "telefono": " 210-632",
+  "habilitado": true
+ }
+},
+ {
+ "model": "principal.parametrosistema",
+ "pk": 1,
+ "fields": {
+  "nombre": "INSTITUTO NACIONAL DEL C\u00e1NCER",
+  "telefono": "0228632900",
+  "correo_electronico": "incan@incan.gov.py",
+  "direccion": "KM 24 - RUTA RAMAL AREGUA",
+  "secuencia": 0,
+  "area_id": "UR",
+  "distrito_id": 181,
+  "establecimiento_id": 1,
+  "region_sanitaria": "XI"
+ }
+}
+]

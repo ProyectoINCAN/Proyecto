@@ -1,0 +1,68 @@
+
+
+{% extends "base/base2.html" %}
+{% load static %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+<section class="content-header">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1>
+            SIHINCAN
+        </h1>
+    </div>
+    <ol class="breadcrumb">
+        <li>Administrativo: {{ user.username }}</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="small-box bg-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-users fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <h3>{{ total_pacientes }}</h3>
+                            <div>Pacientes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="small-box bg-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-users fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <h3>{{ mensual }}</h3>
+                            <div>Pacientes/Mensual</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="small-box bg-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-users fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <h3>{{ hoy }}</h3>
+                            <div>Pacientes/Hoy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

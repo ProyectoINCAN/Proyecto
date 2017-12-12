@@ -7,7 +7,7 @@ from django.utils.timezone import now
 from utils import paciente_utils
 from utils.upperField import UpperCharField
 
-from .validators import nombre_validation, charfield_validation, doc_validation
+from .validators import doc_validation
 
 
 class TipoDoc(models.Model):

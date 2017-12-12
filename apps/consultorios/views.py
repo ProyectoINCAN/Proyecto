@@ -51,9 +51,10 @@ def medico_create(request):
     if request.method == 'POST':
         form = MedicoForm(request.POST)
         if form.is_valid():
-            form.save()
+            data = form.save()
+            print("data.id", data.id, data.pk)  # borrar
             messages.success(request, "Se ha creado el médico.")
-            return redirect('consultorios:medico_listar')
+            return redirect('consultorios:medico_editar', data.id)
         else:
             messages.error(request, "Ha ocurrido un error. Datos no guardados.")
             return redirect('consultorios:medico_listar')
@@ -65,6 +66,7 @@ def medico_create(request):
 
 @transaction.atomic
 def medico_update(request, pk):
+    print("llega al update")  # borrar
     objeto = Medico.objects.get(id=pk)
     if request.method == 'POST':
         form = MedicoForm(request.POST, instance=objeto)
@@ -72,6 +74,9 @@ def medico_update(request, pk):
         if form.is_valid():
             form.save(commit=True)
             messages.success(request, "Se han actualizado los datos del médico.")
+            return redirect("consultorios:medico_listar")
+        else:
+            messages.error(request, "Ha ocurrido un error. Datos no guardados.")
             return redirect("consultorios:medico_listar")
     else:
         form = MedicoForm(instance=objeto)

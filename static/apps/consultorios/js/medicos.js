@@ -41,6 +41,7 @@
    $("#id_nro_registro_profesional").prop('disabled', disabled);
    $("#id_fecha_nacimiento").prop('disabled', disabled);
    $("#id_habilitado").prop('disabled', disabled);
+   $("#guardar").prop('disabled', disabled);
 
    }
 

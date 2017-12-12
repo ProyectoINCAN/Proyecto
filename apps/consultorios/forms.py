@@ -43,8 +43,7 @@ class MedicoForm(forms.ModelForm):
             'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
-            'especialidad':  select2form.Select2MultipleWidget(attrs={'class': 'form-control selectsearch-multiple',
-                                                                      'style': 'width: 100%'}),
+            'especialidad': forms.SelectMultiple(attrs={'class': 'form-control', 'style': 'width: 100%'}),
             'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 

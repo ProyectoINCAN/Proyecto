@@ -11,7 +11,7 @@ from apps.pacientes import models as pac
 from apps.pacientes.models import Agua, Area, Barrio, Desague, Distrito, EliminacionBasura, EstadoCivil, \
     Nacionalidad, Pais, NivelEducativo, Pared, Piso, Profesion, SeguroMedico, ServicioBasico, Sexo, SituacionLaboral, \
     Techo, TipoCorreoElectronico, TipoDoc, TipoTelefono, Dependencia, Etnia, Ocupacion, Vinculo
-from apps.principal.models import Establecimiento
+from apps.principal.models import Establecimiento, ParametroSistema
 
 
 def generar_archivo_json(data_list, nombre_archivo):
@@ -131,13 +131,24 @@ def generar_json_pacientes():
     datos = Vinculo.objects.all()
     data_list.append(datos)
 
-    # el último raw porque
+    generar_archivo_json(data_list, "default_data_pacientes.json")
+
+
+def generar_json_principal():
+
+    # estos en raw porque tuvo problemas
+    data_list = []
     datos = []
-    for dato in Establecimiento.objects.raw("""select * from seguridad_establecimiento"""):
+
+    for dato in Establecimiento.objects.raw("select * from seguridad_establecimiento"):
         datos.append(dato)
     data_list.append(datos)
 
-    generar_archivo_json(data_list, "default_data_pacientes.json")
+    for dato in ParametroSistema.objects.raw("""select * from seguridad_parametrosistema"""):
+        datos.append(dato)
+    data_list.append(datos)
+
+    generar_archivo_json(data_list, "default_data_principal.json")
 
 
 def generar_json_consultorios():

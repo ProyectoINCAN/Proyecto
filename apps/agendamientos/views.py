@@ -176,7 +176,6 @@ class AgendaByFechaList(LoginRequiredMixin, TemplateView):
 
 class AgendaUpdate(UpdateView):
     model = Agenda
-    print("entro")
     form_class = AgendaForm
     template_name = 'agendamientos/agenda_form.html'
     success_url = reverse_lazy('agendamientos:agenda_listar')

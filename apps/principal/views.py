@@ -3,6 +3,7 @@ import os
 from django.core import serializers
 from django.http.response import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.views.generic.base import TemplateView
 
 from apps.agendamientos.models import EstadoAgenda
 from apps.consultorios.models import DiasSemana, Especialidad
@@ -22,6 +23,10 @@ from django.db.models.deletion import ProtectedError
 from django.shortcuts import render, redirect
 
 from utils.generate_json import generar_json_pacientes, generar_json_agendamientos, generar_json_consultorios
+
+
+class PrincipalIndex(TemplateView):
+    template_name = 'principal/index.html'
 
 
 def distrito(request, id_departamento):
