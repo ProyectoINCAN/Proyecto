@@ -11,73 +11,95 @@
     <li class="active">{% if form.instance.id %}Editar: {{ form.instance.nombre }}{% else %}Nuevo
       Medicamento{% endif %}</li>
   </ol>
-<br>
+  <br>
   <div class="wrapper-md">
-      {% include 'base/messages.html' %}
-      <div class="box box-primary">
-          <div class="box-header with-border">
-            <form class="form-horizontal" method="POST">
-              {% csrf_token %}
-              <div class="form-group">
-               <label for="{{ form.nombre.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.nombre.label }}</label>
-               <div class="col-lg-4 col-md-3 col-sm-4">
-                   {{ form.nombre }}
-               </div>
-               <label for="{{ form.tipificacion.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.tipificacion.label}}</label>
-               <div class="col-lg-4 col-md-3 col-sm-4">
-                   {{ form.tipificacion }}
-               </div>
+    {% include 'base/messages.html' %}
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <form class="form-horizontal" method="POST">
+          {% csrf_token %}
+          <br>
+          <div class="form-group">
+            <label for="{{ form.nombre.name }}"
+                   class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.nombre.label }}</label>
+            <div class="col-lg-4 col-md-3 col-sm-4">
+              {{ form.nombre }}
+            </div>
+            <label for="{{ form.tipificacion.name }}"
+                   class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.tipificacion.label }}</label>
+            <div class="col-lg-4 col-md-3 col-sm-4">
+              {{ form.tipificacion }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.forma_farmaceutica.name }}"
+                   class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.forma_farmaceutica.label }}</label>
+            <div class="col-lg-4 col-md-3 col-sm-4">
+              {{ form.forma_farmaceutica }}
             </div>
 
-            <div class="form-group">
-                <label for="{{ form.forma_farmaceutica.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.forma_farmaceutica.label }}</label>
-                 <div class="col-lg-4 col-md-3 col-sm-4">
-                     {{form.forma_farmaceutica}}
-                 </div>
-                 <label for="{{ form.nro_lote.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{form.nro_lote.label}}</label>
-                 <div class="col-lg-4 col-md-3 col-sm-4">
-                     {{form.nro_lote}}
-                 </div>
-             </div>
-
-             <div class="form-group">
-                 <label for="{{ form.cantidad.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.cantidad.label }}</label>
-                 <div class="col-lg-4 col-md-3 col-sm-4">
-                     {{form.cantidad}}
-                 </div>
-                 <label for="{{ form.fabricado.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.fabricado.label }}</label>
-                 <div class="col-lg-4 col-md-3 col-sm-4">
-                     {{form.fabricado}}
-                 </div>
-             </div>
-            <div class="form-group">
-                 <label for="{{ form.vencimiento.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.vencimiento.label }}</label>
-                 <div class="col-lg-4 col-md-3 col-sm-4">
-                     {{form.vencimiento}}
-                 </div>
-                 <label for="{{ form.habilitado.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.habilitado.label }}</label>
-                 <div class="col-lg-4 col-md-3 col-sm-4">
-                     {{form.habilitado}}
-                 </div>
-             </div>
-
-      <div class="form-group">
-       <div class="col-sm-offset-4 col-sm-8">
-           <a href="javascript:void(0)" role="button" class="btn btn-default" id="editar"><i class="fa fa-pencil"></i> Editar</a>
-           <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
-           <a href="{% url 'consultorios:medicamentos' %}" class="btn btn-default" id="cancelar"><i class="fa fa-times"></i> Cancelar</a>
-       </div>
+            <label for="{{ form.nro_lote.name }}"
+                   class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.nro_lote.label }}</label>
+            <div class="col-lg-4 col-md-3 col-sm-4">
+              {{ form.nro_lote }}
+              {{ form.nro_lote.errors }}
+            </div>
           </div>
-  </form>
 
+          <div class="form-group">
+
+            <label for="{{ form.cantidad.name }}"
+                   class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.cantidad.label }}</label>
+            <div class="col-lg-4 col-md-3 col-sm-4">
+              {{ form.cantidad }}
+              {{ form.cantidad.errors }}
+            </div>
+
+            <label for="{{ form.fabricado.name }}"
+                   class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.fabricado.label }}</label>
+            <div class="col-lg-4 col-md-3 col-sm-4">
+              {{ form.fabricado }}
+              {{ form.fabricado.errors }}
+            </div>
           </div>
+          <div class="form-group">
+
+            <label for="{{ form.vencimiento.name }}"
+                   class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.vencimiento.label }}</label>
+            <div class="col-lg-4 col-md-3 col-sm-4">
+              {{ form.vencimiento }}
+              {{ form.vencimiento.errors }}
+            </div>
+
+            <label for="{{ form.habilitado.name }}"
+                   class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.habilitado.label }}</label>
+            <div class="col-lg-4 col-md-3 col-sm-4">
+              {{ form.habilitado }}
+              {{ form.habilitado.errors }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-8">
+              <a href="javascript:void(0)" role="button" class="btn btn-default" id="editar"><i
+                  class="fa fa-pencil"></i> Editar</a>
+              <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar
+              </button>
+              <a href="{% url 'consultorios:medicamentos' %}" class="btn btn-default" id="cancelar"><i
+                  class="fa fa-times"></i> Cancelar</a>
+            </div>
+          </div>
+        </form>
+
       </div>
-  </div>
     </div>
+  </div>
+  </div>
   </div>
 
 {% endblock %}
 
 {% block extrajs %}
-<script src = "{% static 'apps/consultorios/js/medicamentos.js' %}"></script>
+   <script src="{% static 'apps/consultorios/js/medicamentos.js' %}"></script>
 {% endblock %}

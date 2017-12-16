@@ -25,6 +25,8 @@ from django.views.generic.base import TemplateView, View
 
 import datetime
 
+from psycopg2._json import Json
+
 from Proyecto import settings
 from apps import pacientes
 from apps.agendamientos.functions import get_origen_url_agendamiento
@@ -1259,6 +1261,10 @@ class MedicamentoCreateView(LoginRequiredMixin, CreateView):
     form_class = MedicamentoForm
     template_name = 'consultorios/medicamentos/medicamentos_form.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(MedicamentoCreateView, self).get_context_data(**kwargs)
+        return context
+
     def get_success_url(self):
         messages.success(self.request, "Se ha creado el medicamento.")
         return reverse('consultorios:medicamentos')
@@ -1298,18 +1304,14 @@ class MedicamentoUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('consultorios:medicamentos')
 
 
-class MedicamentoDeleteView(LoginRequiredMixin, DeleteView):
-    model = Medicamento
-    template_name = "consultorios/medicamentos/medicamentos_eliminar.html"
-    pk_url_kwarg = 'medicamento_id'
-    context_object_name = 'medicamento'
+class MedicamentoDeleteView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         medicamento = Medicamento.objects.get(pk=kwargs['medicamento_id'])
         medicamento.habilitado = False
         medicamento.save()
         messages.success(self.request, "Se ha eliminado el medicamento.")
-        return HttpResponseRedirect(reverse('consultorios:medicamentos'))
+        return JsonResponse({'success': True})
 
 
 class AnamnesisPacienteCreate(LoginRequiredMixin, FormView):

@@ -324,13 +324,18 @@ class MedicamentoForm(forms.ModelForm):
         }
 
     def clean(self):
-        if self.cleaned_data['cantidad'] <= 0:
+        if self.cleaned_data.get('cantidad') <= 0:
             self.add_error('cantidad', 'La cantidad debe ser mayor a cero')
 
-        fecha_fabricacion = self.cleaned_data['fabricado']
-        fecha_venc = self.cleaned_data['vencimiento']
+        fecha_fabricacion = self.cleaned_data.get('fabricado')
+        fecha_venc = self.cleaned_data.get('vencimiento')
         if fecha_fabricacion > fecha_venc:
-            self.add_error('fabricado', 'La fecha de fabricación no puede ser inferior a la fecha de vencimiento')
+            self.add_error('fabricado', 'La fecha de fabricación no puede ser superior a la fecha de vencimiento')
+
+        # validamos el número de lote, sino existe el número ingresado ya registrado
+        if self.cleaned_data.get('nro_lote'):
+            if Medicamento.objects.filter(nro_lote=self.cleaned_data.get('nro_lote')).exists():
+                self.add_error('nro_lote', 'Número de lote ya existe')
 
     def __init__(self, *args, tipo=None, **kwargs):
         super(MedicamentoForm, self).__init__(*args, **kwargs)
