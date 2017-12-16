@@ -1235,18 +1235,14 @@ class TipoMedicamentoUpdateView(LoginRequiredMixin, UpdateView):
         return JsonResponse({'success': True})
 
 
-class TipoMedicamentoDelete(LoginRequiredMixin, DeleteView):
-    model = TipoMedicamento
-    template_name = "consultorios/tipo_medicamento/tipo_medicamento_eliminar.html"
-    pk_url_kwarg = 'tipo_id'
-    context_object_name = 'tipo'
+class TipoMedicamentoDelete(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         tipo = TipoMedicamento.objects.get(pk=kwargs['tipo_id'])
         tipo.habilitado = False
         tipo.save()
         messages.success(self.request, "Se ha eliminado el tipo medicamento.")
-        return HttpResponseRedirect(reverse('consultorios:tipo_medicamento'))
+        return JsonResponse({'success':True})
 
 
 class MedicamentoListView(LoginRequiredMixin, ListView):

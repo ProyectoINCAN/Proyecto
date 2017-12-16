@@ -5,16 +5,7 @@
 {#        <i class="fa fa-plus"></i> Nueva Sucursal#}
 {#    </a>#}
 {#{% endblock %}#}
-{% block extrajs %}
-  <script>
 
-jQuery(document).ready(function($) {
-   $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
-    });
-  });
-</script>
-{% endblock %}
 
 {% block content %}
   <div class="app-content-body">
@@ -24,46 +15,47 @@ jQuery(document).ready(function($) {
     </div>
 
     <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="#">Inicio</a></li>
+      <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
       <li class="active">Listado de Tipos de Medicamentos</li>
     </ol>
-            {% include 'base/messages.html' %}
+    {% include 'base/messages.html' %}
     <div class="wrapper-md">
-        <div class="row">
+      <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-12">
           <div class="panel panel-default">
             <div class="panel-heading">
               <b>Listado de Tipos de Medicamentos</b>
               <div class="btn-group pull-right">
-                 <a>
-                   <button onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_crear' %}')"
-                    class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
-                   </button>
-                 </a>
-              </div><p></p>
+                <a>
+                  <button onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_crear' %}')"
+                          class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
+                  </button>
+                </a>
+              </div>
+              <p></p>
             </div>
-              <div class="panel-body">
-                <table class="table table-striped table-bordered table-hover table-responsive"
-                id="dataTables-example" cellspacing="0" width="100%">
-                  <thead>
-                  <tr>
-                    <th style="width:30%">Nombre</th>
-                    <th style="width:30%">Descripción</th>
-                    <th style="width:10%">Acción</th>
-                  </tr>
-                  </thead>
+            <div class="panel-body">
+              <table class="table table-striped table-bordered table-hover table-responsive"
+                     id="dataTables-example" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                  <th style="width:30%">Nombre</th>
+                  <th style="width:30%">Descripción</th>
+                  <th style="width:10%">Acción</th>
+                </tr>
+                </thead>
                 <tbody>
                 {% for tipo in tipos %}
                   <tr>
                     <td width='50'>{{ tipo.nombre }}</td>
-                    <td width='50'>{{ tipo.descripcion }} </td>
+                    <td width='50'>{{ tipo.descripcion| safe }} </td>
                     <td width='50' align='center'>
                       <a class="btn btn-xs" title="Editar"
-                        onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_editar' tipo.id %}')">
+                         onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_editar' tipo.id %}')">
                         <i class="fa fa-pencil"></i>
                       </a>
-                        <a class="btn btn-xs" title="Eliminar"
-                        onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_eliminar' tipo.id %}')">
+                      <a class="btn btn-xs eliminar-tipo-medicamento"
+                         onclick="eliminarTipoMedicamento('{% url 'consultorios:tipo_medicamento_eliminar' tipo.id %}', {{ tipo.id }})">
                         <i class="fa fa-times-circle"></i>
                       </a>
                     </td>
@@ -72,14 +64,75 @@ jQuery(document).ready(function($) {
                 </tbody>
 
               </table>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1" style="height: auto;margin: auto; posicion:fixed;"></div>
+  </div>
+  <div id="popup" class="modal fade" aria-hidden="true" role="dialog" tabindex="-1"
+       style="height: auto;margin: auto; posicion:fixed;"></div>
 
 {% endblock %}
+
+{% block extrajs %}
+  <script>
+
+    jQuery(document).ready(function ($) {
+      $(".clickable-row").click(function () {
+        window.location = $(this).data("href");
+      });
+    });
+
+    function eliminarTipoMedicamento(url, clave) {
+      var clave = clave
+      var url = url
+      BootstrapDialog.show({
+        type: BootstrapDialog.TYPE_DANGER,
+        title: 'Eliminar Tipo de Medicamento',
+        message: '¿Está seguro de que desea eliminar los datos de tipo medicamento?',
+        draggable: true,
+        closable: false,
+        buttons: [{
+          label: 'Cancelar',
+          //cssClass: 'btn-primary',
+          icon: 'fa fa-times',
+          action: function (dialog) {
+            dialog.close();
+            cerrar_modal();
+            return false;
+          }
+        }, {
+          label: 'Eliminar',
+          cssClass: 'btn-danger',
+          icon: 'fa fa-trash',
+          action: function (dialog) {
+            dialog.close();
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+              type: "POST",
+              url: url,
+              data: {
+                'csrfmiddlewaretoken': csrftoken
+              },
+              success: function (data) {
+                if (data.success) {
+                  dialog.close();
+                  cerrar_modal();
+                  location.reload();
+                }
+
+              }
+            });
+            return false;
+          }
+        },]
+      });
+
+
+    };
+  </script>
+{% endblock %}
+
 

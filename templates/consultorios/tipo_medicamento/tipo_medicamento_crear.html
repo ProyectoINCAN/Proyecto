@@ -4,83 +4,85 @@
 
 <div class="modal-dialog  modal-lg">
   <div class="modal-content">
-    <form  role="form" id="eventoForm"
-         action="{% url 'consultorios:tipo_medicamento_crear' %}" method="post">
-     <div class="modal-header">
-       <button type="button" class="close" data-dismiss="modal"
-                      aria-label="Close"><span aria-hidden="true">&times;</span></button>
-       <div id="modal-title">
-         <h4>Tipo Medicamento</h4>
-       </div>
-     </div>
-     <div class="modal-body">
-		<div class="form-horizontal" >
-         {% csrf_token %}
-          <div class="form-group">
-                          {{ form.nombre.errors }}
-                  <label class="control-label col-sm-2">{{form.nombre.label}}:</label>
-                  <div class="col-sm-8">
-                      {{ form.nombre }}
-                  </div>
-              </div>
-          <div class="form-group">
-                          {{ form.descripcion.errors }}
-                  <label class="control-label col-sm-2">{{form.descripcion.label}}:</label>
-                  <div class="col-sm-12">
-                      {{ form.descripcion }}
-                  </div>
-              </div>
+    <form role="form" id="eventoForm"
+          action="{% url 'consultorios:tipo_medicamento_crear' %}" method="post">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div id="modal-title">
+          <h4>Tipo Medicamento</h4>
         </div>
-      <div class="modal-footer">
-        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
-        <button type="button" class="btn btn-default" onclick="return cerrar_modal()"><i class="fa fa-times"></i> Cancelar</button>
       </div>
-       </div>
-       </form>
-     </div>
-<script src = "{% static 'js/jquery.min.js' %}"></script>
-<script src = "{% static 'js/bootstrap.min.js' %}"></script>
-<script src = "{% static 'js/bootstrap3-wysihtml5.all.min.js' %}"></script>
-<script>
+      <div class="modal-body">
+        <div class="form-horizontal">
+          {% csrf_token %}
+          <div class="form-group">
+            {{ form.nombre.errors }}
+            <label class="control-label col-sm-2">{{ form.nombre.label }}:</label>
+            <div class="col-sm-8">
+              {{ form.nombre }}
+            </div>
+          </div>
+          <div class="form-group">
+            {{ form.descripcion.errors }}
+            <label class="control-label col-sm-2">{{ form.descripcion.label }}:</label>
+            <div class="col-sm-12">
+              {{ form.descripcion }}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
+          <button type="button" class="btn btn-default" onclick="return cerrar_modal()"><i class="fa fa-times"></i>
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap3-wysihtml5.all.min.js' %}"></script>
+  <script>
     $(function () {
-       //bootstrap WYSIHTML5 - text editor
-       $("#id_descripcion").wysihtml5();
+      //bootstrap WYSIHTML5 - text editor
+      $("#id_descripcion").wysihtml5();
     });
     $("#id_nombre").focus();
 
-    $("#eventoForm").submit(function(e) {
+    $("#eventoForm").submit(function (e) {
 
-            var url = this.action; // the script where you handle the form input.
-            console.log(url)
-            $.ajax({
-                   type: "POST",
-                   url: url,
-                   data: $("#eventoForm").serialize(), // serializes the form's elements.
-                   success: function(data, status) {
-                       if (data.success){
-                           $('#popup').modal('hide');
-                           location.reload();
-                       }else {
-                           //$('#eventoForm').html(data);
-                           console.log('entro en el else')
-                       }
+      var url = this.action; // the script where you handle the form input.
+      console.log(url)
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: $("#eventoForm").serialize(), // serializes the form's elements.
+        success: function (data, status) {
+          if (data.success) {
+            $('#popup').modal('hide');
+            location.reload();
+          } else {
+            $('#eventoForm').html(data);
+            //console.log('entro en el else')
+          }
 
-                   },
-                error: function(ajaxContext) {
+        },
+        error: function (ajaxContext) {
 
-                   alert(ajaxContext.responseText);
+          alert(ajaxContext.responseText);
 
-                },
-                done: function (response) {
-                    $('#popup').modal('hide');
-                }
-            });
-            e.preventDefault(); // avoid to execute the actual submit of the form.
+        },
+        done: function (response) {
+          $('#popup').modal('hide');
+        }
+      });
+      e.preventDefault(); // avoid to execute the actual submit of the form.
 
-	      });
+    });
 
   </script>
-  </div>
+</div>
 </div>
 
 
