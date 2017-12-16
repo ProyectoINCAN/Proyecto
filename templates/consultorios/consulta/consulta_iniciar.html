@@ -11,7 +11,7 @@
 
     <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li><a href="#">Inicio</a></li>
-      <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Día</a></li>
+      <li><a href="{% url 'consultorios:consulta_detalle_dia' detalle.consulta.pk %}">Listado de Agendados</a></li>
       <li class="active">Especialidad:{{ consulta.especialidad }}</li>
     </ol>
     <input type="hidden" id="detalle_id" name="detalle_id" value="{{ detalle.id }}">
@@ -99,6 +99,20 @@
         </div>
     </div>
     <div class="row">
+      <!--<div class="col-lg-12 pull-right">
+        <p>
+        <a class="btn btn-primary"
+                onclick="window.location.href='{% url 'consultorios:consulta_historia_clinica' detalle.paciente.pk %}'">
+          <i class="fa fa-book" aria-hidden="true"></i>
+          Historia Clínica</a>
+        </p>
+      </div>-->
+      <div class="col-lg-12 pull-right">
+        <div class="col pull-right">
+          <a class="btn btn-primary" type="button" onclick="window.location.href='{% url 'consultorios:consulta_historia_clinica' detalle.paciente.pk %}'"><i class="fa fa-book" aria-hidden="true"></i> Historia Clínica</a>
+        </div>
+      </div>
+
     </div>
     <p></p>
     {% include 'base/messages.html' %}

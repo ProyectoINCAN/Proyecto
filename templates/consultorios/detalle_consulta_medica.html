@@ -3,8 +3,9 @@
   <div class="app-content-body">
     <br>
     <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="#">Inicio</a></li>
-      <li>Consulta del Día</li>
+      <li>Inicio</li>
+      <li>Consultas del día</li>
+      <li><a href="{% url 'consultorios:consulta_detalle_iniciar' detalle.pk %}">Consulta actual</a></li>
     </ol>
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -15,7 +16,7 @@
                        href="{% url 'consultorios:consulta_detalle_continuar' detalle.pk  %}">
                       <i class="fa fa-stethoscope" aria-hidden="true"></i> Volver a la consulta</a>
                     <a  class="btn btn-default" type="button"
-                       href="{% url 'consultorios:consulta_historia_clinica' detalle.paciente.pk  %}">
+                       href="{% url 'consultorios:consulta_historia_clinica' detalle.pk detalle.paciente.pk  %}">
                       <i class="fa fa-list" aria-hidden="true"></i>Historia Clinica</a>
                     <a id="pdf" type="button" class="btn btn-default"
                        href="{% url 'consultorios:consulta_historia_clinica_descargar' detalle.pk %}" target="_blank">

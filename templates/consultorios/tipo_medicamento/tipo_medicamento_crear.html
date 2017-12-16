@@ -47,51 +47,38 @@
        $("#id_descripcion").wysihtml5();
     });
     $("#id_nombre").focus();
-    /*
-    $("#eventoForm").submit(function (e) {
-        var url = $(this).data('url'); // the script where you handle the form input.
-        $(this).ajaxSubmit({
-          url: url,
-          target: '#popup',
-          success: function (data, status) {
-                        console.log('data=', data.success)
-            if (data.success) {
-              $('#popup').modal('hide');
-              location.reload();
-            }
-          },
-          error: function (ajaxContext) {
-            console.log('ok');
-            alert(ajaxContext.responseText);
 
-          }
-        });
+    $("#eventoForm").submit(function(e) {
 
-        return false;
-      })*/
-    $("#eventoForm").submit(function (e) {
-        var url = $(this).data('url'); // the script where you handle the form input.
+            var url = this.action; // the script where you handle the form input.
+            console.log(url)
+            $.ajax({
+                   type: "POST",
+                   url: url,
+                   data: $("#eventoForm").serialize(), // serializes the form's elements.
+                   success: function(data, status) {
+                       if (data.success){
+                           $('#popup').modal('hide');
+                           location.reload();
+                       }else {
+                           //$('#eventoForm').html(data);
+                           console.log('entro en el else')
+                       }
 
-        $(this).ajaxSubmit({
-          url: url,
-          target: '#popup',
-          success: function (data, status) {
-              console.log('data=', data.success)
-            if (data.success) {
+                   },
+                error: function(ajaxContext) {
 
-              $('#popup').modal('hide');
-              location.reload();
-            }
-          },
-          error: function (ajaxContext) {
-            console.log('ok');
-            alert(ajaxContext.responseText);
+                   alert(ajaxContext.responseText);
 
-          }
-        });
+                },
+                done: function (response) {
+                    $('#popup').modal('hide');
+                }
+            });
+            e.preventDefault(); // avoid to execute the actual submit of the form.
 
-        return false;
-      });
+	      });
+
   </script>
   </div>
 </div>

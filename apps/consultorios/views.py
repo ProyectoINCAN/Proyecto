@@ -1,6 +1,5 @@
 import calendar
 
-from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy, reverse
@@ -377,10 +376,10 @@ class OrdenEstudioUpdateGlobal(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         orden = form.save(commit=False)
-        obs = orden.observacion
+        obs = orden.descripcion
         if obs:
             obs = obs.replace(' src="', ' class="img-responsive" src="')
-        orden.observacion = obs
+        orden.descripcion = obs
         orden.save()
         messages.success(self.request, "Se han actualizado los datos de orden de estudio.")
         return JsonResponse({'success': True})
@@ -1218,11 +1217,6 @@ class TipoMedicamentoCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, "Se ha creado el tipo medicamento.")
         return JsonResponse({'success': True})
 
-    #
-    # def get_success_url(self):
-    #     messages.success(self.request, "Se ha creado el tipo medicamento.")
-    #     return reverse('consultorios:tipo_medicamento')
-    #
 
 class TipoMedicamentoUpdateView(LoginRequiredMixin, UpdateView):
     model = TipoMedicamento
@@ -1396,12 +1390,17 @@ class HistoriaClinicaList(LoginRequiredMixin, TemplateView):
         else:
             fecha_desde = hoy
             fecha_hasta = hoy
-
+        """
+        obtenemos los detalles de la consulta que se encuentra finalizadas o canceladas
+        """
         consultas = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id'],
-                                                   consulta__fecha__range=[fecha_desde, fecha_hasta])
-
-        #la ultima consulta corresponde a la consulta actual
-        ultima_consulta = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id']).last()
+                                                   consulta__fecha__gte=fecha_desde,
+                                                   consulta__fecha__lte = fecha_hasta,
+                                                   estado=EstadoConsultaDetalle.objects.filter(
+                                                       Q(pk=EstadoConsultaDetalle.objects.get(codigo='E')) |
+                                                       Q(pk=EstadoConsultaDetalle.objects.get(codigo='C'))))
+        # obtenemos el d
+        ultima_consulta = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
 
         context.update({
             'fecha_input': p_fechas if p_fechas else None,
