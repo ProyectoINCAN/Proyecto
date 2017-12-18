@@ -32,7 +32,7 @@ from apps import pacientes
 from apps.agendamientos.functions import get_origen_url_agendamiento
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 from apps.consultorios.forms import *
-from apps.consultorios.functions import verificar_estado_consulta
+from apps.consultorios.functions import verificar_estado_consulta, existe_horario_medico
 from apps.consultorios.models import *
 from apps.pacientes.models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -53,7 +53,6 @@ def medico_create(request):
         form = MedicoForm(request.POST)
         if form.is_valid():
             data = form.save()
-            print("data.id", data.id, data.pk)  # borrar
             messages.success(request, "Se ha creado el médico.")
             return redirect('consultorios:medico_editar', data.id)
         else:
@@ -67,7 +66,6 @@ def medico_create(request):
 
 @transaction.atomic
 def medico_update(request, pk):
-    print("llega al update")  # borrar
     objeto = Medico.objects.get(id=pk)
     if request.method == 'POST':
         form = MedicoForm(request.POST, instance=objeto)
@@ -81,7 +79,11 @@ def medico_update(request, pk):
             return redirect("consultorios:medico_listar")
     else:
         form = MedicoForm(instance=objeto)
-    contexto = {'form': form}
+        horarios = HorarioMedico.objects.filter(medico=objeto).order_by('dia_semana')
+        print("horarios", horarios)
+    contexto = {'form': form,
+                'horarios': horarios,
+                'medico': objeto}
     return render(request, 'consultorios/medico_form.html', contexto)
 
 
@@ -268,23 +270,29 @@ class HorarioMedicoCreate(CreateView):
     model = HorarioMedico
     template_name = 'consultorios/horario_medico_form.html'
     form_class = HorarioMedicoModelForm
-    success_url = reverse_lazy('consultorios:horario_medico_listar')
 
     def get_context_data(self, **kwargs):
         context = super(HorarioMedicoCreate, self).get_context_data(**kwargs)
-        if 'form' not in context:
-            context['form'] = self.form_class(self.request.GET)
+        medico = Medico.objects.get(pk=self.kwargs['medico_id'])
+        context.update({'medico': medico})
         return context
 
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('consultorios:medico_editar', kwargs={'pk': self.kwargs['medico_id']})
+
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object
         form = self.form_class(request.POST)
         if form.is_valid():
             data = form.save(commit=False)
-            data.save()
-            messages.success(self.request, "Se ha creado el horario médico.")
+            if not existe_horario_medico(data, "C"):
+                data.save()
+                messages.success(self.request, "Se ha creado el horario del médico.")
+            else:
+                messages.error(self.request, "Datos no guardados. El médico ya posee un horario habilitado con los "
+                                             "parámetros establecidos.")
             return HttpResponseRedirect(self.get_success_url())
         else:
+            messages.error(self.request, "Error al guardar el horario del médico.")
             return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -292,7 +300,25 @@ class HorarioMedicoUpdate(UpdateView):
     model = HorarioMedico
     template_name = 'consultorios/horario_medico_form.html'
     form_class = HorarioMedicoModelForm
-    success_url = reverse_lazy('consultorios:horario_medico_listar')
+
+    def get_context_data(self, **kwargs):
+        context = super(HorarioMedicoUpdate, self).get_context_data(**kwargs)
+        medico = Medico.objects.get(pk=self.kwargs['medico_id'])
+        context.update({'medico': medico})
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('consultorios:medico_editar', kwargs={'pk': self.kwargs['medico_id']})
+
+    def form_valid(self, form):
+        horario = form.save(commit=False)
+        if not existe_horario_medico(horario, "U"):
+            horario.save()
+            messages.success(self.request, "Se han actualizado los datos del horario del médico.")
+        else:
+            messages.error(self.request, "Datos no guardados. El médico ya posee un horario habilitado con los "
+                                         "parámetros establecidos.")
+        return HttpResponseRedirect(self.get_success_url())
 
 
 def medico_especialidad(request, id_medico):
@@ -511,7 +537,6 @@ class ConsultaDetalleDia(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         consulta = Consulta.objects.get(pk=self.kwargs['consulta_id'])
-
         detalle = ConsultaDetalle.objects.filter(consulta=consulta)
         existe_en_proceso = detalle.filter(estado=EstadoConsultaDetalle.objects.get(codigo='E')).exists()
 

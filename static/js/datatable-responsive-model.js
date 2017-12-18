@@ -4,7 +4,7 @@
          "language": {
              "lengthMenu": "Mostrar _MENU_   registros",
              "zeroRecords": "No existen registros",
-             "info": "Mostrando la página page _PAGE_ de _PAGES_",
+             "info": "Mostrando la página _PAGE_ de _PAGES_",
              "infoEmpty": "No hay registros disponibles",
              "infoFiltered": " ",
              "sSearch": "Buscar:",
@@ -20,7 +20,7 @@
          "language": {
              "lengthMenu": "Mostrar _MENU_   registros",
              "zeroRecords": "No existen registros",
-             "info": "Mostrando la página page _PAGE_ de _PAGES_",
+             "info": "Mostrando la página _PAGE_ de _PAGES_",
              "infoEmpty": "No hay registros disponibles",
              "infoFiltered": " ",
              "sSearch": "Buscar:",

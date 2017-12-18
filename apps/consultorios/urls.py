@@ -15,6 +15,12 @@ urlpatterns = [
     url(r'^medico/nuevo$', login_required(medico_create), name='medico_nuevo'),
     url(r'^medico/(?P<pk>[0-9]+)/editar$', login_required(medico_update), name='medico_editar'),
     url(r'^usuario/cambio_password$', login_required(cambio_password), name='cambio_password'),
+    url(r'^medico/horario/$', login_required(HorarioMedicoList.as_view()), name='horario_medico_listar'),  # TODO: quitar si no se usa
+    url(r'^medico/(?P<medico_id>[0-9]+)/horario/nuevo$', login_required(HorarioMedicoCreate.as_view()),
+        name='horario_medico_nuevo'),
+    url(r'^medico/(?P<medico_id>[0-9]+)/horario/(?P<pk>[0-9]+)/editar$', login_required(HorarioMedicoUpdate.as_view()),
+        name='horario_medico_editar'),
+
 
     url(r'^enfermero/$', login_required(EnfermeroList.as_view()), name='enfermero_listar'),
     url(r'^enfermero/nuevo$', login_required(enfermero_create), name='enfermero_nuevo'),
@@ -23,11 +29,6 @@ urlpatterns = [
     url(r'^administrativo/$', login_required(AdministrativoList.as_view()), name='administrativo_listar'),
     url(r'^administrativo/nuevo$', login_required(administrativo_create), name='administrativo_nuevo'),
     url(r'^administrativo/(?P<pk>[0-9]+)/editar$', login_required(administrativo_update), name='administrativo_editar'),
-
-    url(r'^horario_medico/$', login_required(HorarioMedicoList.as_view()), name='horario_medico_listar'),
-    url(r'^horario_medico/nuevo$', login_required(HorarioMedicoCreate.as_view()), name='horario_medico_nuevo'),
-    url(r'^horario_medico/(?P<pk>[0-9]+)/editar$', login_required(HorarioMedicoUpdate.as_view()),
-        name='horario_medico_editar'),
 
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/evolucion/crear/$', views.EvolucionPacienteCreate.as_view(),
         name='evolucion_paciente_crear'),

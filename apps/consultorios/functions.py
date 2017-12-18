@@ -1,4 +1,4 @@
-from apps.consultorios.models import ConsultaDetalle, EstadoConsultaDetalle, EstadoConsulta
+from apps.consultorios.models import ConsultaDetalle, EstadoConsultaDetalle, EstadoConsulta, HorarioMedico
 
 
 def cambiar_estado_consulta(consulta, estado):
@@ -33,3 +33,23 @@ def verificar_estado_consulta(consulta):
     else:
         # si no se da ninguna de las anteriores, cambia a CANCELADO
         cambiar_estado_consulta(consulta, EstadoConsulta.objects.get(codigo="C"))
+
+
+def existe_horario_medico(horario, metodo):
+    """
+    Verifica si ya existe el horario a crear o actualizar
+    :param horario: el horario a crear o actualizar
+    :param metodo: 'C': Create; 'U': Update
+    :return: Boolean
+    """
+
+    if metodo == 'C':
+        existe = HorarioMedico.objects.filter(medico=horario.medico, cod_departamento=horario.cod_departamento,
+                                              dia_semana=horario.dia_semana, turno=horario.turno,
+                                              habilitado=horario.habilitado).exists()
+    else:
+        # si se actualiza se verifica además la cantidad
+        existe = HorarioMedico.objects.filter(medico=horario.medico, cod_departamento=horario.cod_departamento,
+                                              dia_semana=horario.dia_semana, turno=horario.turno,
+                                              habilitado=horario.habilitado, cantidad=horario.cantidad).exists()
+    return existe

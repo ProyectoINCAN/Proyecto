@@ -1,10 +1,14 @@
-   console.log("entro", $('#id_tipo_doc').val())
 
    $(function(){
-       if ($('#id_medico').val()==null || $('#id_medico').val()==''){
-          $("#editar").hide()
-          console.log("hola",  $("#id_tipo_doc").val("CI"))
-               setDisabled(false)
+       if ($('#id_hora_inicio').val()==null || $('#id_hora_inicio').val()==''){
+          $("#editar").hide();
+          setTimeout(function() {
+            console.log("timeout");
+            var medico_id = $("#medico_id").val();
+            $("#id_medico").val(medico_id);
+            $("#id_medico").trigger('change');
+          }, 200 ); // <-- tiempo en milisegundos, 1000 =  1 sec
+          setDisabled(false)
        }else{
           setDisabled(true)
        }
@@ -12,11 +16,11 @@
    )
 
    function setDisabled (disabled){
-   $('#id_medico').select2({ placeholder:"Seleccione una opción", allowClear: true,disabled:disabled});
+   //$('#id_medico').select2({ placeholder:"Seleccione una opción", allowClear: true,disabled:disabled});
    $('#id_cod_departamento').select2({ placeholder:"Seleccione una opción", allowClear: true,disabled:disabled});
    $('#id_dia_semana').select2({ placeholder:"Seleccione una opción", allowClear: true,disabled:disabled});
    $('#id_turno').select2({ placeholder:"Seleccione una opción", allowClear: true,disabled:disabled});
-   $('#select2-id_medico-container').prop('tabindex', 1)
+   //$('#select2-id_medico-container').prop('tabindex', 1)
    $('#select2-id_cod_departamento-container').prop('tabindex', 2);
    $('#select2-id_dia_semana-container').prop('tabindex', 3);
    $('#select2-id_turno-container').prop('tabindex', 4);

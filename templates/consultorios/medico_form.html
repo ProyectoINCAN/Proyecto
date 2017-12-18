@@ -3,25 +3,7 @@
 {% extends "base/base2.html" %}
 {% load static %}
 {% block extrajs %}
-<script>
-    $( document ).ready(function() {
-    	$('#modal_password').click(function(){
-    		$('#modalPassword').modal('show');
-    	}),
-    	$('#grabarPassword').click(function(){
-    		var pass = $('#id_password').val();
-    		var pass_conf = $('#password_mod_conf').val();
-    		console.log("contraseñas", pass, pass_conf);
-    		if (pass != pass_conf) {
-    			console.log("las contraseñas no coinciden");
-    			alert("las contraseñas no coinciden");
-    			return;
-    		} else
-    			$('#modalPassword').modal('hide');
-    	})
-    })
 
-</script>
 <script src = "{% static 'apps/consultorios/js/medicos.js' %}"></script>
 {% endblock %}
 {% block content %}
@@ -39,9 +21,13 @@
     <h1 class="m-n font-thin h3">Médicos</h1>
 </div>
 <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
-    <li><a href="">Inicio</a></li>
-    <li class="active"><a href="{% url 'consultorios:medico_listar' %}">Lista de Médicos</a></li>
-    <li>Nuevo</a></li>
+    <li><a href="{% url 'principal:index' %}">Inicio</a></li>
+    <li><a href="{% url 'consultorios:medico_listar' %}">Lista de Médicos</a></li>
+    {% if medico.id %}
+    <li class="active">{{ medico.get_dr_full_name }}</li>
+    {% else %}
+    <li class="active">Nuevo</li>
+    {% endif %}
 </ol>
 <br>
 <div class="wrapper-md">
@@ -105,12 +91,6 @@
                     <div class="col-lg-4 col-md-3 col-sm-4">
                         {{form.especialidad}}
                     </div>
-                    <label for="{{ form.etnia.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.etnia.label }}</label>
-                    <div class="col-lg-4 col-md-3 col-sm-4">
-                        {{form.etnia}}
-                    </div>
-                </div>
-                <div class="form-group">
                     <label for="{{ form.habilitado.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.habilitado.label }}</label>
                     <div class="col-lg-4 col-md-3 col-sm-4">
                         {{form.habilitado}}
@@ -126,5 +106,10 @@
             </form>
         </div>
     </div>
+
+    {% if medico.id %}
+    {% include 'consultorios/horario_medico_list.html' %}
+    {% endif %}
+
 </div>
 {% endblock %}

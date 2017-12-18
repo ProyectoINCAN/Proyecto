@@ -1,61 +1,67 @@
-{%extends 'base/base2.html' %}
-{% load static%}
 
-{%block content %}
-<div class="bg-light lter b-b wrapper-md">
-  <h1 class="m-n font-thin h3">Lista de Horarios Médicos</h1>
-</div>
-<ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
-  <li><a href="">Inicio</a></li>
-  <li class="active">Lista de Horarios Médicos</b></li>
-</ol><br>
-        {% include 'base/messages.html' %}
+
 <div class="panel panel-default">
-        <div class="panel-heading">
-            Horarios de médicos
-            <div class="btn-group pull-right">
-                <a href="{% url 'consultorios:horario_medico_nuevo' %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
-            </div>
-            <p></p>
+    <div class="panel-heading">
+        <b>Horarios del médico</b>
+        <div class="btn-group pull-right">
+            <a href="{% url 'consultorios:horario_medico_nuevo' medico.id %}" class="btn btn-default" id="create"><i class="fa fa-plus-square" aria-hidden="true"></i> Nuevo</a>
         </div>
-        <div class="panel-body">
-            <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length"></div></div><div class="col-sm-6"><div id="dataTables-example_filter" class="dataTables_filter"></div></div></div><div class="row"><div class="col-sm-12"><table width="100%" class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
-                <thead>
-                    <tr role="row">
-                        <th aria-label>Médico</th>
-                        <th aria-label>Día</th>
-                        <th aria-label>Turno</th>
-                        <th aria-label>Hora inicio</th>
-                        <th aria-label>Hora fin</th>
-                        <th aria-label>Cantidad</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                {% if object_list %}
-                {% for data in object_list %}
-                    <tr>
-                        <td>
-                            <a href="/consultorios/horario_medico/{{ data.id }}/editar">{{ data.medico }}</a>
-                        </td>
-                        <td>{{ data.dia_semana }}</td>
-                        <td>{{ data.turno.nombre }}</td>
-                        <td>{{ data.hora_inicio }}</td>
-                        <td>{{ data.hora_fin }}</td>
-                        <td>{{ data.cantidad }}</td>
-                    </tr>
-                {% endfor %}
-                {% endif %}
-                </tbody>
-            </table>
+        <p></p>
+    </div>
+    <div class="panel-body">
+        <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="dataTables_length" id="dataTables-example_length"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="dataTables-example_filter" class="dataTables_filter"></div>
+                </div>
             </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-striped table-bordered table-hover table-responsive" id="dataTables-horarios" cellspacing="0" width="100%">
+                        <thead>
+                            <tr role="row">
+                                <th aria-label>Día</th>
+                                <th aria-label>Departamento</th>
+                                <th aria-label>Turno</th>
+                                <th aria-label>Hora inicio</th>
+                                <th aria-label>Hora fin</th>
+                                <th class="text-center" aria-label>Cantidad</th>
+                                <th class="text-center" aria-label>Habilitado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if horarios %}
+                            {% for data in horarios %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'consultorios:horario_medico_editar' medico.id data.id %}">{{ data.dia_semana }}</a>
+                                </td>
+                                <td>{{ data.cod_departamento.nombre }}</td>
+                                <td>{{ data.turno.nombre }}</td>
+                                <td>{{ data.hora_inicio }}</td>
+                                <td>{{ data.hora_fin }}</td>
+                                <td class="text-center">{{ data.cantidad }}</td>
+                                <td class="text-center">
+                                    {% if data.habilitado %}
+                                    {{ "SÍ" }}
+                                    {% else %}
+                                    {{ "NO" }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-                    </div>
-
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-
+        </div>
+    </div>
+    <!-- /.panel-body -->
+</div>
 <div class="pagination">
     <ul class="pager">
         <li>
@@ -70,6 +76,4 @@
         </li>
     </ul>
 </div>
-</div>
-{% endblock%}
 

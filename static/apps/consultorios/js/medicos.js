@@ -10,6 +10,27 @@
        }else{
           setDisabled(true)
        }
+
+       var table= $('#dataTables-horarios').DataTable({
+         responsive: true,
+         searching: false,
+         ordering: false,
+         lengthChange: false,
+         "language": {
+             "lengthMenu": "Mostrar _MENU_   registros",
+             "zeroRecords": "No existen registros",
+             "info": "Mostrando la página _PAGE_ de _PAGES_",
+             "infoEmpty": "No hay registros disponibles",
+             "infoFiltered": " ",
+             "sSearch": "Buscar:",
+             "paginate": {
+                 "previous": "Anterior",
+                 "next": "Siguiente"
+             }
+
+         }
+     });
+
    }
    )
 
