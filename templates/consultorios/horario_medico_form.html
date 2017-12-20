@@ -63,12 +63,14 @@
                     </div>
                     <label for="{{ form.hora_fin.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.hora_fin.label }}</label>
                     <div class="col-lg-4 col-md-3 col-sm-4">
+                        {{form.hora_fin.errors}}
                         {{ form.hora_fin }}
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="{{ form.cantidad.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.cantidad.label }}</label>
                     <div class="col-lg-4 col-md-3 col-sm-4">
+                        {{form.cantidad.errors}}
                         {{form.cantidad}}
                     </div>
                     <label for="{{ form.habilitado.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.habilitado.label }}</label>

@@ -34,19 +34,20 @@ class AgendaForm(forms.ModelForm):
         }
 
         widgets = {
-            'especialidad': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'medico': forms.Select(attrs={'class': 'form-control selectsearch', 'id': 'medico_id', 'style':'width: 100%'}),
+            'especialidad': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'medico': forms.Select(attrs={'class': 'form-control selectsearch', 'id': 'medico_id',
+                                          'style': 'width: 100%'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'turno': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'cantidad': forms.TextInput(attrs={'class': 'form-control', 'readonly':'readonly'}),
-            'estado': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'turno': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'cantidad': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', 'disabled': 'disabled'}),
+            'estado': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
+                                          'disabled': 'disabled'}),
         }
 
     def clean(self):
-
         fecha = self.data.get('fecha')
+        print("fecha", fecha)
         if fecha:
-
             dia = datetime.datetime.strptime(fecha, '%d/%m/%Y').weekday()
             # sumamos dos dia a los dias para basarnos en la tabla dias de la semana
             # en caso de ser (6) domingo se setea a uno(1)
@@ -65,8 +66,9 @@ class AgendaForm(forms.ModelForm):
         else:
             pass
 
+
 class AgendaDetalleForm(forms.ModelForm):
-    confirmado=forms.BooleanField(initial=True)
+    confirmado = forms.BooleanField(initial=True)
 
     class Meta:
         model = AgendaDetalle

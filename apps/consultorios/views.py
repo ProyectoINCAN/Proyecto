@@ -281,6 +281,7 @@ class HorarioMedicoCreate(CreateView):
         return reverse_lazy('consultorios:medico_editar', kwargs={'pk': self.kwargs['medico_id']})
 
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object
         form = self.form_class(request.POST)
         if form.is_valid():
             data = form.save(commit=False)
@@ -328,9 +329,11 @@ def medico_especialidad(request, id_medico):
 
 
 def medico_turno(request, id_medico):
-    query = """select turno.*, horario.cantidad from consultorios_horariomedico horario
-               join consultorios_turno turno on horario.turno_id = turno.codigo
-               where horario.medico_id = %s """
+    query = """select distinct turno.codigo, turno.nombre, turno.habilitado
+    from consultorios_horariomedico horario
+    join consultorios_turno turno on horario.turno_id = turno.codigo
+    where horario.medico_id = %s
+    and horario.habilitado """
     cursor = connection.cursor()
     cursor.execute(query, [id_medico])
     turnos = cursor.fetchall()

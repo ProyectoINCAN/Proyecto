@@ -180,9 +180,22 @@ class HorarioMedicoModelForm(forms.ModelForm):
                                               'required': 'required'}),
             'turno': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
                                          'required': 'required'}),
-            'cantidad': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'cantidad': forms.TextInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'number'}),
             'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
+
+    def clean(self):
+        cantidad = self.data.get('cantidad')
+        hora_inicio = self.data.get('hora_inicio')
+        hora_fin = self.data.get('hora_fin')
+        # print('cantidad', cantidad)  # borrar
+        if cantidad:
+            if int(cantidad) <= 0:
+                self.add_error('cantidad', 'La cantidad debe ser mayor a cero.')
+
+        if hora_fin:
+            if hora_fin < hora_inicio:
+                self.add_error('hora_fin', "La 'Hora fin' no puede ser menor a la 'Hora inicio'.")
 
 
 class OrdenEstudioForm(forms.ModelForm):

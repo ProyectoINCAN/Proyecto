@@ -600,15 +600,18 @@ class PacienteUpdate(UpdateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
         paciente = Paciente.objects.get(pk=self.kwargs['pk'])
         telefono = Telefono.objects.get(paciente=paciente)
 
-        form = self.form_class(request.POST, instance=telefono)
-        form2 = self.second_form_class(request.POST, instance=paciente)
+        form = self.form_class(request.POST, instance=paciente)
+        form2 = self.second_form_class(request.POST, instance=telefono)
         if form.is_valid() and form2.is_valid():
             form.save()
             form2.save()
-        messages.success(request, "Se han actualizado los datos del paciente")
+            messages.success(request, "Se han actualizado los datos del paciente")
+        else:
+            messages.error(request, "ERROR AL GUARDAR LOS DATOS")
         return HttpResponseRedirect(reverse('pacientes:paciente_editar',
                                             kwargs={'pk': paciente.pk}))
 

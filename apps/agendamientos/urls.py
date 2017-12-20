@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
-from apps.agendamientos.views import agenda_nuevo, agenda_especialidad, agenda_detalle_list, agenda_cancelar, \
+from apps.agendamientos.views import agenda_especialidad, agenda_detalle_list, agenda_cancelar, \
     agenda_detalle_crear2, agenda_detalle_edit, AgendaByFechaList, PacienteByAgenda, \
     agenda_detalle_confirmar, AgendaDetalleListPDF, AgendaNuevaCreateView
 

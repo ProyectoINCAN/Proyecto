@@ -33,40 +33,40 @@ label { position: absolute; text-align:right; width:130px; }
         <form class="form-horizontal" method="POST">
             {% csrf_token %}
             <div class="form-group">
-             {{ form.medico.errors }}
              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.medico.label }}:</label>
              <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{ form.medico.errors }}
                  {{form.medico}}
              </div>
-             {{ form.especialidad.errors }}
              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.especialidad.label }}:</label>
              <div class="col-lg-4 col-md-3 col-sm-4">
+                 {{ form.especialidad.errors }}
                  {{form.especialidad}}
              </div>
             </div>
 
             <div class="form-group">
-                {{ form.fecha.errors }}
-                 <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.fecha.label}}</label>
-                 <div class="col-lg-4 col-md-3 col-sm-4">
-                     {{form.fecha}}
-                 </div>
-                {{ form.turno.errors }}
-                 <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.turno.label}}</label>
-                 <div class="col-lg-4 col-md-3 col-sm-4">
-                     {{ form.turno }}
-                 </div>
+                <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.turno.label}}</label>
+                <div class="col-lg-4 col-md-3 col-sm-4">
+                    {{ form.turno.errors }}
+                    {{ form.turno }}
+                </div>
+                <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.fecha.label}}</label>
+                <div class="col-lg-4 col-md-3 col-sm-4">
+                    {{ form.fecha.errors }}
+                    {{form.fecha}}
+                </div>
             </div>
 
             <div class="form-group">
-                  {{ form.cantidad.errors }}
                  <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.cantidad.label}}</label>
                  <div class="col-lg-4 col-md-3 col-sm-4">
+                     {{ form.cantidad.errors }}
                      {{form.cantidad}}
                  </div>
-                 {{ form.estado.errors }}
                  <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.estado.label}}</label>
                  <div class="col-lg-4 col-md-3 col-sm-4">
+                     {{ form.estado.errors }}
                      {{ form.estado }}
                  </div>
              </div>
