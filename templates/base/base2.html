@@ -93,21 +93,6 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MENÚ</li>
-
-         {% if user.groups.all.0.name == "Administrativo" or request.user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-clipboard"></i><span>Agendamientos</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'agendamientos:agenda_especialidad_medico' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas Pendientes</a></li>
-            <li><a href="{% url 'agendamientos:agenda_fecha_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas por rango de fecha</a></li>
-          </ul>
-        </li>
-        {% endif %}
         {% if user.groups.all.0.name == "Administrativo" or user.is_superuser %}
         <li class="treeview">
           <a href="#">
@@ -124,13 +109,13 @@
         {% if request.user.is_superuser %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-users fa-fw"></i><span>Usuarios</span>
+            <i class="fa fa-hospital-o fa-fw"></i><span>Administrativo</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{% url 'principal:user_list_global' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Usuarios</a></li>
+            <li><a href="{% url 'consultorios:administrativo_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Administrativos</a></li>
           </ul>
         </li>
         {% endif %}
@@ -144,7 +129,6 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{% url 'consultorios:medico_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Médicos</a></li>
-            <li><a href="{% url 'consultorios:horario_medico_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista Horario Médico</a></li>
           </ul>
         </li>
         {% endif %}
@@ -161,16 +145,30 @@
           </ul>
         </li>
         {% endif %}
-      {% if request.user.is_superuser %}
+        {% if request.user.is_superuser %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-hospital-o fa-fw"></i><span>Administrativo</span>
+            <i class="fa fa-users fa-fw"></i><span>Usuarios</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:administrativo_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Administrativos</a></li>
+            <li><a href="{% url 'principal:user_list_global' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Usuarios</a></li>
+          </ul>
+        </li>
+        {% endif %}
+        {% if user.groups.all.0.name == "Administrativo" or request.user.is_superuser %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-clipboard"></i><span>Agendamientos</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'agendamientos:agenda_especialidad_medico' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas Pendientes</a></li>
+            <li><a href="{% url 'agendamientos:agenda_fecha_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas por rango de fecha</a></li>
           </ul>
         </li>
         {% endif %}
@@ -219,7 +217,7 @@
         {% if user.groups.all.0.name == "Medico" %}
         <li class="treeview">
           <a href="{% url 'consultorios:historia_clinica' %}">
-            <i class="fa fa-book"></i><span>Historia Clinica</span>
+            <i class="fa fa-book"></i><span>Expediente Clínico</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
