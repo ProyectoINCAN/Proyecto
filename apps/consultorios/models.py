@@ -193,7 +193,18 @@ class Turno(models.Model):
 
 
 class DiasSemana(models.Model):
+    """
+    Listado de días de la semana empezando por domingo.
+    1 - DOMINGO     --> datetime.date.weekday() == 6
+    2 - LUNES       --> datetime.date.weekday() == 0
+    3 - MARTES      --> datetime.date.weekday() == 1
+    4 - MIERCOLES   --> datetime.date.weekday() == 2
+    5 - JUEVES      --> datetime.date.weekday() == 3
+    6 - VIERNES     --> datetime.date.weekday() == 4
+    7 - SABADO      --> datetime.date.weekday() == 5
+    """
     nombre = UpperCharField(max_length=10, uppercase=True)
+    python_weekday = models.IntegerField(null=True)
 
     def __str__(self):
         return self.nombre

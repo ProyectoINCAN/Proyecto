@@ -37,49 +37,57 @@
  "model": "consultorios.diassemana",
  "pk": 1,
  "fields": {
-  "nombre": "DOMINGO"
+  "nombre": "DOMINGO",
+  "python_weekday": 6
+
  }
 },
 {
  "model": "consultorios.diassemana",
  "pk": 2,
  "fields": {
-  "nombre": "LUNES"
+  "nombre": "LUNES",
+  "python_weekday": 0
  }
 },
 {
  "model": "consultorios.diassemana",
  "pk": 3,
  "fields": {
-  "nombre": "MARTES"
+  "nombre": "MARTES",
+  "python_weekday": 1
  }
 },
 {
  "model": "consultorios.diassemana",
  "pk": 4,
  "fields": {
-  "nombre": "MIERCOLES"
+  "nombre": "MIERCOLES",
+  "python_weekday": 2
  }
 },
 {
  "model": "consultorios.diassemana",
  "pk": 5,
  "fields": {
-  "nombre": "JUEVES"
+  "nombre": "JUEVES",
+  "python_weekday": 3
  }
 },
 {
  "model": "consultorios.diassemana",
  "pk": 6,
  "fields": {
-  "nombre": "VIERNES"
+  "nombre": "VIERNES",
+  "python_weekday": 4
  }
 },
 {
  "model": "consultorios.diassemana",
  "pk": 7,
  "fields": {
-  "nombre": "SABADO"
+  "nombre": "SABADO",
+  "python_weekday": 5
  }
 }
 
