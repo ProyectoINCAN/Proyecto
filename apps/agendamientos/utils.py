@@ -15,7 +15,7 @@ def get_fecha_agendamiento_siguiente(agenda):
     dias_consultorio = []
     for horario in horario_medico:
         dias_consultorio.append(horario.dia_semana.id)
-    print(dias_consultorio)
+    # print(dias_consultorio)
     if len(dias_consultorio) == 0:
         raise Exception("No existe parámetro de Horario Médico para ", agenda.medico)
     # year, month, day = (int(x) for x in fecha_anterior.split('-'))
@@ -52,3 +52,19 @@ def get_fecha_agendamiento_siguiente(agenda):
                     break
 
     return fecha_siguiente
+
+
+def get_fecha_probable_agendamiento(horario_medico):
+    fecha = date.today()
+    horario_weekday_list = []
+    semana_list = []
+    for dia in range(0, 7):
+        semana_list.append(fecha+timedelta(days=dia))  # lista de fechas de la semana empezando por weekday de hoy
+
+    for horario in horario_medico:
+        horario_weekday_list.append(horario.dia_semana.python_weekday)
+
+    for dia in semana_list:
+        if dia.weekday() in horario_weekday_list:
+            print("dia retornado", dia)
+            return dia

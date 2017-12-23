@@ -1,7 +1,17 @@
 {% extends 'base/base2.html' %}
 {% load static %}
 {% block extrajs %}
-    <script src = "{% static 'apps/agendamientos/js/agenda.js' %}"></script>
+<script src="{% static 'apps/agendamientos/js/agenda.js' %}"></script>
+<script>
+        $(function(){
+            $('#id_especialidad').empty();
+            $('#id_turno').empty();
+            $('#id_cantidad').css('pointer-events', 'none');
+            $('#select2-id_estado-container').css('pointer-events', 'none');
+
+        });
+
+</script>
 {% endblock %}
 
 
@@ -13,36 +23,39 @@ label.div_center {
 text-align:center;
 }
 
+
 </style>
 
 <style>
 label { position: absolute; text-align:right; width:130px; }
+
 </style>
 
 <div class="bg-light lter b-b wrapper-md">
     <h1 class="m-n font-thin h3">Agendas</h1>
-  </div>
-    <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="#">Inicio</a></li>
-      <li><a href="#">Agendamientos</a></li>
-      <li><a href="{{origen_url}}">Agendas</a></li>
-      <li class="active">Nuevo</li>
-    </ol>
+</div>
+<ol class="breadcrumb" style="background-color: #f6f8f8">
+    <li><a href="#">Inicio</a></li>
+    <li><a href="#">Agendamientos</a></li>
+    <li><a href="{{origen_url}}">Agendas</a></li>
+    <li class="active">Nuevo</li>
+</ol>
 <div class="box box-primary">
     <div class="box-header with-border">
+        <input type="hidden" id="id_origen" value="{{ origen }}">
         <form class="form-horizontal" method="POST">
             {% csrf_token %}
             <div class="form-group">
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.medico.label }}:</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{ form.medico.errors }}
-                 {{form.medico}}
-             </div>
-             <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.especialidad.label }}:</label>
-             <div class="col-lg-4 col-md-3 col-sm-4">
-                 {{ form.especialidad.errors }}
-                 {{form.especialidad}}
-             </div>
+                <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.medico.label }}:</label>
+                <div class="col-lg-4 col-md-3 col-sm-4">
+                    {{ form.medico.errors }}
+                    {{form.medico}}
+                </div>
+                <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.especialidad.label }}:</label>
+                <div class="col-lg-4 col-md-3 col-sm-4">
+                    {{ form.especialidad.errors }}
+                    {{form.especialidad}}
+                </div>
             </div>
 
             <div class="form-group">
@@ -59,29 +72,30 @@ label { position: absolute; text-align:right; width:130px; }
             </div>
 
             <div class="form-group">
-                 <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.cantidad.label}}</label>
-                 <div class="col-lg-4 col-md-3 col-sm-4">
-                     {{ form.cantidad.errors }}
-                     {{form.cantidad}}
-                 </div>
-                 <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.estado.label}}</label>
-                 <div class="col-lg-4 col-md-3 col-sm-4">
-                     {{ form.estado.errors }}
-                     {{ form.estado }}
-                 </div>
-             </div>
+                <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.cantidad.label}}</label>
+                <div class="col-lg-4 col-md-3 col-sm-4">
+                    {{ form.cantidad.errors }}
+                    {{form.cantidad}}
+                </div>
+                <!--<label class="control-label col-lg-2 col-md-3 col-sm-2">{{form.estado.label}}</label>-->
+                <!--<div class="col-lg-4 col-md-3 col-sm-4">-->
+                <!--{{ form.estado.errors }}-->
+                <!--{{ form.estado }}-->
+                <!--</div>-->
+            </div>
 
             <div class="form-group">
-             <div class="col-sm-offset-4 col-sm-8">
-                 <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
-                 <a href="{{origen_url}}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
-             </div>
+                <div class="col-sm-offset-4 col-sm-8">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        Guardar
+                    </button>
+                    <!--<a class="btn btn-warning" type="submit" id="guardar_agenda"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</a>-->
+                    <a href="{{origen_url}}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
+                </div>
             </div>
         </form>
-        </div>
     </div>
 </div>
-
 
 
 {% endblock %}

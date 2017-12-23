@@ -81,14 +81,6 @@
             message: '¿Está seguro de que desea pasar la agenda a consultorio?',
             draggable: true,
             buttons: [{
-                label: 'No',
-                //cssClass: 'btn-primary',
-                icon: 'fa fa-times',
-                  action: function(dialog){
-                    dialog.close();
-                    return false;
-                }
-            }, {
                 label: 'Sí',
                 //label: 'Cancelar',
                 // no title as it is optional
@@ -105,14 +97,21 @@
                                 'csrfmiddlewaretoken': csrftoken
                                 },
                          success: function(data){
-                            console.log("llega al success");
                             console.log("data", data );
                             window.location=data;
                          }
                     });
                     return false;
                 }
-            }, ]
+            }, {
+                label: 'No',
+                //cssClass: 'btn-primary',
+                icon: 'fa fa-times',
+                  action: function(dialog){
+                    dialog.close();
+                    return false;
+                }
+            },]
         });
 
         }
@@ -137,9 +136,43 @@ $("#buscar").click(function(){
     return;
 });
 
+$("#guardar_agenda").click(function () {
+    var medico = $("#medico_id").val();
+    var especialidad = $("#id_especialidad").val();
+    var turno = $("#id_turno").val();
+    var fecha = $("#id_fecha").val();
+    var cantidad = $("#id_cantidad").val();
+    var estado = $("#id_estado").val();
+    var origen = $("#id_origen").val();
+
+    console.log(medico, especialidad, turno, fecha, cantidad, estado);
+
+    $.ajax({
+        type:"POST",
+        url:"/agendamientos/agenda/"+origen+"/nuevo",
+        data: {
+            'medico': medico,
+            'especialidad': especialidad,
+            'turno': turno,
+            'fecha': fecha,
+            'cantidad': cantidad,
+            'estado': estado,
+            'origen': origen,
+            'csrfmiddlewaretoken': getCookie('csrftoken')
+        },
+        success: function(data){
+            console.log("llega al success");
+            console.log("data", data );
+            //console.log("data", $.parseJSON(data)[0].pk, $.parseJSON(data)[1] );
+            window.location="/agendamientos/agenda/"+data.pk+"/"+origen+"/";
+        }
+    });
+}),
+
 
    $("#medico_id").change(function () {
       var medico = $(this).val()
+      console.log("medico change", medico)
       $.ajax({
         url: '/consultorios/medico_especialidad/'+medico,
         data: {
@@ -148,12 +181,21 @@ $("#buscar").click(function(){
         dataType: 'json',
         success: function (data) {
             $("#id_especialidad").empty();
+            $("#id_estado").val("P");
+            var first = true;
             $.each($.parseJSON(data), function( key, value ) {
-              html = "<option value="+value['pk']+">"+value['fields'].nombre+"</option>";
-              $("#id_especialidad").append(html);
-              actualizarTurno(medico)
+                if (first) {
+                    html = "<option value="+value['pk']+" selected='selected'>"+value['fields'].nombre+"</option>";
+                    first = false;
+                } else {
+                    html = "<option value="+value['pk']+">"+value['fields'].nombre+"</option>";
+                }
+                $("#id_especialidad").append(html);
+
 
             });
+            var especialidad = $("#id_especialidad").val();
+            actualizarTurno(medico);
         }
       });
    });
@@ -168,20 +210,21 @@ $("#buscar").click(function(){
             dataType: 'json',
 
             success: function(data){
-                var cantidad =0;
                 $("#id_turno").empty();
+                var first = true;
                 $.each($.parseJSON(data), function(key, value) {
                    console.log("Data", value);
-                   html = "<option value="+value[0]+">"+value[1]+"</option>";
+                   if (first) {
+                    html = "<option value="+value[0]+" selected='selected'>"+value[1]+"</option>";
+                    first = false;
+                   } else {
+                    html = "<option value="+value[0]+">"+value[1]+"</option>";
+                   }
                    $("#id_turno").append(html);
-                   cantidad = value[3];
-//                   $("#id_cantidad").val(value[3]).disabled = true;
                 });
-//                $("#id_cantidad").val(cantidad).disabled = true;
 
                 var turno = $("#id_turno").val();
                 actualizarHorario(medico, turno);
-
 
             }
         })
@@ -200,20 +243,53 @@ $("#buscar").click(function(){
             url: '/consultorios/horario_medico/'+medico+'/'+turno,
             data: {
               'medico': medico,
-              'turno':turno,
+              'turno': turno,
             },
             dataType: 'json',
             success: function(data){
-                $("#id_cantidad").empty();
-                $.each($.parseJSON(data), function(key, value) {
-                   console.log("Data", value);
-                   console.log("data", key);
-                   $("#id_cantidad").val(value['fields'].cantidad);
-                });
+                console.log("fecha", data.fecha);
+                if (data.fecha != null) {
+                    $("#id_fecha").val(formatearFecha(data.fecha));
+
+                    actualizarCantidad(data.fecha, medico, turno);
+                } else {
+                    alert("No se encuentra el horario para el médico.\nPor favor, verifique la configuración en la lista de médicos.");
+                }
 
             }
         })
       };
+
+      var actualizarCantidad = function(fecha, medico, turno) {
+        $.ajax({
+            url: '/consultorios/cantidad/',
+            data: {
+              'medico': medico,
+              'turno': turno,
+              'fecha': fecha
+            },
+            dataType: 'json',
+            success: function(data){
+                console.log("fecha", data.cantidad);
+                $("#id_cantidad").val(data.cantidad);
+
+            }
+        })
+      };
+
+      $('#id_fecha').change(function(){
+        var fecha = $("#id_fecha").val();
+//        if (fecha.) {
+
+            fecha = formatearFecha2(fecha);
+            var medico = $("#medico_id").val();
+            var turno = $("#id_turno").val();
+            actualizarCantidad(fecha, medico, turno);
+//        }
+
+      });
+
+
 
    $( document ).ready(function() {
        $('#create').click(function(){
@@ -222,6 +298,21 @@ $("#buscar").click(function(){
        })
    })
 
+var formatearFecha = function(fecha) {
+    //formatea la fecha 'aaaa-mm-dd' a 'dd/mm/aaaa'
+    var fechaArray = fecha.split("-");
+    var fechaFormateada = fechaArray[2] + "/" + fechaArray[1] + "/" + fechaArray[0];
+    return fechaFormateada;
+
+};
+
+var formatearFecha2 = function(fecha) {
+    //formatea la fecha 'dd/mm/aaaa' a 'aaaa-mm-dd'
+    var fechaArray = fecha.split("/");
+    var fechaFormateada = fechaArray[2] + "-" + fechaArray[1] + "-" + fechaArray[0];
+    return fechaFormateada;
+
+};
 
 $("#limpiar").click(function(){
     console.log("prueba")

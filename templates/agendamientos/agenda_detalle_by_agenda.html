@@ -2,13 +2,13 @@
 {% load static %}
 
 {% block extrajs %}
-<script src = "{% static 'apps/agendamientos/js/agenda.js' %}"></script>
+<script src="{% static 'apps/agendamientos/js/agenda.js' %}"></script>
 {% endblock %}
 
 {%block content %}
 
-  <div class="app-content-body">
-      <div class="bg-light lter b-b wrapper-md">
+<div class="app-content-body">
+    <div class="bg-light lter b-b wrapper-md">
         <h1 class="m-n font-thin h3">Agenda Detalles</h1>
     </div>
 
@@ -24,107 +24,135 @@
     <div class="wrapper-md">
         <form method="POST" class="form-horizontal" id="form">
             <div class="row">
-                {% include 'base/messages.html' %}
-                <div class="col-lg-8 col-sm-12">
-                {% csrf_token %}
-                {{form.media}}
-                    <div>
-                        <input type="hidden" id="agenda_id" name="agenda_id" value="{{agenda.id}}"> </input>
-                        <input type="hidden" id="origen" name="origen" value="{{origen}}"> </input>
+                <div class="app-content-body">
+                    {% include 'base/messages.html' %}
 
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-lg-2 col-sm-4">Fecha</label>
-                        <div class="col-lg-3 col-sm-4">
-                            <input type="text" class="form-control text-center" id="fecha" name ="fecha" value='{{agenda.fecha|date:"SHORT_DATE_FORMAT"}}' required="required"  disabled="disabled" data-inputmask="'alias': 'date'" placeholder="dd/mm/yyyy">
+                    <div class="col-lg-8 col-sm-12">
+                        {% csrf_token %}
+                        {{form.media}}
+                        <div>
+                            <input type="hidden" id="agenda_id" name="agenda_id" value="{{agenda.id}}"> </input>
+                            <input type="hidden" id="origen" name="origen" value="{{origen}}"> </input>
+
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-lg-2 col-sm-4">Médico</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control text-left" id="medico" name ="medico" value="{{agenda.medico}}"  disabled="disabled">
+                        <div class="form-group">
+                            <label class="control-label col-lg-2 col-sm-4">Fecha</label>
+                            <div class="col-lg-3 col-sm-4">
+                                <input type="text" class="form-control text-center" id="fecha" name="fecha"
+                                       value='{{agenda.fecha|date:"SHORT_DATE_FORMAT"}}' required="required"
+                                       disabled="disabled" data-inputmask="'alias': 'date'" placeholder="dd/mm/yyyy">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-lg-2 col-sm-4">Turno</label>
-                        <div class="col-lg-3 col-sm-4">
-                            <input type="text" class="form-control text-left" id="turno" name ="turno" value="{{agenda.turno}}"  disabled="disabled">
+                        <div class="form-group">
+                            <label class="control-label col-lg-2 col-sm-4">Médico</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control text-left" id="medico" name="medico"
+                                       value="{{agenda.medico}}" disabled="disabled">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group" align="center">
-                        <a href="{{origen_url}}" id="salir" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i> Salir</a>
-                        <a id="cancelar" type="button" class="btn btn-danger" href="javascript:void(0)"> <i class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>
-                        <a id="consultas" type="button" class="btn btn-success" href="javascript:void(0)"> <i class="fa fa-play" aria-hidden="true"></i> Pasar a consultorio</a>
+                        <!--<div class="form-group">-->
+                        <!--<label class="control-label col-lg-2 col-sm-4">Especialidad</label>-->
+                        <!--<div class="col-sm-6">-->
+                        <!--<input type="text" class="form-control text-left" id="especialidad" name ="especialidad" value="{{agenda.medico.especialidad}}"  disabled="disabled">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <label class="control-label col-lg-2 col-sm-4">Turno</label>
+                            <div class="col-lg-3 col-sm-4">
+                                <input type="text" class="form-control text-left" id="turno" name="turno"
+                                       value="{{agenda.turno}}" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="form-group" align="center">
+                            <a href="{{origen_url}}" id="salir" class="btn btn-default"><i class="fa fa-arrow-left"
+                                                                                           aria-hidden="true"></i> Salir</a>
+                            <a id="cancelar" type="button" class="btn btn-danger" href="javascript:void(0)"> <i
+                                    class="fa fa-ban" aria-hidden="true"></i> Cancelar Agenda</a>
+                            <a id="consultas" type="button" class="btn btn-success" href="javascript:void(0)"> <i
+                                    class="fa fa-play" aria-hidden="true"></i> Pasar a consultorio</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </form>
     </div>
-
-
 </div>
-</form>
-
-
-
-
 <br>
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="col-lg-12">
             <b>Lista de Agendados</b>
             <div class="col pull-right">
-            <a href="{% url 'agendamientos:agenda_detalle_pdf' agenda.id %}" id="pdf" type="button" class="btn btn-default" target="_blank">
-                <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
-            <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id origen %}" type="button" class="btn btn-default">
-                <i class="fa fa-plus-square"></i> Nuevo
-            </a>
-           </div>
+                <a href="{% url 'agendamientos:agenda_detalle_pdf' agenda.id %}" id="pdf" type="button"
+                   class="btn btn-default" target="_blank">
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
+                <a href="{% url 'agendamientos:agenda_detalle_paciente_list' agenda.id origen %}" type="button"
+                   class="btn btn-default">
+                    <i class="fa fa-plus-square"></i> Nuevo
+                </a>
+            </div>
         </div>
         <div class="clearfix"></div>
     </div>
 
     <div class="panel-body">
-        <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length"></div></div><div class="col-sm-6"><div id="dataTables-example_filter" class="dataTables_filter"></div></div></div><div class="row"><div class="col-sm-12"><table width="100%" class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
-            <thead>
-            <tr role="row">
-                <th>Nº</th>
-                <th>Ficha</th>
-                <th>Nombre y Apellido</th>
-                <th>Edad</th>
-                <th>Ciudad</th>
-                <th>Tel&eacute;fono</th>
-                <th>Confirmar</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% if agenda_detalle %}
-            {% for detalle in agenda_detalle %}
-            <tr>
-                <td>{{detalle.0}}</td>
-                <td>{{detalle.1}}</td>
-                <td>{{detalle.2}} {{detalle.3}}</td>
-                <td>{{detalle.4}}</td>
-                <td>{{detalle.5}}</td>
-                <td>{{detalle.6}}: {{detalle.7}}</td>
-                <td>
-                  {% if user.groups.all.0.name == "Administrativo_Ventanilla" or request.user.is_superuser %}
-                   {% if detalle.11 %}
-                     <h5 class="btn btn-success" style="width:109px"> <i class="fa fa-check-square-o" aria-hidden="true"></i> Confirmado</h5>
-                   {% else %}
-                    <a href="{% url 'agendamientos:agenda_detalle_confirmar' detalle.9 detalle.10 origen %}"
-                    class="btn btn-danger" style="width:109px"><i class="fa fa-square-o" aria-hidden="true"></i> Confirmar</a>
-                  {% endif %}
-                  {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-            {% else %}
-            {% endif %}
-            </tbody>
-        </table>
-        </div>
-        </div>
+        <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="dataTables_length" id="dataTables-example_length"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="dataTables-example_filter" class="dataTables_filter"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%"
+                           class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline"
+                           id="dataTables-example" role="grid" aria-describedby="dataTables-example_info"
+                           style="width: 100%;">
+                        <thead>
+                        <tr role="row">
+                            <th>Nº</th>
+                            <th>Ficha</th>
+                            <th>Nombre y Apellido</th>
+                            <th>Edad</th>
+                            <th>Ciudad</th>
+                            <th>Tel&eacute;fono</th>
+                            <th>Confirmar</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if agenda_detalle %}
+                        {% for detalle in agenda_detalle %}
+                        <tr>
+                            <td>{{detalle.0}}</td>
+                            <td>{{detalle.1}}</td>
+                            <td>{{detalle.2}} {{detalle.3}}</td>
+                            <td>{{detalle.4}}</td>
+                            <td>{{detalle.5}}</td>
+                            <td>{{detalle.6}}: {{detalle.7}}</td>
+                            <td>
+                                {% if user.groups.all.0.name == "Administrativo_Ventanilla" or request.user.is_superuser %}
+                                {% if detalle.11 %}
+                                <h5 class="btn btn-success" style="width:109px"><i class="fa fa-check-square-o"
+                                                                                   aria-hidden="true"></i> Confirmado
+                                </h5>
+                                {% else %}
+                                <a href="{% url 'agendamientos:agenda_detalle_confirmar' detalle.9 detalle.10 origen %}"
+                                   class="btn btn-danger" style="width:109px"><i class="fa fa-square-o"
+                                                                                 aria-hidden="true"></i> Confirmar</a>
+                                {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
