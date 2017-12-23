@@ -44,7 +44,7 @@
         console.log("entro", currentTabIndex)
       });
   });
-
+  $("#id_cantidad" ).attr( "min", 1)
   $("#id_turno").change(function(){
 
     var turno = $('#id_turno').val();

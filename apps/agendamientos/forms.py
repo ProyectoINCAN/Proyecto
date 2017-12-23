@@ -39,9 +39,8 @@ class AgendaForm(forms.ModelForm):
                                           'style': 'width: 100%'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
             'turno': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
-            'cantidad': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', 'disabled': 'disabled'}),
-            'estado': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
-                                          'disabled': 'disabled'}),
+            'cantidad': forms.TextInput(attrs={'class': 'form-control', 'type': 'number'}),
+            'estado': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
         }
 
     def clean(self):

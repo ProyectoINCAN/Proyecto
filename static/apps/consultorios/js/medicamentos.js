@@ -9,6 +9,7 @@
    }
    )
 
+
    function setDisabled (disabled){
        $('#id_tipificacion').select2({ placeholder:"Seleccione una opción", allowClear: true,disabled:disabled});
        $('#id_forma_farmaceutica').select2({ placeholder:"Seleccione una opción", allowClear: true,disabled:disabled});

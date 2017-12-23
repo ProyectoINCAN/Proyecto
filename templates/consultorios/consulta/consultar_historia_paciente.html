@@ -4,11 +4,11 @@
 {% block content %}
   <div class="app-content-body">
     <div class="bg-light lter b-b wrapper-md">
-      <h1 class="m-n font-thin h3">Historia Clínica</h1>
+      <h1 class="m-n font-thin h3">Expediente Clínico</h1>
     </div>
     <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li class="active"><a href="{% url 'consultorios:dashboard_medico' %}">Inicio</a></li>
-      <li class="active">Historia Clínica</li>
+      <li class="active">Expediente Clínico</li>
     </ol>
     <div class="row">
       <div class="col-sm-8">
@@ -98,7 +98,7 @@
                    <td>
                      <a href="{% url 'consultorios:ficha_clinica_paciente' paciente.pk %}">
                        <span class="label label-primary">Ficha</span></a>
-                     <a href="{% url 'consultorios:historia_by_paciente' paciente.pk %}">
+                     <a href="{% url 'consultorios:menu_historia_by_paciente' paciente.pk %}">
                        <span class="label label-success">Historia Clinica</span>
                      </a>
                    </td>

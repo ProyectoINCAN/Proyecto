@@ -514,7 +514,7 @@ class PacienteCreate(CreateView):
     template_name = 'pacientes/paciente_callCenter_form.html'
     form_class = TelefonoForm
     second_form_class = PacienteForm
-    success_url = reverse_lazy('pacientes:index')
+    # success_url = reverse_lazy('pacientes:paciente_editar')
 
     # agregamos los form al contexto
     def get_context_data(self, **kwargs):
@@ -533,12 +533,15 @@ class PacienteCreate(CreateView):
         print(str(form.is_valid()) + " " + str(form2.is_valid()))
         if form.is_valid() and form2.is_valid():
             telefono = form.save(commit=False)
+            paciente = form2.save(commit=False)
             telefono.paciente = form2.save()
             telefono.save()
+            paciente.save()
             messages.success(self.request, "Se ha creado el paciente.")
         else:
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(reverse('pacientes:paciente_editar',
+                                            kwargs={'pk': paciente.pk}))
 
 
 class PacienteCreateByAgenda(LoginRequiredMixin, CreateView):
@@ -597,6 +600,7 @@ class PacienteUpdate(UpdateView):
                         'form2': self.form_class(instance=paciente),
                         'id_paciente': self.kwargs['pk']})
         return context
+
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()

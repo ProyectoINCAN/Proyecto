@@ -3,21 +3,32 @@
   <div class="app-content-body">
     <br>
     <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li>Inicio</li>
-      <li>Consultas del día</li>
-      <li><a href="{% url 'consultorios:consulta_detalle_iniciar' detalle.pk %}">Consulta actual</a></li>
+        {% if origen == 2 %}
+      <li><a href="#">Inicio</a></li>
+      <li>Consulta del Día</li>
+        {% else %}
+        <li><a href="#">Inicio</a></li>
+        <li><a href="{% url 'consultorios:menu_historia_by_paciente' detalle.paciente.pk  %}">Historia Clínica</a></li>
+        <li>Paciente: </li> {{ detalle.paciente.get_name_nro_doc }}
+        {% endif %}
     </ol>
     <div class="panel panel-default">
         <div class="panel-heading">
             <b class="panel-title">HISTORIA CLÍNICA</b>
             <div class="btn-group btn-group-sm pull-right">
                 <div class="col pull-right">
+                    {% if origen == 2 %}
+
                     <a id="volver" type="button" class="btn btn-default"
                        href="{% url 'consultorios:consulta_detalle_continuar' detalle.pk  %}">
                       <i class="fa fa-stethoscope" aria-hidden="true"></i> Volver a la consulta</a>
                     <a  class="btn btn-default" type="button"
                        href="{% url 'consultorios:consulta_historia_clinica' detalle.pk detalle.paciente.pk  %}">
                       <i class="fa fa-list" aria-hidden="true"></i>Historia Clinica</a>
+                    {% endif %}
+                    <a  class="btn btn-default" type="button"
+                       href="{% url 'consultorios:menu_historia_by_paciente' detalle.paciente.pk  %}">
+                      <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ origen }} Atrás</a>
                     <a id="pdf" type="button" class="btn btn-default"
                        href="{% url 'consultorios:consulta_historia_clinica_descargar' detalle.pk %}" target="_blank">
                       <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
@@ -61,10 +72,10 @@
             {% endif %}
             <hr>
             <div class="row">
-                <div class="col-sm-4">
-                    <b><u>ANAMNESIS:</u></b>
+                <div class="col-sm-12">
+                    <b><u>i. ANAMNESIS:</u></b>
                 </div>
-                <div class="col-sm-11 col-lg-11">
+                <div class="col-sm-12">
                     {% for data in anamnesis %}
                         {{ data.observacion|safe }}
                     {% endfor %}
@@ -72,10 +83,10 @@
             </div>
             <br>
             <div class="row">
-                <div class="col-sm-4">
-                    <b><u>DIAGNÓSITCO:</u></b>
+                <div class="col-sm-12">
+                    <b><u>ii. DIAGNÓSITCO:</u></b>
                 </div>
-                <div class="col-sm-4 col-lg-11">
+                <div class="col-sm-12">
                     {% if diagnosticos %}
                     <table class="table">
                         <thead>
@@ -102,10 +113,10 @@
             </div>
             <br>
             <div class="row">
-                <div class="col-sm-4">
-                    <b><u>EVOLUCIÓN:</u></b>
+                <div class="col-sm-12">
+                    <b><u>iii. EVOLUCIÓN:</u></b>
                 </div>
-                <div class="col-sm-11 col-lg-11">
+                <div class="col-sm-12">
                     {% if evoluciones %}
                         {% for data in evoluciones %}
                             {{ data.observaciones|safe }}
@@ -117,10 +128,10 @@
             </div>
             <br>
             <div class="row">
-                <div class="col-sm-4 col-lg-11">
-                    <b><u>ORDEN DE ESTUDIO:</u></b>
+                <div class="col-sm-12">
+                    <b><u>iv. ORDEN DE ESTUDIO:</u></b>
                 </div>
-                <div class="col-sm-4 col-lg-11">
+                <div class="col-sm-12">
                     {% if ordenes %}
                     <table class="table">
                         <thead>
@@ -145,10 +156,10 @@
             </div>
             <br>
             <div class="row">
-                <div class="col-sm-4">
-                    <b><u>PRESCRIPCIÓN:</u></b>
+                <div class="col-sm-12">
+                    <b><u>v. PRESCRIPCIÓN:</u></b>
                 </div>
-                <div class="col-sm-4 col-lg-11">
+                <div class="col-sm-12">
                     {% if prescripciones %}
                     <table class="table">
                         <thead>
@@ -175,10 +186,10 @@
             </div>
             <br>
             <div class="row">
-                <div class="col-sm-4">
-                    <b><u>TRATAMIENTO:</u></b>
+                <div class="col-sm-12">
+                    <b><u>vi. TRATAMIENTO:</u></b>
                 </div>
-                <div class="col-sm-4 col-lg-11">
+                <div class="col-sm-12">
                     {% if tratamientos %}
                     <table class="table">
                         <thead>
@@ -204,7 +215,9 @@
         </div>
     </div>
   </div>
-
+<script>
+    console.log('log', '{{ desde_menu }}')
+</script>
 {% endblock %}
 
 

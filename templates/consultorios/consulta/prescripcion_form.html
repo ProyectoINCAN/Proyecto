@@ -60,6 +60,7 @@
 <script src = "{% static 'js/select2.min.js' %}"></script>
 <script>
 
+   $("#id_cantidad").attr( "min", 1)
   $(function () {
     $("#id_posologia").wysihtml5();
     $('#id_medicamento').select2({ placeholder:"Seleccione una opción", allowClear: true});

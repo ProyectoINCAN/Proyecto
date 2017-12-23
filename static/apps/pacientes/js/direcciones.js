@@ -3,7 +3,7 @@
           $('#modalDireccion').modal('show');
        })
    })
-
+    $("#id_nro_casa").attr("min", 1)
    $("#id_departamento").change(function () {
       console.log( $(this).val() );
       var departamento = $(this).val()

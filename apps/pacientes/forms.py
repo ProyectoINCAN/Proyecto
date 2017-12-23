@@ -43,11 +43,11 @@ class PacienteForm(forms.ModelForm):
 
         labels = {
 
-            'nombres': 'Nombres:',
+            'nombres':'Nombres:',
             'apellidos': 'Apellidos:',
-            'tipo_doc': 'Tipo Documento:',
+            'tipo_doc':'Tipo Documento:',
             'nro_doc': 'Nro de Documento:',
-            'nro_doc_alternativo': 'Documento Alternativo',
+            'nro_doc_alternativo':'Documento Alternativo',
             'sexo': 'Sexo',
             'fecha_nacimiento': 'Fecha de Nac.',
             'lugar_nacimiento': 'Lugar de Nac.',
@@ -460,19 +460,17 @@ class AcompañanteForm(forms.ModelForm):
             'apellidos': forms.TextInput(
                 attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required'}),
             'tipo_doc': forms.Select(
-                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
+                        attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
                        'required': 'required', 'id': 'id_tipo_doc'}),
 
-            'nro_doc': forms.TextInput(
-                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required',
-                       'id': 'nro_doc'}),
-            'tipo_telefono': forms.Select(
-                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
-                       'required': 'required', }),
-            'numero': forms.TextInput(attrs={'class': 'form-control'}),
-            'vinculo': forms.Select(
-                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
-                       'required': 'required', }),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required','id':'nro_doc'}),
+            'tipo_telefono':forms.Select(
+                        attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
+                       'required': 'required',}),
+            'numero':forms.TextInput(attrs={'class': 'form-control'}),
+            'vinculo':forms.Select(
+                        attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
+                       'required': 'required',}),
         }
 
 
