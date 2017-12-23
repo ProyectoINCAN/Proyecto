@@ -1,7 +1,7 @@
 {% extends 'base/base2.html' %}
 {% load static %}
 {% block extrajs %}
-    <script src = "{% static 'apps/pacientes/js/paciente_call_center.js' %}"></script>
+    <script src = "{% static 'apps/pacientes/js/paciente.js' %}"></script>
 {% endblock %}
 
 
@@ -17,7 +17,7 @@ label { position: absolute; text-align:right; width:130px; }
 </style>
 <div class="app-content-body">
   <div class="bg-light lter b-b wrapper-md">
-      <h1 class="m-n font-thin h3">Pacientes Call Center</h1>
+      <h1 class="m-n font-thin h3">Pacientes</h1>
     </div>
   <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li><a href="#">Inicio</a></li>
@@ -55,14 +55,36 @@ label { position: absolute; text-align:right; width:130px; }
                     </div>
 
                     <div class="form-group">
-                          {{ form.tipo.error }}
+                          {{ form2.fecha_nacimiento.error }}
                          <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.fecha_nacimiento.label}}</label>
                          <div class="col-lg-4 col-md-3 col-sm-4">
                              {{form2.fecha_nacimiento}}
                          </div>
+                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.nacionalidad.label}}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{ form2.nacionalidad }}
+                         </div>
+                     </div>
+                    <div class="form-group">
+                          {{ form2.lugar_nacimiento.error }}
+                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.lugar_nacimiento.label}}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{form2.lugar_nacimiento}}
+                         </div>
                          <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.distrito.label}}</label>
                          <div class="col-lg-4 col-md-3 col-sm-4">
                              {{ form2.distrito }}
+                         </div>
+                     </div>
+                     <div class="form-group">
+                          {{ form2.sexo.error }}
+                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.sexo.label}}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{form2.sexo}}
+                         </div>
+                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.estado_civil.label}}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{ form2.estado_civil }}
                          </div>
                      </div>
                      <div class="form-group">
@@ -75,6 +97,13 @@ label { position: absolute; text-align:right; width:130px; }
                          <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.numero.label}}</label>
                          <div class="col-lg-4 col-md-3 col-sm-4">
                             {{form.numero}}
+                         </div>
+                     </div>
+                    <div class="form-group">
+                          {{ form.etnia.error }}
+                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.etnia.label}}</label>
+                         <div class="col-lg-4 col-md-3 col-sm-4">
+                             {{form2.etnia}}
                          </div>
                      </div>
 

@@ -7,15 +7,9 @@
       <h1 class="m-n font-thin h3">Historia Clínica</h1>
     </div>
     <ol class="breadcrumb" style="background-color: #f6f8f8">
-      {% if origen %}
-      <li class="active"><a href="{% url 'consultorios:consulta_detalle_iniciar' detalle.pk %}">
-        Consulta</a></li>
-            <li class="active">Historia Clínica</li>
-      {% else %}
       <li class="active">Inicio</li>
       <li class="active"><a href="{% url 'consultorios:historia_clinica' %}">Expediente Clínico</a></li>
       <li class="">Paciente: </li> {{ paciente.get_name_nro_doc}}
-      {% endif %}
     </ol>
     <div class="row">
       <div class="col-md-12">
@@ -61,7 +55,6 @@
                <tbody>
                {% for consulta_detalle in consultas %}
                  <tr>
-                   <td>{{ consulta_detalle.pk }}</td>
                    <td>{{ consulta_detalle.consulta.fecha|date:"SHORT_DATE_FORMAT" }}</td>
                    <td>{{ consulta_detalle.consulta.medico.get_dr_full_name }}</td>
                    <td>

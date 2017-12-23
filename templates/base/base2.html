@@ -10,9 +10,10 @@
   {% block extrahead %}
   {% endblock %}
   <link rel="icon" href="{% static 'media/img/favicon.ico' %}">
+
   <link rel="stylesheet" href="{% static 'toastmessage/static/css/jquery.toastmessage.css' %}">
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <!-- Ionicons -->
+  <!-- Ionicons -->
   <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">-->
   <!--<link rel="stylesheet" href="{% static 'vendor/ionicons/css/ionicons.min.css' %}">-->
 
@@ -35,7 +36,7 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
-  <div class="wrapper">
+<div class="wrapper">
 
   <header class="main-header">
     <!-- Logo -->
@@ -60,17 +61,17 @@
 
           <li>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> Salir</a>
-                        </li>
-                    </ul>
+              <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+              <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+              </li>
+              <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+              </li>
+              <li class="divider"></li>
+              <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> Salir</a>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -94,136 +95,148 @@
       <ul class="sidebar-menu">
         <li class="header">MENÚ</li>
         {% if user.groups.all.0.name == "Administrativo" or user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-user fa-fw"></i><span>Pacientes</span>
-            <span class="pull-right-container">
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-user fa-fw"></i><span>Pacientes</span>
+              <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'pacientes:index' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Pacientes</a></li>
-          </ul>
-        </li>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'pacientes:index' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Pacientes</a>
+              </li>
+            </ul>
+          </li>
         {% endif %}
         {% if request.user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-hospital-o fa-fw"></i><span>Administrativo</span>
-            <span class="pull-right-container">
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-hospital-o fa-fw"></i><span>Administrativo</span>
+              <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:administrativo_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Administrativos</a></li>
-          </ul>
-        </li>
-        {% endif %}
-        {% if request.user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-user-md fa-fw"></i><span>Médicos</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:medico_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Médicos</a></li>
-          </ul>
-        </li>
-        {% endif %}
-        {% if request.user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-stethoscope fa-fw"></i><span>Enfermero</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:enfermero_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Enfermeros</a></li>
-          </ul>
-        </li>
-        {% endif %}
-        {% if request.user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-users fa-fw"></i><span>Usuarios</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'principal:user_list_global' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Usuarios</a></li>
-          </ul>
-        </li>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'consultorios:administrativo_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista
+                de Administrativos</a></li>
+            </ul>
+          </li>
         {% endif %}
         {% if user.groups.all.0.name == "Administrativo" or request.user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-clipboard"></i><span>Agendamientos</span>
-            <span class="pull-right-container">
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-clipboard"></i><span>Agendamientos</span>
+              <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'agendamientos:agenda_especialidad_medico' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas Pendientes</a></li>
-            <li><a href="{% url 'agendamientos:agenda_fecha_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas por rango de fecha</a></li>
-          </ul>
-        </li>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'agendamientos:agenda_especialidad_medico' %}"><i class="fa fa-list"
+                                                                                    aria-hidden="true"></i>Agendas
+                Pendientes</a></li>
+              <li><a href="{% url 'agendamientos:agenda_fecha_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas
+                por rango de fecha</a></li>
+            </ul>
+          </li>
+        {% endif %}
+        {% if request.user.is_superuser or user.groups.all.0.name == "Administrativo"%}
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-user-md fa-fw"></i><span>Médicos</span>
+              <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'consultorios:medico_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de
+                Médicos</a></li>
+            </ul>
+          </li>
+        {% endif %}
+        {% if request.user.is_superuser or user.groups.all.0.name == "Administrativo"%}
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-stethoscope fa-fw"></i><span>Enfermero</span>
+              <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'consultorios:enfermero_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista
+                de Enfermeros</a></li>
+            </ul>
+          </li>
         {% endif %}
         {% if request.user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-medkit fa-fw"></i><span>Medicamentos</span>
-            <span class="pull-right-container">
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-users fa-fw"></i><span>Usuarios</span>
+              <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:tipo_medicamento' %}"><i class="fa fa-list" aria-hidden="true"></i>Tipos de Medicamentos</a></li>
-            <li><a href="{% url 'consultorios:medicamentos' %}"><i class="fa fa-list" aria-hidden="true"></i>Medicamentos</a></li>
-          </ul>
-        </li>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'principal:user_list_global' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de
+                Usuarios</a></li>
+            </ul>
+          </li>
+        {% endif %}
+
+        {% if request.user.is_superuser %}
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-medkit fa-fw"></i><span>Medicamentos</span>
+              <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'consultorios:tipo_medicamento' %}"><i class="fa fa-list" aria-hidden="true"></i>Tipos
+                de Medicamentos</a></li>
+              <li><a href="{% url 'consultorios:medicamentos' %}"><i class="fa fa-list" aria-hidden="true"></i>Medicamentos</a>
+              </li>
+            </ul>
+          </li>
         {% endif %}
         {% if request.user.is_superuser %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-sticky-note"></i><span>Órdenes de Estudio</span>
-            <span class="pull-right-container">
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-sticky-note"></i><span>Órdenes de Estudio</span>
+              <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:ordenes_estudio' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista de Orden de Estudio</a></li>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'consultorios:ordenes_estudio' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista
+                de Orden de Estudio</a></li>
 
-          </ul>
-        </li>
-       {% endif %}
-        {% if user.groups.all.0.name == "Medico" %}
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-medkit fa-fw"></i><span>Consultas del Dia</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'consultorios:consultas_dia' %}"><i class="fa fa-circle-o"></i>Consultas</a></li>
-          </ul>
-
-        </li>
+            </ul>
+          </li>
         {% endif %}
         {% if user.groups.all.0.name == "Medico" %}
-        <li class="treeview">
-          <a href="{% url 'consultorios:historia_clinica' %}">
-            <i class="fa fa-book"></i><span>Expediente Clínico</span>
-            <span class="pull-right-container">
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-medkit fa-fw"></i><span>Consultas del Dia</span>
+              <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'consultorios:consultas_dia' %}"><i class="fa fa-circle-o"></i>Consultas</a></li>
+            </ul>
 
-        </li>
+          </li>
+        {% endif %}
+        {% if user.groups.all.0.name == "Medico" or request.user.is_superuser %}
+          <li class="treeview">
+            <a href="{% url 'consultorios:historia_clinica' %}">
+              <i class="fa fa-book"></i><span>Expediente Clínico</span>
+              <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+
+          </li>
         {% endif %}
       </ul>
     </section>
@@ -243,7 +256,7 @@
         </div>
         <!-- /.col-lg-12 -->
       </div>
-                <!-- /.row -->
+      <!-- /.row -->
     </div>
 
 
@@ -453,107 +466,107 @@
   <div class="control-sidebar-bg"></div>
 </div>
 
-    <script src = "{% static 'js/jquery.min.js' %}"></script>
-    <script src = "{% static 'js/jquery-ui.min.js' %}"></script>
-    <script src = "{% static 'js/jquery.timepicker.min.js' %}"></script>
-    <script src = "{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/demo.js' %}"></script>
-    <script src="{% static 'js/app.min.js' %}"></script>
-    <script src="{% static 'js/jquery.slimscroll.min.js' %}"></script>
-    <script src="{% static 'js/fastclick.min.js' %}"></script>
-    <script src = "{% static 'js/select2.min.js' %}"></script>
-    <script src = "{% static 'toastmessage/static/js/jquery.toastmessage.js' %}"></script>
-    <script src = "{% static 'js/modales.js' %}"></script>
-    <script src = "{% static 'js/bootstrap-dialog.min.js' %}"></script>
-    <!--<script src="/static/js/select2.min.js"></script>-->
-    <script src = "{% static 'vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
-    <script src = "{% static 'vendor/datatables-plugins/dataTables.bootstrap.min.js' %}"></script>
-    <script src = "{% static 'vendor/datatables-responsive/dataTables.responsive.js' %}"></script>
-    <!--<script src = "{% static 'js/validate.min.js' %}"></script>-->
-    <!--<script src = "{% static 'js/underscore.min.js' %}"></script>-->
-    <script src = "{% static 'js/fastclick.min.js' %}"></script>
-    <script src = "{% static 'js/datatable-responsive-model.js' %}"></script>
-    <!--<script src= "https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>-->
-    <script src = "{% static 'js/bootstrap3-wysihtml5.all.min.js' %}"></script>
-    <!--<script src = "{% static 'js/validate.min.js' %}"></script>-->
-    <!--<script src="/static/js/select2.min.js"></script>-->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/demo.js' %}"></script>
+<script src="{% static 'js/app.min.js' %}"></script>
+<script src="{% static 'js/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'js/fastclick.min.js' %}"></script>
+<script src="{% static 'js/select2.min.js' %}"></script>
+<script src="{% static 'toastmessage/static/js/jquery.toastmessage.js' %}"></script>
+<script src="{% static 'js/modales.js' %}"></script>
+<script src="{% static 'js/bootstrap-dialog.min.js' %}"></script>
+<!--<script src="/static/js/select2.min.js"></script>-->
+<script src="{% static 'vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables-plugins/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'vendor/datatables-responsive/dataTables.responsive.js' %}"></script>
+<!--<script src = "{% static 'js/validate.min.js' %}"></script>-->
+<!--<script src = "{% static 'js/underscore.min.js' %}"></script>-->
+<script src="{% static 'js/fastclick.min.js' %}"></script>
+<script src="{% static 'js/datatable-responsive-model.js' %}"></script>
+<!--<script src= "https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>-->
+<script src="{% static 'js/bootstrap3-wysihtml5.all.min.js' %}"></script>
+<!--<script src = "{% static 'js/validate.min.js' %}"></script>-->
+<!--<script src="/static/js/select2.min.js"></script>-->
 
-    <!-- date-range-picker -->
-    <script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
-    <script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!-- date-range-picker -->
+<script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
+<script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
 
-    {% block extrajs %}
+{% block extrajs %}
 
-    {% endblock %}
-
-    <script>
-     $(document).ready(function() {
-        // tiempo para los mensajes de 3 segundos
-        setTimeout(function() {
-            $('#message').fadeOut('slow');
-        }, 3000); // <-- tiempo en milisegundos, 1000 =  1 sec
-
-        $('table.display').DataTable();
-    });
-
-	 $.datepicker.regional['es'] = {
-	 closeText: 'Cerrar',
-	 prevText: '< Ant',
-	 nextText: 'Sig >',
-	 currentText: 'Hoy',
-	 monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-	 monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-	 dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-	 dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-	 dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-	 weekHeader: 'Sm',
-	 dateFormat: 'dd/mm/yy',
-	 firstDay: 1,
-	 isRTL: false,
-	 showMonthAfterYear: false,
-	 yearSuffix: '',
-	 changeMonth: true,
-	 changeYear: true,
-	 yearRange: '1900:2020'
-	 };
-	 $.datepicker.setDefaults($.datepicker.regional['es']);
-	 $(function () {
-	 $( ".datepicker" ).datepicker({dateFormat: 'dd/mm/yy'}).val()
-	});
-	</script>
-    <script>
-    $('.timepicker').timepicker({
-        timeFormat: 'HH:mm',
-        interval: 60,
-        minTime: '0',
-        maxTime: '11:59pm',
-        startTime: '7:00',
-        dynamic: false,
-        dropdown: true,
-        scrollbar: true
-    });
-	</script>
-    <script>
-        $('.selectsearch').select2({ placeholder:"Seleccione una opción", allowClear: true});
-        $('.selectsearch-multiple').select2({ placeholder:"Seleccione una o más opciones", allowClear: true});
-    </script>
+{% endblock %}
 
 <script>
-function getCookie(name) {
+  $(document).ready(function () {
+    // tiempo para los mensajes de 3 segundos
+    setTimeout(function () {
+      $('#message').fadeOut('slow');
+    }, 3000); // <-- tiempo en milisegundos, 1000 =  1 sec
+
+    $('table.display').DataTable();
+  });
+
+  $.datepicker.regional['es'] = {
+    closeText: 'Cerrar',
+    prevText: '< Ant',
+    nextText: 'Sig >',
+    currentText: 'Hoy',
+    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+    weekHeader: 'Sm',
+    dateFormat: 'dd/mm/yy',
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: '',
+    changeMonth: true,
+    changeYear: true,
+    yearRange: '1900:2020'
+  };
+  $.datepicker.setDefaults($.datepicker.regional['es']);
+  $(function () {
+    $(".datepicker").datepicker({dateFormat: 'dd/mm/yy'}).val()
+  });
+</script>
+<script>
+  $('.timepicker').timepicker({
+    timeFormat: 'HH:mm',
+    interval: 60,
+    minTime: '0',
+    maxTime: '11:59pm',
+    startTime: '7:00',
+    dynamic: false,
+    dropdown: true,
+    scrollbar: true
+  });
+</script>
+<script>
+  $('.selectsearch').select2({placeholder: "Seleccione una opción", allowClear: true});
+  $('.selectsearch-multiple').select2({placeholder: "Seleccione una o más opciones", allowClear: true});
+</script>
+
+<script>
+  function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
         }
+      }
     }
     return cookieValue;
-};
+  };
 </script>
 
 </body>

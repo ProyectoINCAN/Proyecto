@@ -3,17 +3,20 @@ import os
 from django.core import serializers
 from django.http.response import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from django.utils.safestring import mark_safe
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
 
 from apps.agendamientos.models import EstadoAgenda
-from apps.consultorios.models import DiasSemana, Especialidad
+from apps.consultorios.models import DiasSemana, Especialidad, Medicamento, OrdenEstudio
 from apps.principal.forms import *
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 
 from django.db import connection
 # Create your views here.
-from apps.pacientes.models import Distrito, Nacionalidad, Departamento, Barrio
+from apps.pacientes.models import Distrito, Nacionalidad, Departamento, Barrio, Paciente
 import json
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
@@ -21,8 +24,55 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
 from django.shortcuts import render, redirect
-
 from utils.generate_json import generar_json_pacientes, generar_json_agendamientos, generar_json_consultorios
+
+from Proyecto import settings
+import datetime
+
+
+class DashboardPrincipalView(LoginRequiredMixin, TemplateView):
+    template_name = 'principal/index.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.is_authenticated():
+            if user.is_superuser:
+                return super(DashboardPrincipalView, self).dispatch(request, *args, **kwargs)
+            else:
+                return HttpResponseRedirect(reverse('logout'))
+        return super(DashboardPrincipalView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        # obtenemos todos los grupos
+        medicos = Medico.objects.all().count()
+        enfermeros = Enfermero.objects.all().count()
+        administrativos = Administrativo.objects.all().count()
+
+        genero_masculino = Paciente.objects.filter(sexo__codigo='M').count()
+
+        genero_femenino = Paciente.objects.filter(sexo__codigo='F').count()
+
+        list_generos = [genero_masculino, genero_femenino]
+        lista_usuarios = [medicos, enfermeros, administrativos]
+
+        medicamentos = Medicamento.objects.filter(habilitado=True, vencimiento__lte=datetime.datetime.today())
+
+        ordenes = OrdenEstudio.objects.all()
+
+        context.update({
+            'tipos_usuarios': mark_safe(settings.TIPOS_USUARIOS),
+            'lista_usuarios': mark_safe(lista_usuarios),
+            'generos': mark_safe(list_generos),
+            'genero_masculino': genero_masculino,
+            'genero_femenino': genero_femenino,
+            'ordenes': ordenes,
+            'medicamentos': medicamentos
+        })
+
+        return super(TemplateView, self).render_to_response(context)
 
 
 class PrincipalIndex(TemplateView):

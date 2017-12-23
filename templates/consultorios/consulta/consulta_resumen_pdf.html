@@ -1,12 +1,21 @@
  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
-    <title>Resumen de la Consulta</title>
+    <title>Historia Clínica</title>
     <style type="text/css">
+
+
+      #contenedor{
+       text-align: left;
+       width: 750px;
+       margin: auto;}
       table {
           font-family: arial, sans-serif;
           border-collapse: collapse;
           width: 100%;
+      }
+      li{
+        list-style-type: lower-roman
       }
 
       td, th {
@@ -29,26 +38,39 @@
         <div class="panel-body">
           <div class="row">
             <h1 align="center"><b>SIHINCAN</b></h1>
-            <h1 align="center"><b>Reporte de la Consulta del Paciente: {{ detalle.paciente.get_full_name }}</b></h1>
+            <h1 align="center"><b>Historia Clínica: {{ detalle.paciente.get_full_name }}</b></h1>
           </div>
-          <h2><b><u>1. Datos de la Consulta</u></b></h2>
-          <div class="row">
+            <div style="font-weight:bold; font-size: 12px;"><u>DATOS DE LA CONSULTA: </u></div>
+
+            <div class="row">
             <div class="col-sm-6">
-
-              <span class="font-bold">Fecha:</span>
-              <span class="font-normal">{{ detalle.consulta.fecha }}</span>
+              <span style="font-weight:bold;">Médico:</span>
+              <span style="font-weight:normal;">{{ detalle.consulta.medico }}</span>
               <br/>
-              <span class="font-bold">Hora de Inicio:</span>
-              <span class="font-normal">{{ detalle.hora_inicio }}
+              <span style="font-weight:bold;">Fecha:</span>
+              <span style="font-weight:normal;">{{ detalle.consulta.fecha }}</span>
+              <br/>
+              <span style="font-weight:bold;">Hora de Inicio:</span>
+              <span style="font-weight:normal;">{{ detalle.hora_inicio }}{{ detalle.consulta.medico}}
+              </span>
+              <br/>
 
+            </div>
+            <div class="col-sm-6">
+                <span style="font-weight:bold;">Especialidad:</span>
+              <span style="font-weight:normal;">{{ detalle.consulta.especialidad }}</span>
+              <br/>
+
+              <span style="font-weight:bold;">Hora de Inicio:</span>
+              <span style="font-weight:normal;">{{ detalle.hora_inicio }}{{ detalle.consulta.medico}}
               </span>
               <br/>
 
             </div>
             <div class="col-sm-6">
 
-              <span class="font-bold">Hora de Inicio:</span>
-              <span class="font-normal">{% if detalle.hora_fin %}{{ detalle.hora_fin }}
+              <span style="font-weight:bold;">Hora de Inicio:</span>
+              <span style="font-weight:normal;">{% if detalle.hora_fin %}{{ detalle.hora_fin }}
               {% else %}Sin hora de finalización{% endif %}</span>
               <br/>
             </div>
@@ -64,7 +86,7 @@
 
             <div class="row">
                 <div class="col-sm-4">
-                    <h2><b><u>2. Resumen de la anamnesis:</u></b></h2>
+                    <div style="font-weight:bold; font-size: 12px;"><li><u>ANAMNESIS: </u></li></div>
                 </div>
                 <div class="col-md-12">
                     <ul type="circle">
@@ -79,7 +101,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                  <h2><b><u>3. Resumen del diagnóstico:</u></b></h2>
+                  <div style="font-weight:bold; font-size: 12px;"><li><u>DIAGNÓSTICO: </u></li></div>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if diagnosticos %}
@@ -109,7 +131,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                  <h2><b><u>4. Resumen de evolución del paciente:</u></b></h2>
+                    <div style="font-weight:bold; font-size: 12px;"><li><u>EVOLUCIÓN: </u></li></div>
                 </div>
                 <div class="col-md-12">
                     <ul>
@@ -126,7 +148,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4 col-lg-11">
-                    <h2><b><u>5. Resumen de la orden de estudio:</u></b></h2>
+                    <div style="font-weight:bold; font-size: 12px;"><li><u>ORDEN DE ESTUDIO: </u></li></div>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if ordenes %}
@@ -154,8 +176,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-
-                    <h2><b><u>6. Resumen de la prescripción:</u></b></h2>
+                    <div style="font-weight:bold; font-size: 12px;"><li><u>PRESCRIPCIÓN: </u></li></div>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if prescripciones %}
@@ -185,8 +206,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4">
-
-                    <h2><b><u>7. Resumen del tratamiento:</u></b></h2>
+                    <div style="font-weight:bold; font-size: 12px;"><li><u>TRATAMIENTO: </u></li></div>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if tratamientos %}

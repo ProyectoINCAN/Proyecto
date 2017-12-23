@@ -3,6 +3,13 @@
 
 
 {% block content %}
+    <style type="text/css">
+
+      li{
+        list-style-type: lower-roman
+      }}
+    </style>
+
 
 <div class="app-content-body">
 
@@ -19,80 +26,63 @@
                 <div class="col pull-right">
                     <a id="volver" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_detalle_dia' detalle.consulta.id  %}"> <i class="fa fa-list" aria-hidden="true"></i> Volver a la lista</a>
                     <a id="pdf" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_historia_clinica_descargar' detalle.id %}" target="_blank"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
+                    <a id="odrenPdf" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_orden_estudio_descargar' detalle.id %}" target="_blank"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Orden Estudio a PDF</a>
+                    <a id="prescripcionPdf" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_prescripcion_descargar' detalle.id %}" target="_blank"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Orden Estudio a PDF</a>
                 </div>
             </div><p></p>
 
         </div>
+        <div class="box-body">
+          <div class="col-sm-6">
+              <span style="font-weight:bold">Paciente:</span>
+              <span style="font-weight:normal">{{ detalle.paciente.get_name_nro_doc  }}</span>
+              <br/>
+              <span style="font-weight:bold">Médico:</span>
+              <span style="font-weight:normal">{{ detalle.consulta.medico.get_dr_full_name }}</span>
+              <br/>
+              <span style="font-weight:bold">Hora de Inicio: </span>
+              <span style="font-weight:normal">{{ detalle.hora_inicio  }}</span>
+            <br/>
+          </div>
+          <div class="col-sm-6">
+              <span style="font-weight:bold">Fecha de la Consulta: </span>
+              <span style="font-weight:normal">{{ detalle.consulta.fecha }}</span>
+              <br/>
+              <span style="font-weight:bold;">Especialidad: </span>
+              <span style="font-weight:normal;">{{ detalle.consulta.especialidad }}</span>
+              <br/>
+              <span style="font-weight:bold;">Hora de Finalización: </span>
+              <span style="font-weight:normal;">{{ detalle.hora_fin }}</span>
+              <br>
+          </div>
+        </div>
+
         <div class="panel-body">
             <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Fecha de la consulta:</b>
+                <div class="col-sm-8">
+                    <div><b><li><u>ANAMNESIS: </u></li></b></div>
                 </div>
-                {{ detalle.consulta.fecha }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Hora de inicio:</b>
-                </div>
-                {{ detalle.hora_inicio }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Hora de finalización:</b>
-                </div>
-                {{ detalle.hora_fin }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Dependencia:</b>
-                </div>
-                {{ detalle.consulta.especialidad }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Médico:</b>
-                </div>
-                {{ detalle.consulta.medico.get_dr_full_name }}
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Paciente:</b>
-                </div>
-                {{ detalle.paciente.get_name_nro_doc }}
-            </div>
-
-            {% if detalle.estado.codigo == "C" %}
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Finalizado como:</b>
-                </div>
-                {{ detalle.estado.nombre }}
-            </div>
-            {% endif %}
-
-            <div class="row">
-                <div class="col-sm-4">
-                    <b>Resumen de la anamnesis:</b>
-                </div>
-                <div class="col-sm-11 col-lg-11">
+                <div class="col-sm-8">
+                    <ul type="circle">
                     {% for data in anamnesis %}
-                    <div class="container-fluid">{{ data.observacion|safe }}</div>
+                      {{ data.observacion|safe }}
                     {% endfor %}
+                    </ul>
                 </div>
             </div>
             <br>
             <div class="row">
-                <div class="col-sm-4">
-                    <b>Resumen del diagnóstico:</b>
+                <div class="col-sm-12">
+                  <div><b><u>ii. DIAGNÓSTICO: </u></b></div>
                 </div>
-                <div class="col-sm-4 col-lg-11">
+                <div class="col-sm-12">
                     {% if diagnosticos %}
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Código CIE-10</th>
-                                <th>Nombre</th>
-                                <th>Observación</th>
+                              <th><b>Código CIE-10</b></th>
+                              <th><b>Nombre</b></th>
+                              <th><b>Observación</b></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,7 +90,7 @@
                             <tr>
                                 <td>{{ data.cie10.codigo }}</td>
                                 <td>{{ data.cie10.descripcion }}</td>
-                                <td><div class="container-fluid">{{ data.observacion|safe }}</div></td>
+                                <td>{{ data.observacion|safe }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -112,38 +102,40 @@
             </div>
             <br>
             <div class="row">
-                <div class="col-sm-4">
-                    <b>Resumen de evolución del paciente:</b>
+                <div class="col-sm-12">
+                    <div><b><u>iii. EVOLUCIÓN:</u></b></div>
                 </div>
-                <div class="col-sm-11 col-lg-11">
+                <div class="col-sm-12">
+                    <ul>
                     {% if evoluciones %}
                         {% for data in evoluciones %}
-                    <div class="container-fluid">{{ data.observaciones|safe }}</div>
+                            {{ data.observaciones|safe }}
                         {% endfor %}
                     {% else %}
                         {{ "SIN ESPECIFICAR" }}
                     {% endif %}
+                    </ul>
                 </div>
             </div>
             <br>
             <div class="row">
-                <div class="col-sm-4 col-lg-11">
-                    <b>Resumen de la orden de estudio:</b>
+                <div class="col-sm-8">
+                  <div><b><u>iv. ORDEN DE ESTUDIO: </u></b></div>
                 </div>
-                <div class="col-sm-4 col-lg-11">
+                <div class="col-sm-8">
                     {% if ordenes %}
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Estudio</th>
-                                <th>Observación</th>
+                              <th><b>Código CIE-10</b></th>
+                              <th><b>Nombre</b></th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for data in ordenes %}
                             <tr>
-                                <td>{{ data.orden_estudio }}</td>
-                                <td><div class="container-fluid">{{ data.observacion|safe }}</div></td>
+                                <td>{{ data.orden_estudio  }}</td>
+                                <td>{{ data.observacion|safe }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -153,12 +145,13 @@
                     {% endif %}
                 </div>
             </div>
+
             <br>
             <div class="row">
-                <div class="col-sm-4">
-                    <b>Resumen de la prescripción:</b>
+                <div class="col-sm-12">
+                    <div><u><b>v. PRESCRIPCIÓN: </b></u></div>
                 </div>
-                <div class="col-sm-4 col-lg-11">
+                <div class="col-sm-12">
                     {% if prescripciones %}
                     <table class="table">
                         <thead>
@@ -172,7 +165,7 @@
                             {% for data in prescripciones %}
                             <tr>
                                 <td>{{ data.medicamento }}</td>
-                                <td><div class="container-fluid">{{ data.posologia|safe }}</div></td>
+                                <td>{{ data.posologia|safe }}</td>
                                 <td class="text-center">{{ data.cantidad }}</td>
                             </tr>
                             {% endfor %}
@@ -185,10 +178,10 @@
             </div>
             <br>
             <div class="row">
-                <div class="col-sm-4">
-                    <b>Resumen del tratamiento:</b>
+                <div class="col-sm-12">
+                    <div><u><b>vi. TRATAMIENTO: </b></u></div>
                 </div>
-                <div class="col-sm-4 col-lg-11">
+                <div class="col-sm-12">
                     {% if tratamientos %}
                     <table class="table">
                         <thead>
@@ -201,7 +194,7 @@
                             {% for data in tratamientos %}
                             <tr>
                                 <td>{{ data.descripcion }}</td>
-                                <td><div class="container-fluid">{{ data.observacion|safe }}</div></td>
+                                <td>{{ data.observacion|safe }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

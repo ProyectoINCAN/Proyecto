@@ -32,7 +32,7 @@
                   <thead>
                   <tr>
                     <th>Nombre</th>
-                    <th>Descripcion</th>
+                    <th>Descripción</th>
                     <th>Acción</th>
                   </tr>
                   </thead>
@@ -40,7 +40,7 @@
                 {% for detalle in orden_detalle %}
                   <tr>
                     <td width='50'>{{ detalle.nombre }}</td>
-                    <td width='50'>{{ detalle.observacion }} </td>
+                    <td width='50'>{{ detalle.observacion|safe }} </td>
                     <td width='50' align='center'>
                       <a class="btn btn-xs" title="Editar"
                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_detalle_editar' detalle.id %}')">

@@ -88,8 +88,12 @@
 <script src = "{% static 'js/bootstrap.min.js' %}"></script>
 <script src = "{% static 'js/select2.min.js' %}"></script>
 
+
   <script language="JavaScript">
-          $('.selectsearch-multiple').select2({ placeholder:"Seleccione una o más opciones", allowClear: true});
+		$('#id_pared').select2();
+		$('#id_techo').select2();
+		$('#id_piso').select2();
+		$('.selectsearch-multiple').select2({ placeholder:"Seleccione una o más opciones", allowClear: true});
 
 
         $("#eventoForm").submit(function(e) {

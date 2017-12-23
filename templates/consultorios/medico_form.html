@@ -87,10 +87,26 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="{{ form.direccion.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.direccion.label }}</label>
+                    <div class="col-lg-4 col-md-3 col-sm-4">
+                        {{form.direccion}}
+                    </div>
+                    <label for="{{ form.telefono.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.telefono.label }}</label>
+                    <div class="col-lg-4 col-md-3 col-sm-4">
+                        {{form.telefono}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.email.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.email.label }}</label>
+                    <div class="col-lg-4 col-md-3 col-sm-4">
+                        {{form.email}}
+                    </div>
                     <label for="{{ form.especialidad.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.especialidad.label }}</label>
                     <div class="col-lg-4 col-md-3 col-sm-4">
                         {{form.especialidad}}
                     </div>
+                </div>
+                <div class="form-group">
                     <label for="{{ form.habilitado.name }}" class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.habilitado.label }}</label>
                     <div class="col-lg-4 col-md-3 col-sm-4">
                         {{form.habilitado}}

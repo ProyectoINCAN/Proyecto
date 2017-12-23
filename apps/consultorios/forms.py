@@ -11,7 +11,7 @@ class MedicoForm(forms.ModelForm):
     class Meta:
         model = Medico
         fields = ['nombres', 'apellidos', 'tipo_doc', 'nro_doc', 'nro_registro_profesional', 'sexo', 'fecha_nacimiento',
-                  'lugar_nacimiento', 'nacionalidad', 'estado_civil', 'especialidad', 'habilitado']
+                  'lugar_nacimiento', 'nacionalidad', 'estado_civil', 'especialidad', 'email', 'direccion', 'telefono','habilitado']
         labels = {
             'nombres': 'Nombres',
             'apellidos': 'Apellidos',
@@ -23,6 +23,9 @@ class MedicoForm(forms.ModelForm):
             'lugar_nacimiento': 'Lugar de Nacimiento',
             'nacionalidad': 'Nacionalidad',
             'estado_civil': 'Estado Civil',
+            'email': 'Email',
+            'direccion': 'Dirección',
+            'telefono': 'Teléfono',
             'especialidad': 'Especialidad',
             'habilitado': 'Habilitado'
         }
@@ -49,6 +52,9 @@ class MedicoForm(forms.ModelForm):
                                                 'required': 'required'}),
             'especialidad': forms.SelectMultiple(attrs={'class': 'form-control', 'style': 'width: 100%',
                                                         'required': 'required'}),
+            'email':forms.EmailInput(attrs={'class': 'form-control'}),
+            'direccion': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
@@ -180,18 +186,14 @@ class HorarioMedicoModelForm(forms.ModelForm):
                                               'required': 'required'}),
             'turno': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
                                          'required': 'required'}),
-            'cantidad': forms.TextInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'number'}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'number'}),
             'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
     def clean(self):
-        cantidad = self.data.get('cantidad')
+        # cantidad = self.data.get('cantidad')
         hora_inicio = self.data.get('hora_inicio')
         hora_fin = self.data.get('hora_fin')
-        # print('cantidad', cantidad)  # borrar
-        if cantidad:
-            if int(cantidad) <= 0:
-                self.add_error('cantidad', 'La cantidad debe ser mayor a cero.')
 
         if hora_fin:
             if hora_fin < hora_inicio:

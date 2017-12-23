@@ -54,11 +54,16 @@
    $('#id_fecha_nacimiento').prop('tabindex', 8);
    $('#select2-id_lugar_nacimiento-container').prop('tabindex', 9);
    $('#select2-id_estado_civil-container').prop('tabindex', 10);
-   $('#select2-id_etnia-container').prop('tabindex', 11);
-   $('#select2-id_especialidad-container').prop('tabindex', 12);
+   $('#id_direccion').prop('tabindex', 11);
+   $('#id_telefono').prop('tabindex', 12);
+   $('#id_email').prop('tabindex', 13);
+   $('#select2-id_especialidad-container').prop('tabindex', 14);
    $("#id_nro_doc").prop('disabled', disabled);
    $("#id_nombres").prop('disabled', disabled);
    $("#id_apellidos").prop('disabled', disabled);
+   $("#id_direccion").prop('disabled', disabled);
+   $("#id_email").prop('disabled', disabled);
+   $("#id_telefono").prop('disabled', disabled);
    $("#id_nro_registro_profesional").prop('disabled', disabled);
    $("#id_fecha_nacimiento").prop('disabled', disabled);
    $("#id_habilitado").prop('disabled', disabled);

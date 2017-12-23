@@ -1,11 +1,5 @@
 {% extends 'base/base2.html' %}
 
-{#{% block extra_top_items %}#}
-{#    <a class="btn no-shadow navbar-btn pull-left" href="{% url 'crear_sucursal' %}">#}
-{#        <i class="fa fa-plus"></i> Nueva Sucursal#}
-{#    </a>#}
-{#{% endblock %}#}
-
 
 {% block content %}
   <div class="app-content-body">
@@ -48,7 +42,7 @@
                 {% for tipo in tipos %}
                   <tr>
                     <td width='50'>{{ tipo.nombre }}</td>
-                    <td width='50'>{{ tipo.descripcion| safe }} </td>
+                    <td width='50'>{{ tipo.descripcion|safe }} </td>
                     <td width='50' align='center'>
                       <a class="btn btn-xs" title="Editar"
                          onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_editar' tipo.id %}')">

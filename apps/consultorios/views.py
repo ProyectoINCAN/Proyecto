@@ -1,10 +1,12 @@
 import calendar
+import os
 
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
 from django.db.models.aggregates import Max
+from django.db.models.query_utils import Q
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect
 from django.http.response import JsonResponse
@@ -28,6 +30,7 @@ import datetime
 from psycopg2._json import Json
 
 from Proyecto import settings
+from Proyecto.settings import BASE_DIR
 from apps import pacientes
 from apps.agendamientos.functions import get_origen_url_agendamiento
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
@@ -547,7 +550,7 @@ class ConsultasDia(LoginRequiredMixin, TemplateView):
         context = self.get_context_data(**kwargs)
         medico = Medico.objects.get(usuario=request.user)
         # obtenemos todas las consultas del dia de hoy del medico logueado
-        consultas = Consulta.objects.filter(estado='P', medico=medico, fecha=datetime.date.today())
+        consultas = Consulta.objects.filter(medico=medico, fecha=datetime.date.today())
         context.update({'medico': medico,
                         'consultas': consultas,
                         'fecha': datetime.date.today()
@@ -1281,6 +1284,11 @@ class TipoMedicamentoCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, "Se ha creado el tipo medicamento.")
         return JsonResponse({'success': True})
 
+    #
+    # def get_success_url(self):
+    #     messages.success(self.request, "Se ha creado el tipo medicamento.")
+    #     return reverse('consultorios:tipo_medicamento')
+    #
 
 class TipoMedicamentoUpdateView(LoginRequiredMixin, UpdateView):
     model = TipoMedicamento
@@ -1461,11 +1469,19 @@ class HistoriaClinicaList(LoginRequiredMixin, TemplateView):
                                                        Q(pk=EstadoConsultaDetalle.objects.get(codigo='C'))))
         # obtenemos el d
         ultima_consulta = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        # consulta__fecha__range=[fecha_desde, fecha_hasta])
+        # consultas = consultas.exclude(estado__in=[EstadoConsultaDetalle.objects.get(codigo='P'), EstadoConsultaDetalle.objects.get(codigo='E')])
 
+        #la ultima consulta corresponde a la consulta actual
+        # ultima_consulta = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id']).last()
+
+        paciente= Paciente.objects.get(pk=self.kwargs['paciente_id'])
         context.update({
             'fecha_input': p_fechas if p_fechas else None,
             'detalle': ultima_consulta,
-            'consultas': consultas
+            'consultas': consultas,
+            'paciente': paciente,
+            'origen':2,
         })
 
         return super(TemplateView, self).render_to_response(context)
@@ -1542,7 +1558,7 @@ class ConsultaDetalleHistoriaClinica(LoginRequiredMixin, DetailView):
                         'tratamientos': Tratamiento.objects.filter(consulta_detalle=detalle).order_by('-pk'),
                         'ordenes': ConsultaOrdenEstudio.objects.filter(consulta_detalle=detalle).order_by('-pk'),
                         'prescripciones': ConsultaPrescripcion.objects.filter(paciente=detalle.paciente,
-                                                                              consulta_detalle=detalle.id).order_by('-pk')
+                                                                              consulta_detalle=detalle.id).order_by('-pk'),
                         })
         return context
 
@@ -1807,5 +1823,109 @@ class ConsultaHistoriaByPacienteView(LoginRequiredMixin, TemplateView):
         return render(request=request, template_name=self.template_name, context=context)
 
 
+class MenuHistoriaClinicaList(LoginRequiredMixin, TemplateView):
+    template_name = 'consultorios/consulta/menu_historia_clinica.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        hoy = datetime.datetime.now()
+
+        p_fechas = request.GET.get('fechas', None)
+
+        if p_fechas:
+            fechas = p_fechas.split("-")
+            p_desde = fechas[0]
+            p_hasta = fechas[1].split(" ")[1]
+            desde = p_desde.split(" ")
+            p_desde = desde[0]
+            fecha_desde = datetime.datetime.strptime(p_desde, '%d/%m/%Y')
+            fecha_hasta = datetime.datetime.strptime(p_hasta, '%d/%m/%Y')
+        else:
+            fecha_desde = hoy
+            fecha_hasta = hoy
+
+        consultas = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id'],
+                                                   consulta__fecha__range=[fecha_desde, fecha_hasta])
+        consultas = consultas.exclude(estado__in=[EstadoConsultaDetalle.objects.get(codigo='P'), EstadoConsultaDetalle.objects.get(codigo='E')])
+
+        #la ultima consulta corresponde a la consulta actual
+        ultima_consulta = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id']).last()
+
+        paciente= Paciente.objects.get(pk=self.kwargs['paciente_id'])
+        context.update({
+            'fecha_input': p_fechas if p_fechas else None,
+            'detalle': ultima_consulta,
+            'consultas': consultas,
+            'paciente': paciente,
+            'origen':1,
+        })
+
+        return super(TemplateView, self).render_to_response(context)
+
+
+class OrdenEstudioPDF(View):
+
+    def get(self, request, *args, **kwargs):
+        template = get_template('consultorios/consulta/consulta_orden_estudio_pdf.html')
+
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+        image_logo =BASE_DIR + '/static/media/img/logo_incan200x90.png'
+
+        # ordenes de estudio del paciente
+        ordenes = ConsultaOrdenEstudio.objects.filter(consulta_detalle=detalle).order_by('-pk')
+        context = {
+            'detalle': detalle,
+            'ordenes': ordenes,
+            'logo': image_logo,
+
+        }
+        print("mientas", image_logo)
+
+
+        html = template.render(context)
+        pdf = render_to_pdf('consultorios/consulta/consulta_orden_estudio_pdf.html', context)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = "Invoice_%s.pdf" % ("12341231")
+            content = "inline; filename='%s'" % (filename)
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename='%s'" % (filename)
+            response['Content-Disposition'] = content
+            return response
+        return HttpResponse("Not found")
+
+
+class PrescripcionPDF(View):
+
+    def get(self, request, *args, **kwargs):
+        template = get_template('consultorios/consulta/consulta_prescripcion_pdf.html')
+
+        detalle = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
+
+        # prescripciones del paciente
+        prescripciones = ConsultaPrescripcion.objects.filter(paciente=detalle.paciente,
+                                                             consulta_detalle=detalle.id).order_by('-pk')
+        image_logo = os.path.join(os.getcwd(), '/static/media/img/', 'logo_incan' + '.png')
+        context = {
+            'detalle': detalle,
+            'prescripciones': prescripciones,
+            'logo':image_logo,
+        }
+        print("mientas", image_logo)
+
+        html = template.render(context)
+
+        pdf = render_to_pdf('consultorios/consulta/consulta_prescripcion_pdf.html', context)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = "Invoice_%s.pdf" % ("12341231")
+            content = "inline; filename='%s'" % (filename)
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename='%s'" % (filename)
+            response['Content-Disposition'] = content
+            return response
+        return HttpResponse("Not found")
 
 

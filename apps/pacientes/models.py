@@ -300,7 +300,7 @@ class Direccion(models.Model):
     area = models.ForeignKey(Area, models.DO_NOTHING, blank=False, null=False)
     sector = UpperCharField(max_length=100, blank=True, uppercase=True)
     manzana = UpperCharField(max_length=60, blank=True, uppercase=True)
-    nro_casa = models.IntegerField(null=True, blank=True, default=0)
+    nro_casa = models.PositiveIntegerField(null=True, blank=True)
     residencia_ocasional = UpperCharField(max_length=300, blank=True, uppercase=True)
     referencia = UpperCharField(max_length=200, blank=True, uppercase=True)
     habilitado = models.BooleanField(default=True)
@@ -490,7 +490,7 @@ class PacienteNivelEducativo(models.Model):
         (False, 'NO')
     )
     completo = models.BooleanField(choices=COMPLETO_CHOICES, verbose_name="Completo", blank=False, null=False, default=False)
-    anho_cursado = models.IntegerField(blank=True, null=True)
+    anho_cursado = models.PositiveIntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -645,8 +645,8 @@ class Vivienda(models.Model):
     piso = models.ForeignKey(Piso, models.DO_NOTHING, blank=True, null=True)
     dependencia = models.ManyToManyField(Dependencia)
     hacinamiento = models.BooleanField(default=False)
-    nro_personas_hogar = models.IntegerField(blank=True, verbose_name="Nro. de Personas en el Hogar")
-    nro_dormitorio = models.IntegerField(blank=True, default=0, verbose_name="Nro. de Dormitorio")
+    nro_personas_hogar = models.PositiveIntegerField (blank=True, verbose_name="Nro. de Personas en el Hogar")
+    nro_dormitorio = models.PositiveIntegerField (blank=True, default=0, verbose_name="Nro. de Dormitorio")
     comparte_cama = models.BooleanField(default=False)
 
     def __str__(self):

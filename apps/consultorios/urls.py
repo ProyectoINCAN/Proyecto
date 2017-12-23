@@ -76,8 +76,6 @@ urlpatterns = [
     url(r'^consulta/(?P<consulta_id>\d+)/detalles/agregar/$', views.ConsultorioPacienteAgregar.as_view(),
         name='consultorio_paciente_agregar'),
 
-    # url(r'^consulta/detalle/(?P<detalle_id>\d+)/diagnostico/list/$', views.ConsultaDetalleDiagnosticoList.as_view(),
-    #     name='consulta_diagnostico_crear'),
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/diagnostico/crear/$', views.PacienteDiagnosticoCreate.as_view(),
         name='consulta_diagnostico_crear'),
     url(r'^consulta/detalle/diagnostico/(?P<diagnostico_id>\d+)/$', views.PacienteDiagnosticoEditar.as_view(),
@@ -131,15 +129,21 @@ urlpatterns = [
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/historia/paciente/(?P<paciente_id>\d+)/$',
         views.HistoriaClinicaList.as_view(), name='consulta_historia_clinica'),
 
+    url(r'^historia_clinica/paciente/(?P<paciente_id>\d+)/$', views.HistoriaClinicaList.as_view(),
+        name='historia_clinica_menu'),
+
     url(r'^test_pdf/$', views.GeneratePDF.as_view(),
         name='test_pdf'),
 
-    url(r'^consulta/(?P<consulta_id>\d+)/historia/paciente/detalles/$', views.ConsultaDetalleHistoriaClinica.as_view(),
+    url(r'^consulta/(?P<consulta_id>\d+)/historia/paciente/detalles/(?P<origen>\d+)/$', views.ConsultaDetalleHistoriaClinica.as_view(),
         name='consulta_historia_clinica_visualizar'),
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/descargar/$', views.HistoriaClinicaPDF.as_view(),
         name='consulta_historia_clinica_descargar'),
-
-    url(r'^historia_clinica/$', views.HistoriaClinicaConsultar.as_view(), name='historia_clinica'),
+    url(r'^consulta/detalle/(?P<detalle_id>\d+)/orden_estudio/descargar/$', views.OrdenEstudioPDF.as_view(),
+        name='consulta_orden_estudio_descargar'),
+    url(r'^consulta/detalle/(?P<detalle_id>\d+)/prescripcion/descargar/$', views.PrescripcionPDF.as_view(),
+        name='consulta_prescripcion_descargar'),
+    url(r'^expediente_clinico/$', views.HistoriaClinicaConsultar.as_view(), name='historia_clinica'),
     url(r'^ficha_clinica/paciente/(?P<paciente_id>\d+)/$', views.PacienteFichaClinicaView.as_view(),
         name='ficha_clinica_paciente'),
 
@@ -148,5 +152,8 @@ urlpatterns = [
 
     url(r'^historia_clinica/paciente/(?P<paciente_id>\d+)/$', views.ConsultaHistoriaByPacienteView.as_view(),
         name='historia_by_paciente'),
+
+    url(r'^menu_historia_clinica/paciente/(?P<paciente_id>\d+)/$', views.MenuHistoriaClinicaList.as_view(),
+        name='menu_historia_by_paciente'),
 
 ]

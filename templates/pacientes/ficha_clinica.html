@@ -3,13 +3,14 @@
 
 {% block content %}
   <div class="app-content-body">
-    <br>
+    <div class="bg-light lter b-b wrapper-md">
+      <h1 class="m-n font-thin h3">Ficha Clínica</h1>
+    </div>
     <ol class="breadcrumb" style="background-color: #f6f8f8">
       <li><a href="#">Inicio</a></li>
-      <li><a href="{% url 'consultorios:historia_clinica' %}">Historia clínica</a></li>
-      <li>Ficha clínica: {{ paciente }}</li>
+      <li><a href="{% url 'consultorios:historia_clinica' %}">Expediente Clínico</a></li>
+      <li>Paciente: {{ paciente.get_name_nro_doc }}</li>
     </ol>
-
     <div class="panel panel-default">
         <div class="panel-heading">
         <div class="col-lg-12">
@@ -17,7 +18,8 @@
             <div class="col-lg-2 col pull-right">
             <a href="{% url 'consultorios:ficha_clinica_paciente_pdf' paciente.pk %}" id="pdf" type="button" class="btn btn-default" target="_blank">
                 <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
-           </div>                <img class="img-responsive" src="{% static 'media/img/logo_incan.png' %}"/>
+           </div>
+           {% include 'base/membrete.html' %}
 
         </div>
         <div class="clearfix"></div>
@@ -83,7 +85,6 @@
               </div>
             </div>
             </div>
-            <div class="form-group"
             <div class="row">
               {% if direcciones %}
                 {% for direccion in direcciones %}

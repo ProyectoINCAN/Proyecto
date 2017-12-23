@@ -173,6 +173,9 @@ LOGIN_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout'
 
+# tipos de usuarios
+TIPOS_USUARIOS = ['MEDICO', 'ADMINISTRATIVO', 'ENFERMERO']
+
 # Crispy Forms
 #CRISPY_TEMPLATE_PACK = 'bootstrap3'
 

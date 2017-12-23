@@ -1,0 +1,84 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>Prescripción Médica</title>
+    <style type="text/css">
+
+      li{
+        list-style-type: lower-roman
+      }
+
+
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+      table, th, td {
+    border: 1px solid black;
+}
+    </style>
+  </head>
+  <body>
+    <div class="app-content-body">
+      <div class="panel panel-default">
+        <div class="panel-body">
+              <h3 align="center"><b>MINISTERIO DE SALUD PÚBLICA Y BIENESTAR SOCIAL</b></h3>
+            <h1 align="center"><b>INSTITUTO NACIONAL DEL CÁNCER</b></h1>
+            <h2><b><u>Prescripción Médica</u></b></h2>
+            <div class="col-sm-6">
+              <span style="font-weight:bold; font-size: 12px;font-family: arial;">Paciente:</span>
+              <span style="font-weight:normal; font-size: 12px;font-family: arial;">{{ detalle.paciente.get_name_nro_doc }}</span>
+              <br/>
+              <span style="font-weight:bold;font-size: 12px;font-family: arial;">Médico:</span>
+              <span style="font-weight:normal;font-size: 12px;font-family: arial;">{{ detalle.consulta.medico }}</span>
+              <br/>
+              <span style="font-weight:bold;font-size: 12px;font-family: arial;">Fecha:</span>
+              <span style="font-weight:normal;font-size: 12px;font-family: arial;">{{ detalle.consulta.fecha }}</span>
+              <br/>
+            </div>
+            <div class="col-sm-6">
+                <span style="font-weight:bold;font-size: 12px;font-family: arial;">Especialidad:</span>
+              <span style="font-weight:normal;font-size: 12px;font-family: arial;">{{ detalle.consulta.especialidad }}</span>
+              <br/>
+            </div>
+          </div>
+            <div class="row">
+                <div class="col-sm-4 col-lg-11">
+                    <br>
+                    <div style="font-weight:bold; font-size: 12px;"><li><u>Prescripción Médica: </u></li></div>
+                </div>
+                <div class="col-sm-4 col-lg-11">
+                    {% if prescripciones %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid #dddddd; width:70px; text-align: left; padding: 2px; font-size: 12px; border: 1px solid black;font-family: arial;">Cantidad</th>
+                                <th style="border: 1px solid #dddddd; text-align: left; padding: 2px; font-size: 12px; border: 1px solid black;font-family: arial;">Medicamento</th>
+                                <th style="border: 1px solid #dddddd; text-align: left; padding: 2px; font-size: 12px; border: 1px solid black;font-family: arial;">Tipo Presentación</th>
+                                <th style="border: 1px solid #dddddd; text-align: left; padding: 2px; font-size: 12px; border: 1px solid black;font-family: arial;">Posología</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in prescripciones %}
+                            <tr>
+                                <td style="border: 1px solid black; padding: 2px;">{{ data.cantidad }}</td>
+                                <td style="border: 1px solid black; padding: 2px;">{{ data.medicamento }}</td>
+                                <td style="border: 1px solid black; padding: 2px;">{{ data.medicamento.tipificacion.nombre }}</td>
+                                <td style="border: 1px solid black; padding: 2px;">{{ data.posologia|safe }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        {{ "SIN ESPECIFICAR" }}
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    </div>
+  </body>
+
+</html>
+
+

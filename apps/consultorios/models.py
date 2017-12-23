@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.deletion import DO_NOTHING
+from django.db.models.fields import TextField
 from django.utils.timezone import now
 
 from apps.pacientes.models import TipoDoc, Sexo, EstadoCivil, Etnia, Distrito, Nacionalidad, Paciente
@@ -68,6 +69,9 @@ class Medico(models.Model):
     etnia = models.ForeignKey(Etnia, models.DO_NOTHING, blank=False, null=False, default=1)
     fecha_ingreso = models.DateField(auto_now=True, null=False)
     especialidad = models.ManyToManyField(Especialidad)
+    telefono = UpperCharField(max_length=80, blank=True, null=True, uppercase=True, default='')
+    email = models.EmailField(max_length=254, blank=True, null=True, verbose_name='email')
+    direccion = UpperCharField(max_length=100, blank=True, uppercase=True)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     habilitado = models.BooleanField(default=True)
 
@@ -224,7 +228,7 @@ class HorarioMedico(models.Model):
     dia_semana = models.ForeignKey(DiasSemana, models.DO_NOTHING, blank=False, null=False,
                                    verbose_name="Día de la semana")
     turno = models.ForeignKey(Turno, models.DO_NOTHING, blank=False, null=False, verbose_name="Turno")
-    cantidad = models.IntegerField(default=20)
+    cantidad = models.PositiveIntegerField(default=20)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -238,7 +242,7 @@ class HorarioMedico(models.Model):
 
 class OrdenEstudio(models.Model):
     nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
-    descripcion = UpperCharField(default="", max_length=80, blank=False, uppercase=True, verbose_name="Descripción")
+    descripcion = models.TextField(default="", max_length=80, blank=False, verbose_name="Descripción")
 
     def __str__(self):
         return "{} ".format(self.nombre)
@@ -305,7 +309,7 @@ class Consulta(models.Model):
 
 
 class ConsultaDetalle(models.Model):
-    orden = models.IntegerField()
+    orden = models.PositiveIntegerField()
     paciente = models.ForeignKey(Paciente, models.DO_NOTHING, blank=False, null=False)
     consulta = models.ForeignKey(Consulta, models.DO_NOTHING, blank=False, null=False)
     estado = models.ForeignKey(EstadoConsultaDetalle, models.DO_NOTHING, blank=True, null=True)
@@ -321,8 +325,8 @@ class ConsultaDetalle(models.Model):
 
 class Tratamiento(models.Model):
     consulta_detalle = models.ForeignKey(ConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
-    descripcion = UpperCharField(max_length=255, blank=True, uppercase=True, verbose_name="Descripción")
-    observacion = UpperTextField(blank=True, uppercase=True, verbose_name="Observación")
+    descripcion = models.TextField(max_length=255, blank=True,verbose_name="Descripción")
+    observacion = models.TextField(blank=True, verbose_name="Observación")
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
@@ -338,8 +342,8 @@ class ConsultaOrdenEstudio(models.Model):
     consulta_detalle = models.ForeignKey(ConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
     orden_estudio = models.ForeignKey(OrdenEstudio, models.DO_NOTHING, blank=False, null=False,
                                       verbose_name="Orden de estudio")
-    interpretacion = UpperTextField(blank=True, uppercase=True, verbose_name="Interpretación")
-    observacion = UpperTextField(blank=True, uppercase=True, verbose_name="Observación")
+    interpretacion = models.TextField(blank=True, verbose_name="Interpretación")
+    observacion = models.TextField(blank=True, verbose_name="Observación")
     fecha_presentacion = models.DateField(auto_now=False, blank=True, null=True, verbose_name="Fecha de presentación")
     fecha_solicitud = models.DateField(auto_now=True, blank=True, null=True, verbose_name="Fecha de solicitud")
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)
@@ -405,7 +409,7 @@ class Medicamento(models.Model):
     forma_farmaceutica = UpperCharField(max_length=2, choices=FORMA_FARMACEUTICA_CHOICES, blank=False, uppercase=True,
                                         verbose_name="Forma farmacéutica")
     nro_lote = UpperCharField(max_length=100, blank=True, verbose_name="Número de Lote", uppercase=True)
-    cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
+    cantidad = models.PositiveIntegerField(blank=False, verbose_name="Cantidad")
     fabricado = models.DateField(auto_now=False, blank=True, null=True, verbose_name="Fecha fabricación")
     vencimiento = models.DateField(auto_now=False, blank=True, null=True, verbose_name="Fecha vencimiento")
     tipificacion = models.ForeignKey(TipoMedicamento, on_delete=models.CASCADE, blank=False, null=False,
@@ -424,10 +428,10 @@ class Medicamento(models.Model):
 class ConsultaPrescripcion(models.Model):
     consulta_detalle = models.ForeignKey(ConsultaDetalle, models.DO_NOTHING, blank=False, null=False)
     medicamento = models.ForeignKey(Medicamento, models.DO_NOTHING, blank=False, null=False, verbose_name="Medicamento")
-    posologia = UpperTextField(blank=True, uppercase=True, verbose_name="POSOLOGIA")
+    posologia = models.TextField(blank=True, verbose_name="POSOLOGIA")
     fecha = models.DateField(auto_now=True, blank=True, null=True, verbose_name="Fecha")
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=True, null=True)
-    cantidad = models.IntegerField(blank=False, verbose_name="Cantidad")
+    cantidad = models.PositiveIntegerField (blank=False, verbose_name="Cantidad")
 
     def __str__(self):
         return self.consulta_prescripcion
@@ -470,7 +474,7 @@ class Anamnesis(models.Model):
     consulta_detalle = models.ForeignKey(ConsultaDetalle, on_delete=models.CASCADE, blank=False, null=False)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, blank=False, null=False)
     # observacion = models.CharField(max_length=250, blank=False, null=False)
-    observacion = UpperTextField(blank=True, uppercase=True)
+    observacion = models.TextField(blank=True)
 
     class Meta:
         verbose_name = 'Anamnesis'
