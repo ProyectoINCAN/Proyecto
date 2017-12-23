@@ -75,8 +75,6 @@ urlpatterns = [
     url(r'^consulta/(?P<consulta_id>\d+)/detalles/agregar/$', views.ConsultorioPacienteAgregar.as_view(),
         name='consultorio_paciente_agregar'),
 
-    # url(r'^consulta/detalle/(?P<detalle_id>\d+)/diagnostico/list/$', views.ConsultaDetalleDiagnosticoList.as_view(),
-    #     name='consulta_diagnostico_crear'),
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/diagnostico/crear/$', views.PacienteDiagnosticoCreate.as_view(),
         name='consulta_diagnostico_crear'),
     url(r'^consulta/detalle/diagnostico/(?P<diagnostico_id>\d+)/$', views.PacienteDiagnosticoEditar.as_view(),

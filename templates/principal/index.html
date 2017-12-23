@@ -5,64 +5,153 @@
 {% block extrahead %}
 {% endblock %}
 {% block content %}
-<section class="content-header">
+  <section class="content-header">
     <div class="bg-light lter b-b wrapper-md">
-        <h1>
-            SIHINCAN
-        </h1>
+      <h1>
+        SIHINCAN
+      </h1>
     </div>
     <ol class="breadcrumb">
-        <li>Administrativo: {{ user.username }}</li>
+      <li>Administrativo: {{ user.username }}</li>
     </ol>
-</section>
-<section class="content">
+  </section>
+  <section class="content">
     <div class="row">
-        <div class="col-lg-4">
-            <div class="small-box bg-green">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-users fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <h3>{{ total_pacientes }}</h3>
-                            <div>Pacientes</div>
-                        </div>
-                    </div>
-                </div>
+      <div class="col-lg-6">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title"><b>Pacientes por Género</b></h3>
+
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
             </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="small-box bg-primary">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-users fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <h3>{{ mensual }}</h3>
-                            <div>Pacientes/Mensual</div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="box-body">
+            <div class="chart">
+              <canvas id="doughnutChart" width="800" height="450"></canvas>
             </div>
+          </div>
         </div>
-        <div class="col-lg-4">
-            <div class="small-box bg-yellow">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-users fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <h3>{{ hoy }}</h3>
-                            <div>Pacientes/Hoy</div>
-                        </div>
-                    </div>
-                </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title"><b>Cantidad de Usuarios por Tipo</b></h3>
+
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
             </div>
+          </div>
+          <div class="box-body">
+            <div class="chart">
+              <canvas id="doughnutChart2" width="800" height="450"></canvas>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</section>
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="box-title">Medicamentos vencidos</h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <div class="table-responsive">
+          <table class="table no-margin">
+            <thead>
+            <tr>
+              <th>Medicamento</th>
+              <th>Tipo de Medicamento</th>
+              <th>Forma Farmaceutica</th>
+              <th>Vencimiento</th>
+              <th>Existencia</th>
+            </tr>
+            </thead>
+            <tbody>
+             {% for med in medicamentos %}
+            <tr>
+              <td>{{ med.nombre }}</td>
+              <td><span class="label label-success">{{ med.tipificacion }}</span></td>
+              <td>{{ med.get_forma_farmaceutica_display }}</td>
+              <td>
+                {{ med.vencimiento }}
+              </td>
+              <td>{{ med.cantidad }} unidades</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- /.table-responsive -->
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer clearfix">
+        <a href="{% url 'consultorios:medicamentos' %}" class="btn btn-sm btn-info btn-flat pull-left">Ir al listado</a>
+      </div>
+      <!-- /.box-footer -->
+    </div>
+  </section>
+{% endblock %}
+
+{% block extrajs %}
+  <script src="{% static 'vendor/chart-js/Chart.min.js' %}"></script>
+  <script>
+    var tipos_usuarios = {{ tipos_usuarios }};
+    var genero_masculino = {{ genero_masculino }};
+    var genero_femenino = {{ genero_femenino }};
+
+
+    new Chart(document.getElementById("doughnutChart"), {
+      type: 'doughnut',
+      data: {
+        labels: ['Masculino', 'Femenino'],
+        datasets: [
+          {
+            label: "Population (millions)",
+            backgroundColor: ["#3e95cd", "#8e5ea2"],
+            data: {{ generos }}
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Unidad de Medida: Unidad'
+        }
+      }
+    });
+
+    new Chart(document.getElementById("doughnutChart2"), {
+      type: 'doughnut',
+      data: {
+        labels: {{ tipos_usuarios }},
+        datasets: [
+          {
+            label: "Population (millions)",
+            backgroundColor: ["#8e5ea2", "#3cba9f", "#e8c3b9"],
+            data: {{ lista_usuarios }}
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Unidad de Medida: Unidad'
+        }
+      }
+    });
+
+
+  </script>
+
+
 {% endblock %}
 
