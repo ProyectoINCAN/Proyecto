@@ -68,9 +68,9 @@ class PacienteOtrosDatosView(ListView):
                         'nivel_educativo': self.get_nivel_educativo(),
                         'paciente': self.get_paciente(),
                         'id_paciente': self.kwargs['paciente_id'],
-                        'vivienda':self.get_antecedentes(),
+                        'vivienda': self.get_antecedentes(),
                         'form': seguro
-        })
+                        })
         return context
 
 
@@ -130,7 +130,6 @@ def paciente_direccion(request, paciente_id):
     else:
         form = DireccionForm(request.POST, paciente_id)
         if form.is_valid():
-
             direccion = form.save(commit=False)
             direccion.paciente_id = paciente_id
             direccion.save()
@@ -202,7 +201,7 @@ def paciente_padre_crear(request, paciente_id):
             padre_paciente.paciente.add(new_paciente)
             messages.success(request, "Se ha creado el padre.")
             return HttpResponseRedirect(reverse('pacientes:paciente_padre_listar',
-                                                kwargs={'id_paciente': paciente_id }))
+                                                kwargs={'id_paciente': paciente_id}))
     else:
         paciente_padre = PacientePadre.objects.filter(paciente=paciente_id).filter(padre='on')
         if paciente_padre.exists():
@@ -217,7 +216,7 @@ def paciente_padre_crear(request, paciente_id):
     contexto = {
         'form': form,
         'id_paciente': paciente_id,
-        'paciente':paciente
+        'paciente': paciente
     }
     return render(request, 'pacientes/padres/padre_crear.html', contexto)
 
@@ -227,17 +226,16 @@ class PacientePadreUpdate(LoginRequiredMixin, UpdateView):
     form_class = PacientePadreForm
     template_name = 'pacientes/padres/padre_crear.html'
 
-
     def get_paciente(self):
         padre = PacientePadre.objects.get(pk=self.kwargs['pk'])
-        paciente =Paciente.objects.get(pacientepadre__paciente__pacientepadre=padre)
+        paciente = Paciente.objects.get(pacientepadre__paciente__pacientepadre=padre)
         return paciente
 
     def get_context_data(self, **kwargs):
         context = super(PacientePadreUpdate, self).get_context_data(**kwargs)
         context.update({
-                        'id_paciente': self.get_paciente().pk,
-                        'paciente': self.get_paciente(),
+            'id_paciente': self.get_paciente().pk,
+            'paciente': self.get_paciente(),
         })
         return context
 
@@ -247,12 +245,14 @@ class PacientePadreUpdate(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect(reverse('pacientes:paciente_padre_listar',
                                             kwargs={'id_paciente': self.get_paciente().pk}))
 
+
 class PacientePadreList(ListView):
     template_name = 'pacientes/padres/padre_list.html'
     model = PacientePadre
 
     def get_padre(self):
-        paciente_padres=PacientePadre.objects.filter(padre=True, paciente=Paciente.objects.get(pk=self.kwargs["id_paciente"]))
+        paciente_padres = PacientePadre.objects.filter(padre=True,
+                                                       paciente=Paciente.objects.get(pk=self.kwargs["id_paciente"]))
         return paciente_padres
 
     def get_paciente(self):
@@ -262,10 +262,10 @@ class PacientePadreList(ListView):
     def get_context_data(self, **kwargs):
         context = super(PacientePadreList, self).get_context_data(**kwargs)
         context.update({
-                        'id_paciente': self.kwargs["id_paciente"],
-                        'paciente_padres': self.get_padre(),
-                        'paciente':self.get_paciente(),
-                        })
+            'id_paciente': self.kwargs["id_paciente"],
+            'paciente_padres': self.get_padre(),
+            'paciente': self.get_paciente(),
+        })
         return context
 
 
@@ -277,10 +277,10 @@ class PacientePadreDelete(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         paciente = Paciente.objects.get(pacientepadre=PacientePadre.objects.get(pk=self.kwargs['padre_id']))
-        padre= PacientePadre.objects.get(pk=self.kwargs['padre_id'])
+        padre = PacientePadre.objects.get(pk=self.kwargs['padre_id'])
         padre.delete()
         messages.success(request, 'Se ha eliminado los datos del padre de paciente {}'.format(paciente.get_full_name()))
-        return JsonResponse({'paciente': paciente.id })
+        return JsonResponse({'paciente': paciente.id})
 
 
 class PacienteMadreList(ListView):
@@ -288,7 +288,8 @@ class PacienteMadreList(ListView):
     model = PacientePadre
 
     def get_padre(self):
-        paciente_padres=PacientePadre.objects.filter(padre=False, paciente=Paciente.objects.get(pk=self.kwargs["id_paciente"]))
+        paciente_padres = PacientePadre.objects.filter(padre=False,
+                                                       paciente=Paciente.objects.get(pk=self.kwargs["id_paciente"]))
         return paciente_padres
 
     def get_paciente(self):
@@ -298,10 +299,10 @@ class PacienteMadreList(ListView):
     def get_context_data(self, **kwargs):
         context = super(PacienteMadreList, self).get_context_data(**kwargs)
         context.update({
-                        'id_paciente': self.kwargs["id_paciente"],
-                        'paciente_padres': self.get_padre(),
-                        'paciente':self.get_paciente(),
-                        })
+            'id_paciente': self.kwargs["id_paciente"],
+            'paciente_padres': self.get_padre(),
+            'paciente': self.get_paciente(),
+        })
         return context
 
 
@@ -331,7 +332,7 @@ def paciente_madre_crear(request, paciente_id):
             context = {
                 'paciente_padres': paciente_padre,
                 'id_paciente': paciente_id,
-                'paciente':paciente,
+                'paciente': paciente,
             }
             return render(request, 'pacientes/padres/madre_list.html', context)
         else:
@@ -340,7 +341,7 @@ def paciente_madre_crear(request, paciente_id):
     contexto = {
         'form': form,
         'id_paciente': paciente_id,
-        'paciente':paciente
+        'paciente': paciente
     }
     return render(request, 'pacientes/padres/madre_crear.html', contexto)
 
@@ -358,9 +359,9 @@ class PacienteMadreUpdate(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(PacienteMadreUpdate, self).get_context_data(**kwargs)
         context.update({
-                        'id_paciente': self.get_paciente().id,
-                        'paciente': self.get_paciente(),
-                        })
+            'id_paciente': self.get_paciente().id,
+            'paciente': self.get_paciente(),
+        })
         return context
 
     def form_valid(self, form):
@@ -378,10 +379,11 @@ class PacienteMadreDelete(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         paciente = Paciente.objects.get(pacientepadre=PacientePadre.objects.get(pk=self.kwargs['madre_id']))
-        madre= PacientePadre.objects.get(pk=self.kwargs['madre_id'])
+        madre = PacientePadre.objects.get(pk=self.kwargs['madre_id'])
         madre.delete()
-        messages.success(request, 'Se ha eliminado los datos de la madre de paciente {}'.format(paciente.get_full_name()))
-        return JsonResponse({'paciente': paciente.id })
+        messages.success(request,
+                         'Se ha eliminado los datos de la madre de paciente {}'.format(paciente.get_full_name()))
+        return JsonResponse({'paciente': paciente.id})
 
 
 class PacientePadreCreateView(FormView):
@@ -411,16 +413,14 @@ class PacientePadreCreateView(FormView):
 
 
 class PacienteIndex(TemplateView):
-
     template_name = 'pacientes/index.html'
-    #success_url = reverse_lazy('paciente:buscar')
+    # success_url = reverse_lazy('paciente:buscar')
 
 
 class PacienteBuscar(TemplateView):
-
     template_name = 'pacientes/busqueda.html'
 
-    def post(self, request, *args,**kwargs):
+    def post(self, request, *args, **kwargs):
 
         query = request.GET['cedula', '']
 
@@ -429,14 +429,14 @@ class PacienteBuscar(TemplateView):
             print(paciente)
         else:
             result = []
-        return render_to_response("pacientes/index.html", {"result":result, "query":query})
+        return render_to_response("pacientes/index.html", {"result": result, "query": query})
 
-         #   buscar = request.POST['cedula']
-        #print(buscar)
-        #paciente = Paciente.objects.filter(nro_doc__icontains = request.POST['cedula'])
-        #print (paciente)
+        #   buscar = request.POST['cedula']
+        # print(buscar)
+        # paciente = Paciente.objects.filter(nro_doc__icontains = request.POST['cedula'])
+        # print (paciente)
         '''metodo post a la hora de realizar la busqueda'''
-        #return render(request,'pacientes/busqueda.html')
+        # return render(request,'pacientes/busqueda.html')
 
 
 class PacienteView(TemplateView):
@@ -471,8 +471,8 @@ def autocomplete_nombres(request):
                     for r in results:
                         vendedor = {}
                         vendedor['id'] = r[0]
-                        vendedor['label'] = r[3]+"-"+r[1]+" "+r[2]
-                        vendedor['value'] = r[1]+" "+r[2]
+                        vendedor['label'] = r[3] + "-" + r[1] + " " + r[2]
+                        vendedor['value'] = r[1] + " " + r[2]
                         lista_pacientes.append(vendedor)
                     data = json.dumps(lista_pacientes)
                 except Exception:
@@ -480,25 +480,24 @@ def autocomplete_nombres(request):
             else:
                 data = 'fail'
             mimetype = 'application/json'
-            return HttpResponse(data,mimetype)
+            return HttpResponse(data, mimetype)
         else:
             print("debo redirigir al login")
 
 
 def consulta(request):
+    filtros = filtros_establecidos(request, 'index_paciente')
 
-    filtros = filtros_establecidos(request,'index_paciente')
-
-    #significa que se ingreso el nombre del paciente
-    if filtros == 1 :
-        pacientes = Paciente.objects.filter(id = request.GET.get('paciente'))
+    # significa que se ingreso el nombre del paciente
+    if filtros == 1:
+        pacientes = Paciente.objects.filter(id=request.GET.get('paciente'))
     else:
         pacientes = Paciente.objects.all()
 
     dic = {'pacientes': pacientes}
     paginator = Paginator(pacientes, 5)
 
-    page =request.GET.get('page', '1')
+    page = request.GET.get('page', '1')
     print(page)
     try:
         pacientes = paginator.page(page)
@@ -507,7 +506,7 @@ def consulta(request):
     except EmptyPage:
         pacientes = paginator.page(paginator.num_pages)
 
-    return render(request, 'pacientes/index.html', {'pacientes': pacientes })
+    return render(request, 'pacientes/index.html', {'pacientes': pacientes})
 
 
 class PacienteCreate(CreateView):
@@ -558,8 +557,8 @@ class PacienteCreateByAgenda(LoginRequiredMixin, CreateView):
     # agregamos los form al contexto
     def get_context_data(self, **kwargs):
         context = super(PacienteCreateByAgenda, self).get_context_data(**kwargs)
-        context['agenda']=Agenda.objects.get(pk=self.kwargs['agenda_id'])
-        context['origen']=self.kwargs['origen']
+        context['agenda'] = Agenda.objects.get(pk=self.kwargs['agenda_id'])
+        context['origen'] = self.kwargs['origen']
         if 'form' not in context:
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:
@@ -627,7 +626,7 @@ class PacienteDireccionDelete(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         paciente = Paciente.objects.get(direccion=kwargs['direccion_id'])
-        paciente_direccion= Direccion.objects.get(pk=kwargs['direccion_id'])
+        paciente_direccion = Direccion.objects.get(pk=kwargs['direccion_id'])
         paciente_direccion.delete()
         messages.success(self.request, "Se ha eliminado la dirección.")
 
@@ -679,9 +678,9 @@ class PacienteOtrosDatosView(ListView):
                         'nivel_educativo': self.get_nivel_educativo(),
                         'paciente': self.get_paciente(),
                         'id_paciente': self.kwargs['paciente_id'],
-                        'correos':self.get_correo_electronico(),
+                        'correos': self.get_correo_electronico(),
                         'form': seguro
-        })
+                        })
         return context
 
 
@@ -800,8 +799,8 @@ class PacienteSituacionLaboralUpdate(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = 'ocupacion_id'
 
     def form_valid(self, form):
-        ocupacion= PacienteOcupacion.objects.get(pk=self.kwargs['ocupacion_id'])
-        paciente=Paciente.objects.get(pacienteocupacion=ocupacion)
+        ocupacion = PacienteOcupacion.objects.get(pk=self.kwargs['ocupacion_id'])
+        paciente = Paciente.objects.get(pacienteocupacion=ocupacion)
         ocupacion = form.save(commit=False)
         ocupacion.save()
         messages.success(self.request, "Se han actualizado los datos de situación laboral.")
@@ -918,7 +917,8 @@ class PacienteCorreoElectronicoDelete(LoginRequiredMixin, DeleteView):
         correo = CorreoElectronico.objects.get(pk=kwargs['correo_id'])
         correo.delete()
         messages.success(self.request, "Se ha eliminado el correo electrónico.")
-        return JsonResponse({'paciente': paciente.id })
+        return JsonResponse({'paciente': paciente.id})
+
 
 class PacienteAntecedentesView(ListView):
     model = Vivienda
@@ -944,12 +944,12 @@ class PacienteAntecedentesView(ListView):
         context = super(PacienteAntecedentesView, self).get_context_data(**kwargs)
         vivienda = ViviendaForm()
         context.update({
-                        'servicio_basico': self.get_servicios_basicos(),
-                        'paciente': self.get_paciente(),
-                        'id_paciente': self.kwargs['paciente_id'],
-                        'servicio': self.get_servicio_sanitario(),
-                        'form': vivienda,
-                        })
+            'servicio_basico': self.get_servicios_basicos(),
+            'paciente': self.get_paciente(),
+            'id_paciente': self.kwargs['paciente_id'],
+            'servicio': self.get_servicio_sanitario(),
+            'form': vivienda,
+        })
         return context
 
 
@@ -1003,7 +1003,7 @@ class PacienteViviendaDelete(LoginRequiredMixin, DeleteView):
         vivienda = Vivienda.objects.get(pk=kwargs['vivienda_id'])
         vivienda.delete()
         messages.success(self.request, "Se ha eliminado la vivienda.")
-        return JsonResponse({'paciente': paciente.id })
+        return JsonResponse({'paciente': paciente.id})
 
 
 class PacienteServiciosSanitariosCreate(LoginRequiredMixin, CreateView):
@@ -1028,7 +1028,6 @@ class PacienteServiciosSanitariosCreate(LoginRequiredMixin, CreateView):
         servicio.save()
         messages.success(self.request, "Se ha creado el servicio sanitario.")
         return JsonResponse({'success': True})
-
 
 
 class PacienteServiciosSanitariosUpdate(LoginRequiredMixin, UpdateView):
@@ -1092,6 +1091,7 @@ class PacienteServiciosBasicosUpdate(LoginRequiredMixin, UpdateView):
         messages.success(self.request, "Se han actualizado los datos de servicios básicos.")
         return JsonResponse({'success': True})
 
+
 class PacienteServiciosBasicosDelete(LoginRequiredMixin, DeleteView):
     model = ServicioBasicos
     template_name = "pacientes/antecedentes_socioeconomicos/paciente_servicio_basico_eliminar.html"
@@ -1124,10 +1124,10 @@ class PacienteAcompanhanteView(ListView):
         context = super(PacienteAcompanhanteView, self).get_context_data(**kwargs)
         acompanhante = AcompañanteForm()
         context.update({
-                        'paciente': self.get_paciente(),
-                        'id_paciente': self.kwargs['paciente_id'],
-                        'form': acompanhante,
-                        })
+            'paciente': self.get_paciente(),
+            'id_paciente': self.kwargs['paciente_id'],
+            'form': acompanhante,
+        })
         return context
 
 
@@ -1178,8 +1178,7 @@ class PacienteAcompañanteDelete(LoginRequiredMixin, DeleteView):
         acompanhante = Acompanhante.objects.get(pk=kwargs['acompanhante_id'])
         acompanhante.delete()
         messages.success(self.request, "Se ha eliminado el acompañante.")
-        return JsonResponse({'paciente': paciente.id })
-
+        return JsonResponse({'paciente': paciente.id})
 
 
 class DashboardAdministrativoView(LoginRequiredMixin, TemplateView):
@@ -1187,7 +1186,7 @@ class DashboardAdministrativoView(LoginRequiredMixin, TemplateView):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        #return super(DashboardAdministrativoView, self).dispatch(request, *args, *kwargs)
+        # return super(DashboardAdministrativoView, self).dispatch(request, *args, *kwargs)
 
         user = self.request.user
         if user.is_authenticated():
@@ -1206,10 +1205,10 @@ class DashboardAdministrativoView(LoginRequiredMixin, TemplateView):
         first_day = datetime.date(now.year, now.month, 1)
         last_day = datetime.date(now.year, now.month, num_days)
 
-        #pacientes registrados en el mes
+        # pacientes registrados en el mes
         listado_mensual = Paciente.objects.filter(fecha_registrado__gte=first_day, fecha_registrado__lte=last_day)
 
-        #pacientes registrado en el dia
+        # pacientes registrado en el dia
         listado_diario = Paciente.objects.filter(fecha_registrado=now)
         context.update({
             'pacientes': pacientes,
@@ -1218,5 +1217,3 @@ class DashboardAdministrativoView(LoginRequiredMixin, TemplateView):
             'hoy': listado_diario.count()
         })
         return super(TemplateView, self).render_to_response(context)
-
-

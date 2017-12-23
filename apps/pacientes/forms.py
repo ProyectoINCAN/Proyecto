@@ -10,7 +10,6 @@ from django_select2 import forms as select2form
 
 from apps.pacientes.models import *
 
-
 from django.contrib.admin import widgets
 from django.contrib.admin.options import FORMFIELD_FOR_DBFIELD_DEFAULTS
 
@@ -44,11 +43,11 @@ class PacienteForm(forms.ModelForm):
 
         labels = {
 
-            'nombres':'Nombres:',
+            'nombres': 'Nombres:',
             'apellidos': 'Apellidos:',
-            'tipo_doc':'Tipo Documento:',
+            'tipo_doc': 'Tipo Documento:',
             'nro_doc': 'Nro de Documento:',
-            'nro_doc_alternativo':'Documento Alternativo',
+            'nro_doc_alternativo': 'Documento Alternativo',
             'sexo': 'Sexo',
             'fecha_nacimiento': 'Fecha de Nac.',
             'lugar_nacimiento': 'Lugar de Nac.',
@@ -56,20 +55,33 @@ class PacienteForm(forms.ModelForm):
             'nacionalidad': 'Nacionalidad',
             'estado_civil': 'Estado Civil',
             'etnia': 'Etnia',
-             }
+        }
 
         widgets = {
-            'nombres': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required'}),
-            'apellidos': forms.TextInput(attrs ={'class': 'form-control', 'style':'text-transform:uppercase;', 'required':'required'}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control', 'style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required', 'id':'id_tipo_doc'}),
-            'nro_doc': forms.TextInput(attrs ={'class': 'form-control','required':'required'}),
-            'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'text-transform:uppercase;','style':'width: 100%', 'required':'required',}),
-            'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'distrito': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%', 'required':'required',}),
-            'nacionalidad':  forms.Select(attrs={'class':'form-control', 'style':'width: 100%', 'required':'required'}),
-            'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;', 'style':'width: 100%','required':'required',}),
-            'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
-            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;', 'style':'width: 100%','required':'required',}),
+            'nombres': forms.TextInput(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required'}),
+            'apellidos': forms.TextInput(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required'}),
+            'tipo_doc': forms.Select(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
+                       'required': 'required', 'id': 'id_tipo_doc'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                                        'style': 'width: 100%', 'required': 'required', }),
+            'fecha_nacimiento': forms.DateInput(
+                attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
+            'distrito': forms.Select(
+                attrs={'class': 'form-control selectsearch', 'style': 'width: 100%', 'required': 'required', }),
+            'nacionalidad': forms.Select(
+                attrs={'class': 'form-control', 'style': 'width: 100%', 'required': 'required'}),
+            'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                                         'style': 'width: 100%', 'required': 'required', }),
+            'estado_civil': forms.Select(
+                attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                       'style': 'width: 100%', 'required': 'required', }),
+            'lugar_nacimiento': forms.Select(
+                attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                       'style': 'width: 100%', 'required': 'required', }),
         }
 
     def clean(self):
@@ -77,7 +89,6 @@ class PacienteForm(forms.ModelForm):
 
 
 class TelefonoForm(forms.ModelForm):
-
     class Meta:
         model = Telefono
 
@@ -89,21 +100,20 @@ class TelefonoForm(forms.ModelForm):
 
         labels = {
 
-            'tipo': 'Tipo de Telefono',
-            'numero': 'Número',
+            'tipo': 'Tipo de teléfono',
+            'numero': 'Número de teléfono',
 
         }
 
         widgets = {
             'numero': forms.TextInput(attrs={'class': 'form-control'}),
             'orden': forms.NumberInput(attrs={'class': 'form-control'}),
-            'tipo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'confirmado':forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
+            'tipo': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'confirmado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
 
 class DireccionForm(forms.ModelForm):
-
     class Meta:
         model = Direccion
 
@@ -122,7 +132,7 @@ class DireccionForm(forms.ModelForm):
         ]
 
         labels = {
-            'descripcion':'Dirección',
+            'descripcion': 'Dirección',
             'departamento': 'Departamento',
             'distrito': 'Distrito',
             'barrio': 'Barrio',
@@ -135,21 +145,21 @@ class DireccionForm(forms.ModelForm):
             'referencia': 'Referencia',
         }
         widgets = {
-            'departamento': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'distrito': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'departamento': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'distrito': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'barrio': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
-            'area': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',}),
-            'sector': forms.TextInput(attrs={'class': 'form-control','style':'text-transform:uppercase;'}),
-            'manzana': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
-            'descripcion': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'area': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%', }),
+            'sector': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'manzana': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
             'nro_casa': forms.TextInput(attrs={'class': 'form-control'}),
-            'residencia_ocasional': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
-            'referencia': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'residencia_ocasional': forms.TextInput(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'referencia': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
         }
 
 
 class PacienteSeguroMedicoForm(forms.ModelForm):
-
     class Meta:
         model = PacienteSeguroMedico
 
@@ -162,13 +172,12 @@ class PacienteSeguroMedicoForm(forms.ModelForm):
             'detalle': 'Observación'
         }
         widgets = {
-            'seguro_medico': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'detalle': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
+            'seguro_medico': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'detalle': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
         }
 
 
 class NivelEducativoForm(forms.ModelForm):
-
     class Meta:
         model = PacienteNivelEducativo
 
@@ -181,18 +190,17 @@ class NivelEducativoForm(forms.ModelForm):
         labels = {
             'nivel_educativo': 'Nivel Educativo ',
             'completo': 'Completo',
-            'anho_cursado':'Año Cursado'
+            'anho_cursado': 'Año Cursado'
         }
 
         widgets = {
-            'nivel_educativo': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'completo':forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'nivel_educativo': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'completo': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'anho_cursado': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 
 class SituacionLaboralForm(forms.ModelForm):
-
     class Meta:
         model = SituacionLaboral
 
@@ -205,27 +213,25 @@ class SituacionLaboralForm(forms.ModelForm):
         }
 
         widgets = {
-            'descripcion': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'descripcion': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
         }
 
 
 class OcupacionForm(forms.ModelForm):
-
     class Meta:
         model = PacienteOcupacion
 
         fields = [
             'ocupacion',
         ]
-        labels= { 'descripcion': 'Ocupación',}
+        labels = {'descripcion': 'Ocupación', }
 
         widgets = {
-            'descripcion': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'descripcion': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
         }
 
 
 class PacienteOcupacionForm(forms.ModelForm):
-
     class Meta:
         model = PacienteOcupacion
 
@@ -241,14 +247,13 @@ class PacienteOcupacionForm(forms.ModelForm):
             'profesion': 'Profesion',
         }
         widgets = {
-            'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'situacion_laboral_id': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
-            'profesion': forms.Select(attrs={'class': 'form-control selectsearch', 'style':'width: 100%'}),
+            'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'situacion_laboral_id': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
+            'profesion': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
         }
 
 
 class PacientePadreForm(forms.ModelForm):
-
     class Meta:
         model = PacientePadre
         exclude = ['paciente', 'padre']
@@ -267,25 +272,41 @@ class PacientePadreForm(forms.ModelForm):
             'ocupacion': 'Ocupación:',
             'nivel_educativo': 'Nivel Educactivo:',
             'otro': 'Otro, especificar:',
-            'asume_sustento':'Asume el sustento de la familia:'
+            'asume_sustento': 'Asume el sustento de la familia:'
         }
 
         widgets = {
-            'nombres': forms.TextInput(attrs={'class': 'form-control','style':'text-transform:uppercase;','required':'required',}),
-            'apellidos': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required',}),
-            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required', 'id':'id_tipo_doc'}),
-            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required','id':'nro_doc'}),
-            'sexo': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required','id':'mySelect'}),
+            'nombres': forms.TextInput(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required', }),
+            'apellidos': forms.TextInput(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required', }),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                                            'style': 'width: 100%', 'required': 'required', 'id': 'id_tipo_doc'}),
+            'nro_doc': forms.TextInput(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required',
+                       'id': 'nro_doc'}),
+            'sexo': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                                        'style': 'width: 100%', 'required': 'required', 'id': 'mySelect'}),
             'fecha_nacimiento': forms.DateInput(
                 attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa'}),
-            'lugar_nacimiento': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
-            'nacionalidad': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
-            'estado_civil': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
-            'etnia': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
-            'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%'}),
-            'nivel_educativo': forms.Select(attrs={'class': 'form-control selectsearch','style':'text-transform:uppercase;', 'style':'width: 100%', 'required':'required',}),
-            'otro': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;'}),
-            'asume_sustento':forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
+            'lugar_nacimiento': forms.Select(
+                attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                       'style': 'width: 100%', 'required': 'required', }),
+            'nacionalidad': forms.Select(
+                attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                       'style': 'width: 100%', 'required': 'required', }),
+            'estado_civil': forms.Select(
+                attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                       'style': 'width: 100%', 'required': 'required', }),
+            'etnia': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                                         'style': 'width: 100%', 'required': 'required', }),
+            'ocupacion': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                                             'style': 'width: 100%'}),
+            'nivel_educativo': forms.Select(
+                attrs={'class': 'form-control selectsearch', 'style': 'text-transform:uppercase;',
+                       'style': 'width: 100%', 'required': 'required', }),
+            'otro': forms.TextInput(attrs={'class': 'form-control', 'style': 'text-transform:uppercase;'}),
+            'asume_sustento': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
 
@@ -301,7 +322,7 @@ class PacienteNivelEducativoForm(forms.ModelForm):
         ]
 
         labels = {
-            'nivel_educativo':  'Nivel Educativo',
+            'nivel_educativo': 'Nivel Educativo',
             'completo': 'Ha culminado',
             'anho_cursado': 'Año Cursado',
         }
@@ -323,7 +344,6 @@ class PacienteNivelEducativoForm(forms.ModelForm):
 
 
 class ViviendaForm(forms.ModelForm):
-
     class Meta:
         model = Vivienda
 
@@ -338,23 +358,23 @@ class ViviendaForm(forms.ModelForm):
             'nro_dormitorio',
         ]
         labels = {
-            'pared':'Pared',
-            'techo':'Techo',
-            'piso':'Piso',
-            'dependencia':'Dependencias',
-            'hacinamiento':'Hacinamiento',
-            'nro_personas_hogar':'Nº de Personas en el Hogar',
-            'comparte_cama':'Comparte Cama',
-            'nro_dormitorio':'Nº Dormitorios'
+            'pared': 'Pared',
+            'techo': 'Techo',
+            'piso': 'Piso',
+            'dependencia': 'Dependencias',
+            'hacinamiento': 'Hacinamiento',
+            'nro_personas_hogar': 'Nº de Personas en el Hogar',
+            'comparte_cama': 'Comparte Cama',
+            'nro_dormitorio': 'Nº Dormitorios'
         }
         widgets = {
             'pared': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'techo': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
             'piso': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
-            'nro_personas_hogar':forms.NumberInput(attrs={'class': 'form-control'}),
+            'nro_personas_hogar': forms.NumberInput(attrs={'class': 'form-control'}),
             'nro_dormitorio': forms.NumberInput(attrs={'class': 'form-control'}),
             'dependencia': forms.SelectMultiple(attrs={'class': 'form-control selectsearch-multiple',
-                                                                    'style': 'width: 100%'}),
+                                                       'style': 'width: 100%'}),
             'hacinamiento': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
             'comparte_cama': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
 
@@ -362,7 +382,6 @@ class ViviendaForm(forms.ModelForm):
 
 
 class ServicioSanitarioForm(forms.ModelForm):
-
     class Meta:
         model = ServicioSanitario
 
@@ -372,9 +391,9 @@ class ServicioSanitarioForm(forms.ModelForm):
             'desagua',
         ]
         labels = {
-            'agua':'Agua:',
-            'eliminacion_basura':'Eliminación de Basura:',
-            'desagua':'El baño se desagua en:',
+            'agua': 'Agua:',
+            'eliminacion_basura': 'Eliminación de Basura:',
+            'desagua': 'El baño se desagua en:',
         }
         widgets = {
             'agua': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%'}),
@@ -384,7 +403,6 @@ class ServicioSanitarioForm(forms.ModelForm):
 
 
 class ServiciosBasicosForm(forms.ModelForm):
-
     class Meta:
         model = ServicioBasicos
 
@@ -397,24 +415,24 @@ class ServiciosBasicosForm(forms.ModelForm):
             'otros',
         ]
         labels = {
-            'luz_electrica':'Luz Eléctrica',
-            'telefono_linea_baja':'Teléf. Línea Baja',
-            'telefono_linea_celular':'Teléf. Celular',
-            'heladera':'Heladera',
-            'televisor':'Televisor',
-            'otros':'Otros',
+            'luz_electrica': 'Luz Eléctrica',
+            'telefono_linea_baja': 'Teléf. Línea Baja',
+            'telefono_linea_celular': 'Teléf. Celular',
+            'heladera': 'Heladera',
+            'televisor': 'Televisor',
+            'otros': 'Otros',
         }
         widgets = {
-            'luz_electrica':forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
-            'telefono_linea_baja':forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
-            'telefono_linea_celular':forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
-            'heladera':forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
-            'televisor':forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
-            'otros':forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
+            'luz_electrica': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
+            'telefono_linea_baja': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
+            'telefono_linea_celular': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
+            'heladera': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
+            'televisor': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
+            'otros': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
-class AcompañanteForm(forms.ModelForm):
 
+class AcompañanteForm(forms.ModelForm):
     class Meta:
         model = Acompanhante
 
@@ -428,32 +446,35 @@ class AcompañanteForm(forms.ModelForm):
             'vinculo',
         ]
         labels = {
-            'tipo_doc':'Tipo Documento',
-            'nro_doc':'Nro. Doc',
-            'nombres':'Nombres',
-            'apellidos':'Apellidos',
-            'tipo_telefono':'Tipo Teléfono',
-            'numero':'Número',
-            'vinculo':'Vinculo',
+            'tipo_doc': 'Tipo Documento',
+            'nro_doc': 'Nro. Doc',
+            'nombres': 'Nombres',
+            'apellidos': 'Apellidos',
+            'tipo_telefono': 'Tipo Teléfono',
+            'numero': 'Número',
+            'vinculo': 'Vinculo',
         }
         widgets = {
             'nombres': forms.TextInput(
-                        attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required'}),
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required'}),
             'apellidos': forms.TextInput(
-                        attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required'}),
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required'}),
             'tipo_doc': forms.Select(
-                        attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
                        'required': 'required', 'id': 'id_tipo_doc'}),
 
-            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'style':'text-transform:uppercase;','required':'required','id':'nro_doc'}),
-            'tipo_telefono':forms.Select(
-                        attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
-                       'required': 'required',}),
-            'numero':forms.TextInput(attrs={'class': 'form-control'}),
-            'vinculo':forms.Select(
-                        attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
-                       'required': 'required',}),
+            'nro_doc': forms.TextInput(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'required': 'required',
+                       'id': 'nro_doc'}),
+            'tipo_telefono': forms.Select(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
+                       'required': 'required', }),
+            'numero': forms.TextInput(attrs={'class': 'form-control'}),
+            'vinculo': forms.Select(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
+                       'required': 'required', }),
         }
+
 
 class CorreoElectronicoForm(forms.ModelForm):
     class Meta:
@@ -464,12 +485,12 @@ class CorreoElectronicoForm(forms.ModelForm):
             'direccion',
         ]
         labels = {
-            'tipo':'Tipo Correo Electrónico',
-            'direccion':'Correo',
+            'tipo': 'Tipo Correo Electrónico',
+            'direccion': 'Correo',
         }
         widgets = {
-            'direccion':forms.EmailInput(attrs={'class': 'form-control'}),
-            'tipo':forms.Select(
-                        attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
-                       'required': 'required',}),
+            'direccion': forms.EmailInput(attrs={'class': 'form-control'}),
+            'tipo': forms.Select(
+                attrs={'class': 'form-control', 'style': 'text-transform:uppercase;', 'style': 'width: 100%',
+                       'required': 'required', }),
         }
