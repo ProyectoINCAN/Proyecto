@@ -19,7 +19,8 @@
             font-size: 15px;
             line-height: 18px;
             }
-            P { text-align: center }
+            p { text-align: center;
+              padding: 1 px;}
             td {
             font-size: 12px;
             line-height: 20px;
@@ -38,10 +39,8 @@
         </style>
     </head>
     <body>
-        <p style="font-weight:bold; font-size: 15px; text-align:center;">FICHA CLINICA</p>
-
-        <img class="img-responsive" src="{% static 'media/img/logo_incan.png' %}"/>
-
+        {% include 'base/membrete.html' %}
+        <h1 align="center" style="font-size: 18px;" ><u>FICHA CLINICA</u></h1>
         <div id="lateral">
                 <p>I PARTE: DATOS DEL/LA PACIENTE</p>
         </div>

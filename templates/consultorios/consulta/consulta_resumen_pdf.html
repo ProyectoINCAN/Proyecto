@@ -4,7 +4,8 @@
     <title>Historia Clínica</title>
     <style type="text/css">
       td, th {
-          border: 1px solid #dddddd;
+          border: 1px solid black;
+          border-style: 1px solid black;
           text-align: left;
           padding: 2px;
           font-size: 12px;
@@ -13,9 +14,6 @@
 
       tr:nth-child(even) {
           background-color: #dddddd;
-      }
-      table, th, td {
-        border: 1px solid black;
       }
 
 	  table {
@@ -34,22 +32,17 @@
         border: none;
         border-style: none;
         padding: 0px;
-
       }
       #first{
         border: none;
         border-style: none;
         padding: 2px;
-       }
-       #second{
-               border: none;
+      }
+      #second{
+        border: none;
         border-style: none;
-                padding: 2px;
-
-       }
-
-
-
+        padding: 2px;
+      }
 
       li{
         list-style-type: lower-roman
@@ -85,7 +78,7 @@
             </body>
             </div>
 
-
+            <br>
             <div class="row">
                 <div class="col-sm-4">
                     <div style="font-weight:bold; font-size: 13px;"><li><u>ANAMNESIS: </u></li></div>
@@ -187,7 +180,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Cantidad</th>
+                                <th  style="border: 1px solid black; padding: 2px;">Cantidad</th>
                                 <th>Medicamento</th>
                                 <th>Tipo de Presentación</th>
                                 <th>Posología</th>
@@ -196,7 +189,7 @@
                         <tbody>
                             {% for data in prescripciones %}
                             <tr>
-                                <td>{{ data.cantidad }}</td>
+                                <td  style="border: 1px solid black; padding: 2px;">{{ data.cantidad }}</td>
                                 <td>{{ data.medicamento }}</td>
                                 <td>{{ data.medicamento.tipificacion }}</td>
                                 <td>{{ data.posologia|safe }}</td>
