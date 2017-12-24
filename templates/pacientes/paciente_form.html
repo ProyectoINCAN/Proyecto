@@ -24,9 +24,15 @@ label { position: absolute; text-align:right; width:130px; }
     <h1 class="m-n font-thin h3">Ficha Clínica</h1>
 </div>
   <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
-    <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+    {% if request.user.is_superuser or user.groups.all.0.name == "Administrativo" %}
+    <li><a href="{% url 'consultorios:dashboard_administrativo' %}">Inicio</a></li>
     <li><a href="{% url 'pacientes:index' %}">Pacientes</a></li>
     <li class="active">Datos Básicos del Paciente</li>
+  {% else %}
+      <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+    <li><a href="{% url 'pacientes:index' %}">Pacientes</a></li>
+    <li class="active">Datos Básicos del Paciente</li>
+  {% endif %}
   </ol><br>
 
     {% include 'base/messages.html' %}

@@ -8,7 +8,7 @@ from apps.consultorios.views import MedicoList, \
     administrativo_create, administrativo_update, consulta_paciente_list, ConsultaCreate, \
     PacienteDiagnosticoCreate, TipoMedicamentoListView, TipoMedicamentoCreateView, \
     TipoMedicamentoUpdateView, TipoMedicamentoDelete, MedicamentoListView, MedicamentoCreateView, MedicamentoUpdateView, \
-    MedicamentoDeleteView
+    MedicamentoDeleteView,DashboardAdministrativo
 
 urlpatterns = [
     url(r'^medico/$', login_required(MedicoList.as_view()), name='medico_listar'),
@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^enfermero/nuevo$', login_required(enfermero_create), name='enfermero_nuevo'),
     url(r'^enfermero/(?P<pk>[0-9]+)/editar$', login_required(enfermero_update), name='enfermero_editar'),
 
-    url(r'^administrativo/$', login_required(AdministrativoList.as_view()), name='administrativo_listar'),
+    url(r'^administrativos/$', login_required(AdministrativoList.as_view()), name='administrativo_listar'),
     url(r'^administrativo/nuevo$', login_required(administrativo_create), name='administrativo_nuevo'),
     url(r'^administrativo/(?P<pk>[0-9]+)/editar$', login_required(administrativo_update), name='administrativo_editar'),
 
@@ -119,6 +119,7 @@ urlpatterns = [
 
 
     url(r'^$', views.DashboardMedico.as_view(), name='dashboard_medico'),
+    url(r'^administrativo/$', views.DashboardAdministrativo.as_view(), name='dashboard_administrativo'),
     url(r'^consulta/detalle/(?P<detalle_id>\d+)/anamnesis/crear/$', views.AnamnesisPacienteCreate.as_view(),
         name='anamnesis_crear'),
     url(r'^consulta/detalle/anamnesis/(?P<anamnesis_id>\d+)/eliminar$', views.AnamnesisPacienteDetele.as_view(),

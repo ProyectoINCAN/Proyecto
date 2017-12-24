@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from apps.consultorios.models import Medico
+from apps.consultorios.models import Medico, Administrativo
 
 
 def login_view(request):
@@ -19,10 +19,12 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                #luego se definira el redirect al dashboard correspondiente de acuerdo al tipo
-                #de usuario logueado.
+                # luego se definira el redirect al dashboard correspondiente de acuerdo al tipo
+                # de usuario logueado.
                 if Medico.objects.filter(usuario=user).exists():
                     return redirect('consultorios:dashboard_medico')
+                elif Administrativo.objects.filter(usuario=user).exists():
+                    return redirect('consultorios:dashboard_administrativo')
                 else:
                     return redirect('principal:index')
             else:

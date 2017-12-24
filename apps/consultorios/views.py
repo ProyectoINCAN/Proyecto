@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import transaction
 from django.db.models.aggregates import Max
 from django.db.models.query_utils import Q
+from django.db.models import Q
+from django.db.models.aggregates import Max, Sum
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect
 from django.http.response import JsonResponse
@@ -49,6 +51,10 @@ from utils.generate_pdf import render_to_pdf
 class MedicoList(ListView):
     model = Medico
     template_name = 'consultorios/medico_list.html'
+    context_object_name = 'medicos'
+
+    def get_queryset(self):
+        return Medico.objects.filter(habilitado=True)
 
 
 @transaction.atomic
@@ -1142,6 +1148,59 @@ class PacienteTratamientoUpdate(LoginRequiredMixin, UpdateView):
         form.save()
         messages.success(self.request, "Se han actualizado los datos de tratamiento.")
         return JsonResponse({'success': True})
+
+
+class DashboardAdministrativo(LoginRequiredMixin, TemplateView):
+    template_name = 'consultorios/dashboard_administrativo.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.is_authenticated():
+            if Administrativo.objects.filter(usuario=user).exists():
+                return super(DashboardAdministrativo, self).dispatch(request, *args, **kwargs)
+            else:
+                return HttpResponseRedirect(reverse('logout'))
+        return super(DashboardAdministrativo, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        administrativo = Administrativo.objects.get(usuario=request.user)
+        agendas_totales = Agenda.objects.all().count()
+
+        # cantidad de pacientes que consultaron
+        pacientes_consulta = Agenda.objects.aggregate(Sum('cantidad'))
+
+        now = datetime.datetime.now()
+        _, num_days = calendar.monthrange(now.year, now.month)
+        first_day = datetime.date(now.year, now.month, 1)
+        last_day = datetime.date(now.year, now.month, num_days)
+
+        #agendas del mes
+        agenda_rango_fecha = Agenda.objects.filter(fecha__gte=first_day, fecha__lte=last_day).count()
+
+        agendas_hoy = Agenda.objects.filter(fecha=datetime.datetime.today()).count()
+
+        femenino = Paciente.objects.filter(sexo__codigo='M').count()
+
+        masculino = Paciente.objects.filter(sexo__codigo='F').count()
+
+        list_generos = [masculino, femenino]
+
+        pacientes = Paciente.objects.all()
+
+        context.update({
+            'agendas_totales': agendas_totales,
+            'agenda_rango_fecha': agenda_rango_fecha,
+            'agendas_hoy': agendas_hoy,
+            'administrativo': administrativo,
+            'cantidad_pacientes': pacientes_consulta,
+            'generos': mark_safe(list_generos),
+            'pacientes': pacientes
+        })
+
+        return super(TemplateView, self).render_to_response(context)
 
 
 class DashboardMedico(LoginRequiredMixin, TemplateView):

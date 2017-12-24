@@ -79,11 +79,17 @@ class UserForm(forms.ModelForm):
         elif int(self.cleaned_data.get('tipos')) == 3:
             if not self.data.get('administrativo'):
                 self.add_error('administrativo', 'Debe seleccionar un administrativo')
+                # validar que el tipo de nombre de usuario ya no se encuentra registrado
+            else:
+                administrativo = self.cleaned_data.get('administrativo')
+                if administrativo.usuario:
+                    self.add_error('administrativo', 'Ya tiene un usuario asignado')
 
         # validar el nombre de usuario
         usuario = self.cleaned_data.get('username')
         if User.objects.filter(username=usuario).exists():
             self.add_error('username', 'Ya existe un usuario con el nombre {}'.format(usuario))
+
 
     def save(self, commit=True):
         with transaction.atomic():
@@ -104,7 +110,7 @@ class UserForm(forms.ModelForm):
                 enfermero.save()
             # administrativo
             elif int(self.cleaned_data.get('tipos')) == 3:
-                administrativo = self.cleaned_data.get('administrativos')
+                administrativo = self.cleaned_data.get('administrativo')
                 administrativo.usuario = user
                 administrativo.save()
 

@@ -1,125 +1,136 @@
 {% extends 'base/base2.html' %}
 {% load static %}
 {% block extrajs %}
-    <script src = "{% static 'apps/pacientes/js/paciente.js' %}"></script>
+  <script src="{% static 'apps/pacientes/js/paciente.js' %}"></script>
 {% endblock %}
 
 
 {% block content %}
-<style type="text/css">
-label.div_center {
-text-align:center;
-}
-</style>
+  <style type="text/css">
+    label.div_center {
+      text-align: center;
+    }
+  </style>
 
-<style>
-label { position: absolute; text-align:right; width:130px; }
-</style>
-<div class="app-content-body">
-  <div class="bg-light lter b-b wrapper-md">
+  <style>
+    label {
+      position: absolute;
+      text-align: right;
+      width: 130px;
+    }
+  </style>
+  <div class="app-content-body">
+    <div class="bg-light lter b-b wrapper-md">
       <h1 class="m-n font-thin h3">Pacientes</h1>
     </div>
-  <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="#">Inicio</a></li>
-      <li><a href="#">Pacientes</a></li>
-      <li class="active">Nuevo</li>
+    <ol class="breadcrumb" style="background-color: #f6f8f8">
+      {% if request.user.is_superuser or user.groups.all.0.name == "Administrativo" %}
+        <li><a href="{% url 'consultorios:dashboard_administrativo' %}">Inicio</a></li>
+        <li class="active">Nuevo</li>
+      {% else %}
+
+        <li><a href="#">Pacientes</a></li>
+        <li class="active">Nuevo</li>
+      {% endif %}
     </ol>
+
     {% include 'base/messages.html' %}
 
-  <div class="wrapper-md">
+    <div class="wrapper-md">
       <div class="box box-primary">
         <div class="box-header with-border">
-                <form id="paciente_form" class="form-horizontal" method="POST">
-                    {% csrf_token %}
-                    <div class="form-group">
-                     <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.tipo_doc.label }}</label>
-                     <div class="col-lg-4 col-md-3 col-sm-4">
-                         {{form2.tipo_doc}}
-                     </div>
-                     <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.nro_doc.label }}</label>
-                     <div class="col-lg-4 col-md-3 col-sm-4">
-                         {{form2.nro_doc}}
-                     </div>
-                    </div>
-
-                    <div class="form-group">
-                        {{ form2.nombres.error }}
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.nombres.label}}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                             {{form2.nombres}}
-                         </div>
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.apellidos.label}}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                             {{ form2.apellidos }}
-                         </div>
-                    </div>
-
-                    <div class="form-group">
-                          {{ form2.fecha_nacimiento.error }}
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.fecha_nacimiento.label}}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                             {{form2.fecha_nacimiento}}
-                         </div>
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.nacionalidad.label}}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                             {{ form2.nacionalidad }}
-                         </div>
-                     </div>
-                    <div class="form-group">
-                          {{ form2.lugar_nacimiento.error }}
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.lugar_nacimiento.label}}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                             {{form2.lugar_nacimiento}}
-                         </div>
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.distrito.label}}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                             {{ form2.distrito }}
-                         </div>
-                     </div>
-                     <div class="form-group">
-                          {{ form2.sexo.error }}
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.sexo.label}}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                             {{form2.sexo}}
-                         </div>
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.estado_civil.label}}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                             {{ form2.estado_civil }}
-                         </div>
-                     </div>
-                     <div class="form-group">
-                        {{ form.tipo.error }}
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.tipo.label }}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                             {{form.tipo}}
-                         </div>
-                          {{ form.numero.error }}
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.numero.label}}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                            {{form.numero}}
-                         </div>
-                     </div>
-                    <div class="form-group">
-                          {{ form.etnia.error }}
-                         <label class="control-label col-lg-2 col-md-3 col-sm-2">{{form2.etnia.label}}</label>
-                         <div class="col-lg-4 col-md-3 col-sm-4">
-                             {{form2.etnia}}
-                         </div>
-                     </div>
-
-                <div class="form-group">
-                 <div class="col-sm-offset-4 col-sm-8">
-                     <button class="btn btn-primary" id="submit" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
-                     <a href="{% url 'pacientes:index' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
-                 </div>
-                </div>
-
-
-
-            </form>
+          <form id="paciente_form" class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.tipo_doc.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.tipo_doc }}
+              </div>
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.nro_doc.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.nro_doc }}
+              </div>
             </div>
+
+            <div class="form-group">
+              {{ form2.nombres.error }}
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.nombres.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.nombres }}
+              </div>
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.apellidos.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.apellidos }}
+              </div>
+            </div>
+
+            <div class="form-group">
+              {{ form2.fecha_nacimiento.error }}
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.fecha_nacimiento.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.fecha_nacimiento }}
+              </div>
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.nacionalidad.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.nacionalidad }}
+              </div>
+            </div>
+            <div class="form-group">
+              {{ form2.lugar_nacimiento.error }}
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.lugar_nacimiento.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.lugar_nacimiento }}
+              </div>
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.distrito.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.distrito }}
+              </div>
+            </div>
+            <div class="form-group">
+              {{ form2.sexo.error }}
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.sexo.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.sexo }}
+              </div>
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.estado_civil.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.estado_civil }}
+              </div>
+            </div>
+            <div class="form-group">
+              {{ form.tipo.error }}
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.tipo.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form.tipo }}
+              </div>
+              {{ form.numero.error }}
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form.numero.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form.numero }}
+              </div>
+            </div>
+            <div class="form-group">
+              {{ form.etnia.error }}
+              <label class="control-label col-lg-2 col-md-3 col-sm-2">{{ form2.etnia.label }}</label>
+              <div class="col-lg-4 col-md-3 col-sm-4">
+                {{ form2.etnia }}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-8">
+                <button class="btn btn-primary" id="submit" type="submit"><i class="fa fa-floppy-o"
+                                                                             aria-hidden="true"></i> Guardar
+                </button>
+                <a href="{% url 'pacientes:index' %}" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</a>
+              </div>
+            </div>
+
+
+          </form>
         </div>
       </div>
+    </div>
   </div>
 
 

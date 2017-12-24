@@ -1186,6 +1186,7 @@ class PacienteAcompañanteDelete(LoginRequiredMixin, DeleteView):
 
 
 class DashboardAdministrativoView(LoginRequiredMixin, TemplateView):
+    """dashboard del administrador"""
     template_name = 'pacientes/index.html'
 
     @method_decorator(csrf_exempt)

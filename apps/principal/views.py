@@ -56,7 +56,7 @@ class DashboardPrincipalView(LoginRequiredMixin, TemplateView):
         genero_femenino = Paciente.objects.filter(sexo__codigo='F').count()
 
         list_generos = [genero_masculino, genero_femenino]
-        lista_usuarios = [medicos, enfermeros, administrativos]
+        lista_usuarios = [medicos, administrativos, enfermeros]
 
         medicamentos = Medicamento.objects.filter(habilitado=True, vencimiento__lte=datetime.datetime.today())
 
