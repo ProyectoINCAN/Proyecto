@@ -14,6 +14,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from multiprocessing import get_context, context
 
+from Proyecto.settings import BASE_DIR
 from apps.agendamientos.functions import cancelar_agenda, get_origen_url_agendamiento
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
 
@@ -28,7 +29,7 @@ from apps.consultorios.models import HorarioMedico, DiasSemana, Especialidad, Me
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from apps.internaciones.models import Medicamento
-from apps.pacientes.models import Paciente
+from apps.pacientes.models import Paciente, Telefono
 # def index(request):
 #     # form = AgendaForm()
 #     return render(request, 'agendamientos/index.html')
@@ -387,12 +388,18 @@ class AgendaDetalleListPDF(View):
 
     def get(self, request, *args, **kwargs):
         template = get_template('agendamientos/agenda_list_pdf.html')
+        # agenda = Agenda.objects.get(pk=self.kwargs['agenda_id'])
+        # detalles = AgendaDetalle.objects.filter(agenda=agenda)
+        # telefono = Telefono.objects.filter(paciente=detalles.paciente)
         agenda = Agenda.objects.get(pk=self.kwargs['agenda_id'])
-        detalles = AgendaDetalle.objects.filter(agenda=agenda)
+        detalles = get_agenda_detalle_lista_by_agenda(self.kwargs['agenda_id'])
+        image_logo =BASE_DIR + '/static/media/img/logo_incan200x90.png'
 
         context = {
             'agenda': agenda,
-            'detalles': detalles
+            'detalles': detalles,
+            'logo': image_logo,
+
         }
 
         html = template.render(context)

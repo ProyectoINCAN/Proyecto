@@ -263,6 +263,9 @@ class Paciente(models.Model):
     def get_name_nro_doc(self):
         return "{} {}. {}: {}".format(self.nombres, self.apellidos, self.tipo_doc.codigo, self.nro_doc)
 
+    def get_nro_doc(self):
+        return self.nro_doc
+
     def get_edad(self):
         from django.db import connection
         with connection.cursor() as cursor:
@@ -351,6 +354,9 @@ class Telefono(models.Model):
         ordering = ['paciente', 'id']
         verbose_name = 'Teléfono'
         verbose_name_plural = 'Teléfonos'
+
+    def get_telefono(self):
+        return "{}: {}".format(self.tipo.nombre, self.numero)
 
 
 class TipoCorreoElectronico(models.Model):

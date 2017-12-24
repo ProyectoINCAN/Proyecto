@@ -1809,6 +1809,7 @@ class PacienteFichaClinicaPDF(LoginRequiredMixin, View):
         else:
             servicio_basico = ['']
 
+        image_logo =BASE_DIR + '/static/media/img/logo_incan200x90.png'
 
         context = {
             'paciente': paciente,
@@ -1822,13 +1823,14 @@ class PacienteFichaClinicaPDF(LoginRequiredMixin, View):
             'vivienda':vivienda,
             'servicio_sanitario':servicio_sanitario,
             'servicio_basico':servicio_basico,
+            'logo':image_logo,
         }
 
         html = template.render(context)
         pdf = render_to_pdf('pacientes/ficha_clinica_pdf.html', context)
         if pdf:
             response = HttpResponse(pdf, content_type='application/pdf')
-            filename = "Invoice_%s.pdf" % ("12341231")
+            filename = "FICHA CLÍNICA" + " " + paciente.get_name_nro_doc() + ".pdf"
             content = "inline; filename='%s'" % (filename)
             download = request.GET.get("download")
             if download:

@@ -1,26 +1,39 @@
  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
-    <title>Resumen de la Consulta</title>
+    <title>Planilla de Agendamiento</title>
     <style type="text/css">
       table {
           font-family: arial, sans-serif;
           border-collapse: collapse;
-          width: 100%;
       }
 
       td, th {
-          border: 1px solid #dddddd;
+          border: 1px solid black;
           text-align: left;
-          padding: 8px;
+          border: 1px solid black;
+
       }
 
       tr:nth-child(even) {
           background-color: #dddddd;
       }
-      table, th, td {
-    border: 1px solid black;
-}
+
+      #datos {
+        border: none;
+        border-style: none;
+        padding: 0px;
+      }
+      #first{
+        border: none;
+        border-style: none;
+        padding: 2px;
+      }
+      #second{
+        border: none;
+        border-style: none;
+        padding: 2px;
+      }
     </style>
   </head>
   <body>
@@ -28,58 +41,53 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="row">
-              <!--TODO: incluir membrete-->
+            {% include 'base/membrete.html' %}
 
-            <h1 align="center"><b>SIHINCAN</b></h1>
-            <h1 align="center"><b>Agenda: {{ agenda.get_dr_full_name }}</b></h1>
+            <h1 align="center"><b>PLANILLA DE AGENDAMIENTO</b></h1>
           </div>
-          <h2><b><u>1. Datos de la agenda</u></b></h2>
-          <div class="row">
-            <div class="col-sm-6">
-
-              <span class="font-bold">Fecha:</span>
-              <span class="font-normal">{{ agenda.fecha }}</span>
-              <br/>
-              <span class="font-bold">Especialidad:</span>
-              <span class="font-normal">{{ agenda.especialidad }}
-
-              </span>
-              <br/>
-
-            </div>
-            </div>
-
-
-            <br>
-            <div class="row">
+          <h2><b><u>DATOS DE LA AGENDA</u></b></h2>
+            <table id="datos">
+                <tr id="primero">
+                    <td id="first" class="first">
+                        <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Fecha: </strong>{{ agenda.fecha }}</div>
+                        <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Médico: </strong> {{ agenda.medico.get_dr_full_name }}</div>
+                        <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Cantidad: </strong>{{ agenda.cantidad }}</div>
+                    </td>
+                    <td id="second" class="second">
+                        <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Turno: </strong>{{ agenda.turno }}</div>
+                        <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Especialidad</strong>: </strong>{{ agenda.especialidad }}</div>
+                        <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;"> </strong></div>
+                    </td>
+                </tr>
+            </table>
+                <br>
                 <div class="col-sm-4">
-                  <h2><b><u>Detalles:</u></b></h2>
+                  <h2><b><u>LISTA DE LOS PACIENTES AGENDADOS:</u></b></h2>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if detalles %}
                     <table class="table">
                         <thead>
                             <tr>
-                                <th><b>Nro.</b></th>
-                                <th><b>Ficha</b></th>
-                                <th><b>Nombre y apellido</b></th>
-                                <th><b>Edad</b></th>
-                                <th><b>Ciudad</b></th>
-                                <th><b>Teléfono</b></th>
-                                <th><b>Confirmado</b></th>
-
+                                <th style="padding: 2px; width:5%"><b>Nro.</b></th>
+                                <th style="padding: 2px; width:15%"><b>Ficha</b></th>
+                                <th style="padding: 2px; width:20%"><b>Nombre y apellido</b></th>
+                                <th style="padding: 2px; width:10%"><b>Edad</b></th>
+                                <th style="padding: 2px; width:20%"><b>Ciudad</b></th>
+                                <th style="padding: 2px; width:20%"><b>Teléfono</b></th>
+                                <th style="padding: 2px; width:20%"><b>Confirmado</b></th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for data in detalles %}
                             <tr>
-                                <td>{{ data.orden }}</td>
-                                <td>{{ data.paciente.nro_doc }}</td>
-                                <td>{{ data.paciente.get_full_name }}</td>
-                                <td>{{ data.paciente.get_edad }}</td>
-                                <td>{{ data.paciente.distrito }}</td>
-                                <td>{{ "Establecer teléfono" }}</td>
-                                <td>{{ data.confirmado }}</td>
+                                <td style="padding: 2px; width:5%">{{ data.0 }}</td>
+                                <td style="padding: 2px; width:15%">{{ data.1 }}</td>
+                                <td style="padding: 2px; width:20%">{{ data.2 }}  {{ data.3 }}</td>
+                                <td style="padding: 2px; width:10%">{{ data.4 }}</td>
+                                <td style="padding: 2px; width:20%">{{ data.5 }}</td>
+                                <td style="padding: 2px; width:20%">{{ data.6 }}: {{ data.7 }}</td>
+                                <td style="padding: 2px; width:20%">{% if data.8 %}{{'Si'}}{% else %} {{'No'}}{% endif %}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
