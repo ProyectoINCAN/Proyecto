@@ -34,6 +34,7 @@ from Proyecto.settings import BASE_DIR
 from apps import pacientes
 from apps.agendamientos.functions import get_origen_url_agendamiento
 from apps.agendamientos.models import Agenda, AgendaDetalle, EstadoAgenda
+from apps.agendamientos.utils import get_fecha_probable_agendamiento
 from apps.consultorios.forms import *
 from apps.consultorios.functions import verificar_estado_consulta, existe_horario_medico
 from apps.consultorios.models import *
@@ -347,11 +348,29 @@ def medico_turno(request, id_medico):
 
 
 def horario_medico(request, id_medico, codigo_turno):
-    print('id', id_medico)
-    horario_medico = HorarioMedico.objects.filter(medico=id_medico, turno=codigo_turno)
-    print('horario_medico', horario_medico)
-    data = serializers.serialize('json', horario_medico)
-    return JsonResponse(data, safe=False)
+    horario_medico = HorarioMedico.objects.filter(medico=id_medico, turno=codigo_turno,
+                                                  habilitado=True).order_by('id')
+    fecha = get_fecha_probable_agendamiento(horario_medico)
+    return JsonResponse({'fecha': fecha})
+
+
+def get_cantidad(request):
+    p_fecha = request.GET.get('fecha')
+    p_medico = request.GET.get('medico')
+    p_turno = request.GET.get('turno')
+    anho, mes, dia = (int(x) for x in p_fecha.split('-'))
+    fecha = datetime.date(anho, mes, dia)
+    print(p_fecha, fecha, p_medico, p_turno)  # borrar
+
+    horario = HorarioMedico.objects.filter(medico=p_medico, turno=p_turno, habilitado=True,
+                                           dia_semana__python_weekday=fecha.weekday()).first()
+
+    cantidad = 0
+    if horario:
+        cantidad = horario.cantidad
+
+    return JsonResponse({'cantidad': cantidad})
+
 
 def consulta_paciente_list(request, consulta_id):
     print("llega a consulta paciente list. consulta_id: ", consulta_id, "request: ", request)
@@ -504,9 +523,15 @@ class ConsultorioPacienteAgregar(LoginRequiredMixin, View):
         consulta = Consulta.objects.get(pk=request.POST.get('consulta_id'))
         detalles = ConsultaDetalle.objects.filter(consulta=consulta)
         max_orden = detalles.aggregate(Max('orden'))
+
+        if not max_orden:
+            print("max is none")
+
+            max_orden['orden__max'] = 0  # si la consulta no tiene detalles
+
         paciente = Paciente.objects.get(pk=request.POST.get('paciente_id'))
 
-        nuevo_detalle = ConsultaDetalle(orden=max_orden['orden__max']+1, paciente=paciente, consulta=consulta,
+        nuevo_detalle = ConsultaDetalle(orden=max+1, paciente=paciente, consulta=consulta,
                                         estado=EstadoConsultaDetalle.objects.get(codigo='P'), confirmado=True)
         nuevo_detalle.save()
 
@@ -560,6 +585,15 @@ class ConsultaCreate(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         agenda = Agenda.objects.get(pk=kwargs.get('agenda_id'))
         origen = request.POST["origen"]
+
+        # valida que sea la agenda del día
+        print("ageda fecha", agenda.fecha, "today", datetime.date.today())  # borrar
+        if agenda.fecha != datetime.date.today():
+            messages.error(request, "No se puede pasar una agenda que no sea del día.")
+            # retorna un string porque responde con un JSON
+            url = reverse('agendamientos:agenda_detalle', kwargs={'agenda_id': agenda.id, 'origen': origen})
+            print("url", url)
+            return JsonResponse(url, safe=False)
 
         agenda.estado=EstadoAgenda.objects.get(codigo='V')
         agenda.save()

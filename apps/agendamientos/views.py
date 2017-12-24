@@ -41,15 +41,16 @@ def agenda_nuevo(request, origen):
         if form.is_valid():  # consulta si el formulario es valido
             data = form.save()  # guarda
             messages.success(request, 'Datos guardados')
-            return redirect('agendamientos:agenda_detalle', data.id, origen)
+            # return redirect('agendamientos:agenda_detalle', data.id, origen)
+            return JsonResponse({'pk': data.pk})
         else:
             form = AgendaForm(request.POST)
             origen_url = get_origen_url_agendamiento(origen)
             return render(request, 'agendamientos/agenda_form.html', {'form': form, 'origen_url': origen_url})
     else:
         form = AgendaForm()
-    origen_url = get_origen_url_agendamiento(origen)
-    return render(request, 'agendamientos/agenda_form.html', {'form': form, 'origen_url': origen_url})
+        origen_url = get_origen_url_agendamiento(origen)
+    return render(request, 'agendamientos/agenda_form.html', {'form': form, 'origen_url': origen_url, 'origen': origen})
 
 
 class AgendaNuevaCreateView(LoginRequiredMixin, CreateView):

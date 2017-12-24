@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^medico_especialidad/(?P<id_medico>\d+)$', views.medico_especialidad, name='medico_especialidad'),
     url(r'^medico_turno/(?P<id_medico>\d+)$', views.medico_turno, name='medico_turno'),
     url(r'^horario_medico/(?P<id_medico>\d+)/(?P<codigo_turno>[\w\-]+)/$', views.horario_medico, name='horario_medico'),
+    url(r'^cantidad/$', views.get_cantidad, name='cantidad'),
     url(r'^consulta/(?P<consulta_id>\d+)$', login_required(consulta_paciente_list), name='consulta_detalle'),
     url(r'^consulta/create/(?P<agenda_id>\d+)$', ConsultaCreate.as_view(), name='consulta'),
 
