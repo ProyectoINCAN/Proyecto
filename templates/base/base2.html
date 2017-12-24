@@ -240,6 +240,37 @@
 
           </li>
         {% endif %}
+        {% if user.groups.all.0.name == "Medico" %}
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-medkit fa-fw"></i><span>Medicamentos</span>
+              <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'consultorios:tipo_medicamento' %}"><i class="fa fa-list" aria-hidden="true"></i>Tipos
+                de Medicamentos</a></li>
+              <li><a href="{% url 'consultorios:medicamentos' %}"><i class="fa fa-list" aria-hidden="true"></i>Medicamentos</a>
+              </li>
+            </ul>
+          </li>
+        {% endif %}
+        {% if user.groups.all.0.name == "Medico"%}
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-sticky-note"></i><span>Órdenes de Estudio</span>
+              <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'consultorios:ordenes_estudio' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista
+                de Orden de Estudio</a></li>
+
+            </ul>
+          </li>
+        {% endif %}
       </ul>
     </section>
     <!-- /.sidebar -->

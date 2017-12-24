@@ -36,7 +36,7 @@
                   <th>Lote</th>
                   <th>Cantidad</th>
                   <th>Fecha Venc.</th>
-                  <th>Acción</th>
+                  {% if request.user.is_superuser %}<th>Acción</th>{% endif%}
                 </tr>
                 </thead>
                 <tbody>
@@ -47,6 +47,7 @@
                     <td width='50'>{{ med.nro_lote }}</td>
                     <td width='50'>{{ med.cantidad }}</td>
                     <td width='50'>{{ med.vencimiento }}</td>
+                    {% if request.user.is_superuser %}
                     <td width='50' align='center'>
                       <a class="btn btn-xs" title="Editar"
                          onclick="return abrir_modal('{% url 'consultorios:medicamento_editar' med.id %}')">
@@ -59,6 +60,7 @@
                         <i class="fa fa-times-circle"></i>
                       </a>
                     </td>
+                    {% endif %}
                   </tr>
                 {% endfor %}
                 </tbody>

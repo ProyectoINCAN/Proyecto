@@ -33,7 +33,9 @@
                   <tr>
                     <th>Nombre</th>
                     <th>Descripción</th>
+                    {% if request.user.is_superuser %}
                     <th>Acción</th>
+                    {% endif %}
                   </tr>
                   </thead>
                 <tbody>
@@ -41,6 +43,7 @@
                   <tr>
                     <td width='50'>{{ detalle.nombre }}</td>
                     <td width='50'>{{ detalle.observacion|safe }} </td>
+                    {% if request.user.is_superuser %}
                     <td width='50' align='center'>
                       <a class="btn btn-xs" title="Editar"
                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_detalle_editar' detalle.id %}')">
@@ -51,6 +54,7 @@
                         <i class="fa fa-times-circle"></i>
                       </a>
                     </td>
+                    {% endif %}
                   </tr>
                 {% endfor %}
                 </tbody>

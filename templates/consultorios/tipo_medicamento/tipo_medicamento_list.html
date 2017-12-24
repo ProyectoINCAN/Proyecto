@@ -35,7 +35,7 @@
                 <tr>
                   <th style="width:30%">Nombre</th>
                   <th style="width:30%">Descripción</th>
-                  <th style="width:10%">Acción</th>
+                  {% if request.user.is_superuser %}<th style="width:10%">Acción</th>{% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -43,6 +43,7 @@
                   <tr>
                     <td width='50'>{{ tipo.nombre }}</td>
                     <td width='50'>{{ tipo.descripcion|safe }} </td>
+                    {% if request.user.is_superuser %}
                     <td width='50' align='center'>
                       <a class="btn btn-xs" title="Editar"
                          onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_editar' tipo.id %}')">
@@ -53,6 +54,7 @@
                         <i class="fa fa-times-circle"></i>
                       </a>
                     </td>
+                    {% endif %}
                   </tr>
                 {% endfor %}
                 </tbody>

@@ -42,6 +42,7 @@
                     <td>{{ orden.nombre }}</td>
                     <td >{{ orden.descripcion }} </td>
                     <td align='center'>
+                      {% if request.user.is_superuser %}
                       <a class="btn btn-xs" title="Editar"
                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_editar' orden.id %}')">
                         <i class="fa fa-pencil"></i>
@@ -50,6 +51,7 @@
                         onclick="return abrir_modal('{% url 'consultorios:orden_estudio_eliminar' orden.id %}')">
                         <i class="fa fa-times-circle"></i>
                       </a>
+                      {% endif %}
                       <a class="btn btn-xs"  title="Detalles" href="{% url 'consultorios:orden_estudio_detalle_list' orden.id %}">
                         <i class="fa fa-list-ul" aria-hidden="true"></i>
                       </a>
