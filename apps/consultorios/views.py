@@ -1469,11 +1469,6 @@ class HistoriaClinicaList(LoginRequiredMixin, TemplateView):
                                                        Q(pk=EstadoConsultaDetalle.objects.get(codigo='C'))))
         # obtenemos el d
         ultima_consulta = ConsultaDetalle.objects.get(pk=self.kwargs['detalle_id'])
-        # consulta__fecha__range=[fecha_desde, fecha_hasta])
-        # consultas = consultas.exclude(estado__in=[EstadoConsultaDetalle.objects.get(codigo='P'), EstadoConsultaDetalle.objects.get(codigo='E')])
-
-        #la ultima consulta corresponde a la consulta actual
-        # ultima_consulta = ConsultaDetalle.objects.filter(paciente=self.kwargs['paciente_id']).last()
 
         paciente= Paciente.objects.get(pk=self.kwargs['paciente_id'])
         context.update({
