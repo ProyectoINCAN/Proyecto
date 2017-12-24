@@ -399,13 +399,13 @@ class OrdenEstudioCreateGlobal(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         orden = form.save(commit=False)
-        obs = orden.observacion
+        obs = orden.descripcion
         if obs:
             obs = obs.replace(' src="', ' class="img-responsive" src="')
-        orden.observacion = obs
+        orden.descripcion = obs
         orden.save()
         messages.success(self.request, "Se ha creado la orden de estudio.")
-        return JsonResponse({'success': True})
+        return HttpResponseRedirect(reverse('consultorios:ordenes_estudio'))
 
 
 class OrdenEstudioDeleteGlobal(LoginRequiredMixin, DeleteView):

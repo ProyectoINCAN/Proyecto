@@ -25,8 +25,7 @@
         <form method="POST" class="form-horizontal" id="form">
             <div class="row">
                 <div class="app-content-body">
-                    {% include 'base/messages.html' %}
-
+                    <div class="col-sm-12">{% include 'base/messages.html' %}</div>
                     <div class="col-lg-8 col-sm-12">
                         {% csrf_token %}
                         {{form.media}}

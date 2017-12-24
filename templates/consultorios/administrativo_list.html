@@ -19,14 +19,11 @@
         <p></p>
     </div>
     <div class="panel-body">
-        {% include 'base/messages.html' %}
         <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length"></div></div><div class="col-sm-6"><div id="dataTables-example_filter" class="dataTables_filter"></div></div></div><div class="row"><div class="col-sm-12"><table width="100%" class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
             <thead>
                 <tr role="row">
                     <th aria-label>Apellidos, Nombres</th>
                     <th aria-label>Documento de identidad</th>
-                    <th aria-label>Nro. Registro Profesional</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -37,7 +34,6 @@
                         <a href="/consultorios/administrativo/{{ data.id }}/editar">{{ data.apellidos }}, {{ data.nombres }}</a>
                     </td>
                     <td>{{ data.tipo_doc.codigo }} - {{ data.nro_doc }}</td>
-                    <td>{{ data.nro_registro_profesional }}</td>
 
                 </tr>
             {% endfor %}
