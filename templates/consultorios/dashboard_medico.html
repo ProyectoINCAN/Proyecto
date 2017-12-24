@@ -9,13 +9,12 @@
       <div class="row">
         <div class="col-sm-12 col-xs-12">
           <h1 class="m-n font-thin h3 text-black">SIHINCAN</h1>
-          <small class="text-muted">Bienvenido a tu web de Médicos</small>
         </div>
       </div>
     </div>
     {% block breadcrumb %}
-      <ol class="breadcrumb" style="background-color: #f6f8f8">
-        <li><b>Médico : {{ medico.get_full_name }}</b></li>
+      <ol class="breadcrumb" style="background-color: #f6f8f8; text-align:right">
+        <li><b>Perfil Médico: {{ medico.get_full_name }}</b></li>
       </ol>
     {% endblock %}
     <div class="row">
