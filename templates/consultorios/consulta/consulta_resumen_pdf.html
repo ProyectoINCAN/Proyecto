@@ -3,105 +3,109 @@
   <head>
     <title>Historia Clínica</title>
     <style type="text/css">
-
-
-      #contenedor{
-       text-align: left;
-       width: 750px;
-       margin: auto;}
-      table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-      }
-      li{
-        list-style-type: lower-roman
-      }
-
       td, th {
           border: 1px solid #dddddd;
           text-align: left;
-          padding: 8px;
+          padding: 2px;
+          font-size: 12px;
+          font-family: arial;
       }
 
       tr:nth-child(even) {
           background-color: #dddddd;
       }
       table, th, td {
-    border: 1px solid black;
-}
+        border: 1px solid black;
+      }
+
+	  table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+	  #contenedor{
+       text-align: left;
+       width: 750px;
+       margin: auto;
+      }
+
+      #datos {
+        border: none;
+        border-style: none;
+        padding: 0px;
+
+      }
+      #first{
+        border: none;
+        border-style: none;
+        padding: 2px;
+       }
+       #second{
+               border: none;
+        border-style: none;
+                padding: 2px;
+
+       }
+
+
+
+
+      li{
+        list-style-type: lower-roman
+      }
     </style>
   </head>
   <body>
     <div class="app-content-body">
       <div class="panel panel-default">
         <div class="panel-body">
-          <div class="row">
-            <h1 align="center"><b>SIHINCAN</b></h1>
-            <h1 align="center"><b>Historia Clínica: {{ detalle.paciente.get_full_name }}</b></h1>
-          </div>
-            <div style="font-weight:bold; font-size: 12px;"><u>DATOS DE LA CONSULTA: </u></div>
 
-            <div class="row">
-            <div class="col-sm-6">
-              <span style="font-weight:bold;">Médico:</span>
-              <span style="font-weight:normal;">{{ detalle.consulta.medico }}</span>
-              <br/>
-              <span style="font-weight:bold;">Fecha:</span>
-              <span style="font-weight:normal;">{{ detalle.consulta.fecha }}</span>
-              <br/>
-              <span style="font-weight:bold;">Hora de Inicio:</span>
-              <span style="font-weight:normal;">{{ detalle.hora_inicio }}{{ detalle.consulta.medico}}
-              </span>
-              <br/>
-
+            {% include 'base/membrete.html' %}
+              <h1 align="center" style="font-size: 18px;" ><u>HISTORIA CLÍNICA</u></h1>
+            <div style="font-weight:bold; font-size: 15px;"><u>DATOS DE LA CONSULTA: </u></div>
+            <div id="contenedor">
+                <body>
+                <table id="datos">
+                    <tr id="primero">
+                        <td id="first" class="first">
+                            <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Paciente: </strong> {{  detalle.paciente.get_name_nro_doc }}</div>
+                            <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Médico: </strong> {{ detalle.consulta.medico }}</div>
+                            <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Hora de Inicio: </strong>{{ detalle.hora_inicio }}</div>
+                            {% if detalle.estado.codigo == "C" %}<div><strong>Finalizado como: </strong>{{ detalle.estado.nombre }}</div>{% endif %}
+                        </td>
+                        <td id="second" class="second">
+                            <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Fecha: </strong>{{ detalle.consulta.fecha }}</div>
+                            <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Especialidad</strong>: </strong>{{ detalle.consulta.especialidad }}</div>
+                            <div style="font-size: 12px;"><strong style="font-weight:bold; font-family: arial;">Hora de Fin: </strong>{% if detalle.hora_fin %}{{ detalle.hora_fin }}
+                                {% else %}Sin hora de finalización{% endif %}</div>
+                        </td>
+                    </tr>
+                </table>
+            </body>
             </div>
-            <div class="col-sm-6">
-                <span style="font-weight:bold;">Especialidad:</span>
-              <span style="font-weight:normal;">{{ detalle.consulta.especialidad }}</span>
-              <br/>
 
-              <span style="font-weight:bold;">Hora de Inicio:</span>
-              <span style="font-weight:normal;">{{ detalle.hora_inicio }}{{ detalle.consulta.medico}}
-              </span>
-              <br/>
-
-            </div>
-            <div class="col-sm-6">
-
-              <span style="font-weight:bold;">Hora de Inicio:</span>
-              <span style="font-weight:normal;">{% if detalle.hora_fin %}{{ detalle.hora_fin }}
-              {% else %}Sin hora de finalización{% endif %}</span>
-              <br/>
-            </div>
-          </div>
-            {% if detalle.estado.codigo == "C" %}
-            <div class="row">
-                <div class="col-xs-4 col-md-2 col-lg-3">
-                    <b>Finalizado como:</b>
-                </div>
-                {{ detalle.estado.nombre }}
-            </div>
-            {% endif %}
 
             <div class="row">
                 <div class="col-sm-4">
-                    <div style="font-weight:bold; font-size: 12px;"><li><u>ANAMNESIS: </u></li></div>
+                    <div style="font-weight:bold; font-size: 13px;"><li><u>ANAMNESIS: </u></li></div>
                 </div>
                 <div class="col-md-12">
-                    <ul type="circle">
-                    {% for data in anamnesis %}
-
-                      {{ data.observacion|safe }}
-
-                    {% endfor %}
+                    <ul style=" font-weight:normal; font-size: 12px;" type="circle">
+                    {% if anamnesis %}
+                        {% for data in anamnesis %}
+                            {{ data.observacion|safe }}
+                        {% endfor %}
+                    {% else %}
+                        {{ "SIN ESPECIFICAR" }}
+                    {% endif %}
                     </ul>
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                  <div style="font-weight:bold; font-size: 12px;"><li><u>DIAGNÓSTICO: </u></li></div>
+                  <div style="font-weight:bold; font-size: 13px;"><li><u>DIAGNÓSTICO: </u></li></div>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if diagnosticos %}
@@ -124,23 +128,23 @@
                         </tbody>
                     </table>
                     {% else %}
-                        {{ "SIN ESPECIFICAR" }}
+                    <ul style=" font-weight:normal; font-size: 12px;">{{ "SIN ESPECIFICAR" }}</ul>
                     {% endif %}
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-sm-4">
-                    <div style="font-weight:bold; font-size: 12px;"><li><u>EVOLUCIÓN: </u></li></div>
+                    <div style="font-weight:bold; font-size: 13px;"><li><u>EVOLUCIÓN: </u></li></div>
                 </div>
                 <div class="col-md-12">
-                    <ul>
+                    <ul style=" font-weight:normal; font-size: 12px;">
                     {% if evoluciones %}
                         {% for data in evoluciones %}
                             {{ data.observaciones|safe }}
                         {% endfor %}
                     {% else %}
-                        {{ "SIN ESPECIFICAR" }}
+                    {{ "SIN ESPECIFICAR" }}
                     {% endif %}
                     </ul>
                 </div>
@@ -148,7 +152,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-4 col-lg-11">
-                    <div style="font-weight:bold; font-size: 12px;"><li><u>ORDEN DE ESTUDIO: </u></li></div>
+                    <div style="font-weight:bold; font-size: 13px;"><li><u>ORDEN DE ESTUDIO: </u></li></div>
                 </div>
                 <div class="col-sm-4 col-lg-11">
                     {% if ordenes %}
@@ -169,7 +173,7 @@
                         </tbody>
                     </table>
                     {% else %}
-                        {{ "SIN ESPECIFICAR" }}
+                    <ul style=" font-weight:normal; font-size: 12px;">{{ "SIN ESPECIFICAR" }}</ul>
                     {% endif %}
                 </div>
             </div>
@@ -183,23 +187,25 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Medicamento</th>
-                                <th>Posología</th>
                                 <th>Cantidad</th>
+                                <th>Medicamento</th>
+                                <th>Tipo de Presentación</th>
+                                <th>Posología</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for data in prescripciones %}
                             <tr>
+                                <td>{{ data.cantidad }}</td>
                                 <td>{{ data.medicamento }}</td>
+                                <td>{{ data.medicamento.tipificacion }}</td>
                                 <td>{{ data.posologia|safe }}</td>
-                                <td class="text-center">{{ data.cantidad }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                     {% else %}
-                        {{ "SIN ESPECIFICAR" }}
+                    <ul style=" font-weight:normal; font-size: 12px;">{{ "SIN ESPECIFICAR" }}</ul>
                     {% endif %}
                 </div>
             </div>
@@ -227,7 +233,7 @@
                         </tbody>
                     </table>
                     {% else %}
-                        {{ "SIN ESPECIFICAR" }}
+                    <ul style=" font-weight:normal; font-size: 12px;">{{ "SIN ESPECIFICAR" }}</ul>
                     {% endif %}
                 </div>
             </div>

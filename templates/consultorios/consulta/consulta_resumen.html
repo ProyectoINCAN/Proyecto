@@ -8,11 +8,57 @@
       li{
         list-style-type: lower-roman
       }}
-    </style>
+
+
+      .dropbtn {
+    <!--background-color: #4CAF50;-->
+    <!--color: white;-->
+    padding: 16px;
+    <!--font-size: 16px;-->
+    <!--border: none;-->
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+<!--.dropbtn:hover, .dropbtn:focus {-->
+    <!--background-color: #3e8e41;-->
+<!--}-->
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+</style>
 
 
 <div class="app-content-body">
-
+    <br>
     <ol class="breadcrumb" style="background-color: #f6f8f8">
         <li><a href="#">Inicio</a></li>
         <li><a href="#">Consultorios</a></li>
@@ -25,9 +71,14 @@
             <div class="btn-group btn-group-sm pull-right">
                 <div class="col pull-right">
                     <a id="volver" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_detalle_dia' detalle.consulta.id  %}"> <i class="fa fa-list" aria-hidden="true"></i> Volver a la lista</a>
-                    <a id="pdf" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_historia_clinica_descargar' detalle.id %}" target="_blank"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</a>
-                    <a id="odrenPdf" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_orden_estudio_descargar' detalle.id %}" target="_blank"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Orden Estudio a PDF</a>
-                    <a id="prescripcionPdf" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_prescripcion_descargar' detalle.id %}" target="_blank"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Orden Estudio a PDF</a>
+                    <div class="dropdown">
+                      <button onclick="myFunction()" class="btn btn-default dropbtn"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</button>
+                      <div id="myDropdown" class="dropdown-content">
+                          <a id="pdf" href="{% url 'consultorios:consulta_historia_clinica_descargar' detalle.id %}" target="_blank"> <i class="fa fa-book" aria-hidden="true"></i> Historia Clínica</a>
+                          <a id="odrenPdf" href="{% url 'consultorios:consulta_orden_estudio_descargar' detalle.id %}" target="_blank"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Orden Estudio</a>
+                          <a id="prescripcionPdf"  href="{% url 'consultorios:consulta_prescripcion_descargar' detalle.id %}" target="_blank"> <i class="fa fa-medkit" aria-hidden="true"></i> Prescripción</a>
+                      </div>
+                    </div>
                 </div>
             </div><p></p>
 
@@ -59,15 +110,17 @@
 
         <div class="panel-body">
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-12">
                     <div><b><li><u>ANAMNESIS: </u></li></b></div>
                 </div>
-                <div class="col-sm-8">
-                    <ul type="circle">
-                    {% for data in anamnesis %}
-                      {{ data.observacion|safe }}
-                    {% endfor %}
-                    </ul>
+                <div class="col-sm-12">
+                    {% if anamnesis %}
+                        {% for data in anamnesis %}
+                          {{ data.observacion|safe }}
+                        {% endfor %}
+                    {% else %}
+                    {{ "SIN ESPECIFICAR" }}
+                    {% endif %}
                 </div>
             </div>
             <br>
@@ -106,7 +159,6 @@
                     <div><b><u>iii. EVOLUCIÓN:</u></b></div>
                 </div>
                 <div class="col-sm-12">
-                    <ul>
                     {% if evoluciones %}
                         {% for data in evoluciones %}
                             {{ data.observaciones|safe }}
@@ -114,7 +166,6 @@
                     {% else %}
                         {{ "SIN ESPECIFICAR" }}
                     {% endif %}
-                    </ul>
                 </div>
             </div>
             <br>
@@ -127,8 +178,8 @@
                     <table class="table">
                         <thead>
                             <tr>
-                              <th><b>Código CIE-10</b></th>
-                              <th><b>Nombre</b></th>
+                              <th><b>Estudio</b></th>
+                              <th><b>Observación</b></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -156,17 +207,19 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Medicamento</th>
-                                <th>Posología</th>
                                 <th>Cantidad</th>
+                                <th>Medicamento</th>
+                                <th>Tipo de Presentación</th>
+                                <th>Posología</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for data in prescripciones %}
                             <tr>
+                                <td>{{ data.cantidad }}</td>
                                 <td>{{ data.medicamento }}</td>
+                                <td>{{ data.medicamento.tipificacion }}</td>
                                 <td>{{ data.posologia|safe }}</td>
-                                <td class="text-center">{{ data.cantidad }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -208,5 +261,28 @@
     </div>
 
 </div>
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
 
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
 {% endblock %}
+
+

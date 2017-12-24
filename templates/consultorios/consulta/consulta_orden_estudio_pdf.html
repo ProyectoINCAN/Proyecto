@@ -21,13 +21,15 @@
       td, th {
           border: 1px solid #dddddd;
           text-align: left;
-          padding: 5px;
+          padding: 2px;
           font-size: 12px;
+          border: 1px solid black;
           font-family: arial;
       }
 
       tr:nth-child(even) {
-          background-color: #dddddd;
+          border: 1px solid black;
+          padding: 2px;
       }
       table, th, td {
     border: 1px solid black;
@@ -39,8 +41,7 @@
       <div class="panel panel-default">
         <div class="panel-body">
             {% include 'base/membrete.html' %}
-            <b id="cabecera"><u>ORDEN DE ESTUDIO</u></b>
-
+            <h1 align="center" style="font-size: 18px;" ><b><u>ORDEN DE ESTUDIO</u></b></h1>
             <div class="col-sm-6">
                   <span style="font-weight:bold; font-size: 12px;font-family: arial;">Paciente:</span>
                   <span style="font-weight:normal; font-size: 12px;font-family: arial;">{{ detalle.paciente.get_name_nro_doc }}</span>
@@ -59,6 +60,7 @@
             </div>
 
         </div>
+          <br>
             <div class="row">
                 <div class="col-sm-4 col-lg-11">
                     <div style="font-weight:bold; font-size: 12px;"><li><u>ORDEN DE ESTUDIO: </u></li></div>

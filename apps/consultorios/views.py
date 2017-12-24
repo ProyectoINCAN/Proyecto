@@ -1554,6 +1554,8 @@ class HistoriaClinicaPDF(View):
         # tratamientos del paciente
         tratamientos = Tratamiento.objects.filter(consulta_detalle=detalle).order_by('-pk')
 
+        image_logo =BASE_DIR + '/static/media/img/logo_incan200x90.png'
+
         context = {
             'detalle': detalle,
             'diagnosticos': diagnosticos,
@@ -1561,14 +1563,15 @@ class HistoriaClinicaPDF(View):
             'ordenes': ordenes,
             'prescripciones': prescripciones,
             'tratamientos': tratamientos,
-            'anamnesis': anamnesis
+            'anamnesis': anamnesis,
+            'logo': image_logo,
         }
 
         html = template.render(context)
         pdf = render_to_pdf('consultorios/consulta/consulta_resumen_pdf.html', context)
         if pdf:
             response = HttpResponse(pdf, content_type='application/pdf')
-            filename = "Invoice_%s.pdf" % ("12341231")
+            filename = "RESUMEN CONSULTA" +" " + detalle.paciente.get_name_nro_doc() + ".pdf"
             content = "inline; filename='%s'" % (filename)
             download = request.GET.get("download")
             if download:
@@ -1776,6 +1779,8 @@ class ConsultaHistoriaByPacienteView(LoginRequiredMixin, TemplateView):
 
         tratamientos = Tratamiento.objects.filter(paciente__id=self.kwargs['paciente_id']).order_by('pk')
 
+        image_logo =BASE_DIR + '/static/media/img/logo_incan200x90.png'
+
         context.update({
             'diagnosticos': diagnosticos,
             'evoluciones': evoluciones,
@@ -1783,6 +1788,7 @@ class ConsultaHistoriaByPacienteView(LoginRequiredMixin, TemplateView):
             'prescripciones': prescripciones,
             'tratamientos': tratamientos,
             'anamnesis': anamnesis,
+            'logo':image_logo,
         })
 
         # return super(TemplateView, self).render_to_response(context)
@@ -1852,7 +1858,7 @@ class OrdenEstudioPDF(View):
         pdf = render_to_pdf('consultorios/consulta/consulta_orden_estudio_pdf.html', context)
         if pdf:
             response = HttpResponse(pdf, content_type='application/pdf')
-            filename = "Invoice_%s.pdf" % ("12341231")
+            filename = "ORDEN DE ESTUDIO" + " " + detalle.paciente.get_name_nro_doc() + ".pdf"
             content = "inline; filename='%s'" % (filename)
             download = request.GET.get("download")
             if download:
@@ -1872,7 +1878,7 @@ class PrescripcionPDF(View):
         # prescripciones del paciente
         prescripciones = ConsultaPrescripcion.objects.filter(paciente=detalle.paciente,
                                                              consulta_detalle=detalle.id).order_by('-pk')
-        image_logo = os.path.join(os.getcwd(), '/static/media/img/', 'logo_incan' + '.png')
+        image_logo =BASE_DIR + '/static/media/img/logo_incan200x90.png'
         context = {
             'detalle': detalle,
             'prescripciones': prescripciones,
@@ -1885,7 +1891,7 @@ class PrescripcionPDF(View):
         pdf = render_to_pdf('consultorios/consulta/consulta_prescripcion_pdf.html', context)
         if pdf:
             response = HttpResponse(pdf, content_type='application/pdf')
-            filename = "Invoice_%s.pdf" % ("12341231")
+            filename = "PRESCRIPCIÓN MÉDICA" + " " + detalle.paciente.get_name_nro_doc() + ".pdf"
             content = "inline; filename='%s'" % (filename)
             download = request.GET.get("download")
             if download:
