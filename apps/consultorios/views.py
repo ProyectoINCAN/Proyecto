@@ -530,14 +530,14 @@ class ConsultorioPacienteAgregar(LoginRequiredMixin, View):
         detalles = ConsultaDetalle.objects.filter(consulta=consulta)
         max_orden = detalles.aggregate(Max('orden'))
 
-        if not max_orden:
+        print("max_orden", max_orden)
+        if not max_orden['orden__max']:
             print("max is none")
-
             max_orden['orden__max'] = 0  # si la consulta no tiene detalles
 
         paciente = Paciente.objects.get(pk=request.POST.get('paciente_id'))
 
-        nuevo_detalle = ConsultaDetalle(orden=max+1, paciente=paciente, consulta=consulta,
+        nuevo_detalle = ConsultaDetalle(orden=max_orden['orden__max']+1, paciente=paciente, consulta=consulta,
                                         estado=EstadoConsultaDetalle.objects.get(codigo='P'), confirmado=True)
         nuevo_detalle.save()
 

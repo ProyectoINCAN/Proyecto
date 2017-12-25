@@ -2,7 +2,8 @@
 
 from apps.agendamientos.models import Agenda, EstadoAgenda, AgendaDetalle
 from apps.agendamientos.queries import get_max_fecha_disponible
-from apps.agendamientos.utils import get_fecha_agendamiento_siguiente
+from apps.agendamientos.utils import get_fecha_agendamiento_siguiente, get_cantidad_by_horario_medico_fecha
+from apps.consultorios.models import HorarioMedico
 
 
 def set_detalle_a_agenda(agenda, agenda_detalles):
@@ -30,8 +31,10 @@ def cancelar_agenda(agenda_id, tipo):
         agenda.fecha = max_fecha_disponible
         nueva_fecha = get_fecha_agendamiento_siguiente(agenda)
         print("nueva fecha:", nueva_fecha)
+        tmp_horario = HorarioMedico.objects.filter(medico=agenda.medico, turno=agenda.turno, habilitado=True)
+        cantidad = get_cantidad_by_horario_medico_fecha(tmp_horario, nueva_fecha)
         nueva_agenda = Agenda(medico=agenda.medico, fecha=nueva_fecha, turno=agenda.turno,
-                              especialidad=agenda.especialidad, cantidad=agenda.cantidad,
+                              especialidad=agenda.especialidad, cantidad=cantidad,
                               estado=EstadoAgenda.objects.get(codigo="P"))
         agenda.save()
         nueva_agenda.save()
