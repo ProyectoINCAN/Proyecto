@@ -1,268 +1,279 @@
 {% extends "base/base2.html" %}
 {% load static %}
 {% block extrajs %}
-  <script src = "{% static 'apps/pacientes/js/otros_datos.js' %}"></script>
+  <script src="{% static 'apps/pacientes/js/otros_datos.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-<div class="bg-light lter b-b wrapper-md">
-  <h1 class="m-n font-thin h3">Ficha Clínica</h1>
-</div>
-<ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
-  <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
-  <li class="active">Otros Datos / Paciente: <b>{{ paciente.get_name_nro_doc }}</b></li>
-</ol><br>
-<div class="wrapper-md">
+  <div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">Ficha Clínica</h1>
+  </div>
+  <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
+    <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+    <li class="active">Otros Datos / Paciente: <b>{{ paciente.get_name_nro_doc }}</b></li>
+  </ol><br>
+  <div class="wrapper-md">
     {% include 'base/messages.html' %}
     <div class="panel panel-default">
-     <div class="panel-body">
-                 <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li><a href="{% url 'pacientes:paciente_editar' id_paciente %}">Datos Básicos</a></li>
-              <li><a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a></li>
-              <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
-              <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
-              <li><a href="{% url 'pacientes:paciente_acompanhante' id_paciente %}">Acompañante</a></li>
-              <li class="active">{% block nav-about %}<a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}" data-toggle="tab5" aria-expanded="false">Otros Datos</a>{% endblock %}</li>
-              <li><a href="{% url 'pacientes:paciente_antedecentes_socio_economicos' id_paciente %}">Antecedentes Socio-Económicos</a></li>
-            </ul>
-            </div>
-       <div class="row">
-         <div class="tab-content" id="panel_tab">
-          <div class="tab-pane active" id="tab_seguro_medico">
-           <div class="form-group" id="panel_seguro_form_group">
-              <label class="control-label col-lg-2 col-sm-4">Seguro Médico:</label>
-              <div id="panel_seguro" class="col-lg-8 col-sm-8">
-                <table class="table table-striped responsive-table">
-                  <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Observaci&oacute;n</th>
-                    <th>Acción</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {% if seguros %}
-                    {% for seguro in seguros %}
-                      <tr>
-                        <td>{{ seguro.seguro_medico }}</td>
-                        <td>{% if not seguro.detalle %}Sin Observación{% else %}
-                          {{ seguro.detalle }}{% endif %} </td>
-                        <td>
-                          <a class="btn btn-xs"
-                             onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_crear' id_paciente %}')"><span class="fa fa-plus"></span>
-                          </a>
-                          <a class="btn btn-xs"
-                            onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_editar' seguro.id %}')">
-                            <i class="fa fa-pencil"></i>
-                          </a>
-                          <a class="btn btn-xs" title="Eliminar"
-                            onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_eliminar' seguro.id %}')">
-                            <i class='fa fa-times-circle'></i>
-                          </a>
-                        </td>
-                      </tr>
-                    {% endfor %}
+      <div class="panel-body">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li><a href="{% url 'pacientes:paciente_editar' id_paciente %}">Datos Básicos</a></li>
+            <li><a href="{% url 'pacientes:paciente_direccion' id_paciente %}">Direcciones</a></li>
+            <li><a href="{% url 'pacientes:padre_crear' id_paciente %}">Datos del Padre</a></li>
+            <li><a href="{% url 'pacientes:madre_crear' id_paciente %}">Datos de la Madre</a></li>
+            <li><a href="{% url 'pacientes:paciente_acompanhante' id_paciente %}">Acompañante</a></li>
+            <li class="active">{% block nav-about %}
+              <a href="{% url 'pacientes:paciente_seguro_medico' id_paciente %}" data-toggle="tab5"
+                 aria-expanded="false">Otros Datos</a>{% endblock %}</li>
+            <li><a href="{% url 'pacientes:paciente_antedecentes_socio_economicos' id_paciente %}">Antecedentes
+              Socio-Económicos</a></li>
+          </ul>
+        </div>
+        <div class="row">
+          <div class="tab-content" id="panel_tab">
+            <div class="tab-pane active" id="tab_seguro_medico">
+              <div class="form-group" id="panel_seguro_form_group">
+                <label class="control-label col-lg-2 col-sm-4">Seguro Médico:</label>
+                <div id="panel_seguro" class="col-lg-8 col-sm-8">
+                  <table class="table table-striped responsive-table">
+                    <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Observaci&oacute;n</th>
+                      <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if seguros %}
+                      {% for seguro in seguros %}
+                        <tr>
+                          <td>{{ seguro.seguro_medico }}</td>
+                          <td>{% if not seguro.detalle %}Sin Observación{% else %}
+                            {{ seguro.detalle }}{% endif %} </td>
+                          <td>
+                            <a class="btn btn-xs"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_crear' id_paciente %}')"><span
+                                class="fa fa-plus"></span>
+                            </a>
+                            <a class="btn btn-xs"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_editar' seguro.id %}')">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                            <a class="btn btn-xs" title="Eliminar"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_eliminar' seguro.id %}')">
+                              <i class='fa fa-times-circle'></i>
+                            </a>
+                          </td>
+                        </tr>
+                      {% endfor %}
                     {% endif %}
-                  </tbody>
-                </table>
-                {% if seguros.count == 0 %}
-                    <a class="btn btn-xs" onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_crear' id_paciente %}')"
-                       ><span class="fa fa-plus"></span>
+                    </tbody>
+                  </table>
+                  {% if seguros.count == 0 %}
+                    <a class="btn btn-xs"
+                       onclick="return abrir_modal('{% url 'pacientes:paciente_seguro_medico_crear' id_paciente %}')"
+                    ><span class="fa fa-plus"></span>
                     </a>
-               {% endif %}
-            </div>
+                  {% endif %}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-       </div>
-       <div class="row">
-         <div class="tab-content" id="panel_tab_correo">
-          <div class="tab-pane active" id="tab_correo">
-           <div class="form-group" id="panel_correo_form_group">
-              <label class="control-label col-lg-2 col-sm-4">Correo Electrónico:</label>
-              <div id="panel_correo" class="col-lg-8 col-sm-8">
-                <table class="table table-striped responsive-table">
-                  <thead>
-                  <tr>
-                    <th>Tipo</th>
-                    <th>Direcci&oacute;n</th>
-                    <th>Acción</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {% if correos %}
-                    {% for correo in correos %}
-                      <tr>
-                        <td>{{ correo.tipo }}</td>
-                        <td>{{ correo.direccion }}</td>
-                        <td>
-                          <a class="btn btn-xs"
-                             onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_crear' id_paciente %}')"><span class="fa fa-plus"></span>
-                          </a>
-                          <a class="btn btn-xs"
-                            onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_editar' correo.id %}')">
-                            <i class="fa fa-pencil"></i>
-                          </a>
-                          <a class="btn btn-xs" title="Eliminar"
-                            onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_eliminar' correo.id %}')">
-                            <i class='fa fa-times-circle'></i>
-                          </a>
-                        </td>
-                      </tr>
-                    {% endfor %}
+        <div class="row">
+          <div class="tab-content" id="panel_tab_correo">
+            <div class="tab-pane active" id="tab_correo">
+              <div class="form-group" id="panel_correo_form_group">
+                <label class="control-label col-lg-2 col-sm-4">Correo Electrónico:</label>
+                <div id="panel_correo" class="col-lg-8 col-sm-8">
+                  <table class="table table-striped responsive-table">
+                    <thead>
+                    <tr>
+                      <th>Tipo</th>
+                      <th>Direcci&oacute;n</th>
+                      <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if correos %}
+                      {% for correo in correos %}
+                        <tr>
+                          <td>{{ correo.tipo }}</td>
+                          <td>{{ correo.direccion }}</td>
+                          <td>
+                            <a class="btn btn-xs"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_crear' id_paciente %}')"><span
+                                class="fa fa-plus"></span>
+                            </a>
+                            <a class="btn btn-xs"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_editar' correo.id %}')">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                            <a class="btn btn-xs" title="Eliminar"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_eliminar' correo.id %}')">
+                              <i class='fa fa-times-circle'></i>
+                            </a>
+                          </td>
+                        </tr>
+                      {% endfor %}
                     {% endif %}
-                  </tbody>
-                </table>
-                {% if correos.count == 0 %}
-                    <a class="btn btn-xs" onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_crear' id_paciente %}')"
-                       ><span class="fa fa-plus"></span>
+                    </tbody>
+                  </table>
+                  {% if correos.count == 0 %}
+                    <a class="btn btn-xs"
+                       onclick="return abrir_modal('{% url 'pacientes:paciente_correo_electronico_crear' id_paciente %}')"
+                    ><span class="fa fa-plus"></span>
                     </a>
-               {% endif %}
-            </div>
+                  {% endif %}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-       </div>
-       <div class="row">
-         <div class="tab-content" id="panel_tab_situacion_laboral">
-          <div class="tab-pane active" id="tab_situacion_laboral">
-           <div class="form-group" id="panel_direccion_form_group">
-              <label class="control-label col-lg-2 col-sm-4">Situacion Laboral:</label>
-              <div id="panel_situacion_laboral" class="col-lg-8 col-sm-8">
-                <table class="table table-striped responsive-table">
-                  <thead>
-                  <tr>
-                    <th>Trabaja</th>
-                    <th>Profesión</th>
-                    <th>Ocupación</th>
-                    <th>Acción</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {% if ocupaciones %}
-                    {% for ocupacion in ocupaciones %}
-                      <tr>
-                        <td>{{ ocupacion.situacion_laboral_id }}</td>
-                        <td>{% if not ocupacion.ocupacion %}Sin Ocupación{% else %}
-                          {{ ocupacion.ocupacion }}{% endif %} </td>
-                        <td>
-                        <td>{% if not ocupacion.profesion %}Sin Profesión{% else %}
-                          {{ ocupacion.profesion }}{% endif %} </td>
-                        <td>
+        <div class="row">
+          <div class="tab-content" id="panel_tab_situacion_laboral">
+            <div class="tab-pane active" id="tab_situacion_laboral">
+              <div class="form-group" id="panel_direccion_form_group">
+                <label class="control-label col-lg-2 col-sm-4">Situacion Laboral:</label>
+                <div id="panel_situacion_laboral" class="col-lg-8 col-sm-8">
+                  <table class="table table-striped responsive-table">
+                    <thead>
+                    <tr>
+                      <th>Trabaja</th>
+                      <th>Profesión</th>
+                      <th>Ocupación</th>
+                      <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if ocupaciones %}
+                      {% for ocupacion in ocupaciones %}
+                        <tr>
+                          <td>{{ ocupacion.situacion_laboral_id }}</td>
+                          <td>{% if not ocupacion.ocupacion %}Sin Ocupación{% else %}
+                            {{ ocupacion.ocupacion }}{% endif %} </td>
+                          <td>{% if not ocupacion.profesion %}Sin Profesión{% else %}
+                            {{ ocupacion.profesion }}{% endif %} </td>
+                          <td>
                             <a onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_crear' id_paciente %}')"
-                           class="btn btn-xs"><span class="fa fa-plus"></span>
-                        </a>
-                          <a class="btn btn-xs" title="Editar"
-                            onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_editar' ocupacion.id %}')">
-                            <i class="fa fa-pencil"></i>
-                          </a>
-                          <a class="btn btn-xs" title="Eliminar"
-                            onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_eliminar' ocupacion.id %}')">
-                            <i class='fa fa-times-circle'></i>
-                          </a>
-                        </td>
-                      </tr>
-                    {% endfor %}
+                               class="btn btn-xs"><span class="fa fa-plus"></span>
+                            </a>
+                            <a class="btn btn-xs" title="Editar"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_editar' ocupacion.id %}')">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                            <a class="btn btn-xs" title="Eliminar"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_eliminar' ocupacion.id %}')">
+                              <i class='fa fa-times-circle'></i>
+                            </a>
+                          </td>
+                        </tr>
+                      {% endfor %}
                     {% endif %}
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
                   {% if ocupaciones.count == 0 %}
                     <a onclick="return abrir_modal('{% url 'pacientes:paciente_situacion_laboral_crear' id_paciente %}')"
                        class="btn btn-xs"><span class="fa fa-plus"></span>
                     </a>
                   {% endif %}
-            </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        </div>
-       <div class="row">
-         <div class="tab-content" id="panel_tab_nivel_educativo">
-          <div class="tab-pane active" id="tab_nivel_educativo">
-           <div class="form-group" id="panel_nivel_educativo_form_group">
-              <label class="control-label col-lg-2 col-sm-4">Nivel Educativo:</label>
-              <div id="panel_nivel_educativo" class="col-lg-8 col-sm-8">
-                <table class="table table-striped responsive-table">
-                  <thead>
-                  <tr>
-                    <th>Nivel Educativo</th>
-                    <th>Completo</th>
-                    <th>Año Cursado</th>
-                    <th>Acción</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {% if nivel_educativo %}
-                    {% for nivel in nivel_educativo %}
-                      <tr>
-                        <td>{{ nivel.nivel_educativo }}</td>
-                        <td>{% if nivel.completo %}SI{% else %}NO{% endif %}</td>
-                        <td>{% if nivel.anho_cursado %}{{ nivel.anho_cursado }}{% else %}--------{% endif %}</td>
-                        <td>
-                          <a class="btn btn-xs"
-                             onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')">
-                             <span class="fa fa-plus"></span>
-                          </a>
-                          <a class="btn btn-xs" title="Editar"
-                            onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_editar' nivel.id %}')">
-                            <i class="fa fa-pencil"></i>
-                          </a>
-                          <a class="btn btn-xs" title="Eliminar"
-                            onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_eliminar' nivel.id %}')">
-                            <i class="fa fa-times-circle"></i>
-                          </a>
-                        </td>
-                      </tr>
-                    {% endfor %}
+        <div class="row">
+          <div class="tab-content" id="panel_tab_nivel_educativo">
+            <div class="tab-pane active" id="tab_nivel_educativo">
+              <div class="form-group" id="panel_nivel_educativo_form_group">
+                <label class="control-label col-lg-2 col-sm-4">Nivel Educativo:</label>
+                <div id="panel_nivel_educativo" class="col-lg-8 col-sm-8">
+                  <table class="table table-striped responsive-table">
+                    <thead>
+                    <tr>
+                      <th>Nivel Educativo</th>
+                      <th>Completo</th>
+                      <th>Año Cursado</th>
+                      <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if nivel_educativo %}
+                      {% for nivel in nivel_educativo %}
+                        <tr>
+                          <td>{{ nivel.nivel_educativo }}</td>
+                          <td>{% if nivel.completo %}SI{% else %}NO{% endif %}</td>
+                          <td>{% if nivel.anho_cursado %}{{ nivel.anho_cursado }}{% else %}--------{% endif %}</td>
+                          <td>
+                            <a class="btn btn-xs"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')">
+                              <span class="fa fa-plus"></span>
+                            </a>
+                            <a class="btn btn-xs" title="Editar"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_editar' nivel.id %}')">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                            <a class="btn btn-xs" title="Eliminar"
+                               onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_eliminar' nivel.id %}')">
+                              <i class="fa fa-times-circle"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      {% endfor %}
                     {% endif %}
-                  </tbody>
-                </table>
-                {% if nivel_educativo.count == 0 %}
-                <a class="btn btn-xs"
-                   onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')">
-                    <span class="fa fa-plus"></span>
-                </a>
-                {% endif %}
-            </div>
+                    </tbody>
+                  </table>
+                  {% if nivel_educativo.count == 0 %}
+                    <a class="btn btn-xs"
+                       onclick="return abrir_modal('{% url 'pacientes:paciente_nivel_educativo_crear' id_paciente %}')">
+                      <span class="fa fa-plus"></span>
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        </div>
-     </div>
-</div>
-<div id="popup" class="modal fade"  aria-hidden="true" role="dialog" tabindex="-1"></div>
-<div class="modal hide" id="contactModal"></div>
-<div id="modalSeguroMedico" class="modal" data-keyboard="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form role="form" id="eventoForm" action="{% url 'pacientes:paciente_seguro_medico_crear' id_paciente %}" method="post">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Seguro Médico</h4>
-        </div>
-        <div class="modal-body">
-         <div class="form-horizontal">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="form-group">
-              {{ field.errors }}
-              <label for="{{ field.name }}" class="col-sm-3 control-label">{{ field.label }}:</label>
-              <div class="col-sm-6">
-                {{ field }}
-              </div>
-              </div>
+      </div>
+    </div>
+    <div id="popup" class="modal fade" aria-hidden="true" role="dialog" tabindex="-1"></div>
+    <div class="modal hide" id="contactModal"></div>
+    <div id="modalSeguroMedico" class="modal" data-keyboard="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form role="form" id="eventoForm" action="{% url 'pacientes:paciente_seguro_medico_crear' id_paciente %}"
+                method="post">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Seguro Médico</h4>
             </div>
-            {% endfor %}
+            <div class="modal-body">
+              <div class="form-horizontal">
+                {% csrf_token %}
+                {% for field in form %}
+                  <div class="form-group">
+                    {{ field.errors }}
+                    <label for="{{ field.name }}" class="col-sm-3 control-label">{{ field.label }}:</label>
+                    <div class="col-sm-6">
+                      {{ field }}
+                    </div>
+                  </div>
+                  </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+              <button type="submit" id="guardarSeguro" class="btn btn-primary"><i
+                  class="icon-save fa fa-fw fa-save"></i> Grabar
+              </button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><i
+                  class="icon-remove fa fa-fw fa-times"></i> Cancelar
+              </button>
+            </div>
+          </form>
         </div>
-        <div class="modal-footer">
-          <button type="submit" id="guardarSeguro" class="btn btn-primary"><i class="icon-save fa fa-fw fa-save"></i> Grabar</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-remove fa fa-fw fa-times"></i> Cancelar</button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
-</div>
-</div>
 
 {% endblock %}

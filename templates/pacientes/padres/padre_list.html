@@ -1,14 +1,14 @@
 {% extends "base/base2.html" %}
 {
 {% block content %}
-<div class="bg-light lter b-b wrapper-md">
-  <h1 class="m-n font-thin h3">Ficha Clínica</h1>
-</div>
-<ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
-  <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
-  <li class="active">Datos Padres / Paciente: <b>{{ paciente.get_name_nro_doc }}</b></li>
-</ol><br>
-<div class="wrapper-md">
+  <div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">Ficha Clínica</h1>
+  </div>
+  <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
+    <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+    <li class="active">Datos Padres / Paciente: <b>{{ paciente.get_name_nro_doc }}</b></li>
+  </ol><br>
+  <div class="wrapper-md">
     <div class="panel panel-default">
      <div class="panel-body">
          <div class="nav-tabs-custom">
@@ -24,49 +24,48 @@
          </div>
         {% include 'base/messages.html' %}
         <div class="panel panel-default">
-            <div class="panel-heading">
+          <div class="panel-heading">
             Datos del Padre
-            </div>
+          </div>
 
-            <div class="panel-body">
-                <table class="table table-hover table-condensed table-bordered">
-                        <thead>
-                              <tr>
-                                <th>Nombre</th>
-                                  <th>Tipo Doc</th>
-                                  <th>Nro. Doc</th>
-                                  <th>Acciones</th>
+          <div class="panel-body">
+            <table class="table table-hover table-condensed table-bordered">
+              <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Tipo Doc</th>
+                <th>Nro. Doc</th>
+                <th>Acciones</th>
 
-                              </tr>
-                        </thead>
-                        <tbody>
+              </tr>
+              </thead>
+              <tbody>
 
-                            {% for datos in paciente_padres %}
-                            <tr>
-                                <td>{{ datos.get_full_name }}</td>
-                                <td>{{ datos.tipo_doc }}</td>
-                                <td>{{ datos.nro_doc }}</td>
-                                <td>{{ datos }}</td>
-                                <td>
-                                    <a class="btn btn-xs" title="Editar" href="{% url 'pacientes:paciente_padre_editar' datos.id %}">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                    <a class="btn btn-xs" title="Eliminar"
-                                       onclick="return abrir_modal('{% url 'pacientes:paciente_padre_eliminar' datos.id %}')">
-                                        <i class="fa fa-times-circle"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% endfor %}
+              {% for datos in paciente_padres %}
+                <tr>
+                  <td>{{ datos.get_full_name }}</td>
+                  <td>{{ datos.tipo_doc }}</td>
+                  <td>{{ datos.nro_doc }}</td>
+                  <td>
+                    <a class="btn btn-xs" title="Editar" href="{% url 'pacientes:paciente_padre_editar' datos.id %}">
+                      <i class="fa fa-pencil"></i>
+                    </a>
+                    <a class="btn btn-xs" title="Eliminar"
+                       onclick="return abrir_modal('{% url 'pacientes:paciente_padre_eliminar' datos.id %}')">
+                      <i class="fa fa-times-circle"></i>
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
 
-                        </tbody>
-                </table>
-            </div>
+              </tbody>
+            </table>
+          </div>
         </div>
-        </div>
-         </div>
+      </div>
     </div>
-</div>
-  <div id="popup" class="modal fade"  aria-hidden="true"
+  </div>
+  </div>
+  <div id="popup" class="modal fade" aria-hidden="true"
        role="dialog" tabindex="-1" style="height: auto;margin: auto; posicion:fixed;"></div>
 {% endblock %}
