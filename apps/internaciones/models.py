@@ -25,7 +25,7 @@ class TipoReferencia(models.Model):
 
 class CIE10(models.Model):
     codigo = UpperCharField(max_length=7, blank=False, primary_key=True, uppercase=True)
-    descripcion = UpperCharField(max_length=250, blank=False, uppercase=True)
+    descripcion = UpperCharField(max_length=500, blank=False, uppercase=True)
     habilitado = models.BooleanField(default=True)
 
     def __str__(self):
@@ -212,7 +212,7 @@ class InternadoInsumo(models.Model):
 class Diagnostico(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=DO_NOTHING)
     cie10 = models.ForeignKey(CIE10, on_delete=DO_NOTHING, verbose_name="CIE-10")
-    observacion = UpperTextField(blank=True, uppercase=True)
+    observacion = models.TextField(blank=True)
     fecha = models.DateField(auto_now=True, blank=False, null=False)
     medico = models.ForeignKey(Medico, on_delete=DO_NOTHING, verbose_name="Médico")
     consulta_detalle = models.ForeignKey(ConsultaDetalle, on_delete=models.CASCADE, blank=True, null=True)

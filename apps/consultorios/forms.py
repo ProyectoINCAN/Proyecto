@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 
 from apps.consultorios.models import *
@@ -333,7 +335,7 @@ class MedicamentoForm(forms.ModelForm):
             'cantidad': 'Cantidad',
             'fabricado': 'Fecha Fabricación',
             'vencimiento': 'Fecha Venc.',
-            'habilitado':'Habilitado',
+            'habilitado': 'Habilitado',
         }
 
         widgets = {
@@ -341,12 +343,14 @@ class MedicamentoForm(forms.ModelForm):
                                              'required': 'required'}),
             'forma_farmaceutica': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
                                                       'required': 'required'}),
-            'nro_lote': forms.NumberInput(attrs={'class': 'form-control'}),
-            'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
-            'fabricado': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa', 'required': 'required'}),
+            'nro_lote': forms.TextInput(attrs={'class': 'form-control'}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
+            'fabricado': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa',
+                                                'required': 'required'}),
             'tipificacion': forms.Select(attrs={'class': 'form-control selectsearch', 'style': 'width: 100%',
                                                 'required': 'required'}),
-            'vencimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa','required': 'required'}),
+            'vencimiento': forms.DateInput(attrs={'class': 'form-control datepicker', 'placeholder': 'dd/mm/aaaa',
+                                                  'required': 'required'}),
             'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
 
         }
@@ -359,6 +363,12 @@ class MedicamentoForm(forms.ModelForm):
         fecha_venc = self.cleaned_data.get('vencimiento')
         if fecha_fabricacion > fecha_venc:
             self.add_error('fabricado', 'La fecha de fabricación no puede ser superior a la fecha de vencimiento')
+
+        if fecha_venc <= datetime.date.today():
+            self.add_error('vencimiento', 'No se pueden cargar medicamentos vencidos')
+
+        if fecha_fabricacion >= datetime.date.today():
+            self.add_error('fabricado', 'No se pueden cargar medicamentos con fecha de fabricación posterior a hoy.')
 
         # validamos el número de lote, sino existe el número ingresado ya registrado
         if self.cleaned_data.get('nro_lote'):

@@ -71,13 +71,23 @@
             <div class="btn-group btn-group-sm pull-right">
                 <div class="col pull-right">
                     <a id="volver" type="button" class="btn btn-default" href="{% url 'consultorios:consulta_detalle_dia' detalle.consulta.id  %}"> <i class="fa fa-list" aria-hidden="true"></i> Volver a la lista</a>
-                    <div class="dropdown">
-                      <button onclick="myFunction()" class="btn btn-default dropbtn"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF</button>
+                    <!--<div class="dropdown">
+                      <button onclick="myFunction()" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF <span class="caret"></span></button>
                       <div id="myDropdown" class="dropdown-content">
                           <a id="pdf" href="{% url 'consultorios:consulta_historia_clinica_descargar' detalle.id %}" target="_blank"> <i class="fa fa-book" aria-hidden="true"></i> Historia Clínica</a>
                           <a id="odrenPdf" href="{% url 'consultorios:consulta_orden_estudio_descargar' detalle.id %}" target="_blank"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Orden Estudio</a>
                           <a id="prescripcionPdf"  href="{% url 'consultorios:consulta_prescripcion_descargar' detalle.id %}" target="_blank"> <i class="fa fa-medkit" aria-hidden="true"></i> Prescripción</a>
                       </div>
+                    </div>-->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Exportar a PDF <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a id="pdf" href="{% url 'consultorios:consulta_historia_clinica_descargar' detalle.id %}" target="_blank"> <i class="fa fa-book" aria-hidden="true"></i> Resumen Consulta</a></li>
+                            <li><a id="ordenPdf" href="{% url 'consultorios:consulta_orden_estudio_descargar' detalle.id %}" target="_blank"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Orden Estudio</a></li>
+                            <li><a id="prescripcionPdf"  href="{% url 'consultorios:consulta_prescripcion_descargar' detalle.id %}" target="_blank"> <i class="fa fa-medkit" aria-hidden="true"></i> Prescripción</a></li>
+                      </ul>
                     </div>
                 </div>
             </div><p></p>

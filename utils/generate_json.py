@@ -7,10 +7,11 @@ from apps.agendamientos.models import EstadoAgenda
 from apps.consultorios import models as con
 from apps.consultorios.models import DiasSemana, Especialidad, EstadoConsulta, EstadoConsultaDetalle, \
     GrupoAtencion, OrdenEstudio, TipoMedicamento, Turno, OrdenEstudioDetalle
+from apps.internaciones.models import CIE10
 from apps.pacientes import models as pac
 from apps.pacientes.models import Agua, Area, Barrio, Desague, Distrito, EliminacionBasura, EstadoCivil, \
     Nacionalidad, Pais, NivelEducativo, Pared, Piso, Profesion, SeguroMedico, ServicioBasico, Sexo, SituacionLaboral, \
-    Techo, TipoCorreoElectronico, TipoDoc, TipoTelefono, Dependencia, Etnia, Ocupacion, Vinculo
+    Techo, TipoCorreoElectronico, TipoDoc, TipoTelefono, Dependencia, Etnia, Ocupacion, Vinculo, Paciente, Telefono
 from apps.principal.models import Establecimiento, ParametroSistema
 
 
@@ -185,3 +186,21 @@ def generar_json_consultorios():
 
     data_list.append(datos)
     generar_archivo_json(data_list, "default_data_consultorios.json")
+
+
+def generar_json_cie10():
+    data_list = []
+    datos = CIE10.objects.all()
+    data_list.append(datos)
+    generar_archivo_json(data_list, "data_cie10.json")
+
+
+def generar_json_datos_pacientes():
+    data_list = []
+    datos = Paciente.objects.all()
+    data_list.append(datos)
+
+    datos = Telefono.objects.all()
+    data_list.append(datos)
+
+    generar_archivo_json(data_list, "data_pacientes.json")

@@ -19,6 +19,7 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <b>Listado de Tipos de Medicamentos</b>
+              {% if request.user.is_superuser %}
               <div class="btn-group pull-right">
                 <a>
                   <button onclick="return abrir_modal('{% url 'consultorios:tipo_medicamento_crear' %}')"
@@ -26,6 +27,7 @@
                   </button>
                 </a>
               </div>
+              {% endif %}
               <p></p>
             </div>
             <div class="panel-body">

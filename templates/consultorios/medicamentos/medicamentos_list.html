@@ -18,12 +18,14 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <b>Listado de Medicamentos</b>
+              {% if request.user.is_superuser %}
               <div class="btn-group pull-right">
                 <a href="{% url 'consultorios:medicamento_crear' %}">
                   <button class="btn btn-default"><i class="fa fa-plus-square"></i> Nuevo
                   </button>
                 </a>
               </div>
+              {% endif %}
               <p></p>
             </div>
             <div class="panel-body">
@@ -35,6 +37,7 @@
                   <th>Tipo Medicamento</th>
                   <th>Lote</th>
                   <th>Cantidad</th>
+                  <th>Fecha Fabr.</th>
                   <th>Fecha Venc.</th>
                   {% if request.user.is_superuser %}<th>Acción</th>{% endif%}
                 </tr>
@@ -46,7 +49,16 @@
                     <td width='50'>{{ med.tipificacion }} </td>
                     <td width='50'>{{ med.nro_lote }}</td>
                     <td width='50'>{{ med.cantidad }}</td>
-                    <td width='50'>{{ med.vencimiento }}</td>
+                    {% if med.fabricado %}
+                    <td width='50'>{{ med.fabricado|date:"SHORT_DATE_FORMAT" }}</td>
+                    {% else %}
+                    <td width='50'>{{ "" }}</td>
+                    {% endif %}
+                    {% if med.vencimiento %}
+                    <td width='50'>{{ med.vencimiento|date:"SHORT_DATE_FORMAT" }}</td>
+                    {% else %}
+                    <td width='50'>{{ "" }}</td>
+                    {% endif %}
                     {% if request.user.is_superuser %}
                     <td width='50' align='center'>
                       <a class="btn btn-xs" title="Editar"

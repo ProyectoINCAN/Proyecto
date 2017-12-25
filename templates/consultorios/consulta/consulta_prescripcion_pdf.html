@@ -52,7 +52,7 @@
                             <tr>
                                 <th style="border: 1px solid #dddddd; width:70px; text-align: left; padding: 2px; font-size: 12px; border: 1px solid black;font-family: arial;">Cantidad</th>
                                 <th style="border: 1px solid #dddddd; text-align: left; padding: 2px; font-size: 12px; border: 1px solid black;font-family: arial;">Medicamento</th>
-                                <th style="border: 1px solid #dddddd; text-align: left; padding: 2px; font-size: 12px; border: 1px solid black;font-family: arial;">Tipo Presentación</th>
+                                <th style="border: 1px solid #dddddd; text-align: left; padding: 2px; font-size: 12px; border: 1px solid black;font-family: arial;">Forma Farmacéutica</th>
                                 <th style="border: 1px solid #dddddd; text-align: left; padding: 2px; font-size: 12px; border: 1px solid black;font-family: arial;">Posología</th>
                             </tr>
                         </thead>
@@ -61,7 +61,7 @@
                             <tr>
                                 <td style="border: 1px solid black; padding: 2px;">{{ data.cantidad }}</td>
                                 <td style="border: 1px solid black; padding: 2px;">{{ data.medicamento }}</td>
-                                <td style="border: 1px solid black; padding: 2px;">{{ data.medicamento.tipificacion.nombre }}</td>
+                                <td style="border: 1px solid black; padding: 2px;">{{ data.medicamento.get_forma_farmaceutica_display }}</td>
                                 <td style="border: 1px solid black; padding: 2px;">{{ data.posologia|safe }}</td>
                             </tr>
                             {% endfor %}

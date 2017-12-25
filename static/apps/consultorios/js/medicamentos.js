@@ -6,6 +6,8 @@
        }else{
           setDisabled(true);
        }
+   $("#id_cantidad" ).attr( "min", 1);
+   $("#id_cantidad" ).attr( "max", 1000);
    }
    )
 

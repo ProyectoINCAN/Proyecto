@@ -388,12 +388,9 @@ class AgendaDetalleListPDF(View):
 
     def get(self, request, *args, **kwargs):
         template = get_template('agendamientos/agenda_list_pdf.html')
-        # agenda = Agenda.objects.get(pk=self.kwargs['agenda_id'])
-        # detalles = AgendaDetalle.objects.filter(agenda=agenda)
-        # telefono = Telefono.objects.filter(paciente=detalles.paciente)
         agenda = Agenda.objects.get(pk=self.kwargs['agenda_id'])
         detalles = get_agenda_detalle_lista_by_agenda(self.kwargs['agenda_id'])
-        image_logo =BASE_DIR + '/static/media/img/logo_incan200x90.png'
+        image_logo = BASE_DIR + '/static/media/img/logo_incan200x90.png'
 
         context = {
             'agenda': agenda,
