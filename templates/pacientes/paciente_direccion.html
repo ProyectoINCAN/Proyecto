@@ -20,7 +20,11 @@
     <h1 class="m-n font-thin h3">Ficha Clínica</h1>
  </div>
   <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
-    <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+    {% if user.groups.all.0.name == "Administrativo" %}
+    <li><a href="{% url 'consultorios:dashboard_administrativo' %}">Inicio</a></li>
+    {% elif request.user.is_superuser %}
+    <li><a href="{% url 'principal:index' %}">Inicio</a></li>
+    {% endif %}
     <li><a href="{% url 'pacientes:index' %}">Pacientes</a></li>
     <li><b>{{ paciente.get_name_nro_doc }}</b></li>
     <li class="active">Direcciones</li>

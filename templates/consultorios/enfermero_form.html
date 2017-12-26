@@ -22,9 +22,13 @@ label { position: absolute; text-align:center; width:130px; }
   <h1 class="m-n font-thin h3">Enfermeros</h1>
 </div>
 <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
-  <li><a href="">Inicio</a></li>
+  {% if user.groups.all.0.name == "Administrativo" %}
+    <li><a href="{% url 'consultorios:dashboard_administrativo' %}">Inicio</a></li>
+    {% elif request.user.is_superuser %}
+    <li><a href="{% url 'principal:index' %}">Inicio</a></li>
+  {% endif %}
   <li class="active"><a href="{% url 'consultorios:enfermero_listar' %}">Lista de Enfermeros</a></li>
-	<li>Nuevo</a></li>
+	<li>Nuevo</li>
 </ol><br>
 <div class="wrapper-md">
     {% include 'base/messages.html' %}

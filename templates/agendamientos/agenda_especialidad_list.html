@@ -11,7 +11,11 @@
     <h1 class="m-n font-thin h3">Listado de Agendas Pendientes</h1>
   </div>
   <ol class="breadcrumb" style="background-color: #f6f8f8">
-    <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+    {% if user.groups.all.0.name == "Administrativo" %}
+    <li><a href="{% url 'consultorios:dashboard_administrativo' %}">Inicio</a></li>
+    {% elif request.user.is_superuser %}
+    <li><a href="{% url 'principal:index' %}">Inicio</a></li>
+  {% endif %}
     <li class="active">Agendas Pendientes</li>
   </ol>
   <div class="wrapper-md">

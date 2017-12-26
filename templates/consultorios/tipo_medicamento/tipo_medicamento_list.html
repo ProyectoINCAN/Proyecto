@@ -9,7 +9,13 @@
     </div>
 
     <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="{% url 'pacientes:index' %}">Inicio</a></li>
+      {% if user.groups.all.0.name == "Medico" %}
+        <li><a href="{% url 'consultorios:dashboard_medico' %}">Inicio</a></li>
+      {% elif request.user.is_superuser %}
+        <li><a href="{% url 'principal:index' %}">Inicio</a></li>
+      {% elif user.groups.all.0.name == "Administrativo" %}
+        <li><a href="{% url 'consultorios:dashboard_administrativo' %}">Inicio</a></li>
+      {% endif %}
       <li class="active">Listado de Tipos de Medicamentos</li>
     </ol>
     {% include 'base/messages.html' %}

@@ -21,7 +21,11 @@
     <h1 class="m-n font-thin h3">Médicos</h1>
 </div>
 <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
+    {% if user.groups.all.0.name == "Administrativo" %}
+    <li><a href="{% url 'consultorios:dashboard_administrativo' %}">Inicio</a></li>
+    {% elif request.user.is_superuser %}
     <li><a href="{% url 'principal:index' %}">Inicio</a></li>
+  {% endif %}
     <li><a href="{% url 'consultorios:medico_listar' %}">Lista de Médicos</a></li>
     {% if medico.id %}
     <li class="active">{{ medico.get_dr_full_name }}</li>

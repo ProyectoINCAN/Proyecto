@@ -8,7 +8,13 @@
     <h1 class="m-n font-thin h3">Medicamentos</h1>
   </div>
   <ol class="breadcrumb" style="background-color: #f6f8f8; margin-bottom: 0px">
-    <li><a href="#">Inicio</a></li>
+    {% if user.groups.all.0.name == "Medico" %}
+      <li><a href="{% url 'consultorios:dashboard_medico' %}">Inicio</a></li>
+    {% elif request.user.is_superuser %}
+      <li><a href="{% url 'principal:index' %}">Inicio</a></li>
+    {% elif user.groups.all.0.name == "Administrativo" %}
+      <li><a href="{% url 'consultorios:dashboard_administrativo' %}">Inicio</a></li>
+    {% endif %}
     <li><a href="{% url 'consultorios:medicamentos' %}">Listado de Medicamentos</a></li>
     <li class="active">{% if form.instance.id %}Editar: {{ form.instance.nombre }}{% else %}Nuevo
       Medicamento{% endif %}</li>

@@ -42,6 +42,8 @@
     <a {% if request.user.is_superuser %} href="{% url 'principal:index' %}"
                                           {% elif user.groups.all.0.name == "Administrativo" %}
                                           href="{% url 'consultorios:dashboard_administrativo' %}"
+                                           {% elif user.groups.all.0.name == "Medico" %}
+                                          href="{% url 'consultorios:dashboard_medico' %}"
       {% endif %}class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>SIH</b></span>

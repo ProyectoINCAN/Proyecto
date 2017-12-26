@@ -14,8 +14,12 @@
 
 
     <ol class="breadcrumb" style="background-color: #f6f8f8">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Agendamientos</a></li>
+      {% if user.groups.all.0.name == "Administrativo" %}
+        <li><a href="{% url 'consultorios:dashboard_administrativo' %}">Inicio</a></li>
+      {% elif request.user.is_superuser %}
+        <li><a href="{% url 'principal:index' %}">Inicio</a></li>
+      {% endif %}
+      <li><a href="{% url 'agendamientos:agenda_especialidad_medico' %}">Agendamientos</a></li>
         <li><a href="{{origen_url}}">Agenda</a></li>
         <li class="active">{{ agenda.id }}</li>
         <li class="active">Detalle</li>

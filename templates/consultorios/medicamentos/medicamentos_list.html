@@ -8,7 +8,13 @@
     </div>
 
     <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="#">Inicio</a></li>
+      {% if user.groups.all.0.name == "Medico" %}
+        <li><a href="{% url 'consultorios:dashboard_medico' %}">Inicio</a></li>
+      {% elif request.user.is_superuser %}
+        <li><a href="{% url 'principal:index' %}">Inicio</a></li>
+      {% elif user.groups.all.0.name == "Administrativo" %}
+        <li><a href="{% url 'consultorios:dashboard_administrativo' %}">Inicio</a></li>
+      {% endif %}
       <li class="active">Listado de Medicamentos</li>
     </ol>
     {% include 'base/messages.html' %}
@@ -39,7 +45,8 @@
                   <th>Cantidad</th>
                   <th>Fecha Fabr.</th>
                   <th>Fecha Venc.</th>
-                  {% if request.user.is_superuser %}<th>Acción</th>{% endif%}
+                  {% if request.user.is_superuser %}
+                    <th>Acción</th>{% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -60,18 +67,18 @@
                     <td width='50'>{{ "" }}</td>
                     {% endif %}
                     {% if request.user.is_superuser %}
-                    <td width='50' align='center'>
-                      <a class="btn btn-xs" title="Editar"
-                         onclick="return abrir_modal('{% url 'consultorios:medicamento_editar' med.id %}')">
-                        <i class="fa fa-pencil"></i>
-                      </a>
-                      <a class="btn btn-xs" title="Eliminar"
-                          onclick="eliminarMedicamento('{% url 'consultorios:medicamento_eliminar' med.id %}',
-                        {{ med.id }})">
+                      <td width='50' align='center'>
+                        <a class="btn btn-xs" title="Editar"
+                           onclick="return abrir_modal('{% url 'consultorios:medicamento_editar' med.id %}')">
+                          <i class="fa fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-xs" title="Eliminar"
+                           onclick="eliminarMedicamento('{% url 'consultorios:medicamento_eliminar' med.id %}',
+                               {{ med.id }})">
 
-                        <i class="fa fa-times-circle"></i>
-                      </a>
-                    </td>
+                          <i class="fa fa-times-circle"></i>
+                        </a>
+                      </td>
                     {% endif %}
                   </tr>
                 {% endfor %}
@@ -102,39 +109,39 @@
         draggable: true,
         closable: false,
         buttons: [{
-            label: 'Cancelar',
-            //cssClass: 'btn-primary',
-            icon: 'fa fa-times',
-              action: function(dialog){
-                dialog.close();
-                cerrar_modal();
-                return false;
-            }
+          label: 'Cancelar',
+          //cssClass: 'btn-primary',
+          icon: 'fa fa-times',
+          action: function (dialog) {
+            dialog.close();
+            cerrar_modal();
+            return false;
+          }
         }, {
-            label: 'Eliminar',
-            cssClass: 'btn-danger',
-            icon: 'fa fa-trash',
-            action: function(dialog){
-                dialog.close();
-                var csrftoken = getCookie('csrftoken');
-                $.ajax({
-                     type:"POST",
-                     url:url,
-                     data: {
-                            'csrfmiddlewaretoken': csrftoken
-                            },
-                     success: function(data){
-                         if (data.success) {
-                            dialog.close();
-                            cerrar_modal();
-                            location.reload();
-                          }
-                     }
-                });
-                return false;
-            }
-        }, ]
-        });
+          label: 'Eliminar',
+          cssClass: 'btn-danger',
+          icon: 'fa fa-trash',
+          action: function (dialog) {
+            dialog.close();
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+              type: "POST",
+              url: url,
+              data: {
+                'csrfmiddlewaretoken': csrftoken
+              },
+              success: function (data) {
+                if (data.success) {
+                  dialog.close();
+                  cerrar_modal();
+                  location.reload();
+                }
+              }
+            });
+            return false;
+          }
+        },]
+      });
 
 
     };
