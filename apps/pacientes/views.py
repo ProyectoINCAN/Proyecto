@@ -227,14 +227,28 @@ class PacientePadreUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'pacientes/padres/padre_crear.html'
 
     def get_paciente(self):
+        print('primero',self.kwargs['pk'] )
         padre = PacientePadre.objects.get(pk=self.kwargs['pk'])
-        paciente = Paciente.objects.get(pacientepadre__paciente__pacientepadre=padre)
+        print('padre', padre)
+        # paciente = Paciente.objects.get(pacientepadre__paciente__pacientepadre=padre)
+        paciente = Paciente.objects.filter(pacientepadre__paciente__pacientepadre=padre).first()
+        print('pacientes', paciente.pk)
+        id_paciente =paciente.pk
         return paciente
+
+    def get_id_paciente(self):
+        print('primero',self.kwargs['pk'] )
+        padre = PacientePadre.objects.get(pk=self.kwargs['pk'])
+        print('padre', padre)
+        # paciente = Paciente.objects.get(pacientepadre__paciente__pacientepadre=padre)
+        paciente = Paciente.objects.filter(pacientepadre__paciente__pacientepadre=padre).first()
+        id_paciente =paciente.pk
+        return id_paciente
 
     def get_context_data(self, **kwargs):
         context = super(PacientePadreUpdate, self).get_context_data(**kwargs)
         context.update({
-            'id_paciente': self.get_paciente().pk,
+            'id_paciente': self.get_id_paciente(),
             'paciente': self.get_paciente(),
         })
         return context
@@ -296,6 +310,8 @@ class PacienteMadreList(ListView):
         paciente = Paciente.objects.get(pk=self.kwargs["id_paciente"])
         return paciente
 
+
+
     def get_context_data(self, **kwargs):
         context = super(PacienteMadreList, self).get_context_data(**kwargs)
         context.update({
@@ -353,13 +369,22 @@ class PacienteMadreUpdate(LoginRequiredMixin, UpdateView):
 
     def get_paciente(self):
         padre = PacientePadre.objects.get(pk=self.kwargs['pk'])
-        paciente = Paciente.objects.get(pacientepadre__padre=padre)
+        paciente = Paciente.objects.filter(pacientepadre__paciente__pacientepadre=padre).first()
         return paciente
+
+    def get_id_paciente(self):
+        print('primero',self.kwargs['pk'] )
+        padre = PacientePadre.objects.get(pk=self.kwargs['pk'])
+        print('padre', padre)
+        # paciente = Paciente.objects.get(pacientepadre__paciente__pacientepadre=padre)
+        paciente = Paciente.objects.filter(pacientepadre__paciente__pacientepadre=padre).first()
+        id_paciente =paciente.pk
+        return id_paciente
 
     def get_context_data(self, **kwargs):
         context = super(PacienteMadreUpdate, self).get_context_data(**kwargs)
         context.update({
-            'id_paciente': self.get_paciente().id,
+            'id_paciente': self.get_id_paciente(),
             'paciente': self.get_paciente(),
         })
         return context

@@ -136,7 +136,7 @@
                             <td>{{detalle.5}}</td>
                             <td>{{detalle.6}}: {{detalle.7}}</td>
                             <td>
-                                {% if user.groups.all.0.name == "Administrativo_Ventanilla" or request.user.is_superuser %}
+                                {% if user.groups.all.0.name == "Administrativo" or request.user.is_superuser %}
                                 {% if detalle.11 %}
                                 <h5 class="btn btn-success" style="width:109px"><i class="fa fa-check-square-o"
                                                                                    aria-hidden="true"></i> Confirmado

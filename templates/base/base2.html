@@ -98,6 +98,23 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MENÚ</li>
+        {% if user.groups.all.0.name == "Administrativo" or request.user.is_superuser %}
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-clipboard"></i><span>Agendamientos</span>
+              <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'agendamientos:agenda_especialidad_medico' %}"><i class="fa fa-list"
+                                                                                    aria-hidden="true"></i>Agendas
+                Pendientes</a></li>
+              <li><a href="{% url 'agendamientos:agenda_fecha_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas
+                por rango de fecha</a></li>
+            </ul>
+          </li>
+        {% endif %}
         {% if user.groups.all.0.name == "Administrativo" or user.is_superuser %}
           <li class="treeview">
             <a href="#">
@@ -123,23 +140,6 @@
             <ul class="treeview-menu">
               <li><a href="{% url 'consultorios:administrativo_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Lista
                 de Administrativos</a></li>
-            </ul>
-          </li>
-        {% endif %}
-        {% if user.groups.all.0.name == "Administrativo" or request.user.is_superuser %}
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-clipboard"></i><span>Agendamientos</span>
-              <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="{% url 'agendamientos:agenda_especialidad_medico' %}"><i class="fa fa-list"
-                                                                                    aria-hidden="true"></i>Agendas
-                Pendientes</a></li>
-              <li><a href="{% url 'agendamientos:agenda_fecha_listar' %}"><i class="fa fa-list" aria-hidden="true"></i>Agendas
-                por rango de fecha</a></li>
             </ul>
           </li>
         {% endif %}
@@ -185,7 +185,17 @@
             </ul>
           </li>
         {% endif %}
+        {% if user.groups.all.0.name == "Medico" or request.user.is_superuser %}
+          <li class="treeview">
+            <a href="{% url 'consultorios:historia_clinica' %}">
+              <i class="fa fa-book"></i><span>Expediente Clínico</span>
+              <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
 
+          </li>
+        {% endif %}
         {% if request.user.is_superuser %}
           <li class="treeview">
             <a href="#">
@@ -228,17 +238,6 @@
             <ul class="treeview-menu">
               <li><a href="{% url 'consultorios:consultas_dia' %}"><i class="fa fa-circle-o"></i>Consultas</a></li>
             </ul>
-
-          </li>
-        {% endif %}
-        {% if user.groups.all.0.name == "Medico" or request.user.is_superuser %}
-          <li class="treeview">
-            <a href="{% url 'consultorios:historia_clinica' %}">
-              <i class="fa fa-book"></i><span>Expediente Clínico</span>
-              <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-            </a>
 
           </li>
         {% endif %}
