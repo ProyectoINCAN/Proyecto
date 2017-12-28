@@ -17,6 +17,7 @@
      });
      var table= $('#dataTables-example').DataTable({
          responsive: true,
+         ordering: false,
          "language": {
              "lengthMenu": "Mostrar _MENU_   registros",
              "zeroRecords": "No existen registros",

@@ -4,15 +4,15 @@ from apps.agendamientos.models import AgendaDetalle
 
 
 def get_agenda_medico_especialidad(p_especialidad, p_medico, p_turno):
-    if(p_especialidad):
+    if p_especialidad:
         especialidad = ' and especialidad.id = '+p_especialidad
     else:
         especialidad = ' and especialidad.id is not null'
-    if (p_medico):
+    if p_medico:
         medico = ' and medico.id = ' + p_medico
     else:
         medico = ' and medico.id is not null'
-    if (p_turno):
+    if p_turno:
         turno = " and turno.codigo = '"+p_turno+"'"
     else:
         turno = ' and turno.codigo is not null'
@@ -29,7 +29,7 @@ def get_agenda_medico_especialidad(p_especialidad, p_medico, p_turno):
         join consultorios_especialidad especialidad on (especialidad.id = agenda.especialidad_id)
         join consultorios_turno turno on agenda.turno_id = turno.codigo
         where agenda.estado_id = 'P' and fecha >= current_date
-        '''  + str(especialidad) +str(medico) + str(turno)+ group
+        ''' + str(especialidad) + str(medico) + str(turno) + group
 
     print("query = ", query)
 

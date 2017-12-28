@@ -64,8 +64,10 @@ def cancelar_agenda(agenda_id, tipo):
 
         # guardo la agenda nueva con los mismos datos que la agenda cancelada
         nueva_fecha = get_fecha_agendamiento_siguiente(agenda)
+        tmp_horario = HorarioMedico.objects.filter(medico=agenda.medico, turno=agenda.turno, habilitado=True)
+        cantidad = get_cantidad_by_horario_medico_fecha(tmp_horario, nueva_fecha)
         agenda_retornada = Agenda(medico=agenda.medico, especialidad=agenda.especialidad, turno=agenda.turno,
-                                  fecha=nueva_fecha, estado=EstadoAgenda.objects.get(codigo="P"))
+                                  fecha=nueva_fecha, estado=EstadoAgenda.objects.get(codigo="P"), cantidad=cantidad)
         agenda_retornada.fecha = nueva_fecha
         agenda_retornada.save()
 
