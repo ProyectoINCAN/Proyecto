@@ -245,7 +245,7 @@ class HorarioMedico(models.Model):
 
 class OrdenEstudio(models.Model):
     nombre = UpperCharField(max_length=100, blank=False, uppercase=True)
-    descripcion = models.TextField(default="", max_length=80, blank=False, verbose_name="Descripción")
+    descripcion = UpperCharField(default="", max_length=80, blank=False, verbose_name="Descripción", uppercase=True)
 
     def __str__(self):
         return "{} ".format(self.nombre)
