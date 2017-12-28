@@ -185,7 +185,7 @@
             </ul>
           </li>
         {% endif %}
-        {% if user.groups.all.0.name == "Medico" or request.user.is_superuser %}
+        {% if user.groups.all.0.name == "Medico" or request.user.is_superuser or  user.groups.all.0.name == "Administrativo" %}
           <li class="treeview">
             <a href="{% url 'consultorios:historia_clinica' %}">
               <i class="fa fa-book"></i><span>Expediente Clínico</span>
