@@ -122,6 +122,7 @@
                             <th>Edad</th>
                             <th>Ciudad</th>
                             <th>Tel&eacute;fono</th>
+                            <th>Tiene Ficha</th>
                             <th>Confirmar</th>
                         </tr>
                         </thead>
@@ -135,6 +136,7 @@
                             <td>{{detalle.4}}</td>
                             <td>{{detalle.5}}</td>
                             <td>{{detalle.6}}: {{detalle.7}}</td>
+                            <td>{% if detalle.12 %}SI{% else %}NO{% endif %}</td>
                             <td>
                                 {% if user.groups.all.0.name == "Administrativo" or request.user.is_superuser %}
                                 {% if detalle.11 %}
@@ -142,9 +144,15 @@
                                                                                    aria-hidden="true"></i> Confirmado
                                 </h5>
                                 {% else %}
+                                  {% if detalle.12 %}
                                 <a href="{% url 'agendamientos:agenda_detalle_confirmar' detalle.9 detalle.10 origen %}"
-                                   class="btn btn-danger" style="width:109px"><i class="fa fa-square-o"
+                                   class="btn btn-danger" style="width:109px;"><i class="fa fa-square-o"
                                                                                  aria-hidden="true"></i> Confirmar</a>
+                                    {% else %}
+                                     <a href="{% url 'agendamientos:agenda_detalle_confirmar' detalle.9 detalle.10 origen %}"
+                                   class="btn btn-danger" style="width:109px; pointer-events:none"><i class="fa fa-square-o"
+                                                                                 aria-hidden="true"></i> Confirmar</a>
+                                    {% endif %}
                                 {% endif %}
                                 {% endif %}
                             </td>

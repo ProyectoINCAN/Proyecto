@@ -20,7 +20,7 @@
 <section class="content-header">
   <div class="bg-light lter b-b wrapper-md">
     <ol class="breadcrumb" style="background-color: #f6f8f8">
-      <li><a href="#">Inicio</a></li>
+      <li><a href="{% url 'consultorios:dashboard_medico' %}">Inicio</a></li>
       <li><a href="{% url 'consultorios:consultas_dia' %}">Consulta del Dia</a></li>
       <li><a href="{% url 'consultorios:consulta_detalle_dia' consulta.id %}">{{ consulta.medico.get_dr_full_name }}</a></li>
       <li class="active">Listado de Pacientes</li>
